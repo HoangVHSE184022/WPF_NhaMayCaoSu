@@ -10,9 +10,4 @@
     <ProjectReference Include="..\WPF_NhaMayCaoSu.Repositories\WPF_NhaMayCaoSu.Repository.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>
