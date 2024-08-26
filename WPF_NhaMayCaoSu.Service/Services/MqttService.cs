@@ -16,9 +16,9 @@ public class MqttService : IMqttService
         _client = factory.CreateMqttClient();
 
         _options = new MqttClientOptionsBuilder()
-            .WithClientId("e_scale")
-            .WithTcpServer("0e7dc7baea9b4910912ef4042e5fd3cc.s1.eu.hivemq.cloud", 8883)
-            .WithCredentials("nhutthienm8", "nhutthienm8")
+            .WithClientId("")
+            .WithTcpServer("", 8883)
+            .WithCredentials("", "")
             .WithCleanSession()
             .WithTlsOptions(new MqttClientTlsOptions
             {
