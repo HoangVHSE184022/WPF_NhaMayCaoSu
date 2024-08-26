@@ -30,7 +30,17 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task UpDateAccountAsync(Account account)
+        public async Task<Account> Login(string username, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task Register(Account account)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task UpdateAccountAsync(Account account)
         {
             throw new NotImplementedException();
         }
