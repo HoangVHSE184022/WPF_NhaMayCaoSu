@@ -12,8 +12,10 @@ namespace WPF_NhaMayCaoSu.Repository.IRepositories
         Task CreateAccountAsync(Account account);
         Task<IEnumerable<Account>> GetAllAccountsAsync();
         Task<Account> GetAccountByIdAsync(Guid accountId);
-        Task UpDateAccountAsync(Account account);
+        Task UpdateAccountAsync(Account account);
         Task DeleteAccountAsync(Guid accountId);
+        Task<Account> Login(string username, string password);
+        Task Register(Account account);
 
     }
 }
