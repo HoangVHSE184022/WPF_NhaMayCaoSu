@@ -15,22 +15,32 @@ namespace WPF_NhaMayCaoSu
     {
         private IServiceProvider _serviceProvider;
 
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
-            var serviceCollection = new ServiceCollection();
-            ConfigureServices(serviceCollection);
+            try
+            {
+                var serviceCollection = new ServiceCollection();
+                ConfigureServices(serviceCollection);
 
-            _serviceProvider = serviceCollection.BuildServiceProvider();
+                _serviceProvider = serviceCollection.BuildServiceProvider();
 
-            // Connect to MQTT broker at startup
-            var mqttService = _serviceProvider.GetRequiredService<IMqttService>();
-            mqttService.ConnectAsync().Wait();
+                var mqttService = _serviceProvider.GetRequiredService<IMqttService>();
 
-            var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-            mainWindow.Show();
+                await mqttService.ConnectAsync();
+
+                var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+                mainWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                Shutdown();
+            }
         }
+
+
 
         private void ConfigureServices(IServiceCollection services)
         {
@@ -41,5 +51,4 @@ namespace WPF_NhaMayCaoSu
             services.AddSingleton<MainWindow>();
         }
     }
-
 }

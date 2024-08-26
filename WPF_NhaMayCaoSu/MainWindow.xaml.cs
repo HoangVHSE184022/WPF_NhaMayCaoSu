@@ -18,7 +18,7 @@ namespace WPF_NhaMayCaoSu
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly IMqttService _mqttService;
+    private readonly IMqttService _mqttService;
 
         public MainWindow(IMqttService mqttService)
         {
@@ -28,7 +28,7 @@ namespace WPF_NhaMayCaoSu
         }
 
 
-        private async Task TestMqttConnection()
+     private async Task TestMqttConnection()
         {
             bool isConnected = await _mqttService.TestConnectionAsync();
             if (isConnected)
@@ -39,11 +39,6 @@ namespace WPF_NhaMayCaoSu
             {
                 MessageBox.Show("Failed to connect to MQTT broker.");
             }
-        }
-
-        private async void TestConnectionButton_Click(object sender, RoutedEventArgs e)
-        {
-            await TestMqttConnection();
         }
 
         private async void SubscribeButton_Click(object sender, RoutedEventArgs e)
