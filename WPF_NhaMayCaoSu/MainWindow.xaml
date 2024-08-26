@@ -7,6 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <Button Content="Test MQTT Connection" 
+                Width="150" 
+                Height="30" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top" 
+                Margin="10" 
+                Click="TestConnectionButton_Click"/>
     </Grid>
 </Window>
