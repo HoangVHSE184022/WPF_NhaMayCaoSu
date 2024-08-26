@@ -20,6 +20,11 @@ namespace WPF_NhaMayCaoSu
     {
     private readonly IMqttService _mqttService;
 
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
         public MainWindow(IMqttService mqttService)
         {
             InitializeComponent();
