@@ -52,6 +52,7 @@ namespace WPF_NhaMayCaoSu
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IRoleService, RoleService>();
             services.AddSingleton<IRFIDService, RFIDService>();
+            services.AddSingleton<IAuthService,  AuthService>();
 
             // Register repositories here
             services.AddSingleton<ISaleRepository, SaleRepository>();
