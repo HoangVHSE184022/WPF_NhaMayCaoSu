@@ -13,7 +13,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WPF_NhaMayCaoSu.Service\WPF_NhaMayCaoSu.Service.csproj" />
+    <ProjectReference Include="..\WPF_NhaMayCaoSu.Service\WPF_NhaMayCaoSu.Service.csproj">
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
