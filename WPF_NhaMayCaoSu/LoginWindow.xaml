@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="800" Width="1200" WindowStartupLocation="CenterScreen">
+        Title="LoginWindow" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Background="#e0ffff ">
     <Grid Margin="0,-7,0,7">
         <Rectangle HorizontalAlignment="Center" Height="640" Stroke="Black" VerticalAlignment="Center" Width="720" Fill="#FF002366" RadiusY="50" RadiusX="50" />
-        <Label Content="LOGIN" HorizontalAlignment="Center" Height="126" Margin="0,169,0,0" VerticalAlignment="Top" Width="316" FontFamily="Arial" FontSize="96" Foreground="White" FontWeight="Bold"/>
-        <Label Content="Username" HorizontalAlignment="Left" Height="55" Margin="278,345,0,0" VerticalAlignment="Top" Width="197" FontFamily="Arial" FontSize="40
+        <Label Content="LOGIN" HorizontalAlignment="Center" Height="126" Margin="0,141,0,0" VerticalAlignment="Top" Width="316" FontFamily="Arial" FontSize="96" Foreground="White" FontWeight="Bold"/>
+        <Label Content="Username" HorizontalAlignment="Left" Height="55" Margin="301,294,0,0" VerticalAlignment="Top" Width="197" FontFamily="Arial" FontSize="40
                " Foreground="White" />
-        <Label Content="Password" HorizontalAlignment="Left" Height="54" Margin="278,443,0,0" VerticalAlignment="Top" Width="197" FontFamily="Arial" FontSize="40
+        <Label Content="Password" HorizontalAlignment="Left" Height="54" Margin="301,392,0,0" VerticalAlignment="Top" Width="197" FontFamily="Arial" FontSize="40
        " Foreground="White" />
-        <TextBox x:Name="UsernameTextBox" HorizontalAlignment="Left" Height="55" Margin="508,345,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="406" FontSize="40" Padding="10,0,0,0"/>
-        <TextBox x:Name="PasswordTextBox" HorizontalAlignment="Left" Height="55" Margin="508,443,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="406" FontSize="40" Padding="10,0,0,0"/>
-        <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Left" Height="78" Margin="647,557,0,0" VerticalAlignment="Top" Width="174" FontSize="40" Background="#FF254098" FontFamily="Arial" Click="LoginButton_Click" Foreground="#FFFFFF" FontWeight="UltraBold" BorderThickness="0"/>
-        <Button x:Name="QuitButton" Content="Quit" HorizontalAlignment="Left" Height="78" Margin="388,557,0,0" VerticalAlignment="Top" Width="174" FontSize="40" FontWeight="UltraBold" Background="#F5F5F5" FontFamily="Arial" Click="QuitButton_Click" Foreground="#FF002366" RenderTransformOrigin="0.713,0.462" BorderThickness="0" />
+        <TextBox x:Name="UsernameTextBox" HorizontalAlignment="Left" Height="55" Margin="503,294,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="406" FontSize="40" Padding="10,0,0,0"/>
+        <TextBox x:Name="PasswordTextBox" HorizontalAlignment="Left" Height="55" Margin="503,392,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="406" FontSize="40" Padding="10,0,0,0"/>
+        <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Left" Height="78" Margin="669,518,0,0" VerticalAlignment="Top" Width="174" FontSize="40" Background="#FF254098" FontFamily="Arial" Click="LoginButton_Click" Foreground="#FFFFFF" FontWeight="UltraBold" BorderThickness="0"/>
+        <Button x:Name="QuitButton" Content="Quit" HorizontalAlignment="Left" Height="78" Margin="358,518,0,0" VerticalAlignment="Top" Width="174" FontSize="40" FontWeight="UltraBold" Background="#F5F5F5" FontFamily="Arial" Click="QuitButton_Click" Foreground="#FF002366" RenderTransformOrigin="0.713,0.462" BorderThickness="0" />
     </Grid>
 </Window>

@@ -28,7 +28,7 @@ namespace WPF_NhaMayCaoSu
         {
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
-            this.Close();
+            this.Hide();
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
