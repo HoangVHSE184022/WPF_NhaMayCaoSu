@@ -2,6 +2,8 @@
 using System.Data;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using WPF_NhaMayCaoSu.Repository.IRepositories;
+using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
 
@@ -46,9 +48,20 @@ namespace WPF_NhaMayCaoSu
         {
             // Register services here
             services.AddSingleton<IMqttService, MqttService>();
+            services.AddSingleton<ISaleService, SaleService>();
+            services.AddSingleton<IAccountService, AccountService>();
+            services.AddSingleton<IRoleService, RoleService>();
+            services.AddSingleton<IRFIDService, RFIDService>();
+
+            // Register repositories here
+            services.AddSingleton<ISaleRepository, SaleRepository>();
+            services.AddSingleton<IAccountRepository, AccountRepository>();
+            services.AddSingleton<IRoleRepository, RoleRepository>();
+            services.AddSingleton<IRFIDRepository,  RFIDRepository>();
 
             // Register the MainWindow
             services.AddSingleton<MainWindow>();
         }
+
     }
 }
