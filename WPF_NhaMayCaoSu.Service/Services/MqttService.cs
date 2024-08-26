@@ -1,7 +1,9 @@
 ﻿using MQTTnet;
+using MQTTnet.Adapter;
 using MQTTnet.Client;
 using MQTTnet.Protocol;
 using WPF_NhaMayCaoSu.Service.Interfaces;
+
 
 public class MqttService : IMqttService
 {
@@ -14,9 +16,18 @@ public class MqttService : IMqttService
         _client = factory.CreateMqttClient();
 
         _options = new MqttClientOptionsBuilder()
-            .WithClientId("WPF_Client")
-            .WithTcpServer("broker.hivemq.com", 1883) 
+            .WithClientId("e_scale")
+            .WithTcpServer("0e7dc7baea9b4910912ef4042e5fd3cc.s1.eu.hivemq.cloud", 8883)
+            .WithCredentials("nhutthienm8", "nhutthienm8")
             .WithCleanSession()
+            .WithTlsOptions(new MqttClientTlsOptions
+            {
+                UseTls = true,
+                AllowUntrustedCertificates = true,
+                IgnoreCertificateChainErrors = false,
+                IgnoreCertificateRevocationErrors = true,
+                CertificateValidationHandler = context => true
+            })
             .Build();
 
         // Register event handlers
@@ -64,20 +75,6 @@ public class MqttService : IMqttService
             .Build();
 
         await _client.PublishAsync(message);
-    }
-
-    public async Task<bool> TestConnectionAsync()
-    {
-        try
-        {
-            await _client.ConnectAsync(_options);
-            return _client.IsConnected;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error connecting to MQTT broker: {ex.Message}");
-            return false;
-        }
     }
 
 }

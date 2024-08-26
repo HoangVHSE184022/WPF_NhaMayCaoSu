@@ -29,21 +29,6 @@ namespace WPF_NhaMayCaoSu
         {
             InitializeComponent();
             _mqttService = mqttService;
-            _ = TestMqttConnection();
-        }
-
-
-     private async Task TestMqttConnection()
-        {
-            bool isConnected = await _mqttService.TestConnectionAsync();
-            if (isConnected)
-            {
-                MessageBox.Show("Connected to MQTT broker successfully.");
-            }
-            else
-            {
-                MessageBox.Show("Failed to connect to MQTT broker.");
-            }
         }
 
         private async void SubscribeButton_Click(object sender, RoutedEventArgs e)
