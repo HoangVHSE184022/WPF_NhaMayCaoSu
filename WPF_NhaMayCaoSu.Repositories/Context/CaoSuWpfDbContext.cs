@@ -17,16 +17,12 @@ namespace WPF_NhaMayCaoSu.Repository.Context
         public DbSet<RFID> RFIDs { get; set; }
         public DbSet<Role> Roles { get; set; }
 
-        public CaoSuWpfDbContext(DbContextOptions<CaoSuWpfDbContext> options)
-        : base(options)
-        {
-        }
 
         private string GetConnectionString()
         {
             IConfiguration config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("dbsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
             var strConn = config.GetConnectionString("DefaultConnectionStringDB");

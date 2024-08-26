@@ -12,7 +12,7 @@ using WPF_NhaMayCaoSu.Repository.Context;
 namespace WPF_NhaMayCaoSu.Repository.Migrations
 {
     [DbContext(typeof(CaoSuWpfDbContext))]
-    [Migration("20240826111650_InitialCreate")]
+    [Migration("20240826120640_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
