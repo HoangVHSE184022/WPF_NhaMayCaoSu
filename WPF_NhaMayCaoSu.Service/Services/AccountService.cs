@@ -1,38 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using WPF_NhaMayCaoSu.Repository.Models;
+using WPF_NhaMayCaoSu.Repository.IRepositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu.Service.Services
 {
     public class AccountService : IAccountService
     {
+        private readonly IAccountRepository _accountRepository;
+
+        public AccountService(IAccountRepository accountRepository)
+        {
+            _accountRepository = accountRepository;
+        }
+
         public async Task CreateAccountAsync(Account account)
         {
-            throw new NotImplementedException();
+            await _accountRepository.CreateAccountAsync(account);
         }
 
         public async Task DeleteAccountAsync(Guid accountId)
         {
-            throw new NotImplementedException();
+            await _accountRepository.DeleteAccountAsync(accountId);
         }
 
         public async Task<Account> GetAccountByIdAsync(Guid accountId)
         {
-            throw new NotImplementedException();
+            return await _accountRepository.GetAccountByIdAsync(accountId);
         }
 
         public async Task<IEnumerable<Account>> GetAllAccountsAsync()
         {
-            throw new NotImplementedException();
+            return await _accountRepository.GetAllAccountsAsync();
         }
 
         public async Task UpdateAccountAsync(Account account)
         {
-            throw new NotImplementedException();
+            await _accountRepository.UpdateAccountAsync(account);
+        }
+
+        public async Task<Account> LoginAsync(string username, string password)
+        {
+            return await _accountRepository.Login(username, password);
+        }
+
+        public async Task RegisterAsync(Account account)
+        {
+            await _accountRepository.Register(account);
         }
     }
 }
