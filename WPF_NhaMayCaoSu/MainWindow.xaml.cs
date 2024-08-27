@@ -26,17 +26,22 @@ namespace WPF_NhaMayCaoSu
             this.Close();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
             customerListWindow.ShowDialog();
-            
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            RFIDListWindow rFIDListWindow = new RFIDListWindow();
-            rFIDListWindow.ShowDialog();
+            RFIDListWindow rfidListWindow = new RFIDListWindow();
+            rfidListWindow.ShowDialog();
+        }
+
+        private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaleManagementWindow saleManagementWindow = new SaleManagementWindow();
+            saleManagementWindow.ShowDialog();
         }
     }
 }
