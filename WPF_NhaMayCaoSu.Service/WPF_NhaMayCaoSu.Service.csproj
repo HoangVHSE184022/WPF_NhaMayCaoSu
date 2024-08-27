@@ -7,7 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WPF_NhaMayCaoSu.Repositories\WPF_NhaMayCaoSu.Repository.csproj" />
+    <PackageReference Include="MQTTnet" Version="4.3.6.1152" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WPF_NhaMayCaoSu.Repositories\WPF_NhaMayCaoSu.Repository.csproj">
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>
