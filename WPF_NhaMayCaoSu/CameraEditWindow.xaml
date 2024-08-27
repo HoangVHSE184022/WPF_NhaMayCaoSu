@@ -1,0 +1,68 @@
+﻿<Window x:Class="WPF_NhaMayCaoSu.CameraEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
+        mc:Ignorable="d"
+        Title="CameraEditWindow" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <!-- Left side for camera feeds -->
+            <ColumnDefinition Width="187*" />
+            <!-- Right side for URL fields and buttons -->
+            <ColumnDefinition Width="73*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Camera Feeds on the Left -->
+        <Grid Grid.Column="0" Margin="0,0,62,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+
+            <!-- Image to display Camera 1 feed with 3:4 aspect ratio -->
+            <Image x:Name="Camera1Feed" Grid.Row="0" Margin="80,5,80,5" Stretch="Uniform" />
+
+            <!-- Image to display Camera 2 feed with 3:4 aspect ratio -->
+            <Image x:Name="Camera2Feed" Grid.Row="1" Margin="80,5,80,5" Stretch="Uniform" />
+        </Grid>
+        <TextBox x:Name="IpCamera1Box" Margin="9,26,0,0" Grid.Column="1" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="210"/>
+        <TextBlock Text="Enter URL for Camera 1" 
+                       Foreground="Gray" 
+                       IsHitTestVisible="False"
+                       VerticalAlignment="Top" Margin="10,10,0,0" Grid.Column="1" Height="16" HorizontalAlignment="Left" Width="194">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=IpCamera1Box}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        <Button x:Name="ConnectCamera1Button" Content="Connect Camera 1" Click="ConnectCamera1Button_Click" Margin="10,56,0,0" Grid.Column="1" HorizontalAlignment="Left" Width="209" Height="20" VerticalAlignment="Top"/>
+        <TextBox x:Name="IpCamera2Box" Margin="9,223,0,0" Grid.Column="1" HorizontalAlignment="Left" Width="210" Height="25" VerticalAlignment="Top"/>
+        <TextBlock Text="Enter URL for Camera 2" 
+                       Foreground="Gray" 
+                       IsHitTestVisible="False"
+                       VerticalAlignment="Top" Margin="10,207,0,0" Grid.Column="1" Height="16" HorizontalAlignment="Left" Width="194">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=IpCamera2Box}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        <Button x:Name="ConnectCamera2Button" Content="Connect Camera 2" Margin="9,253,0,0" Click="ConnectCamera2Button_Click" Grid.Column="1" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="210"/>
+        <Button Content="Save URLs" Click="SaveButton_Click" Grid.Column="1" Margin="9,374,10,0" Height="30" VerticalAlignment="Top"/>
+
+        <!-- URL Fields and Buttons on the Right -->
+    </Grid>
+</Window>
