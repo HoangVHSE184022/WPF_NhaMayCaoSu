@@ -9,11 +9,11 @@
     <Grid>
         <Label Content="Quản lý khách hàng" HorizontalAlignment="Left" Height="68" Margin="32,31,0,0" VerticalAlignment="Top" Width="446" FontFamily="Arial" FontSize="46" Foreground="#FF002366" FontWeight="Bold"/>
         <Rectangle HorizontalAlignment="Left" Height="230" Margin="32,120,0,0" Stroke="Black" VerticalAlignment="Top" Width="200" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
-        <Button HorizontalAlignment="Left" Height="69" Margin="52,149,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" >
-            <TextBlock x:Name="AddCustomerButton" Text="Thêm khách hàng" TextWrapping="Wrap" TextAlignment="Center"/>
+        <Button x:Name="AddCustomerButton" HorizontalAlignment="Left" Height="69" Margin="52,149,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" Click="Button_Click" >
+            <TextBlock Text="Thêm khách hàng" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button HorizontalAlignment="Left" Height="69" Margin="52,249,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" >
-            <TextBlock x:Name="EditCustomerButton" Text="Chỉnh sửa khách hàng" TextWrapping="Wrap" TextAlignment="Center"/>
+        <Button x:Name="EditCustomerButton1" HorizontalAlignment="Left" Height="69" Margin="52,249,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" Click="EditCustomerButton1_Click" >
+            <TextBlock Text="Chỉnh sửa khách hàng" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
         <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="68" Margin="52,667,0,0" VerticalAlignment="Top" Width="160" Background="#FF254098" FontFamily="Arial" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" FontWeight="UltraBold" Click="QuitButton_Click"/>
         <Rectangle HorizontalAlignment="Left" Height="652" Margin="280,104,0,0" Stroke="Black" VerticalAlignment="Top" Width="884" Fill="#FF002366" RadiusX="30" RadiusY="30"/>

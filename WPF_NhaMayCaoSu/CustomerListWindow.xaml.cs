@@ -28,5 +28,17 @@ namespace WPF_NhaMayCaoSu
         {
             this.Close();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            CustomerManagementWindow customerManagementWindow = new CustomerManagementWindow();
+            customerManagementWindow.ShowDialog();
+        }
+
+        private void EditCustomerButton1_Click(object sender, RoutedEventArgs e)
+        {
+            CustomerManagementWindow customerManagementWindow = new CustomerManagementWindow();
+            customerManagementWindow.ShowDialog();
+        }
     }
 }

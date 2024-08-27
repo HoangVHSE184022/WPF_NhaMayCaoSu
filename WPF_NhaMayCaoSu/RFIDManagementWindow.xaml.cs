@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace WPF_NhaMayCaoSu
 {
     /// <summary>
-    /// Interaction logic for RFIDListWindow.xaml
+    /// Interaction logic for RFIDManagementWindow.xaml
     /// </summary>
-    public partial class RFIDListWindow : Window
+    public partial class RFIDManagementWindow : Window
     {
-        public RFIDListWindow()
+        public RFIDManagementWindow()
         {
             InitializeComponent();
         }
@@ -27,18 +27,6 @@ namespace WPF_NhaMayCaoSu
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-        }
-
-        private void AddRFIDButton_Click(object sender, RoutedEventArgs e)
-        {
-            RFIDManagementWindow rfidManagementWindow = new RFIDManagementWindow();
-            rfidManagementWindow.ShowDialog();
-        }
-
-        private void EditRFIDButton_Click(object sender, RoutedEventArgs e)
-        {
-            RFIDManagementWindow rfidManagementWindow = new RFIDManagementWindow();
-            rfidManagementWindow.ShowDialog();
         }
     }
 }
