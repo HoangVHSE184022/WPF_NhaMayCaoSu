@@ -5,8 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Background="#e0ffff ">
+        Title="Show Information" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Background="#e0ffff ">
     <Grid>
+        <Rectangle HorizontalAlignment="Left" Height="196" Margin="42,33,0,0" Stroke="Black" VerticalAlignment="Top" Width="200" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
+        <Button x:Name="ShowButton" Content="Hiển thị" HorizontalAlignment="Left" Height="49" Margin="62,66,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="26" FontWeight="UltraBold"/>
+        <Button x:Name="ConfigButton" Content="Cấu hình" HorizontalAlignment="Left" Height="49" Margin="62,146,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="26" FontWeight="UltraBold"/>
+        <Rectangle HorizontalAlignment="Left" Height="216" Margin="42,283,0,0" Stroke="Black" VerticalAlignment="Top" Width="200" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
+        <Button HorizontalAlignment="Left" Height="69" Margin="62,302,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" Click="Button_Click" >
+            <TextBlock x:Name="CustomerManagementButton" Text="Quản lý khách hàng" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
+        <Button HorizontalAlignment="Left" Height="69" Margin="62,408,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" Click="Button_Click_1" >
+            <TextBlock x:Name="RFIDManagementButton" Text="Quản lý thẻ RFID" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
+        <Rectangle HorizontalAlignment="Left" Height="736" Margin="280,23,0,0" Stroke="Black" VerticalAlignment="Top" Width="883" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
+        <DataGrid x:Name="SalesDataGrid" HorizontalAlignment="Left" Height="686" Margin="310,0,0,0" VerticalAlignment="Center" Width="824" d:ItemsSource="{d:SampleData ItemCount=5}" FontFamily="Arial" FontSize="24"/>
+        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="68" Margin="62,667,0,0" VerticalAlignment="Top" Width="160" Background="#FF254098" FontFamily="Arial" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" FontWeight="UltraBold" Click="QuitButton_Click"/>
 
     </Grid>
 </Window>

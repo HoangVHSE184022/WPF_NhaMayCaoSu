@@ -15,20 +15,13 @@ using System.Windows.Shapes;
 namespace WPF_NhaMayCaoSu
 {
     /// <summary>
-    /// Interaction logic for LoginWindow.xaml
+    /// Interaction logic for RFIDListWindow.xaml
     /// </summary>
-    public partial class LoginWindow : Window
+    public partial class RFIDListWindow : Window
     {
-        public LoginWindow()
+        public RFIDListWindow()
         {
             InitializeComponent();
-        }
-
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
-            this.Close();
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
