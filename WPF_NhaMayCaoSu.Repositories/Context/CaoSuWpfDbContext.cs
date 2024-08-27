@@ -1,11 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 using WPF_NhaMayCaoSu.Repository.Models;
 
 namespace WPF_NhaMayCaoSu.Repository.Context
@@ -16,7 +10,7 @@ namespace WPF_NhaMayCaoSu.Repository.Context
         public DbSet<Account> Accounts { get; set; }
         public DbSet<RFID> RFIDs { get; set; }
         public DbSet<Role> Roles { get; set; }
-
+        public DbSet<Camera> Cameras { get; set; }
 
         private string GetConnectionString()
         {
@@ -33,7 +27,6 @@ namespace WPF_NhaMayCaoSu.Repository.Context
 
             return strConn;
         }
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -83,6 +76,16 @@ namespace WPF_NhaMayCaoSu.Repository.Context
                 .HasKey(r => r.RoleId);
             modelBuilder.Entity<Role>()
                 .HasIndex(r => r.RoleName)
+                .IsUnique();
+
+            // Camera
+            modelBuilder.Entity<Camera>()
+                .HasKey(c => c.Id);
+            modelBuilder.Entity<Camera>()
+                .HasIndex(c => c.IpCamera1)
+                .IsUnique();
+            modelBuilder.Entity<Camera>()
+                .HasIndex(c => c.IpCamera2)
                 .IsUnique();
         }
     }
