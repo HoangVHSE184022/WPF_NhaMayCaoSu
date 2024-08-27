@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WPF_NhaMayCaoSu.Repository.Context;
 using WPF_NhaMayCaoSu.Repository.IRepositories;
 using WPF_NhaMayCaoSu.Repository.Models;
 
@@ -10,39 +12,62 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 {
     public class AccountRepository : IAccountRepository
     {
+        private readonly CaoSuWpfDbContext _context;
+        public AccountRepository(CaoSuWpfDbContext context)
+        {
+            _context = context;
+        }
+
         public async Task CreateAccountAsync(Account account)
         {
-            throw new NotImplementedException();
+            await _context.Accounts.AddAsync(account);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAccountAsync(Guid accountId)
         {
-            throw new NotImplementedException();
+            var account = await _context.Accounts.FindAsync(accountId);
+            if (account != null)
+            {
+                _context.Accounts.Remove(account);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<Account> GetAccountByIdAsync(Guid accountId)
         {
-            throw new NotImplementedException();
+            return await _context.Accounts
+                                 .Include(a => a.Role)
+                                 .Include(a => a.RFIDs)
+                                 .FirstOrDefaultAsync(a => a.AccountId == accountId);
         }
 
         public async Task<IEnumerable<Account>> GetAllAccountsAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Accounts
+                                .Include(a => a.Role)
+                                .Include(a => a.RFIDs)
+                                .ToListAsync();
         }
 
         public async Task<Account> Login(string username, string password)
         {
-            throw new NotImplementedException();
+            return await _context.Accounts
+                               .Include(a => a.Role)
+                               .FirstOrDefaultAsync(a => a.Username == username && a.Password == password);
         }
 
         public async Task Register(Account account)
         {
-            throw new NotImplementedException();
+            account.CreatedDate = DateTime.UtcNow;
+            account.Status = 1;
+            await CreateAccountAsync(account);
         }
 
         public async Task UpdateAccountAsync(Account account)
         {
-            throw new NotImplementedException();
+            _context.Accounts.Update(account);
+            await _context.SaveChangesAsync();
         }
     }
 }
