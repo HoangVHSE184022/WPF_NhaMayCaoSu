@@ -5,45 +5,46 @@ using WPF_NhaMayCaoSu.Repository.Models;
 
 namespace WPF_NhaMayCaoSu.Repository.Repositories
 {
-    public class SaleRepository : ISaleRepository
+    public class CustomerRepository : ICustomerRepository
     {
         private CaoSuWpfDbContext _context;
-        public async Task CreateSaleAsync(Sale sale)
+
+        public async Task AddCustomer(Customer customer)
         {
             _context = new();
-            await _context.AddAsync(sale);
+            await _context.AddAsync(customer);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteSaleAsync(Guid saleId)
+        public async Task DeleteCustomer(Guid id)
         {
             _context = new();
-            Sale sale = await _context.Sales.FirstOrDefaultAsync(x => x.SaleId == saleId);
-            _context.Remove(sale);
+            Customer customer = await GetCustomerById(id);
+            _context.Customers.Remove(customer);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Sale>> GetAllAsync(int pageNumber, int pageSize)
+        public async Task<IEnumerable<Customer>> GetAllAsync(int pageNumber, int pageSize)
         {
             _context = new();
 
-            return await _context.Sales
+            return await _context.Customers
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)
                                  .ToListAsync();
         }
 
 
-        public async Task<Sale> GetSaleByIdAsync(Guid saleId)
+        public async Task<Customer> GetCustomerById(Guid id)
         {
             _context = new();
-            return await _context.Sales.FirstOrDefaultAsync(x => x.SaleId == saleId);
+            return await _context.Customers.FirstOrDefaultAsync(x => x.CustomerId == id);
         }
 
-        public async Task UpdateSaleAsync(Sale sale)
+        public async Task UpdateCustomer(Customer customer)
         {
             _context = new();
-            _context.Update(sale);
+            _context.Update(customer);
             await _context.SaveChangesAsync();
         }
     }

@@ -18,9 +18,9 @@ namespace WPF_NhaMayCaoSu.Service.Services
             await _roleRepository.CreateRoleAsync(role);
         }
 
-        public async Task<IEnumerable<Role>> GetAllRolesAsync()
+        public async Task<IEnumerable<Role>> GetAllRolesAsync(int pageNumber = 1, int pageSize = 5)
         {
-            return await _roleRepository.GetAllRolesAsync();
+            return await _roleRepository.GetAllRolesAsync(pageNumber, pageSize);
         }
 
         public async Task<Role> GetRoleByIdAsync(Guid roleId)
