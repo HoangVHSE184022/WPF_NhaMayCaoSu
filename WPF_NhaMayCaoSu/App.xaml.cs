@@ -27,8 +27,8 @@ namespace WPF_NhaMayCaoSu
                 _serviceProvider = serviceCollection.BuildServiceProvider();
 
                 var mqttService = _serviceProvider.GetRequiredService<IMqttService>();
+                await mqttService.StartBrokerAsync();
 
-                await mqttService.ConnectAsync();
 
                 var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
                 mainWindow.Show();
@@ -50,6 +50,7 @@ namespace WPF_NhaMayCaoSu
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IRoleService, RoleService>();
             services.AddSingleton<ICustomerService, CustomerService>();
+            services.AddSingleton<IMqttService, MqttService>();
             // Register repositories here
             services.AddSingleton<ISaleRepository, SaleRepository>();
             services.AddSingleton<IAccountRepository, AccountRepository>();
