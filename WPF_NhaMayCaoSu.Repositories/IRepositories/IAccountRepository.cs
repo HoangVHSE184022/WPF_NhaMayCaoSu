@@ -5,7 +5,7 @@ namespace WPF_NhaMayCaoSu.Repository.IRepositories
     public interface IAccountRepository
     {
         Task CreateAccountAsync(Account account);
-        Task<IEnumerable<Account>> GetAllAccountsAsync();
+        Task<IEnumerable<Account>> GetAllAccountsAsync(int pageNumber, int pageSize);
         Task<Account> GetAccountByIdAsync(Guid accountId);
         Task UpdateAccountAsync(Account account);
         Task DeleteAccountAsync(Guid accountId);

@@ -22,9 +22,9 @@ namespace WPF_NhaMayCaoSu.Service.Services
             await _repository.DeleteCustomer(id);
         }
 
-        public async Task<IEnumerable<Customer>> GetAllCustomers()
+        public async Task<IEnumerable<Customer>> GetAllCustomers(int pageNumber = 1, int pageSize = 5)
         {
-            return await _repository.GetAll();
+            return await _repository.GetAllAsync(pageNumber, pageSize);
         }
 
         public async Task<Customer> GetCustomerById(Guid id)

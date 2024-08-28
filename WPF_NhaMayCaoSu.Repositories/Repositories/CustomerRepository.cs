@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WPF_NhaMayCaoSu.Repository.Context;
 using WPF_NhaMayCaoSu.Repository.IRepositories;
 using WPF_NhaMayCaoSu.Repository.Models;
@@ -29,11 +24,16 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Customer>> GetAll()
+        public async Task<IEnumerable<Customer>> GetAllAsync(int pageNumber, int pageSize)
         {
             _context = new();
-            return await _context.Customers.ToListAsync();
+
+            return await _context.Customers
+                                 .Skip((pageNumber - 1) * pageSize)
+                                 .Take(pageSize)
+                                 .ToListAsync();
         }
+
 
         public async Task<Customer> GetCustomerById(Guid id)
         {

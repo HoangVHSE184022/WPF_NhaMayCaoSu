@@ -36,12 +36,15 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
                                  .FirstOrDefaultAsync(a => a.AccountId == accountId);
         }
 
-        public async Task<IEnumerable<Account>> GetAllAccountsAsync()
+        public async Task<IEnumerable<Account>> GetAllAccountsAsync(int pageNumber, int pageSize)
         {
             return await _context.Accounts
-                                .Include(a => a.Role)
-                                .ToListAsync();
+                                 .Include(a => a.Role)
+                                 .Skip((pageNumber - 1) * pageSize)
+                                 .Take(pageSize)
+                                 .ToListAsync();
         }
+
 
         public async Task<Account> Login(string username, string password)
         {
