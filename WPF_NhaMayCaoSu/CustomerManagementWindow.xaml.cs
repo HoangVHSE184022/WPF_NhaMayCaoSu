@@ -16,5 +16,10 @@ namespace WPF_NhaMayCaoSu
         {
             this.Close();
         }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Chưa làm đâu bố", "Chưa làm!", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
     }
 }

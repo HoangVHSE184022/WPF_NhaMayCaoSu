@@ -31,7 +31,7 @@ namespace WPF_NhaMayCaoSu
 
 
                 var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-                mainWindow.Show();
+                //mainWindow.Show();
             }
             catch (Exception ex)
             {

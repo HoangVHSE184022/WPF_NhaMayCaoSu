@@ -32,16 +32,19 @@ namespace WPF_NhaMayCaoSu
             customerListWindow.ShowDialog();
         }
 
-        private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
-        {
-            RFIDListWindow rfidListWindow = new RFIDListWindow();
-            rfidListWindow.ShowDialog();
-        }
-
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
         {
             SaleManagementWindow saleManagementWindow = new SaleManagementWindow();
             saleManagementWindow.ShowDialog();
         }
+
+
+        private void AccountManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
+            accountManagementWindow.ShowDialog();
+        }
+
+
     }
 }
