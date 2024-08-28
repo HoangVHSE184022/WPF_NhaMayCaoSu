@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WPF_NhaMayCaoSu.Repository.IRepositories;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
@@ -10,29 +6,36 @@ namespace WPF_NhaMayCaoSu.Service.Services
 {
     public class RoleService : IRoleService
     {
-        public async Task CreateRoleAsync(Role role)
+        private readonly IRoleRepository _roleRepository;
+
+        public RoleService(IRoleRepository roleRepository)
         {
-            throw new NotImplementedException();
+            _roleRepository = roleRepository;
         }
 
-        public async Task DeleteRoleAsync(Guid roleId)
+        public async Task CreateRoleAsync(Role role)
         {
-            throw new NotImplementedException();
+            await _roleRepository.CreateRoleAsync(role);
         }
 
         public async Task<IEnumerable<Role>> GetAllRolesAsync()
         {
-            throw new NotImplementedException();
+            return await _roleRepository.GetAllRolesAsync();
         }
 
         public async Task<Role> GetRoleByIdAsync(Guid roleId)
         {
-            throw new NotImplementedException();
+            return await _roleRepository.GetRoleByIdAsync(roleId);
         }
 
         public async Task UpdateRoleAsync(Role role)
         {
-            throw new NotImplementedException();
+            await _roleRepository.UpdateRoleAsync(role);
+        }
+
+        public async Task DeleteRoleAsync(Guid roleId)
+        {
+            await _roleRepository.DeleteRoleAsync(roleId);
         }
     }
 }
