@@ -58,6 +58,7 @@ namespace WPF_NhaMayCaoSu
             services.AddSingleton<ICustomerRepository, CustomerRepository>();
             // Register the MainWindow
             services.AddSingleton<MainWindow>();
+            services.AddSingleton<LoginWindow>();
         }
 
     }
