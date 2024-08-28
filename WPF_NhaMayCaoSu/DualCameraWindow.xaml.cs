@@ -1,11 +1,8 @@
 ﻿using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
-using System;
 using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
-using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
-using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -18,7 +15,7 @@ namespace WPF_NhaMayCaoSu
         private bool _isCapturing;
         private readonly ICameraService _cameraService;
 
-        public DualCameraWindow() 
+        public DualCameraWindow()
         {
         }
 

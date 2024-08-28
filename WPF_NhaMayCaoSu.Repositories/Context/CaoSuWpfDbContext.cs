@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using WPF_NhaMayCaoSu.Repository.Models;
-using System;
-using System.IO;
 
 namespace WPF_NhaMayCaoSu.Repository.Context
 {
@@ -43,7 +41,7 @@ namespace WPF_NhaMayCaoSu.Repository.Context
             modelBuilder.Entity<Sale>()
                 .HasOne(s => s.Customer)
                 .WithMany(c => c.Sales)
-                .HasForeignKey(s => s.RFIDCode) 
+                .HasForeignKey(s => s.RFIDCode)
                 .HasPrincipalKey(c => c.RFIDCode);
 
             modelBuilder.Entity<Sale>()

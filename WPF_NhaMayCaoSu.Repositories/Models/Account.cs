@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace WPF_NhaMayCaoSu.Repository.Models
+﻿namespace WPF_NhaMayCaoSu.Repository.Models
 {
     public class Account
     {

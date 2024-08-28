@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using WPF_NhaMayCaoSu.Repository.Models;
+﻿using WPF_NhaMayCaoSu.Repository.Models;
 
 namespace WPF_NhaMayCaoSu.Repository.IRepositories
 {

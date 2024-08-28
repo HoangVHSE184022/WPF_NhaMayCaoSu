@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WPF_NhaMayCaoSu.Repository.Models
+﻿namespace WPF_NhaMayCaoSu.Repository.Models
 {
     public class Camera
     {
