@@ -20,7 +20,7 @@ namespace WPF_NhaMayCaoSu
     {
     private readonly IMqttService _mqttService;
 
-        public MainWindow()
+        public MainWindow( )
         {
             InitializeComponent();
         }
@@ -31,6 +31,28 @@ namespace WPF_NhaMayCaoSu
             _mqttService = mqttService;
         }
 
+        private void QuitButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            CustomerListWindow customerListWindow = new CustomerListWindow();
+            customerListWindow.ShowDialog();
+        }
+
+        private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            RFIDListWindow rfidListWindow = new RFIDListWindow();
+            rfidListWindow.ShowDialog();
+        }
+
+        private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaleManagementWindow saleManagementWindow = new SaleManagementWindow();
+            saleManagementWindow.ShowDialog();
+        }
         private async void SubscribeButton_Click(object sender, RoutedEventArgs e)
         {
             await _mqttService.SubscribeAsync("a");
@@ -40,6 +62,5 @@ namespace WPF_NhaMayCaoSu
         {
             await _mqttService.PublishAsync("b", "your_message_here");
         }
-
     }
 } 
