@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
 using WPF_NhaMayCaoSu.Repository.Context;
 using WPF_NhaMayCaoSu.Repository.IRepositories;
 using WPF_NhaMayCaoSu.Repository.Models;
@@ -16,12 +14,12 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             _context = context;
         }
 
-        public void AddCamera(Camera camera)
+        public async Task AddCamera(Camera camera)
         {
             try
             {
-                _context.Cameras.Add(camera);
-                _context.SaveChanges();
+                await _context.Cameras.AddAsync(camera);
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -30,11 +28,11 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             }
         }
 
-        public Camera GetCamera(int id)
+        public async Task<Camera> GetCamera()
         {
             try
             {
-                return _context.Cameras.FirstOrDefault(c => c.Id == id);
+                return await _context.Cameras.FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {
@@ -43,25 +41,12 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             }
         }
 
-        public IEnumerable<Camera> GetAllCameras()
-        {
-            try
-            {
-                return _context.Cameras.ToList();
-            }
-            catch (Exception ex)
-            {
-                // Handle exceptions, e.g., log error and/or rethrow
-                throw new Exception("Error retrieving all cameras from the database", ex);
-            }
-        }
-
-        public void UpdateCamera(Camera camera)
+        public async Task UpdateCamera(Camera camera)
         {
             try
             {
                 _context.Cameras.Update(camera);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -70,20 +55,19 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             }
         }
 
-        public void DeleteCamera(int id)
+        public async Task DeleteCamera(Guid id)
         {
             try
             {
-                var camera = GetCamera(id);
+                Camera camera = await GetCamera();
                 if (camera != null)
                 {
                     _context.Cameras.Remove(camera);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                 }
             }
             catch (Exception ex)
             {
-                // Handle exceptions, e.g., log error and/or rethrow
                 throw new Exception("Error deleting camera from the database", ex);
             }
         }
