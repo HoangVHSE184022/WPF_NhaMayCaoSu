@@ -21,6 +21,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             _context = new();
 
             return await _context.Roles
+                                 .Where(r => r.IsAvailable)
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)
                                  .ToListAsync();
@@ -42,10 +43,13 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
         public async Task DeleteRoleAsync(Guid roleId)
         {
-            _context = new();
-            Role role = await _context.Roles.FirstOrDefaultAsync(x => x.RoleId == roleId);
-            _context.Remove(role);
-            await _context.SaveChangesAsync();
+            var role = await _context.Set<Role>().FindAsync(roleId);
+            if (role != null)
+            {
+                role.IsAvailable = false;
+                _context.Set<Role>().Update(role);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

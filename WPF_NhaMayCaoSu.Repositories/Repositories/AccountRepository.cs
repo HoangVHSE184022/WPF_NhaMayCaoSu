@@ -24,7 +24,8 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             var account = await _context.Accounts.FindAsync(accountId);
             if (account != null)
             {
-                _context.Accounts.Remove(account);
+                account.Status = 0; //0 is unavailable 
+                _context.Accounts.Update(account);
                 await _context.SaveChangesAsync();
             }
         }
@@ -40,6 +41,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         {
             return await _context.Accounts
                                  .Include(a => a.Role)
+                                 .Where(a => a.Status == 1)
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)
                                  .ToListAsync();
