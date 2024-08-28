@@ -43,14 +43,5 @@ namespace WPF_NhaMayCaoSu
             SaleManagementWindow saleManagementWindow = new SaleManagementWindow();
             saleManagementWindow.ShowDialog();
         }
-        private async void SubscribeButton_Click(object sender, RoutedEventArgs e)
-        {
-            await _mqttService.SubscribeAsync("a");
-        }
-
-        private async void PublishButton_Click(object sender, RoutedEventArgs e)
-        {
-            await _mqttService.PublishAsync("b", "your_message_here");
-        }
     }
 }
