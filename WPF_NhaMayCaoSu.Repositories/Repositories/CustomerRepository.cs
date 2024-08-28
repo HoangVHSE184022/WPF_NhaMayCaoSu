@@ -20,8 +20,12 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         {
             _context = new();
             Customer customer = await GetCustomerById(id);
-            _context.Customers.Remove(customer);
-            await _context.SaveChangesAsync();
+            if (customer != null)
+            {
+                customer.Status = 0;
+                _context.Customers.Update(customer);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<Customer>> GetAllAsync(int pageNumber, int pageSize)

@@ -32,7 +32,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         {
             try
             {
-                return await _context.Cameras.FirstOrDefaultAsync();
+                return await _context.Cameras.FirstOrDefaultAsync(c => c.Status == 1); // Retrieve only available cameras
             }
             catch (Exception ex)
             {
@@ -59,16 +59,17 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         {
             try
             {
-                Camera camera = await GetCamera();
+                Camera camera = await _context.Cameras.FindAsync(id);
                 if (camera != null)
                 {
-                    _context.Cameras.Remove(camera);
+                    camera.Status = 0; // Mark as unavailable instead of deleting
+                    _context.Cameras.Update(camera);
                     await _context.SaveChangesAsync();
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Error deleting camera from the database", ex);
+                throw new Exception("Error marking camera as unavailable in the database", ex);
             }
         }
     }
