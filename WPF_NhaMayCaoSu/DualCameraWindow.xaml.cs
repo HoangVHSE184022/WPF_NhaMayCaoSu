@@ -4,6 +4,8 @@ using System;
 using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Repository.Repositories;
+using WPF_NhaMayCaoSu.Service.Interfaces;
+using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -14,24 +16,24 @@ namespace WPF_NhaMayCaoSu
         private Mat _frame1;
         private Mat _frame2;
         private bool _isCapturing;
-        private readonly CameraRepository _cameraRepository;
+        private readonly ICameraService _cameraService;
 
         public DualCameraWindow() 
         {
         }
 
-        public DualCameraWindow(CameraRepository cameraRepository)
+        public DualCameraWindow(ICameraService cameraService)
         {
             InitializeComponent();
             _frame1 = new Mat();
             _frame2 = new Mat();
-            _cameraRepository = cameraRepository;
+            _cameraService = cameraService;
             StartCameras();
         }
 
-        private void StartCameras()
+        private async void StartCameras()
         {
-            var camera = _cameraRepository.GetCamera();
+            Camera camera = await _cameraService.GetCamera();
 
             _isCapturing = false;
             _capture1?.Release();
@@ -105,7 +107,7 @@ namespace WPF_NhaMayCaoSu
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            CameraEditWindow editWindow = new CameraEditWindow(_cameraRepository);
+            CameraEditWindow editWindow = new CameraEditWindow(_cameraService);
             editWindow.ShowDialog();
             StartCameras(); // Restart cameras after editing URLs
         }
