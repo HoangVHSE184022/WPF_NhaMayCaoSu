@@ -1,34 +1,33 @@
 ﻿using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
-using System;
 using System.Windows;
 using System.Windows.Threading;
 using WPF_NhaMayCaoSu.Repository.Models;
-using WPF_NhaMayCaoSu.Repository.Repositories;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu
 {
     public partial class CameraEditWindow : System.Windows.Window
     {
-        private readonly CameraRepository _cameraRepository;
+        private readonly ICameraService _cameraService;
         private VideoCapture _capture1;
         private VideoCapture _capture2;
         private DispatcherTimer _timer1;
         private DispatcherTimer _timer2;
 
-        public CameraEditWindow(CameraRepository cameraRepository)
+        public CameraEditWindow(ICameraService cameraService)
         {
             InitializeComponent();
-            _cameraRepository = cameraRepository;
+            _cameraService = cameraService;
             LoadCameraUrls();
         }
 
-        private void LoadCameraUrls()
+        private async void LoadCameraUrls()
         {
             // Load camera URLs from repository
-            // var camera = _cameraRepository.GetCamera(1);
-            // IpCamera1Box.Text = camera?.IpCamera1 ?? string.Empty;
-            // IpCamera2Box.Text = camera?.IpCamera2 ?? string.Empty;
+            Camera camera = await _cameraService.GetCamera();
+            IpCamera1Box.Text = camera.Camera1 ?? string.Empty;
+            IpCamera2Box.Text = camera.Camera2 ?? string.Empty;
         }
 
         private void ConnectCamera1Button_Click(object sender, RoutedEventArgs e)
@@ -99,15 +98,15 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                var camera = _cameraRepository.GetCamera(1);
-                camera.IpCamera1 = IpCamera1Box.Text;
-                camera.IpCamera2 = IpCamera2Box.Text;
+                var camera = await _cameraService.GetCamera();
+                camera.Camera1 = IpCamera1Box.Text;
+                camera.Camera2 = IpCamera2Box.Text;
 
-                _cameraRepository.UpdateCamera(camera);
+                _cameraService.UpdateCamera(camera);
                 MessageBox.Show("Camera URLs saved.");
             }
             catch (Exception ex)

@@ -1,9 +1,8 @@
 ﻿using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
-using System;
 using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
-using WPF_NhaMayCaoSu.Repository.Repositories;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -14,31 +13,31 @@ namespace WPF_NhaMayCaoSu
         private Mat _frame1;
         private Mat _frame2;
         private bool _isCapturing;
-        private readonly CameraRepository _cameraRepository;
+        private readonly ICameraService _cameraService;
 
-        public DualCameraWindow() 
+        public DualCameraWindow()
         {
         }
 
-        public DualCameraWindow(CameraRepository cameraRepository)
+        public DualCameraWindow(ICameraService cameraService)
         {
             InitializeComponent();
             _frame1 = new Mat();
             _frame2 = new Mat();
-            _cameraRepository = cameraRepository;
+            _cameraService = cameraService;
             StartCameras();
         }
 
-        private void StartCameras()
+        private async void StartCameras()
         {
-            var camera = _cameraRepository.GetCamera(1); // Assuming ID is 1, adjust as needed
+            Camera camera = await _cameraService.GetCamera();
 
             _isCapturing = false;
             _capture1?.Release();
             _capture2?.Release();
 
-            _capture1 = new VideoCapture(camera.IpCamera1);
-            _capture2 = new VideoCapture(camera.IpCamera2);
+            _capture1 = new VideoCapture(camera.Camera1);
+            _capture2 = new VideoCapture(camera.Camera2);
 
             if (!_capture1.IsOpened() || !_capture2.IsOpened())
             {
@@ -105,7 +104,7 @@ namespace WPF_NhaMayCaoSu
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            CameraEditWindow editWindow = new CameraEditWindow(_cameraRepository);
+            CameraEditWindow editWindow = new CameraEditWindow(_cameraService);
             editWindow.ShowDialog();
             StartCameras(); // Restart cameras after editing URLs
         }

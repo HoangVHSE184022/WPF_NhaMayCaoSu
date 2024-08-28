@@ -1,5 +1,4 @@
 ﻿using MQTTnet;
-using MQTTnet.Adapter;
 using MQTTnet.Client;
 using MQTTnet.Protocol;
 using WPF_NhaMayCaoSu.Service.Interfaces;

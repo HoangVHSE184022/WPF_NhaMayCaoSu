@@ -1,10 +1,10 @@
 ﻿using WPF_NhaMayCaoSu.Repository.Models;
 
-namespace WPF_NhaMayCaoSu.Repository.IRepositories
+namespace WPF_NhaMayCaoSu.Service.Interfaces
 {
-    public interface ICameraRepository
+    public interface ICameraService
     {
-        Task AddCamera(Camera camera);
+        Task CreateCamera(Camera camera);
         Task<Camera> GetCamera();
         Task UpdateCamera(Camera camera);
         Task DeleteCamera(Guid id);

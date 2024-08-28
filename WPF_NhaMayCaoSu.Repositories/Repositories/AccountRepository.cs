@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WPF_NhaMayCaoSu.Repository.Context;
 using WPF_NhaMayCaoSu.Repository.IRepositories;
 using WPF_NhaMayCaoSu.Repository.Models;
@@ -38,17 +33,18 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         {
             return await _context.Accounts
                                  .Include(a => a.Role)
-                                 .Include(a => a.RFIDs)
                                  .FirstOrDefaultAsync(a => a.AccountId == accountId);
         }
 
-        public async Task<IEnumerable<Account>> GetAllAccountsAsync()
+        public async Task<IEnumerable<Account>> GetAllAccountsAsync(int pageNumber, int pageSize)
         {
             return await _context.Accounts
-                                .Include(a => a.Role)
-                                .Include(a => a.RFIDs)
-                                .ToListAsync();
+                                 .Include(a => a.Role)
+                                 .Skip((pageNumber - 1) * pageSize)
+                                 .Take(pageSize)
+                                 .ToListAsync();
         }
+
 
         public async Task<Account> Login(string username, string password)
         {

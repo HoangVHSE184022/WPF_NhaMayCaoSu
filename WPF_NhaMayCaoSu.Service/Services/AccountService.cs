@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using WPF_NhaMayCaoSu.Repository.Models;
+﻿using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Repository.IRepositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
@@ -31,9 +28,9 @@ namespace WPF_NhaMayCaoSu.Service.Services
             return await _accountRepository.GetAccountByIdAsync(accountId);
         }
 
-        public async Task<IEnumerable<Account>> GetAllAccountsAsync()
+        public async Task<IEnumerable<Account>> GetAllAccountsAsync(int pageNumber = 1, int pageSize = 5)
         {
-            return await _accountRepository.GetAllAccountsAsync();
+            return await _accountRepository.GetAllAccountsAsync(pageNumber, pageSize);
         }
 
         public async Task UpdateAccountAsync(Account account)

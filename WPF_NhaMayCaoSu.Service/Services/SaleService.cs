@@ -1,38 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WPF_NhaMayCaoSu.Repository.Models;
+﻿using WPF_NhaMayCaoSu.Repository.Models;
+using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu.Service.Services
 {
     public class SaleService : ISaleService
     {
+        private readonly SaleRepository _repo = new();
         public async Task CreateSaleAsync(Sale sale)
         {
-            throw new NotImplementedException();
+            await _repo.CreateSaleAsync(sale);
         }
 
         public async Task DeleteSaleAsync(Guid saleId)
         {
-            throw new NotImplementedException();
+            await _repo.DeleteSaleAsync(saleId);
         }
 
-        public async Task<IEnumerable<Sale>> GetAllSaleAsync()
+        public async Task<IEnumerable<Sale>> GetAllSaleAsync(int PageNumber = 1, int pageSize = 5)
         {
-            throw new NotImplementedException();
+            return await _repo.GetAllAsync(PageNumber, pageSize);
         }
 
         public async Task<Sale> GetSaleByIdAsync(Guid saleId)
         {
-            throw new NotImplementedException();
+            return await _repo.GetSaleByIdAsync(saleId);
         }
 
         public async Task UpdateSaleAsync(Sale sale)
         {
-            throw new NotImplementedException();
+            await _repo.UpdateSaleAsync(sale);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
+﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using WPF_NhaMayCaoSu.Repository.IRepositories;
 using WPF_NhaMayCaoSu.Repository.Repositories;
@@ -51,15 +49,12 @@ namespace WPF_NhaMayCaoSu
             services.AddSingleton<ISaleService, SaleService>();
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IRoleService, RoleService>();
-            services.AddSingleton<IRFIDService, RFIDService>();
-            services.AddSingleton<IAuthService,  AuthService>();
-
+            services.AddSingleton<ICustomerService, CustomerService>();
             // Register repositories here
             services.AddSingleton<ISaleRepository, SaleRepository>();
             services.AddSingleton<IAccountRepository, AccountRepository>();
             services.AddSingleton<IRoleRepository, RoleRepository>();
-            services.AddSingleton<IRFIDRepository,  RFIDRepository>();
-
+            services.AddSingleton<ICustomerRepository, CustomerRepository>();
             // Register the MainWindow
             services.AddSingleton<MainWindow>();
         }
