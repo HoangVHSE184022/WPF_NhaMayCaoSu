@@ -1,79 +1,67 @@
 ﻿using MQTTnet;
-using MQTTnet.Client;
-using MQTTnet.Protocol;
+using MQTTnet.Server;
+using System;
+using System.Threading.Tasks;
 using WPF_NhaMayCaoSu.Service.Interfaces;
-
 
 public class MqttService : IMqttService
 {
-    private readonly IMqttClient _client;
-    private readonly MqttClientOptions _options;
+    private readonly MqttServer _mqttServer;
 
     public MqttService()
     {
-        var factory = new MqttFactory();
-        _client = factory.CreateMqttClient();
+        // Configure the MQTT server options
+        var optionsBuilder = new MqttServerOptionsBuilder()
+            .WithDefaultEndpoint()
+            .WithDefaultEndpointPort(1883)  
+            .WithConnectionBacklog(100)     
+            .WithMaxPendingMessagesPerClient(1000); 
 
-        _options = new MqttClientOptionsBuilder()
-            .WithClientId("")
-            .WithTcpServer("", 8883)
-            .WithCredentials("", "")
-            .WithCleanSession()
-            .WithTlsOptions(new MqttClientTlsOptions
+        // Create the MQTT server
+        _mqttServer = new MqttFactory().CreateMqttServer(optionsBuilder.Build());
+
+        // Set up event handler for connection validation with credentials
+        _mqttServer.ValidatingConnectionAsync += e =>
+        {
+            if (e.ClientId != "ValidClientId" ||
+                e.UserName != "testuser" ||
+                e.Password != "testpassword")
             {
-                UseTls = true,
-                AllowUntrustedCertificates = true,
-                IgnoreCertificateChainErrors = false,
-                IgnoreCertificateRevocationErrors = true,
-                CertificateValidationHandler = context => true
-            })
-            .Build();
+                e.ReasonCode = MQTTnet.Protocol.MqttConnectReasonCode.BadUserNameOrPassword;
+            }
+            else
+            {
+                e.ReasonCode = MQTTnet.Protocol.MqttConnectReasonCode.Success;
+            }
 
-        // Register event handlers
-        _client.ConnectedAsync += OnConnectedAsync;
-        _client.DisconnectedAsync += OnDisconnectedAsync;
-        _client.ApplicationMessageReceivedAsync += OnMessageReceivedAsync;
+            return Task.CompletedTask;
+        };
+
+        // Set up event handlers for client connections, disconnections, etc.
+        _mqttServer.ClientConnectedAsync += e =>
+        {
+            Console.WriteLine($"Client connected: {e.ClientId}");
+            return Task.CompletedTask;
+        };
+
+        _mqttServer.ClientDisconnectedAsync += e =>
+        {
+            Console.WriteLine($"Client disconnected: {e.ClientId}");
+            return Task.CompletedTask;
+        };
     }
 
-    private Task OnConnectedAsync(MqttClientConnectedEventArgs arg)
+    public async Task StartBrokerAsync()
     {
-        Console.WriteLine("Connected to MQTT broker.");
-        return Task.CompletedTask;
+        // Start the MQTT server
+        await _mqttServer.StartAsync();
+        Console.WriteLine("MQTT broker started.");
     }
 
-    private Task OnDisconnectedAsync(MqttClientDisconnectedEventArgs arg)
+    public async Task StopBrokerAsync()
     {
-        Console.WriteLine("Disconnected from MQTT broker.");
-        return Task.CompletedTask;
+        // Stop the MQTT server
+        await _mqttServer.StopAsync();
+        Console.WriteLine("MQTT broker stopped.");
     }
-
-    private Task OnMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs arg)
-    {
-        var message = System.Text.Encoding.UTF8.GetString(arg.ApplicationMessage.Payload);
-        Console.WriteLine($"Message received on topic {arg.ApplicationMessage.Topic}: {message}");
-        return Task.CompletedTask;
-    }
-
-    public async Task ConnectAsync()
-    {
-        await _client.ConnectAsync(_options);
-    }
-
-    public async Task SubscribeAsync(string topic)
-    {
-        await _client.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic(topic).Build());
-    }
-
-    public async Task PublishAsync(string topic, string payload)
-    {
-        var message = new MqttApplicationMessageBuilder()
-            .WithTopic(topic)
-            .WithPayload(payload)
-            .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.ExactlyOnce)
-            .WithRetainFlag()
-            .Build();
-
-        await _client.PublishAsync(message);
-    }
-
 }
