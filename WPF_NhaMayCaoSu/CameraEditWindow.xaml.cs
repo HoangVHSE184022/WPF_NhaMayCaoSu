@@ -103,9 +103,9 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                var camera = _cameraRepository.GetCamera(1);
-                camera.IpCamera1 = IpCamera1Box.Text;
-                camera.IpCamera2 = IpCamera2Box.Text;
+                var camera = _cameraRepository.GetCamera();
+                camera.Camera1 = IpCamera1Box.Text;
+                camera.Camera2 = IpCamera2Box.Text;
 
                 _cameraRepository.UpdateCamera(camera);
                 MessageBox.Show("Camera URLs saved.");

@@ -38,7 +38,6 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         {
             return await _context.Accounts
                                  .Include(a => a.Role)
-                                 .Include(a => a.RFIDs)
                                  .FirstOrDefaultAsync(a => a.AccountId == accountId);
         }
 
@@ -46,7 +45,6 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         {
             return await _context.Accounts
                                 .Include(a => a.Role)
-                                .Include(a => a.RFIDs)
                                 .ToListAsync();
         }
 

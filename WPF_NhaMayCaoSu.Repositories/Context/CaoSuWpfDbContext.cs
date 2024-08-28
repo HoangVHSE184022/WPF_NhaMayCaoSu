@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using WPF_NhaMayCaoSu.Repository.Models;
+using System;
+using System.IO;
 
 namespace WPF_NhaMayCaoSu.Repository.Context
 {
@@ -8,7 +10,7 @@ namespace WPF_NhaMayCaoSu.Repository.Context
     {
         public DbSet<Sale> Sales { get; set; }
         public DbSet<Account> Accounts { get; set; }
-        public DbSet<RFID> RFIDs { get; set; }
+        public DbSet<Customer> Customers { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Camera> Cameras { get; set; }
 
@@ -35,21 +37,19 @@ namespace WPF_NhaMayCaoSu.Repository.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Sale
             modelBuilder.Entity<Sale>()
                 .HasKey(s => s.SaleId);
+
             modelBuilder.Entity<Sale>()
-                .HasOne(s => s.RFID)
-                .WithMany(r => r.Sales)
-                .HasForeignKey(s => s.RFID_Id);
-            modelBuilder.Entity<Sale>()
-                .HasIndex(s => s.WeightImgageUrl)
-                .IsUnique();
+                .HasOne(s => s.Customer)
+                .WithMany(c => c.Sales)
+                .HasForeignKey(s => s.RFIDCode) 
+                .HasPrincipalKey(c => c.RFIDCode);
+
             modelBuilder.Entity<Sale>()
                 .HasIndex(s => s.DensityImageUrl)
                 .IsUnique();
 
-            // Account
             modelBuilder.Entity<Account>()
                 .HasKey(a => a.AccountId);
             modelBuilder.Entity<Account>()
@@ -60,33 +60,20 @@ namespace WPF_NhaMayCaoSu.Repository.Context
                 .HasIndex(a => a.Username)
                 .IsUnique();
 
-            // RFID
-            modelBuilder.Entity<RFID>()
-                .HasKey(r => r.RFID_Id);
-            modelBuilder.Entity<RFID>()
-                .HasOne(r => r.Account)
-                .WithMany(a => a.RFIDs)
-                .HasForeignKey(r => r.AccountId);
-            modelBuilder.Entity<RFID>()
-                .HasIndex(r => r.RFIDCode)
+            modelBuilder.Entity<Customer>()
+                .HasKey(c => c.CustomerId);
+            modelBuilder.Entity<Customer>()
+                .HasIndex(c => c.RFIDCode)
                 .IsUnique();
 
-            // Role
             modelBuilder.Entity<Role>()
                 .HasKey(r => r.RoleId);
             modelBuilder.Entity<Role>()
                 .HasIndex(r => r.RoleName)
                 .IsUnique();
 
-            // Camera
             modelBuilder.Entity<Camera>()
-                .HasKey(c => c.Id);
-            modelBuilder.Entity<Camera>()
-                .HasIndex(c => c.IpCamera1)
-                .IsUnique();
-            modelBuilder.Entity<Camera>()
-                .HasIndex(c => c.IpCamera2)
-                .IsUnique();
+                .HasKey(c => c.CameraId);
         }
     }
 }

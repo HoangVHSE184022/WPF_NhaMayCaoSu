@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WPF_NhaMayCaoSu.Repository.Models
 {
@@ -18,7 +14,5 @@ namespace WPF_NhaMayCaoSu.Repository.Models
         public Guid RoleId { get; set; }
 
         public Role Role { get; set; }
-
-        public ICollection<RFID> RFIDs { get; set; }
     }
 }

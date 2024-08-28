@@ -51,14 +51,12 @@ namespace WPF_NhaMayCaoSu
             services.AddSingleton<ISaleService, SaleService>();
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IRoleService, RoleService>();
-            services.AddSingleton<IRFIDService, RFIDService>();
             services.AddSingleton<IAuthService,  AuthService>();
 
             // Register repositories here
             services.AddSingleton<ISaleRepository, SaleRepository>();
             services.AddSingleton<IAccountRepository, AccountRepository>();
             services.AddSingleton<IRoleRepository, RoleRepository>();
-            services.AddSingleton<IRFIDRepository,  RFIDRepository>();
 
             // Register the MainWindow
             services.AddSingleton<MainWindow>();

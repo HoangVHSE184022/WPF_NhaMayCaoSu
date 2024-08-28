@@ -30,11 +30,11 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             }
         }
 
-        public Camera GetCamera(int id)
+        public Camera GetCamera()
         {
             try
             {
-                return _context.Cameras.FirstOrDefault(c => c.Id == id);
+                return _context.Cameras.FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -70,11 +70,11 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             }
         }
 
-        public void DeleteCamera(int id)
+        public void DeleteCamera(Guid id)
         {
             try
             {
-                var camera = GetCamera(id);
+                var camera = GetCamera();
                 if (camera != null)
                 {
                     _context.Cameras.Remove(camera);
@@ -83,7 +83,6 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             }
             catch (Exception ex)
             {
-                // Handle exceptions, e.g., log error and/or rethrow
                 throw new Exception("Error deleting camera from the database", ex);
             }
         }

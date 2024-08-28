@@ -6,9 +6,9 @@ namespace WPF_NhaMayCaoSu.Repository.IRepositories
     public interface ICameraRepository
     {
         void AddCamera(Camera camera);
-        Camera GetCamera(int id);
+        Camera GetCamera();
         IEnumerable<Camera> GetAllCameras();
         void UpdateCamera(Camera camera);
-        void DeleteCamera(int id);
+        void DeleteCamera(Guid id);
     }
 }

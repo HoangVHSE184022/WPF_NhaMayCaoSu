@@ -31,14 +31,14 @@ namespace WPF_NhaMayCaoSu
 
         private void StartCameras()
         {
-            var camera = _cameraRepository.GetCamera(1); // Assuming ID is 1, adjust as needed
+            var camera = _cameraRepository.GetCamera();
 
             _isCapturing = false;
             _capture1?.Release();
             _capture2?.Release();
 
-            _capture1 = new VideoCapture(camera.IpCamera1);
-            _capture2 = new VideoCapture(camera.IpCamera2);
+            _capture1 = new VideoCapture(camera.Camera1);
+            _capture2 = new VideoCapture(camera.Camera2);
 
             if (!_capture1.IsOpened() || !_capture2.IsOpened())
             {
