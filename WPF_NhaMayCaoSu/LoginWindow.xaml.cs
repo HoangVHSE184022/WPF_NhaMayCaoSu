@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using WPF_NhaMayCaoSu.Service.Interfaces;
+using WPF_NhaMayCaoSu.Repository.Models;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -7,16 +10,34 @@ namespace WPF_NhaMayCaoSu
     /// </summary>
     public partial class LoginWindow : Window
     {
-        public LoginWindow()
+        private readonly IAccountService _accountService;
+
+        public LoginWindow(IAccountService accountService)
         {
+            _accountService = accountService;
             InitializeComponent();
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
-            this.Close();
+          /*  string username = UsernameTextBox.Text;
+            string password = PasswordBox.Password; 
+
+            // Call the login service
+            Account account = await _accountService.LoginAsync(username, password);
+
+            if (account != null)
+            {
+                // Successful login
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+                this.Close();
+            }
+            else
+            {
+                // Failed login
+                MessageBox.Show("Invalid username or password.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+            }*/
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
