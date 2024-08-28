@@ -19,8 +19,12 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         {
             _context = new();
             Sale sale = await _context.Sales.FirstOrDefaultAsync(x => x.SaleId == saleId);
-            _context.Remove(sale);
-            await _context.SaveChangesAsync();
+            if (sale != null)
+            {
+                sale.Status = 0;
+                _context.Sales.Update(sale);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<Sale>> GetAllAsync(int pageNumber, int pageSize)
@@ -28,6 +32,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             _context = new();
 
             return await _context.Sales
+                                 .Where(x => x.Status == 1)
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)
                                  .ToListAsync();

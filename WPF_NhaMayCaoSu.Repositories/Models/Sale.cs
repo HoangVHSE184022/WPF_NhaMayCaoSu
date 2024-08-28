@@ -10,7 +10,6 @@
         public bool IsEdited { get; set; }
         public DateTime? LastEditedTime { get; set; }
         public long RFIDCode { get; set; }
-
         public Customer Customer { get; set; }
     }
 }
