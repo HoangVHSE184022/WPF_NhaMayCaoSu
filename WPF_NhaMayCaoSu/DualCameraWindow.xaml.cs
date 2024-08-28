@@ -113,10 +113,10 @@ namespace WPF_NhaMayCaoSu
         protected override void OnClosed(EventArgs e)
         {
             _isCapturing = false;
-            _capture1.Release();
-            _capture2.Release();
-            _frame1.Dispose();
-            _frame2.Dispose();
+            _capture1?.Release();
+            _capture2?.Release();
+            _frame1?.Dispose();
+            _frame2?.Dispose();
             base.OnClosed(e);
         }
     }
