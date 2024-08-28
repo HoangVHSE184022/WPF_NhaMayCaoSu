@@ -38,19 +38,13 @@ namespace WPF_NhaMayCaoSu
             saleManagementWindow.ShowDialog();
         }
 
+
         private void AccountManagementButton_Click(object sender, RoutedEventArgs e)
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
             accountManagementWindow.ShowDialog();
         }
-        private async void SubscribeButton_Click(object sender, RoutedEventArgs e)
-        {
-            await _mqttService.SubscribeAsync("a");
-        }
 
-        private async void PublishButton_Click(object sender, RoutedEventArgs e)
-        {
-            await _mqttService.PublishAsync("b", "your_message_here");
-        }
+
     }
 }
