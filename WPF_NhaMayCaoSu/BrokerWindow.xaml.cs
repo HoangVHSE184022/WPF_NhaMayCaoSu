@@ -37,6 +37,10 @@ namespace WPF_NhaMayCaoSu
 
                 // Update the ServerStatusLabel to "Online"
                 ServerStatusLabel.Content = "Online";
+
+                // Disable the Start button when the server is online
+                StartButton.IsEnabled = false;
+                StopButton.IsEnabled = true;
             }
             catch (Exception ex)
             {
@@ -62,6 +66,11 @@ namespace WPF_NhaMayCaoSu
 
                 // Update the ServerStatusLabel to "Offline"
                 ServerStatusLabel.Content = "Offline";
+
+                // Enable the Start button when the server is offline
+                StartButton.IsEnabled = true;
+
+                StopButton.IsEnabled = false;
             }
             catch (Exception ex)
             {
@@ -80,6 +89,12 @@ namespace WPF_NhaMayCaoSu
                 // Restart the MQTT broker
                 await _mqttService.RestartBrokerAsync();
                 ServerStatusLabel.Content = "Online";
+
+                // Disable the Start button when the server is restarted
+                StartButton.IsEnabled = false;
+
+                // Enable the Stop button
+                StopButton.IsEnabled = true;
             }
             catch (Exception ex)
             {
