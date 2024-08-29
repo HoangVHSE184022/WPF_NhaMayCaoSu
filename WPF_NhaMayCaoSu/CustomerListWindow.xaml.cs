@@ -51,7 +51,7 @@ namespace WPF_NhaMayCaoSu
         {
             CustomerDataGrid.ItemsSource = null;
             CustomerDataGrid.Items.Clear();
-            CustomerDataGrid.ItemsSource = await _service.GetAllCustomers(1, 5);
+            CustomerDataGrid.ItemsSource = await _service.GetAllCustomers(1, 10);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
