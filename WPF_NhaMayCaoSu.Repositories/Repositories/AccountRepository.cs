@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Runtime.Intrinsics.X86;
 using WPF_NhaMayCaoSu.Repository.Context;
 using WPF_NhaMayCaoSu.Repository.IRepositories;
 using WPF_NhaMayCaoSu.Repository.Models;
@@ -7,20 +8,19 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 {
     public class AccountRepository : IAccountRepository
     {
-        private readonly CaoSuWpfDbContext _context;
-        public AccountRepository(CaoSuWpfDbContext context)
-        {
-            _context = context;
-        }
+        private CaoSuWpfDbContext _context;
 
         public async Task CreateAccountAsync(Account account)
         {
+            _context = new();
+            account.Password = BCrypt.Net.BCrypt.HashPassword(account.Password);
             await _context.Accounts.AddAsync(account);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAccountAsync(Guid accountId)
         {
+            _context = new();
             var account = await _context.Accounts.FindAsync(accountId);
             if (account != null)
             {
@@ -32,6 +32,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
         public async Task<Account> GetAccountByIdAsync(Guid accountId)
         {
+            _context = new();
             return await _context.Accounts
                                  .Include(a => a.Role)
                                  .FirstOrDefaultAsync(a => a.AccountId == accountId);
@@ -39,6 +40,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
         public async Task<IEnumerable<Account>> GetAllAccountsAsync(int pageNumber, int pageSize)
         {
+            _context = new();
             return await _context.Accounts
                                  .Include(a => a.Role)
                                  .Where(a => a.Status == 1)
@@ -50,20 +52,27 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
         public async Task<Account> Login(string username, string password)
         {
-            return await _context.Accounts
-                               .Include(a => a.Role)
-                               .FirstOrDefaultAsync(a => a.Username == username && a.Password == password);
+            _context = new();
+            var account = await _context.Accounts
+                                        .FirstOrDefaultAsync(a => a.Username.ToLower().Equals(username));
+
+            if (account != null && BCrypt.Net.BCrypt.Verify(password, account.Password))
+            {
+                return account;
+            }
+
+            return null; 
         }
 
         public async Task Register(Account account)
         {
-            account.CreatedDate = DateTime.UtcNow;
-            account.Status = 1;
+            _context = new();
             await CreateAccountAsync(account);
         }
 
         public async Task UpdateAccountAsync(Account account)
         {
+            _context = new();
             _context.Accounts.Update(account);
             await _context.SaveChangesAsync();
         }

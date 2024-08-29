@@ -1,17 +1,13 @@
 ﻿using WPF_NhaMayCaoSu.Repository.Models;
-using WPF_NhaMayCaoSu.Repository.IRepositories;
+using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu.Service.Services
 {
     public class AccountService : IAccountService
     {
-        private readonly IAccountRepository _accountRepository;
 
-        public AccountService(IAccountRepository accountRepository)
-        {
-            _accountRepository = accountRepository;
-        }
+        private readonly AccountRepository _accountRepository = new();
 
         public async Task CreateAccountAsync(Account account)
         {
@@ -45,6 +41,10 @@ namespace WPF_NhaMayCaoSu.Service.Services
 
         public async Task RegisterAsync(Account account)
         {
+            account.AccountId = Guid.NewGuid();
+            account.CreatedDate = DateTime.UtcNow;
+            account.Status = 1;
+            account.RoleId = Guid.Parse("5c71937e-8502-4a6d-b2d8-c939b21a6181");
             await _accountRepository.Register(account);
         }
     }
