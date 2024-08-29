@@ -15,10 +15,6 @@ namespace WPF_NhaMayCaoSu
         private bool _isCapturing;
         private readonly ICameraService _cameraService;
 
-        public DualCameraWindow()
-        {
-        }
-
         public DualCameraWindow(ICameraService cameraService)
         {
             InitializeComponent();
@@ -30,7 +26,18 @@ namespace WPF_NhaMayCaoSu
 
         private async void StartCameras()
         {
-            Camera camera = await _cameraService.GetCamera();
+            if (_cameraService == null)
+            {
+                MessageBox.Show("Camera service is not initialized.");
+                return;
+            }
+            Repository.Models.Camera camera = await _cameraService.GetNewestCamera();
+
+            if (camera == null)
+            {
+                MessageBox.Show("Failed to retrieve the newest camera details.");
+                return;
+            }
 
             _isCapturing = false;
             _capture1?.Release();

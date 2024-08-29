@@ -12,9 +12,9 @@
     <Grid>
         <Rectangle HorizontalAlignment="Left" Height="196" Margin="42,33,0,0" Stroke="Black" VerticalAlignment="Top" Width="200" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
         <Button x:Name="ShowButton" Content="Hiển thị" HorizontalAlignment="Left" Height="49" Margin="62,66,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="26" FontWeight="UltraBold"/>
-        <Button x:Name="ConfigButton" Content="Cấu hình" HorizontalAlignment="Left" Height="49" Margin="62,146,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="26" FontWeight="UltraBold"/>
-        <Rectangle HorizontalAlignment="Left" Height="295" Margin="42,283,0,0" Stroke="Black" VerticalAlignment="Top" Width="200" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
-        <Button x:Name="CustomerManagementButton" HorizontalAlignment="Left" Height="69" Margin="62,302,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" Click="CustomerManagementButton_Click" >
+        <Button x:Name="ConfigButton" Content="Cấu hình" HorizontalAlignment="Left" Height="49" Margin="62,146,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="26" FontWeight="UltraBold" Click="ConfigButton_Click"/>
+        <Rectangle HorizontalAlignment="Left" Height="202" Margin="42,333,0,0" Stroke="Black" VerticalAlignment="Top" Width="200" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
+        <Button x:Name="CustomerManagementButton" HorizontalAlignment="Left" Height="70" Margin="62,351,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" Click="CustomerManagementButton_Click" >
             <TextBlock  Text="Quản lý khách hàng" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
         <Button x:Name="RFIDManagementButton" HorizontalAlignment="Left" Height="69" Margin="62,396,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" Click="RFIDManagementButton_Click" >

@@ -32,5 +32,15 @@ namespace WPF_NhaMayCaoSu.Service.Services
         {
             await _cameraRepository.UpdateCamera(camera);
         }
+
+        public async Task<Camera> GetCameraById(Guid cameraId)
+        {
+            return await _cameraRepository.GetCameraById(cameraId);
+        }
+
+        public async Task<Camera> GetNewestCamera()
+        {
+            return await _cameraRepository.GetNewestCamera();
+        }
     }
 }

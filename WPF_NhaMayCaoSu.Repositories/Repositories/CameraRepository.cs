@@ -72,5 +72,32 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
                 throw new Exception("Error marking camera as unavailable in the database", ex);
             }
         }
+
+        public async Task<Camera> GetCameraById(Guid cameraId)
+        {
+            try
+            {
+                return await _context.Cameras.FirstOrDefaultAsync(c => c.CameraId == cameraId && c.Status == 1);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error retrieving camera by ID from the database", ex);
+            }
+        }
+
+        public async Task<Camera> GetNewestCamera()
+        {
+            try
+            {
+                return await _context.Cameras
+                    .Where(c => c.Status == 1)
+                    .OrderByDescending(c => c.CameraId)  // Assuming CameraId is a sequential GUID or there is a DateCreated property
+                    .FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error retrieving the newest camera from the database", ex);
+            }
+        }
     }
 }
