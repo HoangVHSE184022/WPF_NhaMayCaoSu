@@ -15,6 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WPF_NhaMayCaoSu.Controller\WPF_NhaMayCaoSu.Controller.csproj">
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\WPF_NhaMayCaoSu.Repositories\WPF_NhaMayCaoSu.Repository.csproj">
       <Private>True</Private>
     </ProjectReference>
