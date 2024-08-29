@@ -26,7 +26,7 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            App.Current.Shutdown();
         }
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
@@ -35,25 +35,23 @@ namespace WPF_NhaMayCaoSu
             customerListWindow.ShowDialog();
         }
 
-        private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
-        {
-            RFIDListWindow rfidListWindow = new RFIDListWindow();
-            rfidListWindow.ShowDialog();
-        }
-
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
         {
             SaleManagementWindow saleManagementWindow = new SaleManagementWindow();
             saleManagementWindow.ShowDialog();
         }
-        private async void SubscribeButton_Click(object sender, RoutedEventArgs e)
+
+
+        private void AccountManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            await _mqttService.SubscribeAsync("a");
+            AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
+            accountManagementWindow.ShowDialog();
         }
 
-        private async void PublishButton_Click(object sender, RoutedEventArgs e)
+        private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            await _mqttService.PublishAsync("b", "your_message_here");
+            BrokerWindow brokerWindow = new BrokerWindow();
+            brokerWindow.ShowDialog();
         }
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)

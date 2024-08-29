@@ -12,16 +12,17 @@ namespace WPF_NhaMayCaoSu
     {
         private readonly IAccountService _accountService;
 
-        public LoginWindow(IAccountService accountService)
-        {
-            _accountService = accountService;
-            InitializeComponent();
-        }
+        /* public LoginWindow(IAccountService accountService)
+         {
+             _accountService = accountService;
+             InitializeComponent();
+         }*/
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             string username = UsernameTextBox.Text;
             string password = PasswordTextBox.Password;
+
             /*
             // Call the login service
             Account account = await _accountService.LoginAsync(username, password);
@@ -43,9 +44,16 @@ namespace WPF_NhaMayCaoSu
             this.Close();
         }
 
+
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            App.Current.Shutdown();
+        }
+
+        private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        {
+            AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
+            accountManagementWindow.Show();
         }
     }
 }

@@ -10,12 +10,12 @@ public class MqttService : IMqttService
 
     public MqttService()
     {
-        // Configure the MQTT server options
+        // Configure the MQTT server options for non-TLS
         var optionsBuilder = new MqttServerOptionsBuilder()
             .WithDefaultEndpoint()
-            .WithDefaultEndpointPort(1883)  
-            .WithConnectionBacklog(100)     
-            .WithMaxPendingMessagesPerClient(1000); 
+            .WithDefaultEndpointPort(1883) 
+            .WithConnectionBacklog(100)
+            .WithMaxPendingMessagesPerClient(1000);
 
         // Create the MQTT server
         _mqttServer = new MqttFactory().CreateMqttServer(optionsBuilder.Build());
@@ -23,9 +23,9 @@ public class MqttService : IMqttService
         // Set up event handler for connection validation with credentials
         _mqttServer.ValidatingConnectionAsync += e =>
         {
-            if (e.ClientId != "ValidClientId" ||
-                e.UserName != "testuser" ||
-                e.Password != "testpassword")
+            if (
+                e.UserName != "admin" ||
+                e.Password != "admin")
             {
                 e.ReasonCode = MQTTnet.Protocol.MqttConnectReasonCode.BadUserNameOrPassword;
             }
@@ -53,15 +53,41 @@ public class MqttService : IMqttService
 
     public async Task StartBrokerAsync()
     {
-        // Start the MQTT server
-        await _mqttServer.StartAsync();
-        Console.WriteLine("MQTT broker started.");
+        try
+        {
+            await _mqttServer.StartAsync();
+            Console.WriteLine("MQTT broker started.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error starting MQTT broker: {ex.Message}");
+        }
     }
 
     public async Task StopBrokerAsync()
     {
-        // Stop the MQTT server
-        await _mqttServer.StopAsync();
-        Console.WriteLine("MQTT broker stopped.");
+        try
+        {
+            await _mqttServer.StopAsync();
+            Console.WriteLine("MQTT broker stopped.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error stopping MQTT broker: {ex.Message}");
+        }
+    }
+
+    public async Task RestartBrokerAsync()
+    {
+        try
+        {
+            await StopBrokerAsync();
+            await StartBrokerAsync();
+            Console.WriteLine("MQTT broker restarted.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error restarting MQTT broker: {ex.Message}");
+        }
     }
 }

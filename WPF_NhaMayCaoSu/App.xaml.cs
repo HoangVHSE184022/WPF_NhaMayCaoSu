@@ -26,12 +26,8 @@ namespace WPF_NhaMayCaoSu
 
                 _serviceProvider = serviceCollection.BuildServiceProvider();
 
-                var mqttService = _serviceProvider.GetRequiredService<IMqttService>();
-                await mqttService.StartBrokerAsync();
-
-
-                var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-                mainWindow.Show();
+                var mainWindow = _serviceProvider.GetRequiredService<BrokerWindow>();
+                //mainWindow.Show();
             }
             catch (Exception ex)
             {
@@ -58,6 +54,8 @@ namespace WPF_NhaMayCaoSu
             services.AddSingleton<ICustomerRepository, CustomerRepository>();
             // Register the MainWindow
             services.AddSingleton<MainWindow>();
+            services.AddSingleton<LoginWindow>();
+            services.AddSingleton<BrokerWindow>();
         }
 
     }
