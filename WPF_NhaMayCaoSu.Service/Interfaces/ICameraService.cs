@@ -8,5 +8,7 @@ namespace WPF_NhaMayCaoSu.Service.Interfaces
         Task<Camera> GetCamera();
         Task UpdateCamera(Camera camera);
         Task DeleteCamera(Guid id);
+        Task<Camera> GetCameraById(Guid cameraId);
+        Task<Camera> GetNewestCamera();
     }
 }

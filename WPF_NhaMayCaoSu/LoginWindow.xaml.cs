@@ -23,6 +23,7 @@ namespace WPF_NhaMayCaoSu
             string username = UsernameTextBox.Text;
             string password = PasswordTextBox.Password;
 
+            /*
             // Call the login service
             Account account = await _accountService.LoginAsync(username, password);
 
@@ -37,7 +38,10 @@ namespace WPF_NhaMayCaoSu
             {
                 // Failed login
                 MessageBox.Show("Invalid username or password.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            }*/
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+            this.Close();
         }
 
 

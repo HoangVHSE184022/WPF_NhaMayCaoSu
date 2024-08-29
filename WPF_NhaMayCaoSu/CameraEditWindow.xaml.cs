@@ -1,5 +1,6 @@
 ﻿using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
+using System;
 using System.Windows;
 using System.Windows.Threading;
 using WPF_NhaMayCaoSu.Repository.Models;
@@ -19,15 +20,28 @@ namespace WPF_NhaMayCaoSu
         {
             InitializeComponent();
             _cameraService = cameraService;
-            LoadCameraUrls();
+            //LoadCameraUrls();
         }
 
         private async void LoadCameraUrls()
         {
-            // Load camera URLs from repository
-            Camera camera = await _cameraService.GetCamera();
-            IpCamera1Box.Text = camera.Camera1 ?? string.Empty;
-            IpCamera2Box.Text = camera.Camera2 ?? string.Empty;
+            try
+            {
+                Camera camera = await _cameraService.GetCamera();
+
+                if (camera == null)
+                {
+                    MessageBox.Show("Failed to retrieve camera details.");
+                    return;
+                }
+
+                IpCamera1Box.Text = camera.Camera1 ?? string.Empty;
+                IpCamera2Box.Text = camera.Camera2 ?? string.Empty;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading camera URLs: {ex.Message}");
+            }
         }
 
         private void ConnectCamera1Button_Click(object sender, RoutedEventArgs e)
@@ -42,8 +56,10 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
-            _timer1 = new DispatcherTimer();
-            _timer1.Interval = TimeSpan.FromMilliseconds(30);
+            _timer1 = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(30)
+            };
             _timer1.Tick += Timer1_Tick;
             _timer1.Start();
 
@@ -54,13 +70,12 @@ namespace WPF_NhaMayCaoSu
         {
             if (_capture1 != null && _capture1.IsOpened())
             {
-                Mat frame = new Mat();
+                using Mat frame = new Mat();
                 _capture1.Read(frame);
                 if (!frame.Empty())
                 {
                     Camera1Feed.Source = frame.ToBitmapSource();
                 }
-                frame.Dispose();
             }
         }
 
@@ -76,8 +91,10 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
-            _timer2 = new DispatcherTimer();
-            _timer2.Interval = TimeSpan.FromMilliseconds(30);
+            _timer2 = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(30)
+            };
             _timer2.Tick += Timer2_Tick;
             _timer2.Start();
 
@@ -88,13 +105,12 @@ namespace WPF_NhaMayCaoSu
         {
             if (_capture2 != null && _capture2.IsOpened())
             {
-                Mat frame = new Mat();
+                using Mat frame = new Mat();
                 _capture2.Read(frame);
                 if (!frame.Empty())
                 {
                     Camera2Feed.Source = frame.ToBitmapSource();
                 }
-                frame.Dispose();
             }
         }
 
@@ -103,11 +119,18 @@ namespace WPF_NhaMayCaoSu
             try
             {
                 var camera = await _cameraService.GetCamera();
+
+                if (camera == null)
+                {
+                    MessageBox.Show("Failed to retrieve camera details.");
+                    return;
+                }
+
                 camera.Camera1 = IpCamera1Box.Text;
                 camera.Camera2 = IpCamera2Box.Text;
 
-                _cameraService.UpdateCamera(camera);
-                MessageBox.Show("Camera URLs saved.");
+                await _cameraService.UpdateCamera(camera);
+                
             }
             catch (Exception ex)
             {
@@ -115,13 +138,40 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
-        protected override void OnClosed(EventArgs e)
+        private void CaptureCamera1Button_Click(object sender, RoutedEventArgs e)
         {
-            _timer1?.Stop();
-            _timer2?.Stop();
-            _capture1?.Release();
-            _capture2?.Release();
-            base.OnClosed(e);
+            if (_capture1 != null && _capture1.IsOpened())
+            {
+                using Mat frame = new Mat();
+                _capture1.Read(frame);
+                if (!frame.Empty())
+                {
+                    CapturedCamera1Image.Source = frame.ToBitmapSource();
+                    MessageBox.Show("Captured frame from Camera 1.");
+                }
+                else
+                {
+                    MessageBox.Show("Failed to capture frame from Camera 1.");
+                }
+            }
+        }
+
+        private void CaptureCamera2Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (_capture2 != null && _capture2.IsOpened())
+            {
+                using Mat frame = new Mat();
+                _capture2.Read(frame);
+                if (!frame.Empty())
+                {
+                    CapturedCamera2Image.Source = frame.ToBitmapSource();
+                    MessageBox.Show("Captured frame from Camera 2.");
+                }
+                else
+                {
+                    MessageBox.Show("Failed to capture frame from Camera 2.");
+                }
+            }
         }
     }
 }
