@@ -4,5 +4,6 @@
     {
         Task StartBrokerAsync();
         Task StopBrokerAsync();
+        Task RestartBrokerAsync();
     }
 }
