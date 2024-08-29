@@ -13,7 +13,7 @@ public class MqttService : IMqttService
         // Configure the MQTT server options
         var optionsBuilder = new MqttServerOptionsBuilder()
             .WithDefaultEndpoint()
-            .WithDefaultEndpointPort(1883)  
+            .WithDefaultEndpointPort(1884)  
             .WithConnectionBacklog(100)     
             .WithMaxPendingMessagesPerClient(1000); 
 
@@ -63,5 +63,12 @@ public class MqttService : IMqttService
         // Stop the MQTT server
         await _mqttServer.StopAsync();
         Console.WriteLine("MQTT broker stopped.");
+    }
+
+    public async Task RestartBrokerAsync()
+    {
+        await StopBrokerAsync();
+        await StartBrokerAsync();
+        Console.WriteLine("MQTT broker restarted.");
     }
 }
