@@ -23,9 +23,9 @@ public class MqttService : IMqttService
         // Set up event handler for connection validation with credentials
         _mqttServer.ValidatingConnectionAsync += e =>
         {
-            if (e.ClientId != "ValidClientId" ||
-                e.UserName != "testuser" ||
-                e.Password != "testpassword")
+            if (e.ClientId != "e_scale" ||
+                e.UserName != "admin" ||
+                e.Password != "admin")
             {
                 e.ReasonCode = MQTTnet.Protocol.MqttConnectReasonCode.BadUserNameOrPassword;
             }
