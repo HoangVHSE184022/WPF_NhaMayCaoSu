@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WPF_NhaMayCaoSu.Repositories\WPF_NhaMayCaoSu.Repository.csproj" />
     <ProjectReference Include="..\WPF_NhaMayCaoSu.Service\WPF_NhaMayCaoSu.Service.csproj">
       <Private>True</Private>
     </ProjectReference>
