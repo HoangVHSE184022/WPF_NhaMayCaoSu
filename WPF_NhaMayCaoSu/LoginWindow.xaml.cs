@@ -2,6 +2,7 @@
 using System.Windows;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Repository.Models;
+using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -10,7 +11,7 @@ namespace WPF_NhaMayCaoSu
     /// </summary>
     public partial class LoginWindow : Window
     {
-        private readonly IAccountService _accountService;
+        private readonly AccountService _accountService = new();
 
         /* public LoginWindow(IAccountService accountService)
          {
@@ -23,25 +24,32 @@ namespace WPF_NhaMayCaoSu
             string username = UsernameTextBox.Text;
             string password = PasswordTextBox.Password;
 
-            /*
-            // Call the login service
-            Account account = await _accountService.LoginAsync(username, password);
 
-            if (account != null)
+            // Call the login service
+            try
             {
-                // Successful login
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                this.Close();
+                Account account = await _accountService.LoginAsync(username, password);
+                if (account == null)
+                {
+                    MessageBox.Show("Invalid username or password.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    MainWindow mainWindow = new MainWindow();
+                    mainWindow.Show();
+                    this.Close();
+                }
+
             }
-            else
+            catch(Exception ex)
             {
-                // Failed login
-                MessageBox.Show("Invalid username or password.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-            }*/
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
-            this.Close();
+                MessageBox.Show(ex.ToString());
+                return;
+            }
+            
+            //MainWindow mainWindow = new MainWindow();
+            //mainWindow.Show();
+            //this.Close();
         }
 
 
@@ -54,6 +62,7 @@ namespace WPF_NhaMayCaoSu
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
             accountManagementWindow.Show();
+            this.Close();
         }
     }
 }
