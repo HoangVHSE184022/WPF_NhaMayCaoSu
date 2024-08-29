@@ -37,8 +37,8 @@ namespace WPF_NhaMayCaoSu
 
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            SaleManagementWindow saleManagementWindow = new SaleManagementWindow();
-            saleManagementWindow.ShowDialog();
+            SaleListWindow saleListWindow = new SaleListWindow();
+            saleListWindow.ShowDialog();
         }
 
 
@@ -67,5 +67,7 @@ namespace WPF_NhaMayCaoSu
             DualCameraWindow dualCameraWindow = new DualCameraWindow(_cameraService);
             dualCameraWindow.ShowDialog();
         }
+
+       
     }
 }

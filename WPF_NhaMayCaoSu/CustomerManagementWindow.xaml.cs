@@ -40,6 +40,9 @@ namespace WPF_NhaMayCaoSu
             }
             else
             {
+                x.CustomerId = SelectedCustomer.CustomerId;
+                x.CreatedDate = SelectedCustomer.CreatedDate;
+                x.ExpirationDate = SelectedCustomer.ExpirationDate;
                 MessageBox.Show($"Updated {SelectedCustomer.CustomerName}!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 await _service.UpdateCustomer(x);
             }
