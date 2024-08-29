@@ -23,7 +23,7 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            App.Current.Shutdown();
         }
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
@@ -45,6 +45,10 @@ namespace WPF_NhaMayCaoSu
             accountManagementWindow.ShowDialog();
         }
 
-
+        private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            BrokerWindow brokerWindow = new BrokerWindow();
+            brokerWindow.ShowDialog();
+        }
     }
 }
