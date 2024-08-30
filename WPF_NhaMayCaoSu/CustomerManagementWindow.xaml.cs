@@ -2,6 +2,11 @@
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
+using WPF_NhaMayCaoSu.Service.Interfaces;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Diagnostics;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -35,13 +40,7 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
-            // Validate RFID Code (ensure it's a valid number)
-            if (!long.TryParse(RFIDCodeTextBox.Text, out long rfidCode))
-            {
-                MessageBox.Show(Constants.ErrorMessageInvalidRFID, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
+            
             // Validate Status (ensure it's either 0 or 1)
             if (!short.TryParse(StatusTextBox.Text, out short status) || (status != 0 && status != 1))
             {
@@ -53,7 +52,7 @@ namespace WPF_NhaMayCaoSu
             Customer customer = new()
             {
                 CustomerName = AccountNameTextBox.Text,
-                RFIDCode = rfidCode,
+                RFIDCode = RFIDCodeTextBox.Text,
                 Status = status,
                 CreatedDate = SelectedCustomer == null ? DateTime.Now : SelectedCustomer.CreatedDate,
                 ExpirationDate = SelectedCustomer == null ? DateTime.Now.AddDays(1) : SelectedCustomer.ExpirationDate,
@@ -86,5 +85,39 @@ namespace WPF_NhaMayCaoSu
                 ModeLabel.Content = Constants.ModeLabelEditCustomer;
             }
         }
+
+
+        private void OnMqttMessageReceived(object sender, string data)
+        {
+            try
+            {
+                if (data.StartsWith("CreateRFID:"))
+                {
+                    string rfidString = data.Substring("CreateRFID:".Length);
+
+                    if (!rfidString.IsNullOrEmpty())
+                    {
+                        RFIDCodeTextBox.Dispatcher.Invoke(() =>
+                        {
+                            RFIDCodeTextBox.Text = rfidString;
+                        });
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Failed to parse RFID number.");
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine("Unexpected message format.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any general errors
+                Debug.WriteLine($"Error processing message: {ex.Message}");
+            }
+        }
+
     }
 }
