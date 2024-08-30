@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Core.Utils;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -24,10 +25,9 @@ namespace WPF_NhaMayCaoSu
             {
                 // Start the MQTT broker
                 await _mqttServerService.StartBrokerAsync();
-                Console.WriteLine("Broker started");
 
                 // Update the ServerStatusLabel to "Online"
-                ServerStatusLabel.Content = "Online";
+                ServerStatusLabel.Content = Constants.StatusOnline;
 
                 await _mqttClientService.ConnectAsync();
 
@@ -37,15 +37,11 @@ namespace WPF_NhaMayCaoSu
             }
             catch (Exception ex)
             {
-                // Log the error to the console
-                Console.WriteLine($"Failed to start broker: {ex.Message}");
-
                 // Show the error in a MessageBox
-                MessageBox.Show($"An error occurred while starting the broker: {ex.ToString()}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Console.WriteLine(ex.ToString());
+                MessageBox.Show($"{Constants.ErrorMessageBrokerStart}: {ex}", Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
 
                 // Update the ServerStatusLabel to indicate an error
-                ServerStatusLabel.Content = "Error";
+                ServerStatusLabel.Content = Constants.StatusError;
             }
         }
 
@@ -55,10 +51,9 @@ namespace WPF_NhaMayCaoSu
             {
                 // Stop the MQTT broker
                 await _mqttServerService.StopBrokerAsync();
-                Console.WriteLine("Broker stopped");
 
                 // Update the ServerStatusLabel to "Offline"
-                ServerStatusLabel.Content = "Offline";
+                ServerStatusLabel.Content = Constants.StatusOnline;
 
                 await _mqttClientService.CloseConnectionAsync();
 
@@ -69,11 +64,9 @@ namespace WPF_NhaMayCaoSu
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to stop broker: {ex.Message}");
-                MessageBox.Show($"An error occurred while starting the broker: {ex.ToString()}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Console.WriteLine(ex.ToString());
+                MessageBox.Show($"{Constants.ErrorMessageBrokerStop}: {ex}", Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
 
-                ServerStatusLabel.Content = "Error";
+                ServerStatusLabel.Content = Constants.StatusError;
             }
         }
 
@@ -83,7 +76,7 @@ namespace WPF_NhaMayCaoSu
             {
                 // Restart the MQTT broker
                 await _mqttServerService.RestartBrokerAsync();
-                ServerStatusLabel.Content = "Online";
+                ServerStatusLabel.Content = Constants.StatusOnline;
 
                 await _mqttClientService.ConnectAsync();
 
@@ -95,15 +88,11 @@ namespace WPF_NhaMayCaoSu
             }
             catch (Exception ex)
             {
-                // Log the error to the console
-                Console.WriteLine($"Failed to stop broker: {ex.Message}");
-
                 // Show the error in a MessageBox
-                MessageBox.Show($"An error occurred while starting the broker: {ex.ToString()}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Console.WriteLine(ex.ToString());
+                MessageBox.Show($"{Constants.ErrorMessageBrokerRestart}: {ex}", Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
 
                 // Update the ServerStatusLabel to indicate an error
-                ServerStatusLabel.Content = "Error";
+                ServerStatusLabel.Content = Constants.StatusError;
             }
         }
 
@@ -121,7 +110,7 @@ namespace WPF_NhaMayCaoSu
                 IReadOnlyDictionary<string, string> connectedClients = _mqttServerService.GetConnectedClients();
                 foreach (KeyValuePair<string, string> client in connectedClients)
                 {
-                    ConnectedClientsListBox.Items.Add($"Client ID: {client.Key}, IP: {client.Value}");
+                    ConnectedClientsListBox.Items.Add($"{Constants.ClientIdLabel}: {client.Key}, {Constants.ClientIpLabel}: {client.Value}");
                 }
             });
         }

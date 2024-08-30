@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Threading;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
+using WPF_NhaMayCaoSu.Core.Utils;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -30,7 +31,7 @@ namespace WPF_NhaMayCaoSu
 
                 if (camera == null)
                 {
-                    MessageBox.Show("Failed to retrieve camera details.");
+                    MessageBox.Show(Constants.ErrorMessageRetrieveCamera, Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
@@ -39,7 +40,7 @@ namespace WPF_NhaMayCaoSu
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading camera URLs: {ex.Message}");
+                MessageBox.Show($"{Constants.ErrorMessageLoadCameraUrls}: {ex.Message}", Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -51,7 +52,7 @@ namespace WPF_NhaMayCaoSu
 
             if (!_capture1.IsOpened())
             {
-                MessageBox.Show("Unable to connect to Camera 1. Please check the URL.");
+                MessageBox.Show(Constants.ErrorMessageConnectCamera1, Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -62,7 +63,7 @@ namespace WPF_NhaMayCaoSu
             _timer1.Tick += Timer1_Tick;
             _timer1.Start();
 
-            MessageBox.Show("Connected to Camera 1.");
+            MessageBox.Show(Constants.SuccessMessageConnectCamera1);
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
@@ -86,7 +87,7 @@ namespace WPF_NhaMayCaoSu
 
             if (!_capture2.IsOpened())
             {
-                MessageBox.Show("Unable to connect to Camera 2. Please check the URL.");
+                MessageBox.Show(Constants.ErrorMessageConnectCamera2, Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -97,7 +98,7 @@ namespace WPF_NhaMayCaoSu
             _timer2.Tick += Timer2_Tick;
             _timer2.Start();
 
-            MessageBox.Show("Connected to Camera 2.");
+            MessageBox.Show(Constants.SuccessMessageConnectCamera2);
         }
 
         private void Timer2_Tick(object sender, EventArgs e)
@@ -121,7 +122,7 @@ namespace WPF_NhaMayCaoSu
 
                 if (camera == null)
                 {
-                    MessageBox.Show("Failed to retrieve camera details.");
+                    MessageBox.Show(Constants.ErrorMessageRetrieveCamera, Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
@@ -129,11 +130,12 @@ namespace WPF_NhaMayCaoSu
                 camera.Camera2 = IpCamera2Box.Text;
 
                 await _cameraService.UpdateCamera(camera);
-                
+
+                MessageBox.Show(Constants.SuccessMessageSaveCameraUrls);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error saving camera URLs: {ex.Message}");
+                MessageBox.Show($"{Constants.ErrorMessageSaveCameraUrls}: {ex.Message}", Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -146,11 +148,11 @@ namespace WPF_NhaMayCaoSu
                 if (!frame.Empty())
                 {
                     CapturedCamera1Image.Source = frame.ToBitmapSource();
-                    MessageBox.Show("Captured frame from Camera 1.");
+                    MessageBox.Show(Constants.SuccessMessageCaptureFrameCamera1);
                 }
                 else
                 {
-                    MessageBox.Show("Failed to capture frame from Camera 1.");
+                    MessageBox.Show(Constants.ErrorMessageCaptureFrameCamera1);
                 }
             }
         }
@@ -164,11 +166,11 @@ namespace WPF_NhaMayCaoSu
                 if (!frame.Empty())
                 {
                     CapturedCamera2Image.Source = frame.ToBitmapSource();
-                    MessageBox.Show("Captured frame from Camera 2.");
+                    MessageBox.Show(Constants.SuccessMessageCaptureFrameCamera2);
                 }
                 else
                 {
-                    MessageBox.Show("Failed to capture frame from Camera 2.");
+                    MessageBox.Show(Constants.ErrorMessageCaptureFrameCamera2);
                 }
             }
         }

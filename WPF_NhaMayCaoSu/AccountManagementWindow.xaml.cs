@@ -2,6 +2,7 @@
 using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Core.Utils;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -28,7 +29,7 @@ namespace WPF_NhaMayCaoSu
             string password = PasswordTextBox.Password;
             if(accountName.IsNullOrEmpty() || username.IsNullOrEmpty() || password.IsNullOrEmpty())
             {
-                MessageBox.Show("Xin hãy nhập tất cả thông tin","Please try again", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(Constants.ErrorMessageMissingInfo, Constants.TitlePleaseTryAgain, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             Account account = new();
@@ -39,7 +40,7 @@ namespace WPF_NhaMayCaoSu
             AccountNameTextBox.Text = "";
             UsernameTextBox.Text = "";
             PasswordTextBox.Password = "";
-            MessageBox.Show("Tạo tài khoản thành công", "Đăng ký thành công", MessageBoxButton.OK);
+            MessageBox.Show(Constants.SuccessMessageCreateAccount, Constants.TitleRegisterSuccess, MessageBoxButton.OK);
             LoginWindow login = new();
             login.Show();
             Close();
