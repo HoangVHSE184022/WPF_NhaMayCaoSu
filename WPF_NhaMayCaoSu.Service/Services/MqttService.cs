@@ -9,7 +9,7 @@ public class MqttService : IMqttService
 {
     private readonly MqttServer _mqttServer;
     private readonly ConcurrentDictionary<string, string> _connectedClients;
-    public Action ClientsChanged { get; set; }
+    public event EventHandler ClientsChanged;
 
     public MqttService()
     {
@@ -46,10 +46,9 @@ public class MqttService : IMqttService
         {
             if (_connectedClients != null && !string.IsNullOrEmpty(e.ClientId))
             {
-                _connectedClients[e.ClientId] = e.Endpoint; // Store the IP address of the client
+                _connectedClients[e.ClientId] = e.Endpoint;
 
-                // Notify UI that the clients have changed
-                ClientsChanged?.Invoke();
+                ClientsChanged?.Invoke(this, EventArgs.Empty); // Trigger the event
 
                 Console.WriteLine($"Client connected: {e.ClientId}, IP: {e.Endpoint}");
             }
@@ -62,8 +61,7 @@ public class MqttService : IMqttService
             {
                 _connectedClients.TryRemove(e.ClientId, out _);
 
-                // Notify UI that the clients have changed
-                ClientsChanged?.Invoke();
+                ClientsChanged?.Invoke(this, EventArgs.Empty); // Trigger the event
 
                 Console.WriteLine($"Client disconnected: {e.ClientId}");
             }
