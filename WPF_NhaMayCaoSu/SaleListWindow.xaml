@@ -5,19 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
-        Title="Sale List" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Background="#e0ffff " Loaded="Window_Loaded">
+        Title="Sale List" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Grid>
-        <Label Content="Quản lý Sale" HorizontalAlignment="Left" Height="68" Margin="32,31,0,0" VerticalAlignment="Top" Width="446" FontFamily="Arial" FontSize="46" Foreground="#FF002366" FontWeight="Bold"/>
-        <Rectangle HorizontalAlignment="Left" Height="230" Margin="32,120,0,0" Stroke="Black" VerticalAlignment="Top" Width="200" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
-        <Button x:Name="AddSaleButton" HorizontalAlignment="Left" Height="69" Margin="52,149,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" Click="AddSaleButton_Click" >
+        <Menu HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Monserrat" Foreground="#FF002366" FontSize="24">
+            <MenuItem x:Name="ShowButton" Header="Hiển thị" Click="ShowButton_Click"/>
+            <MenuItem x:Name="ConfigButton" Header="Cấu hình" Click="ConfigButton_Click"/>
+            <MenuItem x:Name="BrokerManagementButton" Header="Broker" Click="BrokerManagementButton_Click"/>
+            <MenuItem Header="Quản lý">
+                <MenuItem x:Name="CustomerManagementButton" Header="Khách hàng" Click="CustomerManagementButton_Click"/>
+                <MenuItem x:Name="SaleManagementButton" Header="Sale" Click="SaleManagementButton_Click"/>
+                <MenuItem x:Name="AccountManagementButton" Header="Tài khoản" Click="AccountManagementButton_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <Label Content="Quản lý Sale" HorizontalAlignment="Left" Height="68" Margin="32,31,0,0" VerticalAlignment="Top" Width="446" FontFamily="Monserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
+        <Button x:Name="AddSaleButton" HorizontalAlignment="Left" Height="69" Margin="1005,139,0,0" VerticalAlignment="Top" Width="160" Background="#FFCACACA" FontFamily="Monserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24"  Click="AddSaleButton_Click" >
             <TextBlock TextWrapping="Wrap" TextAlignment="Center" Text="Thêm mới Sale"/>
         </Button>
-        <Button x:Name="EditSaleButton" HorizontalAlignment="Left" Height="69" Margin="52,249,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" Click="EditSaleButton_Click" >
+        <Button x:Name="EditSaleButton" HorizontalAlignment="Left" Height="69" Margin="1005,259,0,0" VerticalAlignment="Top" Width="160" Background="#FFCACACA" FontFamily="Monserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24"  Click="EditSaleButton_Click" >
             <TextBlock  Text="Chỉnh sửa Sale" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="68" Margin="52,667,0,0" VerticalAlignment="Top" Width="160" Background="#FF254098" FontFamily="Arial" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" FontWeight="UltraBold" Click="QuitButton_Click"/>
-        <Rectangle HorizontalAlignment="Left" Height="652" Margin="280,104,0,0" Stroke="Black" VerticalAlignment="Top" Width="884" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
-        <DataGrid x:Name="SaleDataGrid" HorizontalAlignment="Left" Height="606" Margin="310,129,0,0" VerticalAlignment="Top" Width="824" FontFamily="Arial" FontSize="24" AutoGenerateColumns="False">
+        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="68" Margin="1005,672,0,0" VerticalAlignment="Top" Width="160" Background="#FF254098" FontFamily="Monserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36"  Click="QuitButton_Click"/>
+        <DataGrid x:Name="SaleDataGrid" HorizontalAlignment="Left" Height="696" Background="#FFCACACA" VerticalAlignment="Center" Width="943" FontFamily="Monserrat" FontSize="24" AutoGenerateColumns="False" Margin="32,0,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Width="50" Binding="{Binding SaleId}"/>
                 <DataGridTextColumn Header="Weight" Width="100" Binding="{Binding ProductWeight}"/>
@@ -31,7 +40,7 @@
 
             </DataGrid.Columns>
         </DataGrid>
-        
+
 
     </Grid>
 </Window>
