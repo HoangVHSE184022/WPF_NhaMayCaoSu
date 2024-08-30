@@ -5,13 +5,13 @@ using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
-public class MqttService : IMqttService
+public class MqttServerService : IMqttServerService
 {
-    private readonly MqttServer _mqttServer;
+    private readonly MQTTnet.Server.MqttServer _mqttServer;
     private readonly ConcurrentDictionary<string, string> _connectedClients;
     public event EventHandler ClientsChanged;
 
-    public MqttService()
+    public MqttServerService()
     {
         _connectedClients = new ConcurrentDictionary<string, string>();
         // Configure the MQTT server options for non-TLS
