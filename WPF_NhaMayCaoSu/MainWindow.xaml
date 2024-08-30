@@ -24,7 +24,7 @@
         <Rectangle HorizontalAlignment="Left" Height="736" Margin="280,23,0,0" Stroke="Black" VerticalAlignment="Top" Width="883" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
         <DataGrid x:Name="SalesDataGrid" HorizontalAlignment="Left" Height="686" Margin="310,0,0,0" VerticalAlignment="Center" Width="824" FontFamily="Arial" FontSize="24" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Thời gian tạo" Binding="{Binding CreatedDate}" />
+                <DataGridTextColumn Header="Thời gian quét" Binding="{Binding CreatedDate}" />
                 <DataGridTextColumn Header="RFID" Binding="{Binding RFIDCode}"/>
                 <DataGridTextColumn Header="Cân nặng" Binding="{Binding Weight}" />
                 <DataGridTextColumn Header="Tỉ Trọng" Binding="{Binding Density}" />
