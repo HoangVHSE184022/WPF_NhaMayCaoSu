@@ -13,11 +13,10 @@ namespace WPF_NhaMayCaoSu
     {
         private readonly AccountService _accountService = new();
 
-        /* public LoginWindow(IAccountService accountService)
+         public LoginWindow()
          {
-             _accountService = accountService;
              InitializeComponent();
-         }*/
+         }
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
