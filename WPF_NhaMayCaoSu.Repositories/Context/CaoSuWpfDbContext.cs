@@ -19,7 +19,7 @@ namespace WPF_NhaMayCaoSu.Repository.Context
                 .AddJsonFile("dbsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
-            var strConn = config.GetConnectionString("DefaultConnectionStringDB");
+            string strConn = config.GetConnectionString("DefaultConnectionStringDB");
             if (string.IsNullOrEmpty(strConn))
             {
                 throw new Exception("Connection string not found!");

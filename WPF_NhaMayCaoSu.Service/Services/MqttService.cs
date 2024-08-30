@@ -15,7 +15,7 @@ public class MqttService : IMqttService
     {
         _connectedClients = new ConcurrentDictionary<string, string>();
         // Configure the MQTT server options for non-TLS
-        var optionsBuilder = new MqttServerOptionsBuilder()
+        MqttServerOptionsBuilder optionsBuilder = new MqttServerOptionsBuilder()
             .WithDefaultEndpoint()
             .WithDefaultEndpointPort(1883) 
             .WithConnectionBacklog(100)

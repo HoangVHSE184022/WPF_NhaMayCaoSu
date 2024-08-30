@@ -118,7 +118,7 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                var camera = await _cameraService.GetCamera();
+                Camera camera = await _cameraService.GetCamera();
 
                 if (camera == null)
                 {

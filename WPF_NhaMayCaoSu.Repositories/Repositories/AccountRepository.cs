@@ -21,7 +21,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         public async Task DeleteAccountAsync(Guid accountId)
         {
             _context = new();
-            var account = await _context.Accounts.FindAsync(accountId);
+            Account account = await _context.Accounts.FindAsync(accountId);
             if (account != null)
             {
                 account.Status = 0; //0 is unavailable 
@@ -53,7 +53,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         public async Task<Account> Login(string username, string password)
         {
             _context = new();
-            var account = await _context.Accounts
+            Account account = await _context.Accounts
                                         .FirstOrDefaultAsync(a => a.Username.ToLower().Equals(username));
 
             if (account != null && BCrypt.Net.BCrypt.Verify(password, account.Password))
