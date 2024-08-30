@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -17,8 +16,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 {
                     CameraId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Camera1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Camera2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<short>(type: "smallint", nullable: false)
+                    Camera2 = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,8 +45,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: table => new
                 {
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IsAvailable = table.Column<bool>(type: "bit", nullable: false)
+                    RoleName = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,14 +57,16 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: table => new
                 {
                     SaleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductWeight = table.Column<double>(type: "float", nullable: true),
+                    WeightImageUrl = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ProductDensity = table.Column<double>(type: "float", nullable: true),
-                    DensityImageUrl = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DensityImageUrl = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<short>(type: "smallint", nullable: false),
                     IsEdited = table.Column<bool>(type: "bit", nullable: false),
                     LastEditedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RFIDCode = table.Column<long>(type: "bigint", nullable: false),
-                    Type = table.Column<short>(type: "smallint", nullable: false)
+                    Type = table.Column<short>(type: "smallint", nullable: false),
                 },
                 constraints: table =>
                 {

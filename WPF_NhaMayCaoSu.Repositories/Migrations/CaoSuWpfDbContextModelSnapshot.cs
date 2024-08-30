@@ -73,9 +73,6 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<short>("Status")
-                        .HasColumnType("smallint");
-
                     b.HasKey("CameraId");
 
                     b.ToTable("Cameras");
@@ -117,9 +114,6 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit");
-
                     b.Property<string>("RoleName")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -141,7 +135,11 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DensityImageUrl")
+                    b.Property<string?>("DensityImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string?>("WeightImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -154,13 +152,13 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<double?>("ProductDensity")
                         .HasColumnType("float");
 
+                    b.Property<double?>("ProductWeight")
+                        .HasColumnType("float");
+
                     b.Property<long>("RFIDCode")
                         .HasColumnType("bigint");
 
                     b.Property<short>("Status")
-                        .HasColumnType("smallint");
-
-                    b.Property<short>("Type")
                         .HasColumnType("smallint");
 
                     b.HasKey("SaleId");

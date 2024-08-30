@@ -20,8 +20,8 @@
         <DataGrid x:Name="SaleDataGrid" HorizontalAlignment="Left" Height="606" Margin="310,129,0,0" VerticalAlignment="Top" Width="824" FontFamily="Arial" FontSize="24" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Width="50" Binding="{Binding SaleId}"/>
+                <DataGridTextColumn Header="Weight" Width="100" Binding="{Binding ProductWeight}"/>
                 <DataGridTextColumn Header="Density" Width="100" Binding="{Binding ProductDensity}"/>
-                <DataGridTextColumn Header="URL" Width="150" Binding="{Binding DensityImageUrl}"/>
                 <DataGridTextColumn Header="Created" Width="100" Binding="{Binding CreatedDate}"/>
                 <DataGridTextColumn Header="Status" Width="90" Binding="{Binding Status}"/>
                 <DataGridTextColumn Header="Edited" Width="90" Binding="{Binding IsEdited}"/>
