@@ -35,13 +35,6 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
-            // Validate RFID Code (ensure it's a valid number)
-            if (!long.TryParse(RFIDCodeTextBox.Text, out long rfidCode))
-            {
-                MessageBox.Show(Constants.ErrorMessageInvalidRFID, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
             // Validate Status (ensure it's either 0 or 1)
             if (!short.TryParse(StatusTextBox.Text, out short status) || (status != 0 && status != 1))
             {
@@ -53,7 +46,7 @@ namespace WPF_NhaMayCaoSu
             Customer customer = new()
             {
                 CustomerName = AccountNameTextBox.Text,
-                RFIDCode = rfidCode,
+                RFIDCode = long.TryParse(RFIDCodeTextBox.Text, out long rfidCode) ? rfidCode : 0,
                 Status = status,
                 CreatedDate = SelectedCustomer == null ? DateTime.Now : SelectedCustomer.CreatedDate,
                 ExpirationDate = SelectedCustomer == null ? DateTime.Now.AddDays(1) : SelectedCustomer.ExpirationDate,
