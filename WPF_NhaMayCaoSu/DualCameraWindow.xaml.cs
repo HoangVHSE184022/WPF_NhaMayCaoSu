@@ -3,6 +3,7 @@ using OpenCvSharp.WpfExtensions;
 using System.Windows;
 using System.Windows.Threading;
 using WPF_NhaMayCaoSu.Service.Interfaces;
+using WPF_NhaMayCaoSu.Core.Utils;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -28,14 +29,14 @@ namespace WPF_NhaMayCaoSu
         {
             if (_cameraService == null)
             {
-                MessageBox.Show("Camera service is not initialized.");
+                MessageBox.Show(Constants.ErrorMessageCameraServiceNotInitialized, Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             Repository.Models.Camera camera = await _cameraService.GetNewestCamera();
 
             if (camera == null)
             {
-                MessageBox.Show("Failed to retrieve the newest camera details.");
+                MessageBox.Show(Constants.ErrorMessageRetrieveNewestCamera, Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -48,7 +49,7 @@ namespace WPF_NhaMayCaoSu
 
             if (!_capture1.IsOpened() || !_capture2.IsOpened())
             {
-                MessageBox.Show("Unable to connect to one or both cameras. Please check the URLs.");
+                MessageBox.Show(Constants.ErrorMessageConnectCameras, Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -87,11 +88,11 @@ namespace WPF_NhaMayCaoSu
             {
                 string filePath = $"Camera1_Capture_{DateTime.Now:yyyyMMdd_HHmmss}.png";
                 _frame1.SaveImage(filePath);
-                MessageBox.Show($"Photo saved to {filePath}");
+                MessageBox.Show(string.Format(Constants.SuccessMessagePhotoSaved, filePath), Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show("No frame available from Camera 1.");
+                MessageBox.Show(Constants.ErrorMessageNoFrameAvailableCamera1, Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -101,11 +102,11 @@ namespace WPF_NhaMayCaoSu
             {
                 string filePath = $"Camera2_Capture_{DateTime.Now:yyyyMMdd_HHmmss}.png";
                 _frame2.SaveImage(filePath);
-                MessageBox.Show($"Photo saved to {filePath}");
+                MessageBox.Show(string.Format(Constants.SuccessMessagePhotoSaved, filePath), Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show("No frame available from Camera 2.");
+                MessageBox.Show(Constants.ErrorMessageNoFrameAvailableCamera2, Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 

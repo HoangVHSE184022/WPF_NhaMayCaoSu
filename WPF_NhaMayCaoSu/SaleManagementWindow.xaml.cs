@@ -3,10 +3,9 @@ using OpenCvSharp.WpfExtensions;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using WPF_NhaMayCaoSu.Repository.Context;
 using WPF_NhaMayCaoSu.Repository.Models;
-using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Core.Utils;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -61,7 +60,7 @@ namespace WPF_NhaMayCaoSu
                 x.LastEditedTime = null;
                 x.ProductDensity = null;
                 x.DensityImageUrl = null;
-                MessageBox.Show($"Created!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(Constants.SuccessMessageSaleCreated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                 await _service.CreateSaleAsync(x);
             }
             else
@@ -82,7 +81,7 @@ namespace WPF_NhaMayCaoSu
                 x.CreatedDate = SelectedSale.CreatedDate;
                 x.IsEdited = true;
                 x.LastEditedTime = DateTime.Now;
-                MessageBox.Show($"Updated!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(Constants.SuccessMessageSaleUpdated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                 await _service.UpdateSaleAsync(x);
             }
 
@@ -115,28 +114,28 @@ namespace WPF_NhaMayCaoSu
                                         encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
                                         encoder.Save(stream);
                                     }
-                                    MessageBox.Show($"Captured frame from Camera {cameraIndex}.");
+                                    MessageBox.Show(string.Format(Constants.SuccessMessageCapturedFrame, cameraIndex), Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                                 }
                                 else
                                 {
-                                    MessageBox.Show($"Failed to capture frame from Camera {cameraIndex}.");
+                                    MessageBox.Show(string.Format(Constants.ErrorMessageCaptureFrameFailed, cameraIndex), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                                 }
                             }
                         }
                         else
                         {
-                            MessageBox.Show($"Failed to open Camera {cameraIndex}.");
+                            MessageBox.Show(string.Format(Constants.ErrorMessageOpenCameraFailed, cameraIndex), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                 }
                 else
                 {
-                    throw new Exception($"Invalid Camera {cameraIndex} URL.");
+                    throw new Exception(string.Format(Constants.ErrorMessageInvalidCameraUrl, cameraIndex));
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error capturing image from Camera {cameraIndex}: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(string.Format(Constants.ErrorMessageCaptureImage, cameraIndex, ex.Message), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return string.Empty;
             }
 
@@ -145,7 +144,7 @@ namespace WPF_NhaMayCaoSu
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ModeLabel.Content = "Thêm Sale mới";
+            ModeLabel.Content = Constants.ModeLabelAddSale; ;
 
             if (SelectedSale != null)
             {
@@ -162,7 +161,7 @@ namespace WPF_NhaMayCaoSu
                 }
 
                 StatusTextBox.Text = SelectedSale.Status.ToString();
-                ModeLabel.Content = "Chỉnh sửa Sale";
+                ModeLabel.Content = Constants.ModeLabelEditSale;
             }
         }
     }
