@@ -1,15 +1,19 @@
 ﻿using MQTTnet;
 using MQTTnet.Server;
 using System;
+using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
 public class MqttService : IMqttService
 {
     private readonly MqttServer _mqttServer;
+    private readonly ConcurrentDictionary<string, string> _connectedClients;
+    public Action ClientsChanged { get; set; }
 
     public MqttService()
     {
+        _connectedClients = new ConcurrentDictionary<string, string>();
         // Configure the MQTT server options for non-TLS
         var optionsBuilder = new MqttServerOptionsBuilder()
             .WithDefaultEndpoint()
@@ -40,13 +44,29 @@ public class MqttService : IMqttService
         // Set up event handlers for client connections, disconnections, etc.
         _mqttServer.ClientConnectedAsync += e =>
         {
-            Console.WriteLine($"Client connected: {e.ClientId}");
+            if (_connectedClients != null && !string.IsNullOrEmpty(e.ClientId))
+            {
+                _connectedClients[e.ClientId] = e.Endpoint; // Store the IP address of the client
+
+                // Notify UI that the clients have changed
+                ClientsChanged?.Invoke();
+
+                Console.WriteLine($"Client connected: {e.ClientId}, IP: {e.Endpoint}");
+            }
             return Task.CompletedTask;
         };
 
         _mqttServer.ClientDisconnectedAsync += e =>
         {
-            Console.WriteLine($"Client disconnected: {e.ClientId}");
+            if (_connectedClients != null && !string.IsNullOrEmpty(e.ClientId))
+            {
+                _connectedClients.TryRemove(e.ClientId, out _);
+
+                // Notify UI that the clients have changed
+                ClientsChanged?.Invoke();
+
+                Console.WriteLine($"Client disconnected: {e.ClientId}");
+            }
             return Task.CompletedTask;
         };
     }
@@ -89,5 +109,11 @@ public class MqttService : IMqttService
         {
             Console.WriteLine($"Error restarting MQTT broker: {ex.Message}");
         }
+    }
+
+    // Get device info that connect to mqtt server
+    public IReadOnlyDictionary<string, string> GetConnectedClients()
+    {
+        return _connectedClients;
     }
 }

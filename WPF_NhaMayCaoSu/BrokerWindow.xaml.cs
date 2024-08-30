@@ -25,6 +25,7 @@ namespace WPF_NhaMayCaoSu
         {
             InitializeComponent();
             _mqttService = new MqttService();
+            _mqttService.ClientsChanged = UpdateConnectedClientsList;
         }
 
         private async void StartBroker_Click(object sender, RoutedEventArgs e)
@@ -113,6 +114,20 @@ namespace WPF_NhaMayCaoSu
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void UpdateConnectedClientsList()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                ConnectedClientsListBox.Items.Clear();
+
+                var connectedClients = _mqttService.GetConnectedClients();
+                foreach (var client in connectedClients)
+                {
+                    ConnectedClientsListBox.Items.Add($"Client ID: {client.Key}, IP: {client.Value}");
+                }
+            });
         }
     }
 }
