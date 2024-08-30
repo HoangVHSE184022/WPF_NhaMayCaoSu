@@ -22,7 +22,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
             _sessionSaleList.Add(sale);
         }
 
-        public List<Sale> GetAllSale()
+        public List<Sale> GetAllSales()
         {
             return _sessionSaleList.OrderBy(sale => sale.CreatedDate).ToList();
         }

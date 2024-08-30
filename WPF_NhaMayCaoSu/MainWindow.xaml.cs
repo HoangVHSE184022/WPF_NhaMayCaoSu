@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
 
@@ -23,6 +24,13 @@ namespace WPF_NhaMayCaoSu
             InitializeComponent();
             _mqttService = mqttService;
             _sessionService = new();
+        }
+
+        public void FoundEvent(Sale sale)
+        {
+            _sessionService.AddToSalelist(sale);
+            SalesDataGrid.ItemsSource = null;
+            SalesDataGrid.ItemsSource = _sessionService.GetAllSales();
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
