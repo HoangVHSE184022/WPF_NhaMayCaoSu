@@ -1,29 +1,41 @@
 ﻿using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WPF_NhaMayCaoSu.Controller.Controller;
+using Google.Cloud.Storage.V1;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu.Service.Services
 {
     public class FirebaseService : IFirebaseService
     {
-        private readonly FirebaseController _firebaseController = new();
+        private readonly string _bucketName = "nhamaycaosu-images.appspot.com";
+        private readonly string _googleHeader = "https://storage.googleapis.com";
+
+        public FirebaseService()
+        {
+            if (FirebaseApp.DefaultInstance == null)
+            {
+                FirebaseApp.Create(new AppOptions()
+                {
+                    Credential = GoogleCredential.FromFile("../nhamaycaosu.json")
+                });
+            }
+        }
+
         public async Task<string?> SaveImagePathToDatabaseAsync(string localFilePath, string firebaseFileName)
         {
             try
             {
-                string imageUrl = await _firebaseController.UploadImageAsync(localFilePath, firebaseFileName);
+                StorageClient storage = StorageClient.Create();
 
+                using FileStream fileStream = File.OpenRead(localFilePath);
+                var storageObject = await storage.UploadObjectAsync(_bucketName, firebaseFileName, null, fileStream);
+
+                string imageUrl = $"{_googleHeader}/{_bucketName}/{firebaseFileName}";
                 return imageUrl;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred: {ex.Message}");
+                Console.WriteLine($"Error uploading file to Firebase Storage: {ex.Message}");
                 return null;
             }
         }
@@ -32,11 +44,14 @@ namespace WPF_NhaMayCaoSu.Service.Services
         {
             try
             {
-                await _firebaseController.DownloadImageAsync(firebaseFileName, localPath);
+                StorageClient storage = StorageClient.Create();
+
+                using var outputFile = File.OpenWrite(localPath);
+                await storage.DownloadObjectAsync(_bucketName, firebaseFileName, outputFile);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred: {ex.Message}");
+                Console.WriteLine($"Error downloading file from Firebase Storage: {ex.Message}");
             }
         }
     }

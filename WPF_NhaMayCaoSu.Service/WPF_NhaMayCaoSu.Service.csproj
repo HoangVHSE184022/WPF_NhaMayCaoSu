@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FirebaseAdmin" Version="3.0.0" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
+    <PackageReference Include="Google.Cloud.Storage.V1" Version="4.10.0" />
     <PackageReference Include="MQTTnet" Version="4.3.6.1152" />
     <PackageReference Include="OpenCvSharp4" Version="4.10.0.20240616" />
     <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.10.0.20240616" />
@@ -15,9 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WPF_NhaMayCaoSu.Controller\WPF_NhaMayCaoSu.Controller.csproj">
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\WPF_NhaMayCaoSu.Repositories\WPF_NhaMayCaoSu.Repository.csproj">
       <Private>True</Private>
     </ProjectReference>
