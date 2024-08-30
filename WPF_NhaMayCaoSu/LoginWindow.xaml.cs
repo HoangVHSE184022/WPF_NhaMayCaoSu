@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Core.Utils;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -28,7 +29,7 @@ namespace WPF_NhaMayCaoSu
                 Account account = await _accountService.LoginAsync(username, password);
                 if (account == null)
                 {
-                    MessageBox.Show("Invalid username or password.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(Constants.ErrorMessageInvalidLogin, Constants.ErrorTitleLoginFailed, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {
@@ -43,10 +44,6 @@ namespace WPF_NhaMayCaoSu
                 MessageBox.Show(ex.ToString());
                 return;
             }
-            
-            //MainWindow mainWindow = new MainWindow();
-            //mainWindow.Show();
-            //this.Close();
         }
 
 

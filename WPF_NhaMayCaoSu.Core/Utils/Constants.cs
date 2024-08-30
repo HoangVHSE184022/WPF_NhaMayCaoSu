@@ -55,5 +55,30 @@ namespace WPF_NhaMayCaoSu.Core.Utils
 
         public const string ModeLabelAddCustomer = "Thêm khách hàng mới";
         public const string ModeLabelEditCustomer = "Chỉnh sửa khách hàng";
+
+        public const string ErrorMessageCameraServiceNotInitialized = "Dịch vụ camera chưa được khởi tạo.";
+        public const string ErrorMessageRetrieveNewestCamera = "Không thể lấy thông tin camera mới nhất.";
+        public const string ErrorMessageConnectCameras = "Không thể kết nối tới một hoặc cả hai camera. Vui lòng kiểm tra các URL.";
+        public const string ErrorMessageNoFrameAvailableCamera1 = "Không có khung hình nào từ Camera 1.";
+        public const string ErrorMessageNoFrameAvailableCamera2 = "Không có khung hình nào từ Camera 2.";
+
+        public const string SuccessMessagePhotoSaved = "Ảnh đã được lưu vào {0}.";
+
+        public const string ErrorMessageInvalidLogin = "Tên người dùng hoặc mật khẩu không hợp lệ.";
+        public const string ErrorTitleLoginFailed = "Đăng nhập thất bại";
+
+        public const string ErrorMessageSelectSale = "Vui lòng chọn một giao dịch để cập nhật!";
+        public const string ErrorTitleSelectSale = "Chọn một";
+
+        public const string SuccessMessageSaleCreated = "Giao dịch đã được tạo thành công!";
+        public const string SuccessMessageSaleUpdated = "Giao dịch đã được cập nhật thành công!";
+        public const string SuccessMessageCapturedFrame = "Đã chụp khung hình từ Camera {0}.";
+        public const string ErrorMessageCaptureFrameFailed = "Không thể chụp khung hình từ Camera {0}.";
+        public const string ErrorMessageOpenCameraFailed = "Không thể mở Camera {0}.";
+        public const string ErrorMessageInvalidCameraUrl = "URL Camera {0} không hợp lệ.";
+        public const string ErrorMessageCaptureImage = "Lỗi khi chụp ảnh từ Camera {0}: {1}";
+
+        public const string ModeLabelAddSale = "Thêm Sale mới";
+        public const string ModeLabelEditSale = "Chỉnh sửa Sale";
     }
 }
