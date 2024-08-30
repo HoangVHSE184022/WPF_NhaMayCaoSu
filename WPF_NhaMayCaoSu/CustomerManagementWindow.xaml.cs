@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Core.Utils;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -30,21 +31,21 @@ namespace WPF_NhaMayCaoSu
                 string.IsNullOrWhiteSpace(RFIDCodeTextBox.Text) ||
                 string.IsNullOrWhiteSpace(StatusTextBox.Text))
             {
-                MessageBox.Show("Vui lòng nhập đầy đủ thông tin!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(Constants.ErrorMessageMissingFields, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             // Validate RFID Code (ensure it's a valid number)
             if (!long.TryParse(RFIDCodeTextBox.Text, out long rfidCode))
             {
-                MessageBox.Show("RFID Code phải là số hợp lệ!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(Constants.ErrorMessageInvalidRFID, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             // Validate Status (ensure it's either 0 or 1)
             if (!short.TryParse(StatusTextBox.Text, out short status) || (status != 0 && status != 1))
             {
-                MessageBox.Show("Status phải là 0 (inactive) hoặc 1 (active)!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(Constants.ErrorMessageInvalidStatus, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -62,12 +63,12 @@ namespace WPF_NhaMayCaoSu
             if (SelectedCustomer == null)
             {
                 await _service.CreateCustomer(customer);
-                MessageBox.Show($"Khách hàng {customer.CustomerName} đã được tạo thành công!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(string.Format(Constants.SuccessMessageCreateCustomer, customer.CustomerName), Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
                 await _service.UpdateCustomer(customer);
-                MessageBox.Show($"Khách hàng {customer.CustomerName} đã được cập nhật thành công!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(string.Format(Constants.SuccessMessageUpdateCustomer, customer.CustomerName), Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
             Close();
@@ -75,14 +76,14 @@ namespace WPF_NhaMayCaoSu
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ModeLabel.Content = "Thêm khách hàng mới";
+            ModeLabel.Content = Constants.ModeLabelAddCustomer;
 
             if (SelectedCustomer != null)
             {
                 AccountNameTextBox.Text = SelectedCustomer.CustomerName;
                 RFIDCodeTextBox.Text = SelectedCustomer.RFIDCode.ToString();
                 StatusTextBox.Text = SelectedCustomer.Status.ToString();
-                ModeLabel.Content = "Chỉnh sửa khách hàng";
+                ModeLabel.Content = Constants.ModeLabelEditCustomer;
             }
         }
     }
