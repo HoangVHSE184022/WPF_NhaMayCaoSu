@@ -39,7 +39,7 @@ namespace WPF_NhaMayCaoSu
             x.Status = short.Parse(StatusTextBox.Text);
             x.RFIDCode = long.Parse(RFIDCodeTextBox.Text);
 
-            CameraService cameraService = new CameraService(new CameraRepository(new CaoSuWpfDbContext()));
+            CameraService cameraService = new CameraService();
             Camera newestCamera = await cameraService.GetNewestCamera();
             string imageFilePath = string.Empty;
 

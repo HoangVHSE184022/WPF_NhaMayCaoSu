@@ -1,17 +1,13 @@
 ﻿using WPF_NhaMayCaoSu.Repository.IRepositories;
 using WPF_NhaMayCaoSu.Repository.Models;
+using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu.Service.Services
 {
     public class CameraService : ICameraService
     {
-        private readonly ICameraRepository _cameraRepository;
-
-        public CameraService(ICameraRepository cameraRepository)
-        {
-            _cameraRepository = cameraRepository;
-        }
+        private readonly CameraRepository _cameraRepository = new();
 
         public async Task CreateCamera(Camera camera)
         {
