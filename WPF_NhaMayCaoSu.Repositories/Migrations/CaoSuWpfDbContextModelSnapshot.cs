@@ -73,6 +73,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<short>("Status")
+                        .HasColumnType("smallint");
+
                     b.HasKey("CameraId");
 
                     b.ToTable("Cameras");
@@ -94,8 +97,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("RFIDCode")
-                        .HasColumnType("bigint");
+                    b.Property<string>("RFIDCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
@@ -113,6 +117,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<Guid>("RoleId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
 
                     b.Property<string>("RoleName")
                         .IsRequired()
@@ -135,12 +142,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string?>("DensityImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string?>("WeightImageUrl")
-                        .IsRequired()
+                    b.Property<string>("DensityImageUrl")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsEdited")
@@ -155,16 +157,24 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<double?>("ProductWeight")
                         .HasColumnType("float");
 
-                    b.Property<long>("RFIDCode")
-                        .HasColumnType("bigint");
+                    b.Property<string>("RFIDCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
 
+                    b.Property<short>("Type")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("WeightImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("SaleId");
 
                     b.HasIndex("DensityImageUrl")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[DensityImageUrl] IS NOT NULL");
 
                     b.HasIndex("RFIDCode");
 

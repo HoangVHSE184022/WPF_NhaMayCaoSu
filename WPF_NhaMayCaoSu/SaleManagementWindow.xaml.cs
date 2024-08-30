@@ -36,7 +36,7 @@ namespace WPF_NhaMayCaoSu
             x.ProductWeight = Double.Parse(WeightTextBox.Text);
             x.WeightImageUrl = URLWeightTextBox.Text;
             x.Status = short.Parse(StatusTextBox.Text);
-            x.RFIDCode = long.Parse(RFIDCodeTextBox.Text);
+            x.RFIDCode = (RFIDCodeTextBox.Text);
 
             CameraService cameraService = new CameraService();
             Camera newestCamera = await cameraService.GetNewestCamera();

@@ -27,7 +27,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
             return _sessionSaleList.OrderBy(sale => sale.CreatedDate).ToList();
         }
 
-        public List<Sale> GetSaleByRFID(long RfID)
+        public List<Sale> GetSaleByRFID(string RfID)
         {
             return _sessionSaleList.Where(sale => sale.RFIDCode == RfID).OrderBy(sale => sale.CreatedDate).ToList();
         }

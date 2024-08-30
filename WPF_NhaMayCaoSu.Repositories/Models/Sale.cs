@@ -11,7 +11,7 @@
         public short Status { get; set; }
         public bool IsEdited { get; set; }
         public DateTime? LastEditedTime { get; set; }
-        public long RFIDCode { get; set; }
+        public string RFIDCode { get; set; }
         public Customer Customer { get; set; }
         public short Type { get; set; }
     }
