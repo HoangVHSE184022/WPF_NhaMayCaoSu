@@ -8,6 +8,9 @@
         <Style TargetType="Label">
             <Setter Property="FontFamily" Value="pack://application:,,,/assets/fonts/#Montserrat-VariableFont_wght" />
         </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="pack://application:,,,/assets/fonts/#Montserrat-VariableFont_wght" />
+        </Style>
     </Application.Resources>
 </Application>
 
