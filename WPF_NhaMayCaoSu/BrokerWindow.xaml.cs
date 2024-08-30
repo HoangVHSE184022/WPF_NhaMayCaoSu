@@ -25,7 +25,7 @@ namespace WPF_NhaMayCaoSu
         {
             InitializeComponent();
             _mqttService = new MqttService();
-            _mqttService.ClientsChanged = UpdateConnectedClientsList;
+            _mqttService.ClientsChanged += MqttService_ClientsChanged;
         }
 
         private async void StartBroker_Click(object sender, RoutedEventArgs e)
@@ -116,7 +116,7 @@ namespace WPF_NhaMayCaoSu
             this.Close();
         }
 
-        private void UpdateConnectedClientsList()
+        private void MqttService_ClientsChanged(object sender, EventArgs e)
         {
             Dispatcher.Invoke(() =>
             {

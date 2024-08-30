@@ -11,6 +11,6 @@ namespace WPF_NhaMayCaoSu.Service.Interfaces
         Task RestartBrokerAsync();
         IReadOnlyDictionary<string, string> GetConnectedClients();
 
-        Action ClientsChanged { get; set; }
+        event EventHandler ClientsChanged;
     }
 }
