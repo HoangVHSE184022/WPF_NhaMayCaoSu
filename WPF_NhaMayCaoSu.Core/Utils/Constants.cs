@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WPF_NhaMayCaoSu.Core.Utils
 {
-    internal class Constants
+    public class Constants
     {
     }
 }
