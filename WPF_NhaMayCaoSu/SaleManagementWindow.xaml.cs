@@ -45,15 +45,15 @@ namespace WPF_NhaMayCaoSu
 
             if (SelectedSale == null)
             {
-                imageFilePath = await CaptureImageFromCameraAsync(newestCamera, cameraIndex: 1);
+                //imageFilePath = await CaptureImageFromCameraAsync(newestCamera, cameraIndex: 1);
 
-                // Save image to Firebase and set WeightImageUrl
-                if (!string.IsNullOrEmpty(imageFilePath))
-                {
-                    FirebaseService firebaseService = new();
-                    string firebaseFileName = Path.GetFileName(imageFilePath);
-                    x.WeightImageUrl = await firebaseService.SaveImagePathToDatabaseAsync(imageFilePath, firebaseFileName);
-                }
+                //// Save image to Firebase and set WeightImageUrl
+                //if (!string.IsNullOrEmpty(imageFilePath))
+                //{
+                //    FirebaseService firebaseService = new();
+                //    string firebaseFileName = Path.GetFileName(imageFilePath);
+                //    x.WeightImageUrl = await firebaseService.SaveImagePathToDatabaseAsync(imageFilePath, firebaseFileName);
+                //}
 
                 x.CreatedDate = DateTime.Now;
                 x.IsEdited = false;
@@ -65,15 +65,15 @@ namespace WPF_NhaMayCaoSu
             }
             else
             {
-                imageFilePath = await CaptureImageFromCameraAsync(newestCamera, cameraIndex: 2);
+                //imageFilePath = await CaptureImageFromCameraAsync(newestCamera, cameraIndex: 2);
 
-                // Save image to Firebase and set DensityImageUrl
-                if (!string.IsNullOrEmpty(imageFilePath))
-                {
-                    FirebaseService firebaseService = new();
-                    string firebaseFileName = Path.GetFileName(imageFilePath);
-                    x.DensityImageUrl = await firebaseService.SaveImagePathToDatabaseAsync(imageFilePath, firebaseFileName);
-                }
+                //// Save image to Firebase and set DensityImageUrl
+                //if (!string.IsNullOrEmpty(imageFilePath))
+                //{
+                //    FirebaseService firebaseService = new();
+                //    string firebaseFileName = Path.GetFileName(imageFilePath);
+                //    x.DensityImageUrl = await firebaseService.SaveImagePathToDatabaseAsync(imageFilePath, firebaseFileName);
+                //}
 
                 x.ProductDensity = Double.Parse(DensityTextBox.Text);
                 x.DensityImageUrl = URLDensityTextBox.Text;
@@ -89,58 +89,58 @@ namespace WPF_NhaMayCaoSu
         }
 
 
-        private async Task<string> CaptureImageFromCameraAsync(Camera camera, int cameraIndex)
-        {
-            string localFilePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.jpg");
+        //private async Task<string> CaptureImageFromCameraAsync(Camera camera, int cameraIndex)
+        //{
+        //    string localFilePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.jpg");
 
-            try
-            {
-                string cameraUrl = cameraIndex == 1 ? camera.Camera1 : camera.Camera2;
-                if (!string.IsNullOrEmpty(cameraUrl))
-                {
-                    using (var capture = new VideoCapture(cameraUrl))
-                    {
-                        if (capture.IsOpened())
-                        {
-                            using (var frame = new Mat())
-                            {
-                                capture.Read(frame);
-                                if (!frame.Empty())
-                                {
-                                    BitmapSource bitmapSource = frame.ToBitmapSource();
-                                    using (var stream = new FileStream(localFilePath, FileMode.Create, FileAccess.Write))
-                                    {
-                                        BitmapEncoder encoder = new JpegBitmapEncoder();
-                                        encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
-                                        encoder.Save(stream);
-                                    }
-                                    MessageBox.Show(string.Format(Constants.SuccessMessageCapturedFrame, cameraIndex), Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
-                                }
-                                else
-                                {
-                                    MessageBox.Show(string.Format(Constants.ErrorMessageCaptureFrameFailed, cameraIndex), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show(string.Format(Constants.ErrorMessageOpenCameraFailed, cameraIndex), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
-                    }
-                }
-                else
-                {
-                    throw new Exception(string.Format(Constants.ErrorMessageInvalidCameraUrl, cameraIndex));
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format(Constants.ErrorMessageCaptureImage, cameraIndex, ex.Message), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-                return string.Empty;
-            }
+        //    try
+        //    {
+        //        string cameraUrl = cameraIndex == 1 ? camera.Camera1 : camera.Camera2;
+        //        if (!string.IsNullOrEmpty(cameraUrl))
+        //        {
+        //            using (var capture = new VideoCapture(cameraUrl))
+        //            {
+        //                if (capture.IsOpened())
+        //                {
+        //                    using (var frame = new Mat())
+        //                    {
+        //                        capture.Read(frame);
+        //                        if (!frame.Empty())
+        //                        {
+        //                            BitmapSource bitmapSource = frame.ToBitmapSource();
+        //                            using (var stream = new FileStream(localFilePath, FileMode.Create, FileAccess.Write))
+        //                            {
+        //                                BitmapEncoder encoder = new JpegBitmapEncoder();
+        //                                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+        //                                encoder.Save(stream);
+        //                            }
+        //                            MessageBox.Show(string.Format(Constants.SuccessMessageCapturedFrame, cameraIndex), Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+        //                        }
+        //                        else
+        //                        {
+        //                            MessageBox.Show(string.Format(Constants.ErrorMessageCaptureFrameFailed, cameraIndex), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+        //                        }
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    MessageBox.Show(string.Format(Constants.ErrorMessageOpenCameraFailed, cameraIndex), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            throw new Exception(string.Format(Constants.ErrorMessageInvalidCameraUrl, cameraIndex));
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(string.Format(Constants.ErrorMessageCaptureImage, cameraIndex, ex.Message), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+        //        return string.Empty;
+        //    }
 
-            return localFilePath;
-        }
+        //    return localFilePath;
+        //}
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
