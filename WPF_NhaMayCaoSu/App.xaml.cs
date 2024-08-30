@@ -41,7 +41,6 @@ namespace WPF_NhaMayCaoSu
         private void ConfigureServices(IServiceCollection services)
         {
             // Register services here
-            services.AddSingleton<IMqttServerService, MqttServerService>();
             services.AddSingleton<ISaleService, SaleService>();
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IRoleService, RoleService>();
