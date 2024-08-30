@@ -19,7 +19,7 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void AddSaleButton_Click(object sender, RoutedEventArgs e)

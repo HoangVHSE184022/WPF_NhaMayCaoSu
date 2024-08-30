@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using WPF_NhaMayCaoSu.Service.Interfaces;
-using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu
 {

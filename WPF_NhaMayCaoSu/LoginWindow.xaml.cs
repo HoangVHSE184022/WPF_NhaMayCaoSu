@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows;
-using WPF_NhaMayCaoSu.Service.Interfaces;
+﻿using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 
@@ -36,7 +34,7 @@ namespace WPF_NhaMayCaoSu
                 {
                     MainWindow mainWindow = new MainWindow();
                     mainWindow.Show();
-                    this.Close();
+                    Close();
                 }
 
             }
@@ -61,7 +59,7 @@ namespace WPF_NhaMayCaoSu
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
             accountManagementWindow.Show();
-            this.Close();
+            Close();
         }
     }
 }

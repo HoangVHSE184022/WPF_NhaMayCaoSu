@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 
@@ -21,7 +20,7 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -71,7 +70,7 @@ namespace WPF_NhaMayCaoSu
                 MessageBox.Show($"Khách hàng {customer.CustomerName} đã được cập nhật thành công!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
-            this.Close();
+            Close();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

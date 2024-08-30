@@ -1,6 +1,5 @@
 ﻿using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
-using System;
 using System.Windows;
 using System.Windows.Threading;
 using WPF_NhaMayCaoSu.Repository.Models;
