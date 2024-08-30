@@ -21,7 +21,7 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -53,7 +53,7 @@ namespace WPF_NhaMayCaoSu
                 await _service.UpdateSaleAsync(x);
             }
 
-            this.Close();
+            Close();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

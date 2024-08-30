@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿
 
 namespace WPF_NhaMayCaoSu.Service.Interfaces
 {
