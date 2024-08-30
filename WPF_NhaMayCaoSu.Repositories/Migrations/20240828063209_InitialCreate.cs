@@ -65,7 +65,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     Status = table.Column<short>(type: "smallint", nullable: false),
                     IsEdited = table.Column<bool>(type: "bit", nullable: false),
                     LastEditedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    RFIDCode = table.Column<long>(type: "bigint", nullable: false)
+                    RFIDCode = table.Column<long>(type: "bigint", nullable: false),
+                    Type = table.Column<short>(type: "smallint", nullable: false),
                 },
                 constraints: table =>
                 {
