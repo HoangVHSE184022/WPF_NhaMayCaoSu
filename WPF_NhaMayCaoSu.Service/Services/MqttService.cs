@@ -11,7 +11,7 @@ public class MqttService : IMqttService
     public MqttService()
     {
         // Configure the MQTT server options for non-TLS
-        var optionsBuilder = new MqttServerOptionsBuilder()
+        MqttServerOptionsBuilder optionsBuilder = new MqttServerOptionsBuilder()
             .WithDefaultEndpoint()
             .WithDefaultEndpointPort(1883) 
             .WithConnectionBacklog(100)

@@ -43,7 +43,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
         public async Task DeleteRoleAsync(Guid roleId)
         {
-            var role = await _context.Set<Role>().FindAsync(roleId);
+            Role role = await _context.Set<Role>().FindAsync(roleId);
             if (role != null)
             {
                 role.IsAvailable = false;

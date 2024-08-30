@@ -21,12 +21,12 @@ namespace WPF_NhaMayCaoSu
 
             try
             {
-                var serviceCollection = new ServiceCollection();
+                ServiceCollection serviceCollection = new ServiceCollection();
                 ConfigureServices(serviceCollection);
 
                 _serviceProvider = serviceCollection.BuildServiceProvider();
 
-                var mainWindow = _serviceProvider.GetRequiredService<BrokerWindow>();
+                BrokerWindow brokerWindow = _serviceProvider.GetRequiredService<BrokerWindow>();
                 //mainWindow.Show();
             }
             catch (Exception ex)

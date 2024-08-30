@@ -28,9 +28,9 @@ namespace WPF_NhaMayCaoSu.Controller.Controller
         {
             try
             {
-                var storage = StorageClient.Create();
+                StorageClient storage = StorageClient.Create();
 
-                using var fileStream = File.OpenRead(localFilePath);
+                using FileStream fileStream = File.OpenRead(localFilePath);
                 var storageObject = await storage.UploadObjectAsync(_bucketName, firebaseFileName, null, fileStream);
 
                 string imageUrl = $"{_googleHeader}/{_bucketName}/{firebaseFileName}";
@@ -47,7 +47,7 @@ namespace WPF_NhaMayCaoSu.Controller.Controller
         {
             try
             {
-                var storage = StorageClient.Create();
+                StorageClient storage = StorageClient.Create();
 
                 using var outputFile = File.OpenWrite(localPath);
                 await storage.DownloadObjectAsync(_bucketName, firebaseFileName, outputFile);
