@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="assets\Montserrat\Montserrat-Italic-VariableFont_wght.ttf" />
+    <None Remove="assets\Montserrat\Montserrat-VariableFont_wght.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="MQTTnet" Version="4.3.6.1152" />
     <PackageReference Include="OpenCvSharp4" Version="4.10.0.20240616" />
@@ -23,6 +28,11 @@
     <ProjectReference Include="..\WPF_NhaMayCaoSu.Service\WPF_NhaMayCaoSu.Service.csproj">
       <Private>True</Private>
     </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\Montserrat\Montserrat-Italic-VariableFont_wght.ttf" />
+    <Resource Include="assets\Montserrat\Montserrat-VariableFont_wght.ttf" />
   </ItemGroup>
 
 </Project>

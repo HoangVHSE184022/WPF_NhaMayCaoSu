@@ -5,7 +5,9 @@
              xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
              StartupUri="LoginWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="Label">
+            <Setter Property="FontFamily" Value="pack://application:,,,/assets/fonts/#Montserrat-VariableFont_wght" />
+        </Style>
     </Application.Resources>
 </Application>
 
