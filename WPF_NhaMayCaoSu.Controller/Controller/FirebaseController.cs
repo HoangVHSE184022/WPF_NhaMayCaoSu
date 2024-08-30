@@ -11,7 +11,8 @@ namespace WPF_NhaMayCaoSu.Controller.Controller
 {
     public class FirebaseController
     {
-        private readonly string _bucketName = "nhamaycaosu-images.appspot.com"; 
+        private readonly string _bucketName = "nhamaycaosu-images.appspot.com";
+        private readonly string _googleHeader = "https://storage.googleapis.com";
         public FirebaseController()
         {
             if (FirebaseApp.DefaultInstance == null)
@@ -32,7 +33,7 @@ namespace WPF_NhaMayCaoSu.Controller.Controller
                 using var fileStream = File.OpenRead(localFilePath);
                 var storageObject = await storage.UploadObjectAsync(_bucketName, firebaseFileName, null, fileStream);
 
-                string imageUrl = $"https://storage.googleapis.com/{_bucketName}/{firebaseFileName}";
+                string imageUrl = $"{_googleHeader}/{_bucketName}/{firebaseFileName}";
                 return imageUrl;
             }
             catch (Exception ex)
