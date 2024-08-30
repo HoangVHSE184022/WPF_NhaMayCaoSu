@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Core.Utils;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -36,7 +37,7 @@ namespace WPF_NhaMayCaoSu
 
             if (selected == null)
             {
-                MessageBox.Show("Please select a Customer to update!", "Select One", MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show(Constants.ErrorMessageSelectCustomer, Constants.ErrorTitleSelectCustomer, MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
