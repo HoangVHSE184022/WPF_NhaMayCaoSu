@@ -9,7 +9,7 @@ namespace WPF_NhaMayCaoSu.Service.Interfaces
 {
     public interface ISessionService
     {
-        List<Sale> GetAllSale();
+        List<Sale> GetAllSales();
         List<Sale> GetSaleByRFID(long RfID);
         void AddToSalelist(Sale sale);
 
