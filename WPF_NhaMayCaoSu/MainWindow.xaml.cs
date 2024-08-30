@@ -11,6 +11,7 @@ namespace WPF_NhaMayCaoSu
     {
         private readonly IMqttServerService _mqttService;
         private readonly CameraService _cameraService = new();
+        private readonly SessionService _sessionService;
 
         public MainWindow()
         {
@@ -21,6 +22,7 @@ namespace WPF_NhaMayCaoSu
         {
             InitializeComponent();
             _mqttService = mqttService;
+            _sessionService = new();
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
