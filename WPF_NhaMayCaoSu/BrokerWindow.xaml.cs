@@ -122,8 +122,8 @@ namespace WPF_NhaMayCaoSu
             {
                 ConnectedClientsListBox.Items.Clear();
 
-                var connectedClients = _mqttService.GetConnectedClients();
-                foreach (var client in connectedClients)
+                IReadOnlyDictionary<string, string> connectedClients = _mqttService.GetConnectedClients();
+                foreach (KeyValuePair<string, string> client in connectedClients)
                 {
                     ConnectedClientsListBox.Items.Add($"Client ID: {client.Key}, IP: {client.Value}");
                 }
