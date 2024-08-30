@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using WPF_NhaMayCaoSu.Service.Interfaces;
-using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -9,7 +8,7 @@ namespace WPF_NhaMayCaoSu
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly IMqttService _mqttService;
+        private readonly IMqttServerService _mqttService;
         private readonly ICameraService _cameraService;
 
         public MainWindow()
@@ -17,7 +16,7 @@ namespace WPF_NhaMayCaoSu
             InitializeComponent();
         }
 
-        public MainWindow(IMqttService mqttService, ICameraService cameraService)
+        public MainWindow(IMqttServerService mqttService, ICameraService cameraService)
         {
             InitializeComponent();
             _mqttService = mqttService;

@@ -135,7 +135,11 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DensityImageUrl")
+                    b.Property<string?>("DensityImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string?>("WeightImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -146,6 +150,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<double?>("ProductDensity")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("ProductWeight")
                         .HasColumnType("float");
 
                     b.Property<long>("RFIDCode")

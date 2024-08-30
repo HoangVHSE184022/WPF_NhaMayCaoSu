@@ -2,7 +2,6 @@
 using OpenCvSharp.WpfExtensions;
 using System.Windows;
 using System.Windows.Threading;
-using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu

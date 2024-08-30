@@ -57,13 +57,16 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: table => new
                 {
                     SaleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductWeight = table.Column<double>(type: "float", nullable: true),
+                    WeightImageUrl = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ProductDensity = table.Column<double>(type: "float", nullable: true),
-                    DensityImageUrl = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DensityImageUrl = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<short>(type: "smallint", nullable: false),
                     IsEdited = table.Column<bool>(type: "bit", nullable: false),
                     LastEditedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    RFIDCode = table.Column<long>(type: "bigint", nullable: false)
+                    RFIDCode = table.Column<long>(type: "bigint", nullable: false),
+                    Type = table.Column<short>(type: "smallint", nullable: false),
                 },
                 constraints: table =>
                 {

@@ -1,17 +1,15 @@
 ﻿using MQTTnet;
 using MQTTnet.Server;
-using System;
 using System.Collections.Concurrent;
-using System.Threading.Tasks;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
-public class MqttService : IMqttService
+public class MqttServerService : IMqttServerService
 {
-    private readonly MqttServer _mqttServer;
+    private readonly MQTTnet.Server.MqttServer _mqttServer;
     private readonly ConcurrentDictionary<string, string> _connectedClients;
-    public Action ClientsChanged { get; set; }
+    public event EventHandler ClientsChanged;
 
-    public MqttService()
+    public MqttServerService()
     {
         _connectedClients = new ConcurrentDictionary<string, string>();
         // Configure the MQTT server options for non-TLS
@@ -46,10 +44,9 @@ public class MqttService : IMqttService
         {
             if (_connectedClients != null && !string.IsNullOrEmpty(e.ClientId))
             {
-                _connectedClients[e.ClientId] = e.Endpoint; // Store the IP address of the client
+                _connectedClients[e.ClientId] = e.Endpoint;
 
-                // Notify UI that the clients have changed
-                ClientsChanged?.Invoke();
+                ClientsChanged?.Invoke(this, EventArgs.Empty); // Trigger the event
 
                 Console.WriteLine($"Client connected: {e.ClientId}, IP: {e.Endpoint}");
             }
@@ -62,8 +59,7 @@ public class MqttService : IMqttService
             {
                 _connectedClients.TryRemove(e.ClientId, out _);
 
-                // Notify UI that the clients have changed
-                ClientsChanged?.Invoke();
+                ClientsChanged?.Invoke(this, EventArgs.Empty); // Trigger the event
 
                 Console.WriteLine($"Client disconnected: {e.ClientId}");
             }

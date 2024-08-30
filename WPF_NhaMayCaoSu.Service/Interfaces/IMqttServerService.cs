@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿
 
 namespace WPF_NhaMayCaoSu.Service.Interfaces
 {
-    public interface IMqttService
+    public interface IMqttServerService
     {
         Task StartBrokerAsync();
         Task StopBrokerAsync();
         Task RestartBrokerAsync();
         IReadOnlyDictionary<string, string> GetConnectedClients();
 
-        Action ClientsChanged { get; set; }
+        event EventHandler ClientsChanged;
     }
 }
