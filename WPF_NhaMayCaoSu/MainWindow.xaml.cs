@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using WPF_NhaMayCaoSu.Service.Interfaces;
+using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -9,18 +10,19 @@ namespace WPF_NhaMayCaoSu
     public partial class MainWindow : Window
     {
         private readonly IMqttServerService _mqttService;
-        private readonly ICameraService _cameraService;
+        private readonly CameraService _cameraService = new();
+        private readonly SessionService _sessionService;
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        public MainWindow(IMqttServerService mqttService, ICameraService cameraService)
+        public MainWindow(IMqttServerService mqttService)
         {
             InitializeComponent();
             _mqttService = mqttService;
-            _cameraService = cameraService;
+            _sessionService = new();
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)

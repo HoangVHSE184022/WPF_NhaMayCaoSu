@@ -7,15 +7,12 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 {
     public class CameraRepository : ICameraRepository
     {
-        private readonly CaoSuWpfDbContext _context;
+        private CaoSuWpfDbContext _context;
 
-        public CameraRepository(CaoSuWpfDbContext context)  // Ensure correct DbContext is used
-        {
-            _context = context;
-        }
 
         public async Task AddCamera(Camera camera)
         {
+            _context = new();
             try
             {
                 await _context.Cameras.AddAsync(camera);
@@ -30,6 +27,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
         public async Task<Camera> GetCamera()
         {
+            _context = new();
             try
             {
                 return await _context.Cameras.FirstOrDefaultAsync(c => c.Status == 1); // Retrieve only available cameras
@@ -43,6 +41,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
         public async Task UpdateCamera(Camera camera)
         {
+            _context = new();
             try
             {
                 _context.Cameras.Update(camera);
@@ -57,6 +56,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
         public async Task DeleteCamera(Guid id)
         {
+            _context = new();
             try
             {
                 Camera camera = await _context.Cameras.FindAsync(id);
@@ -75,6 +75,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
         public async Task<Camera> GetCameraById(Guid cameraId)
         {
+            _context = new();
             try
             {
                 return await _context.Cameras.FirstOrDefaultAsync(c => c.CameraId == cameraId && c.Status == 1);
@@ -87,6 +88,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
         public async Task<Camera> GetNewestCamera()
         {
+            _context = new();
             try
             {
                 return await _context.Cameras
