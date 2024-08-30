@@ -7,14 +7,14 @@
         mc:Ignorable="d"
         Title="Customer Management" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Background="#e0ffff" Loaded="Window_Loaded">
     <Grid>
-        <Label x:Name="ModeLabel" Content="Thêm/Chỉnh sửa khách hàng" HorizontalAlignment="Left" Height="68" Margin="32,31,0,0" VerticalAlignment="Top" Width="642" FontFamily="Monserrat" FontSize="46" Foreground="#FF002366" FontWeight="Bold"/>
-        <Label Content="Tên khách hàng" HorizontalAlignment="Left" Height="46" Margin="32,130,0,0" VerticalAlignment="Top" Width="239" FontFamily="Monserrat" FontSize="30" Foreground="#FF002366"/>
-        <TextBox x:Name="AccountNameTextBox" HorizontalAlignment="Left" Height="46" Margin="276,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  Width="850" FontFamily="Monserrat" FontSize="30" BorderThickness="0"/>
-        <Label Content="Mã RFID" HorizontalAlignment="Left" Height="46" Margin="32,230,0,0" VerticalAlignment="Top" Width="239" FontFamily="Monserrat" FontSize="30" Foreground="#FF002366"/>
-        <TextBox x:Name="RFIDCodeTextBox" HorizontalAlignment="Left" Height="46" Margin="276,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  Width="850" FontFamily="Monserrat" FontSize="30" BorderThickness="0"/>
-        <Label Content="Trạng thái" HorizontalAlignment="Left" Height="46" Margin="32,330,0,0" VerticalAlignment="Top" Width="239" FontFamily="Monserrat" FontSize="30" Foreground="#FF002366"/>
-        <TextBox x:Name="StatusTextBox" HorizontalAlignment="Left" Height="46" Margin="276,330,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  Width="850" FontFamily="Monserrat" FontSize="30" BorderThickness="0"/>
-        <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Height="68" Margin="966,667,0,0" VerticalAlignment="Top" Width="160" Background="#FF254098" FontFamily="Monserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" FontWeight="UltraBold" Click="SaveButton_Click"/>
-        <Button x:Name="QuitButton" Content="Quit" HorizontalAlignment="Left" Height="68" Margin="72,667,0,0" VerticalAlignment="Top" Width="160" Background="#FFFFFF" FontFamily="Monserrat" Foreground="#FF002366" BorderThickness="0" FontSize="36" FontWeight="UltraBold" Click="QuitButton_Click"/>
+        <Label x:Name="ModeLabel" Content="Thêm/Chỉnh sửa khách hàng" HorizontalAlignment="Left" Height="68" Margin="32,31,0,0" VerticalAlignment="Top" Width="642" FontFamily="Arial" FontSize="46" Foreground="#FF002366" FontWeight="Bold"/>
+        <Label Content="Tên khách hàng" HorizontalAlignment="Left" Height="46" Margin="32,130,0,0" VerticalAlignment="Top" Width="239" FontFamily="Arial" FontSize="30" Foreground="#FF002366"/>
+        <TextBox x:Name="AccountNameTextBox" HorizontalAlignment="Left" Height="46" Margin="276,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  Width="850" FontFamily="Arial" FontSize="30" BorderThickness="0"/>
+        <Label Content="Mã RFID" HorizontalAlignment="Left" Height="46" Margin="32,230,0,0" VerticalAlignment="Top" Width="239" FontFamily="Arial" FontSize="30" Foreground="#FF002366"/>
+        <TextBox x:Name="RFIDCodeTextBox" HorizontalAlignment="Left" Height="46" Margin="276,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  Width="850" FontFamily="Arial" FontSize="30" BorderThickness="0"/>
+        <Label Content="Trạng thái" HorizontalAlignment="Left" Height="46" Margin="32,330,0,0" VerticalAlignment="Top" Width="239" FontFamily="Arial" FontSize="30" Foreground="#FF002366"/>
+        <TextBox x:Name="StatusTextBox" HorizontalAlignment="Left" Height="46" Margin="276,330,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  Width="850" FontFamily="Arial" FontSize="30" BorderThickness="0"/>
+        <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Height="68" Margin="966,667,0,0" VerticalAlignment="Top" Width="160" Background="#FF254098" FontFamily="Arial" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" FontWeight="UltraBold" Click="SaveButton_Click"/>
+        <Button x:Name="QuitButton" Content="Quit" HorizontalAlignment="Left" Height="68" Margin="72,667,0,0" VerticalAlignment="Top" Width="160" Background="#FFFFFF" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="36" FontWeight="UltraBold" Click="QuitButton_Click"/>
     </Grid>
 </Window>
