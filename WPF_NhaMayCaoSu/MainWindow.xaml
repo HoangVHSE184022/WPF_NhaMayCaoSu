@@ -22,7 +22,30 @@
             <TextBlock  Text="Quản lý tài khoản" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
         <Rectangle HorizontalAlignment="Left" Height="736" Margin="280,23,0,0" Stroke="Black" VerticalAlignment="Top" Width="883" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
-        <DataGrid x:Name="SalesDataGrid" HorizontalAlignment="Left" Height="686" Margin="310,0,0,0" VerticalAlignment="Center" Width="824" d:ItemsSource="{d:SampleData ItemCount=5}" FontFamily="Arial" FontSize="24"/>
+        <DataGrid x:Name="SalesDataGrid" HorizontalAlignment="Left" Height="686" Margin="310,0,0,0" VerticalAlignment="Center" Width="824" FontFamily="Arial" FontSize="24" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Thời gian tạo" Binding="{Binding CreatedDate}" />
+                <DataGridTextColumn Header="RFID" Binding="{Binding RFIDCode}"/>
+                <DataGridTextColumn Header="Cân nặng" Binding="{Binding Weight}" />
+                <DataGridTextColumn Header="Tỉ Trọng" Binding="{Binding Density}" />
+                <DataGridTextColumn Header="Tên khách hàng" Binding="{Binding Customer.CustomerName}" />
+                <DataGridTemplateColumn Header="Chỉnh sửa">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Width="25" Height="25">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Grid>
+                                            <TextBlock Text="⚙️" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
         <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="68" Margin="62,667,0,0" VerticalAlignment="Top" Width="160" Background="#FF254098" FontFamily="Arial" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" FontWeight="UltraBold" Click="QuitButton_Click"/>
         <Button  x:Name="SaleManagementButton" HorizontalAlignment="Left" Height="70" Margin="62,445,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" Click="SaleManagementButton_Click" >
             <TextBlock Text="Quản lý Sale" TextWrapping="Wrap" TextAlignment="Center"/>
