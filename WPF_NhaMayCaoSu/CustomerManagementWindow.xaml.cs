@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 
@@ -25,27 +26,51 @@ namespace WPF_NhaMayCaoSu
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            Customer x = new();
-            x.CustomerName = AccountNameTextBox.Text;
-            x.RFIDCode = long.Parse(RFIDCodeTextBox.Text);
-            x.Status = short.Parse(StatusTextBox.Text);
+            // Validate required fields
+            if (string.IsNullOrWhiteSpace(AccountNameTextBox.Text) ||
+                string.IsNullOrWhiteSpace(RFIDCodeTextBox.Text) ||
+                string.IsNullOrWhiteSpace(StatusTextBox.Text))
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Validate RFID Code (ensure it's a valid number)
+            if (!long.TryParse(RFIDCodeTextBox.Text, out long rfidCode))
+            {
+                MessageBox.Show("RFID Code phải là số hợp lệ!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Validate Status (ensure it's either 0 or 1)
+            if (!short.TryParse(StatusTextBox.Text, out short status) || (status != 0 && status != 1))
+            {
+                MessageBox.Show("Status phải là 0 (inactive) hoặc 1 (active)!", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Proceed to create or update the customer
+            Customer customer = new()
+            {
+                CustomerName = AccountNameTextBox.Text,
+                RFIDCode = rfidCode,
+                Status = status,
+                CreatedDate = SelectedCustomer == null ? DateTime.Now : SelectedCustomer.CreatedDate,
+                ExpirationDate = SelectedCustomer == null ? DateTime.Now.AddDays(1) : SelectedCustomer.ExpirationDate,
+                CustomerId = SelectedCustomer?.CustomerId ?? Guid.NewGuid()
+            };
 
             if (SelectedCustomer == null)
             {
-                x.CreatedDate = DateTime.Now;
-                x.ExpirationDate = DateTime.Now.AddDays(1);
-
-                MessageBox.Show($"Created {AccountNameTextBox.Text}!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                await _service.CreateCustomer(x);
+                await _service.CreateCustomer(customer);
+                MessageBox.Show($"Khách hàng {customer.CustomerName} đã được tạo thành công!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                x.CustomerId = SelectedCustomer.CustomerId;
-                x.CreatedDate = SelectedCustomer.CreatedDate;
-                x.ExpirationDate = SelectedCustomer.ExpirationDate;
-                MessageBox.Show($"Updated {SelectedCustomer.CustomerName}!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                await _service.UpdateCustomer(x);
+                await _service.UpdateCustomer(customer);
+                MessageBox.Show($"Khách hàng {customer.CustomerName} đã được cập nhật thành công!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+
             this.Close();
         }
 
