@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace WPF_NhaMayCaoSu.Service.Interfaces
 {
-    public interface IMqttService
+    public interface IMqttServerService
     {
         Task StartBrokerAsync();
         Task StopBrokerAsync();

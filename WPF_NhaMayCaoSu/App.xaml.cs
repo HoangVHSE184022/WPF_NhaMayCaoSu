@@ -41,12 +41,12 @@ namespace WPF_NhaMayCaoSu
         private void ConfigureServices(IServiceCollection services)
         {
             // Register services here
-            services.AddSingleton<IMqttService, MqttService>();
             services.AddSingleton<ISaleService, SaleService>();
             services.AddSingleton<IAccountService, AccountService>();
             services.AddSingleton<IRoleService, RoleService>();
             services.AddSingleton<ICustomerService, CustomerService>();
-            services.AddSingleton<IMqttService, MqttService>();
+            services.AddSingleton<IMqttServerService, MqttServerService>();
+            services.AddSingleton<IMqttClientService, MqttClientService>();
             // Register repositories here
             services.AddSingleton<ISaleRepository, SaleRepository>();
             services.AddSingleton<IAccountRepository, AccountRepository>();
