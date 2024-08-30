@@ -65,14 +65,6 @@ namespace WPF_NhaMayCaoSu
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            // Ensure that _cameraService is initialized
-            if (_cameraService == null)
-            {
-                MessageBox.Show("Camera service is not available.");
-                return;
-            }
-            */
             DualCameraWindow dualCameraWindow = new DualCameraWindow(_cameraService);
             dualCameraWindow.ShowDialog();
         }

@@ -3,10 +3,9 @@ using OpenCvSharp.WpfExtensions;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using WPF_NhaMayCaoSu.Repository.Context;
 using WPF_NhaMayCaoSu.Repository.Models;
-using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Core.Utils;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -46,35 +45,35 @@ namespace WPF_NhaMayCaoSu
 
             if (SelectedSale == null)
             {
-                imageFilePath = await CaptureImageFromCameraAsync(newestCamera, cameraIndex: 1);
+                //imageFilePath = await CaptureImageFromCameraAsync(newestCamera, cameraIndex: 1);
 
-                // Save image to Firebase and set WeightImageUrl
-                if (!string.IsNullOrEmpty(imageFilePath))
-                {
-                    FirebaseService firebaseService = new();
-                    string firebaseFileName = Path.GetFileName(imageFilePath);
-                    x.WeightImageUrl = await firebaseService.SaveImagePathToDatabaseAsync(imageFilePath, firebaseFileName);
-                }
+                //// Save image to Firebase and set WeightImageUrl
+                //if (!string.IsNullOrEmpty(imageFilePath))
+                //{
+                //    FirebaseService firebaseService = new();
+                //    string firebaseFileName = Path.GetFileName(imageFilePath);
+                //    x.WeightImageUrl = await firebaseService.SaveImagePathToDatabaseAsync(imageFilePath, firebaseFileName);
+                //}
 
                 x.CreatedDate = DateTime.Now;
                 x.IsEdited = false;
                 x.LastEditedTime = null;
                 x.ProductDensity = null;
                 x.DensityImageUrl = null;
-                MessageBox.Show($"Created!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(Constants.SuccessMessageSaleCreated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                 await _service.CreateSaleAsync(x);
             }
             else
             {
-                imageFilePath = await CaptureImageFromCameraAsync(newestCamera, cameraIndex: 2);
+                //imageFilePath = await CaptureImageFromCameraAsync(newestCamera, cameraIndex: 2);
 
-                // Save image to Firebase and set DensityImageUrl
-                if (!string.IsNullOrEmpty(imageFilePath))
-                {
-                    FirebaseService firebaseService = new();
-                    string firebaseFileName = Path.GetFileName(imageFilePath);
-                    x.DensityImageUrl = await firebaseService.SaveImagePathToDatabaseAsync(imageFilePath, firebaseFileName);
-                }
+                //// Save image to Firebase and set DensityImageUrl
+                //if (!string.IsNullOrEmpty(imageFilePath))
+                //{
+                //    FirebaseService firebaseService = new();
+                //    string firebaseFileName = Path.GetFileName(imageFilePath);
+                //    x.DensityImageUrl = await firebaseService.SaveImagePathToDatabaseAsync(imageFilePath, firebaseFileName);
+                //}
 
                 x.ProductDensity = Double.Parse(DensityTextBox.Text);
                 x.DensityImageUrl = URLDensityTextBox.Text;
@@ -82,7 +81,7 @@ namespace WPF_NhaMayCaoSu
                 x.CreatedDate = SelectedSale.CreatedDate;
                 x.IsEdited = true;
                 x.LastEditedTime = DateTime.Now;
-                MessageBox.Show($"Updated!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(Constants.SuccessMessageSaleUpdated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                 await _service.UpdateSaleAsync(x);
             }
 
@@ -90,62 +89,62 @@ namespace WPF_NhaMayCaoSu
         }
 
 
-        private async Task<string> CaptureImageFromCameraAsync(Camera camera, int cameraIndex)
-        {
-            string localFilePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.jpg");
+        //private async Task<string> CaptureImageFromCameraAsync(Camera camera, int cameraIndex)
+        //{
+        //    string localFilePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.jpg");
 
-            try
-            {
-                string cameraUrl = cameraIndex == 1 ? camera.Camera1 : camera.Camera2;
-                if (!string.IsNullOrEmpty(cameraUrl))
-                {
-                    using (var capture = new VideoCapture(cameraUrl))
-                    {
-                        if (capture.IsOpened())
-                        {
-                            using (var frame = new Mat())
-                            {
-                                capture.Read(frame);
-                                if (!frame.Empty())
-                                {
-                                    BitmapSource bitmapSource = frame.ToBitmapSource();
-                                    using (var stream = new FileStream(localFilePath, FileMode.Create, FileAccess.Write))
-                                    {
-                                        BitmapEncoder encoder = new JpegBitmapEncoder();
-                                        encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
-                                        encoder.Save(stream);
-                                    }
-                                    MessageBox.Show($"Captured frame from Camera {cameraIndex}.");
-                                }
-                                else
-                                {
-                                    MessageBox.Show($"Failed to capture frame from Camera {cameraIndex}.");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show($"Failed to open Camera {cameraIndex}.");
-                        }
-                    }
-                }
-                else
-                {
-                    throw new Exception($"Invalid Camera {cameraIndex} URL.");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error capturing image from Camera {cameraIndex}: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return string.Empty;
-            }
+        //    try
+        //    {
+        //        string cameraUrl = cameraIndex == 1 ? camera.Camera1 : camera.Camera2;
+        //        if (!string.IsNullOrEmpty(cameraUrl))
+        //        {
+        //            using (var capture = new VideoCapture(cameraUrl))
+        //            {
+        //                if (capture.IsOpened())
+        //                {
+        //                    using (var frame = new Mat())
+        //                    {
+        //                        capture.Read(frame);
+        //                        if (!frame.Empty())
+        //                        {
+        //                            BitmapSource bitmapSource = frame.ToBitmapSource();
+        //                            using (var stream = new FileStream(localFilePath, FileMode.Create, FileAccess.Write))
+        //                            {
+        //                                BitmapEncoder encoder = new JpegBitmapEncoder();
+        //                                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+        //                                encoder.Save(stream);
+        //                            }
+        //                            MessageBox.Show(string.Format(Constants.SuccessMessageCapturedFrame, cameraIndex), Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+        //                        }
+        //                        else
+        //                        {
+        //                            MessageBox.Show(string.Format(Constants.ErrorMessageCaptureFrameFailed, cameraIndex), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+        //                        }
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    MessageBox.Show(string.Format(Constants.ErrorMessageOpenCameraFailed, cameraIndex), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            throw new Exception(string.Format(Constants.ErrorMessageInvalidCameraUrl, cameraIndex));
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(string.Format(Constants.ErrorMessageCaptureImage, cameraIndex, ex.Message), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+        //        return string.Empty;
+        //    }
 
-            return localFilePath;
-        }
+        //    return localFilePath;
+        //}
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ModeLabel.Content = "Thêm Sale mới";
+            ModeLabel.Content = Constants.ModeLabelAddSale; ;
 
             if (SelectedSale != null)
             {
@@ -162,7 +161,7 @@ namespace WPF_NhaMayCaoSu
                 }
 
                 StatusTextBox.Text = SelectedSale.Status.ToString();
-                ModeLabel.Content = "Chỉnh sửa Sale";
+                ModeLabel.Content = Constants.ModeLabelEditSale;
             }
         }
     }

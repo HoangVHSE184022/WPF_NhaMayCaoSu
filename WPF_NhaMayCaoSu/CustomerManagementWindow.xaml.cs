@@ -16,6 +16,7 @@ namespace WPF_NhaMayCaoSu
     public partial class CustomerManagementWindow : Window
     {
         private CustomerService _service = new();
+        private MqttClientService _mqttClientService = new MqttClientService();
 
         public Customer SelectedCustomer { get; set; } = null;
 
@@ -40,7 +41,7 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
-            
+
             // Validate Status (ensure it's either 0 or 1)
             if (!short.TryParse(StatusTextBox.Text, out short status) || (status != 0 && status != 1))
             {
@@ -73,9 +74,13 @@ namespace WPF_NhaMayCaoSu
             Close();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModeLabel.Content = Constants.ModeLabelAddCustomer;
+            await _mqttClientService.ConnectAsync();
+            await _mqttClientService.SubscribeAsync("CreateRFID");
+
+            _mqttClientService.MessageReceived += OnMqttMessageReceived;
 
             if (SelectedCustomer != null)
             {
