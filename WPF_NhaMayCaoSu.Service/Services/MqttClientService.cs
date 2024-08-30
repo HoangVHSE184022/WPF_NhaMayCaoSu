@@ -4,6 +4,8 @@ using MQTTnet;
 using System.Text;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using System.Diagnostics;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace WPF_NhaMayCaoSu.Service.Services
 {
@@ -51,11 +53,40 @@ namespace WPF_NhaMayCaoSu.Service.Services
             string message = Encoding.UTF8.GetString(arg.ApplicationMessage.Payload);
             Console.WriteLine($"Message received on topic {arg.ApplicationMessage.Topic}: {message}");
 
-            // Raise the MessageReceived event
-            MessageReceived?.Invoke(this, message);
+            // Phân tích tin nhắn JSON
+            var jsonMessage = JsonConvert.DeserializeObject<JObject>(message);
+            string rfid = jsonMessage["RFID"]?.ToString();
+            string density = jsonMessage["Density"]?.ToString();
+            string weight = jsonMessage["Weight"]?.ToString();
+
+            // Kiểm tra topic và xử lý tin nhắn tương ứng
+            switch (arg.ApplicationMessage.Topic)
+            {
+                case "CreateRFID":
+                    if (!string.IsNullOrEmpty(rfid))
+                    {
+                        MessageReceived?.Invoke(this, $"CreateRFID:{rfid}");
+                    }
+                    break;
+
+                case "Can_tieu_ly":
+                    if (!string.IsNullOrEmpty(rfid) && !string.IsNullOrEmpty(density))
+                    {
+                        MessageReceived?.Invoke(this, $"Can_tieu_ly:{rfid}:{density}");
+                    }
+                    break;
+
+                case "Can_ta":
+                    if (!string.IsNullOrEmpty(rfid) && !string.IsNullOrEmpty(weight))
+                    {
+                        MessageReceived?.Invoke(this, $"Can_ta:{rfid}:{weight}");
+                    }
+                    break;
+            }
 
             return Task.CompletedTask;
         }
+
 
         public async Task ConnectAsync()
         {

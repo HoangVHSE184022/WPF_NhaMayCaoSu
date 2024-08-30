@@ -2,6 +2,10 @@
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
+using WPF_NhaMayCaoSu.Service.Interfaces;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -11,6 +15,7 @@ namespace WPF_NhaMayCaoSu
     public partial class CustomerManagementWindow : Window
     {
         private CustomerService _service = new();
+        private MqttClientService _mqttClientService = new MqttClientService();
 
         public Customer SelectedCustomer { get; set; } = null;
 
@@ -74,9 +79,13 @@ namespace WPF_NhaMayCaoSu
             Close();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModeLabel.Content = Constants.ModeLabelAddCustomer;
+            await _mqttClientService.ConnectAsync();
+            await _mqttClientService.SubscribeAsync("CreateRFID");
+
+            _mqttClientService.MessageReceived += OnMqttMessageReceived;
 
             if (SelectedCustomer != null)
             {
@@ -86,5 +95,39 @@ namespace WPF_NhaMayCaoSu
                 ModeLabel.Content = Constants.ModeLabelEditCustomer;
             }
         }
+
+
+        private void OnMqttMessageReceived(object sender, string data)
+        {
+            try
+            {
+                if (data.StartsWith("CreateRFID:"))
+                {
+                    string rfidString = data.Substring("CreateRFID:".Length);
+
+                    if (long.TryParse(rfidString, out long rfid))
+                    {
+                        RFIDCodeTextBox.Dispatcher.Invoke(() =>
+                        {
+                            RFIDCodeTextBox.Text = rfid.ToString();
+                        });
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Failed to parse RFID number.");
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine("Unexpected message format.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any general errors
+                Debug.WriteLine($"Error processing message: {ex.Message}");
+            }
+        }
+
     }
 }
