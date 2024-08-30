@@ -73,6 +73,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<short>("Status")
+                        .HasColumnType("smallint");
+
                     b.HasKey("CameraId");
 
                     b.ToTable("Cameras");
@@ -113,6 +116,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<Guid>("RoleId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
 
                     b.Property<string>("RoleName")
                         .IsRequired()
@@ -159,6 +165,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<short>("Status")
+                        .HasColumnType("smallint");
+
+                    b.Property<short>("Type")
                         .HasColumnType("smallint");
 
                     b.HasKey("SaleId");
