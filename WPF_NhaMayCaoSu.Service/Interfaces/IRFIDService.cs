@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WPF_NhaMayCaoSu.Repository.Models;
 
 namespace WPF_NhaMayCaoSu.Service.Interfaces
 {
-    public class IRFIDService
+    public interface IRFIDService
     {
+        Task AddRFIDAsync(RFID rfid);
+        Task<IEnumerable<RFID>> GetAllRFIDsAsync(int pageNumber, int pageSize);
+        Task<RFID> GetRFIDByIdAsync(Guid rfidId);
+        Task UpdateRFIDAsync(RFID rfid);
+        Task DeleteRFIDAsync(Guid rfidId);
+        Task<IEnumerable<RFID>> GetRFIDsByCustomerIdAsync(Guid customerId);
+        Task<IEnumerable<RFID>> GetRFIDsByStatusAsync(short status);
+        Task<IEnumerable<RFID>> GetRFIDsByExpirationDateAsync(DateTime expirationDate);
     }
 }

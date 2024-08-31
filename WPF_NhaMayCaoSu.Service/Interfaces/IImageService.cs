@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WPF_NhaMayCaoSu.Repository.Models;
 
 namespace WPF_NhaMayCaoSu.Service.Interfaces
 {
-    public class IImageService
+    public interface IImageService
     {
+        Task AddImageAsync(Image image);
+        Task<IEnumerable<Image>> GetAllImagesAsync(int pageNumber, int pageSize);
+        Task<Image> GetImageByIdAsync(Guid imageId);
+        Task<IEnumerable<Image>> GetImagesBySaleIdAsync(Guid saleId);
+        Task UpdateImageAsync(Image image);
+        Task DeleteImageAsync(Guid imageId);
     }
 }
