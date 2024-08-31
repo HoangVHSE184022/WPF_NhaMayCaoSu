@@ -13,6 +13,7 @@ namespace WPF_NhaMayCaoSu
     public partial class AccountManagementWindow : Window
     {
         private readonly AccountService _accountService = new();
+        public Account CurrentAccount { get; set; } = null;
         public AccountManagementWindow()
         {
             InitializeComponent();
@@ -57,12 +58,14 @@ namespace WPF_NhaMayCaoSu
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
+            customerListWindow.CurrentAccount = CurrentAccount;
             customerListWindow.ShowDialog();
         }
 
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
         {
             SaleListWindow saleListWindow = new SaleListWindow();
+            saleListWindow.CurrentAccount = CurrentAccount;
             saleListWindow.ShowDialog();
         }
 
@@ -70,12 +73,14 @@ namespace WPF_NhaMayCaoSu
         private void AccountManagementButton_Click(object sender, RoutedEventArgs e)
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
+            accountManagementWindow.CurrentAccount = CurrentAccount;
             accountManagementWindow.ShowDialog();
         }
 
         private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             BrokerWindow brokerWindow = new BrokerWindow();
+            brokerWindow.CurrentAccount = CurrentAccount;
             brokerWindow.ShowDialog();
         }
 
@@ -86,7 +91,22 @@ namespace WPF_NhaMayCaoSu
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow window = new();
+            window.CurrentAccount = CurrentAccount;
+            window.Show();
+        }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ModeLabel.Content = "Đăng ký tài khoản";
+
+            if(CurrentAccount != null)
+            {
+                ModeLabel.Content = "Cập nhật tài khoản";
+                AccountNameTextBox.Text = CurrentAccount.AccountName;
+                UsernameTextBox.Text = CurrentAccount.Username;
+                
+            }
         }
     }
 }

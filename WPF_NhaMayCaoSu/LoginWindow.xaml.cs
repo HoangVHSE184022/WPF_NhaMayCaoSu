@@ -34,6 +34,7 @@ namespace WPF_NhaMayCaoSu
                 else
                 {
                     MainWindow mainWindow = new MainWindow();
+                    mainWindow.CurrentAccount = account;
                     mainWindow.Show();
                     Close();
                 }
