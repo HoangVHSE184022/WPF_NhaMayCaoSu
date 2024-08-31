@@ -19,6 +19,22 @@ namespace WPF_NhaMayCaoSu
             _mqttClientService = new MqttClientService();
         }
 
+        //Get local IP of server
+        private string GetLocalIpAddress()
+        {
+            System.Net.IPAddress[] ipAddresses = System.Net.Dns.GetHostAddresses(System.Net.Dns.GetHostName());
+
+            foreach (System.Net.IPAddress ip in ipAddresses)
+            {
+                // Check for IPv4 addresses
+                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            return "N/A";
+        }
+
         private async void StartBroker_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -28,6 +44,11 @@ namespace WPF_NhaMayCaoSu
 
                 // Update the ServerStatusLabel to "Online"
                 ServerStatusLabel.Content = Constants.StatusOnline;
+                PortconnecttionLabel.Content = "1883";
+                string localIpAddress = GetLocalIpAddress();
+                IPconnecttionSmallLabel.Content = $"Local IP: {localIpAddress}";
+                IPconnecttionLabel.Content = $"{localIpAddress}";
+
 
                 await _mqttClientService.ConnectAsync();
 
@@ -54,6 +75,7 @@ namespace WPF_NhaMayCaoSu
 
                 // Update the ServerStatusLabel to "Offline"
                 ServerStatusLabel.Content = Constants.StatusOnline;
+                PortconnecttionLabel.Content = "Không có kết nối";
 
                 await _mqttClientService.CloseConnectionAsync();
 
