@@ -10,20 +10,16 @@ namespace WPF_NhaMayCaoSu
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly IMqttServerService _mqttService;
         private readonly CameraService _cameraService = new();
         private readonly SessionService _sessionService;
+        private readonly MqttServerService _mqttServerService;
+        private readonly MqttClientService _mqttClientService;
 
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        public MainWindow(IMqttServerService mqttService)
-        {
-            InitializeComponent();
-            _mqttService = mqttService;
-            _sessionService = new();
+            _mqttServerService = new MqttServerService();
+            _mqttClientService = new MqttClientService();
         }
 
         public void FoundEvent(Sale sale)
@@ -74,5 +70,29 @@ namespace WPF_NhaMayCaoSu
 
         }
 
+        private async void Broker_Click(object sender, RoutedEventArgs e)
+        {
+            if(OpenServerButton.Content == "Mở máy chủ")
+            {
+                // Start the MQTT broker
+                await _mqttServerService.StartBrokerAsync();
+
+                OpenServerButton.Content = "Đóng máy chủ";
+
+                await _mqttClientService.ConnectAsync();
+                ServerStatusTextBlock.Text = "Online";
+            }
+            else
+            {
+                // Stop the MQTT broker
+                await _mqttServerService.StopBrokerAsync();
+
+                // Update the ServerStatusLabel to "Offline"
+                OpenServerButton.Content = "Mở máy chủ";
+
+                await _mqttClientService.CloseConnectionAsync();
+                ServerStatusTextBlock.Text = "Offline";
+            }
+        }
     }
 }
