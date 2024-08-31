@@ -5,19 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
-        Title="Customer List" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Background="#e0ffff " Loaded="Window_Loaded">
+        Title="Customer List" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Grid>
-        <Label Content="Quản lý khách hàng" HorizontalAlignment="Left" Height="68" Margin="32,31,0,0" VerticalAlignment="Top" Width="446" FontFamily="Arial" FontSize="46" Foreground="#FF002366" FontWeight="Bold"/>
-        <Rectangle HorizontalAlignment="Left" Height="230" Margin="32,120,0,0" Stroke="Black" VerticalAlignment="Top" Width="200" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
-        <Button x:Name="AddCustomerButton" HorizontalAlignment="Left" Height="69" Margin="52,149,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" Click="Button_Click" >
-            <TextBlock Text="Thêm khách hàng" TextWrapping="Wrap" TextAlignment="Center"/>
+        <Menu HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Monserrat" Foreground="#FF002366" FontSize="24">
+            <MenuItem x:Name="ShowButton" Header="Hiển thị" Click="ShowButton_Click"/>
+            <MenuItem x:Name="ConfigButton" Header="Cấu hình" Click="ConfigButton_Click"/>
+            <MenuItem x:Name="BrokerManagementButton" Header="Broker" Click="BrokerManagementButton_Click"/>
+            <MenuItem Header="Quản lý">
+                <MenuItem x:Name="CustomerManagementButton" Header="Khách hàng" Click="CustomerManagementButton_Click"/>
+                <MenuItem x:Name="SaleManagementButton" Header="Sale" Click="SaleManagementButton_Click"/>
+                <MenuItem x:Name="AccountManagementButton" Header="Tài khoản" Click="AccountManagementButton_Click"/>
+            </MenuItem>
+        </Menu>
+        
+        <Label Content="Quản lý khách hàng" HorizontalAlignment="Left" Height="57" Margin="32,67,0,0" VerticalAlignment="Top" Width="343" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
+        <Button x:Name="AddCustomerButton" HorizontalAlignment="Left" Height="40" Margin="1047,146,0,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="Button_Click" >
+            <TextBlock Text="Thêm mới" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="EditCustomerButton1" HorizontalAlignment="Left" Height="69" Margin="52,249,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" Click="EditCustomerButton1_Click" >
-            <TextBlock Text="Chỉnh sửa khách hàng" TextWrapping="Wrap" TextAlignment="Center"/>
+        <Button x:Name="EditCustomerButton1" HorizontalAlignment="Left" Height="40" Margin="1047,228,0,0" VerticalAlignment="Top" Width="121" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="EditCustomerButton1_Click" >
+            <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="68" Margin="52,667,0,0" VerticalAlignment="Top" Width="160" Background="#FF254098" FontFamily="Arial" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" FontWeight="UltraBold" Click="QuitButton_Click"/>
-        <Rectangle HorizontalAlignment="Left" Height="652" Margin="280,104,0,0" Stroke="Black" VerticalAlignment="Top" Width="884" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
-        <DataGrid x:Name="CustomerDataGrid" HorizontalAlignment="Left" Height="606" Margin="310,129,0,0" VerticalAlignment="Top" Width="824" FontFamily="Arial" FontSize="24" AutoGenerateColumns="False">
+        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="40" Margin="1047,702,0,0" VerticalAlignment="Top" Width="121" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" Click="QuitButton_Click"/>
+        <DataGrid x:Name="CustomerDataGrid" HorizontalAlignment="Left" Height="613" Margin="32,129,0,0" VerticalAlignment="Top" Width="1009" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Width="50" Binding="{Binding CustomerId}"/>
                 <DataGridTextColumn Header="Name" Width="230" Binding="{Binding CustomerName}"/>
@@ -27,7 +36,7 @@
                 <DataGridTextColumn Header="Status" Width="100" Binding="{Binding Status}"/>
 
             </DataGrid.Columns>
-            
+
         </DataGrid>
 
 
