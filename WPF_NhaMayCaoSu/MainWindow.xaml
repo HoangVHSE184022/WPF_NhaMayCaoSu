@@ -53,5 +53,12 @@
         <Button  x:Name="BrokerManagementButton" HorizontalAlignment="Left" Height="70" Margin="62,215,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" Click="BrokerManagementButton_Click">
             <TextBlock Text="Quản lý Broker" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
+        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="45" Margin="41,718,0,0" VerticalAlignment="Top" Width="106" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="30" Click="QuitButton_Click"/>
+        <Button x:Name="OpenServerButton" Content="Mở máy chủ" HorizontalAlignment="Left" Height="46" Margin="814,717,0,0" VerticalAlignment="Top" Width="182" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="30" Click="Broker_Click"/>
+        <TextBlock x:Name="ServerStatusTextBlock" Text="Offline" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1026,717,0,0" 
+                   FontFamily="Montserrat" FontSize="22" Foreground="#FF254098" FontWeight="Bold" />
+        <TextBlock x:Name="NumberofconnectionTextBlock" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1026,738,0,0" 
+            FontFamily="Montserrat" FontSize="12" Foreground="#FF254098" FontWeight="Bold" Height="21" Width="133" ><Run Text="Onl"/><LineBreak/><Run/></TextBlock>
+>>>>>>> Stashed changes
     </Grid>
 </Window>
