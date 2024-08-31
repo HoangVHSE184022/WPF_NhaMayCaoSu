@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace WPF_NhaMayCaoSu.Repository.Models
 {
 
@@ -14,8 +9,6 @@ namespace WPF_NhaMayCaoSu.Repository.Models
         public DateTime ExpirationDate { get; set; }
         public Guid CustomerId { get; set; }
         public short Status { get; set; }
-
-        // Navigation properties
         public Customer Customer { get; set; }
     }
 
