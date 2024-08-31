@@ -7,58 +7,51 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 {
     public class ImageRepository : IImageRepository
     {
-        private CaoSuWpfDbContext _context;
+        private readonly CaoSuWpfDbContext _context;
 
-        public ImageRepository()
+        public ImageRepository(CaoSuWpfDbContext context)
         {
-            _context = new CaoSuWpfDbContext();
+            _context = context;
         }
 
-        public async Task AddImage(Image image)
+        public async Task AddImageAsync(Image image)
         {
-            _context = new CaoSuWpfDbContext();
             await _context.Images.AddAsync(image);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Image>> GetAllImages(int pageNumber, int pageSize)
+        public async Task<IEnumerable<Image>> GetAllImagesAsync(int pageNumber, int pageSize)
         {
-            _context = new CaoSuWpfDbContext();
-
             return await _context.Images
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)
                                  .ToListAsync();
         }
 
-        public async Task<Image> GetImageById(Guid imageId)
+        public async Task<Image> GetImageByIdAsync(Guid imageId)
         {
-            _context = new CaoSuWpfDbContext();
             return await _context.Images.FirstOrDefaultAsync(img => img.ImageId == imageId);
         }
 
-        public async Task<IEnumerable<Image>> GetImagesBySaleId(Guid saleId)
+        public async Task<IEnumerable<Image>> GetImagesBySaleIdAsync(Guid saleId)
         {
-            _context = new CaoSuWpfDbContext();
             return await _context.Images
                                  .Where(img => img.SaleId == saleId)
                                  .ToListAsync();
         }
 
-        public async Task UpdateImage(Image image)
+        public async Task UpdateImageAsync(Image image)
         {
-            _context = new CaoSuWpfDbContext();
             _context.Images.Update(image);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteImage(Guid imageId)
+        public async Task DeleteImageAsync(Guid imageId)
         {
-            _context = new CaoSuWpfDbContext();
             Image image = await _context.Images.FindAsync(imageId);
             if (image != null)
             {
-                _context.Images.Update(image);
+                _context.Images.Remove(image);
                 await _context.SaveChangesAsync();
             }
         }
