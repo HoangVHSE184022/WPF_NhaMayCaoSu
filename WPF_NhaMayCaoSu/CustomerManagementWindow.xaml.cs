@@ -120,5 +120,40 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
+        private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            CustomerListWindow customerListWindow = new CustomerListWindow();
+            customerListWindow.ShowDialog();
+        }
+
+        private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaleListWindow saleListWindow = new SaleListWindow();
+            saleListWindow.ShowDialog();
+        }
+
+
+        private void AccountManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
+            accountManagementWindow.ShowDialog();
+        }
+
+        private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            BrokerWindow brokerWindow = new BrokerWindow();
+            brokerWindow.ShowDialog();
+        }
+
+        private void ConfigButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void ShowButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }
