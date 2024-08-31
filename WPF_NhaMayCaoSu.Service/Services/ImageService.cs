@@ -10,32 +10,32 @@ namespace WPF_NhaMayCaoSu.Service.Services
 
         public async Task AddImageAsync(Image image)
         {
-            await _repo.AddImage(image);
+            await _repo.AddImageAsync(image);
         }
 
         public async Task<IEnumerable<Image>> GetAllImagesAsync(int pageNumber, int pageSize)
         {
-            return await _repo.GetAllImages(pageNumber, pageSize);
+            return await _repo.GetAllImagesAsync(pageNumber, pageSize);
         }
 
         public async Task<Image> GetImageByIdAsync(Guid imageId)
         {
-            return await _repo.GetImageById(imageId);
+            return await _repo.GetImageByIdAsync(imageId);
         }
 
         public async Task<IEnumerable<Image>> GetImagesBySaleIdAsync(Guid saleId)
         {
-            return await _repo.GetImagesBySaleId(saleId);
+            return await _repo.GetImagesBySaleIdAsync(saleId);
         }
 
         public async Task UpdateImageAsync(Image image)
         {
-            await _repo.UpdateImage(image);
+            await _repo.UpdateImageAsync(image);
         }
 
         public async Task DeleteImageAsync(Guid imageId)
         {
-            await _repo.DeleteImage(imageId);
+            await _repo.DeleteImageAsync(imageId);
         }
     }
 }
