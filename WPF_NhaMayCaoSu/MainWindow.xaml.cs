@@ -15,10 +15,12 @@ namespace WPF_NhaMayCaoSu
         private readonly MqttClientService _mqttClientService;
         private readonly CameraService _cameraService = new();
         public Account CurrentAccount { get; set; } = null;
+        private BrokerWindow broker;
 
         public MainWindow()
         {
             InitializeComponent();
+            broker = new BrokerWindow();
             _mqttServerService = new MqttServerService();
             _mqttClientService = new MqttClientService();
             _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;
@@ -67,9 +69,7 @@ namespace WPF_NhaMayCaoSu
 
         private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            BrokerWindow brokerWindow = new BrokerWindow();
-            brokerWindow.CurrentAccount = CurrentAccount;
-            brokerWindow.ShowDialog();
+            broker.Show();
         }
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
@@ -80,9 +80,7 @@ namespace WPF_NhaMayCaoSu
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow window = new MainWindow();
-            window.CurrentAccount = CurrentAccount;
-            window.Show();
+            Show();
         }
 
         private async void Broker_Click(object sender, RoutedEventArgs e)
