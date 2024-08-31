@@ -73,6 +73,7 @@ namespace WPF_NhaMayCaoSu
             dualCameraWindow.ShowDialog();
         }
 
+<<<<<<< Updated upstream
        
 =======
         private void ShowButton_Click(object sender, RoutedEventArgs e)
