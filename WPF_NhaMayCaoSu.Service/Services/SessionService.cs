@@ -24,12 +24,12 @@ namespace WPF_NhaMayCaoSu.Service.Services
 
         public List<Sale> GetAllSales()
         {
-            return _sessionSaleList.OrderBy(sale => sale.CreatedDate).ToList();
+            return _sessionSaleList.OrderBy(sale => sale.LastEditedTime).ToList();
         }
 
-        public List<Sale> GetSaleByRFID(long RfID)
+        public List<Sale> GetSaleByRFID(string RfID)
         {
-            return _sessionSaleList.Where(sale => sale.RFIDCode == RfID).OrderBy(sale => sale.CreatedDate).ToList();
+            return _sessionSaleList.Where(sale => sale.RFIDCode == RfID).OrderBy(sale => sale.LastEditedTime).ToList();
         }
     }
 }

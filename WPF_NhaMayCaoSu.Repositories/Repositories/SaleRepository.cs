@@ -45,7 +45,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             return await _context.Sales.Include("Customer").FirstOrDefaultAsync(x => x.SaleId == saleId);
         }
 
-        public async Task<Sale> GetSaleByRFIDCode(long RFIDCode)
+        public async Task<Sale> GetSaleByRFIDCode(string RFIDCode)
         {
             _context = new();
             return await _context.Sales.Include("Customer").FirstOrDefaultAsync(x => x.RFIDCode == RFIDCode);

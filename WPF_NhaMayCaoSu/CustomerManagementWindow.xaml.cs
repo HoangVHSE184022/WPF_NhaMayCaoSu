@@ -6,6 +6,7 @@ using WPF_NhaMayCaoSu.Service.Interfaces;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -40,12 +41,6 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
-            // Validate RFID Code (ensure it's a valid number)
-            if (!long.TryParse(RFIDCodeTextBox.Text, out long rfidCode))
-            {
-                MessageBox.Show(Constants.ErrorMessageInvalidRFID, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
 
             // Validate Status (ensure it's either 0 or 1)
             if (!short.TryParse(StatusTextBox.Text, out short status) || (status != 0 && status != 1))
@@ -58,10 +53,7 @@ namespace WPF_NhaMayCaoSu
             Customer customer = new()
             {
                 CustomerName = AccountNameTextBox.Text,
-                RFIDCode = rfidCode,
                 Status = status,
-                CreatedDate = SelectedCustomer == null ? DateTime.Now : SelectedCustomer.CreatedDate,
-                ExpirationDate = SelectedCustomer == null ? DateTime.Now.AddDays(1) : SelectedCustomer.ExpirationDate,
                 CustomerId = SelectedCustomer?.CustomerId ?? Guid.NewGuid()
             };
 
@@ -90,7 +82,6 @@ namespace WPF_NhaMayCaoSu
             if (SelectedCustomer != null)
             {
                 AccountNameTextBox.Text = SelectedCustomer.CustomerName;
-                RFIDCodeTextBox.Text = SelectedCustomer.RFIDCode.ToString();
                 StatusTextBox.Text = SelectedCustomer.Status.ToString();
                 ModeLabel.Content = Constants.ModeLabelEditCustomer;
             }
@@ -105,11 +96,11 @@ namespace WPF_NhaMayCaoSu
                 {
                     string rfidString = data.Substring("CreateRFID:".Length);
 
-                    if (long.TryParse(rfidString, out long rfid))
+                    if (!rfidString.IsNullOrEmpty())
                     {
                         RFIDCodeTextBox.Dispatcher.Invoke(() =>
                         {
-                            RFIDCodeTextBox.Text = rfid.ToString();
+                            RFIDCodeTextBox.Text = rfidString;
                         });
                     }
                     else
@@ -127,6 +118,41 @@ namespace WPF_NhaMayCaoSu
                 // Handle any general errors
                 Debug.WriteLine($"Error processing message: {ex.Message}");
             }
+        }
+
+        private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            CustomerListWindow customerListWindow = new CustomerListWindow();
+            customerListWindow.ShowDialog();
+        }
+
+        private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaleListWindow saleListWindow = new SaleListWindow();
+            saleListWindow.ShowDialog();
+        }
+
+
+        private void AccountManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
+            accountManagementWindow.ShowDialog();
+        }
+
+        private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            BrokerWindow brokerWindow = new BrokerWindow();
+            brokerWindow.ShowDialog();
+        }
+
+        private void ConfigButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void ShowButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
     }

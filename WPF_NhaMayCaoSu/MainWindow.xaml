@@ -5,24 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
-        Title="Show Information" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Background="#e0ffff ">
+        Title="Show Information" Height="800" Width="1200" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
     <Grid>
-        <Rectangle HorizontalAlignment="Left" Height="203" Margin="42,556,0,0" Stroke="Black" VerticalAlignment="Top" Width="200" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
-        <Rectangle HorizontalAlignment="Left" Height="280" Margin="42,33,0,0" Stroke="Black" VerticalAlignment="Top" Width="200" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
-        <Button x:Name="ShowButton" Content="Hiển thị" HorizontalAlignment="Left" Height="49" Margin="62,66,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="26" FontWeight="UltraBold"/>
-        <Button x:Name="ConfigButton" Content="Cấu hình" HorizontalAlignment="Left" Height="49" Margin="62,146,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="26" FontWeight="UltraBold" Click="ConfigButton_Click"/>
-        <Rectangle HorizontalAlignment="Left" Height="202" Margin="42,333,0,0" Stroke="Black" VerticalAlignment="Top" Width="200" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
-        <Button x:Name="CustomerManagementButton" HorizontalAlignment="Left" Height="70" Margin="62,351,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" Click="CustomerManagementButton_Click" >
-            <TextBlock  Text="Quản lý khách hàng" TextWrapping="Wrap" TextAlignment="Center"/>
-        </Button>
-        <Button x:Name="AccountManagementButton" HorizontalAlignment="Left" Height="69" Margin="62,578,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" Click="AccountManagementButton_Click">
-            <TextBlock  Text="Quản lý tài khoản" TextWrapping="Wrap" TextAlignment="Center"/>
-        </Button>
-        <Rectangle HorizontalAlignment="Left" Height="736" Margin="280,23,0,0" Stroke="Black" VerticalAlignment="Top" Width="883" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
-        <DataGrid x:Name="SalesDataGrid" HorizontalAlignment="Left" Height="686" Margin="310,0,0,0" VerticalAlignment="Center" Width="824" FontFamily="Arial" FontSize="24" AutoGenerateColumns="False">
+        <Menu HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Monserrat" Foreground="#FF002366" FontSize="24">
+            <MenuItem x:Name="ShowButton" Header="Hiển thị" Click="ShowButton_Click"/>
+            <MenuItem x:Name="ConfigButton" Header="Cấu hình" Click="ConfigButton_Click"/>
+            <MenuItem x:Name="BrokerManagementButton" Header="Broker" Click="BrokerManagementButton_Click"/>
+            <MenuItem Header="Quản lý">
+                <MenuItem x:Name="CustomerManagementButton" Header="Khách hàng" Click="CustomerManagementButton_Click"/>
+                <MenuItem x:Name="SaleManagementButton" Header="Sale" Click="SaleManagementButton_Click"/>
+                <MenuItem x:Name="AccountManagementButton" Header="Tài khoản" Click="AccountManagementButton_Click"/>
+            </MenuItem>
+        </Menu>
+        <DataGrid x:Name="SalesDataGrid" HorizontalAlignment="Center" Height="677" VerticalAlignment="Top" Width="1118" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False" Margin="0,36,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Thời gian quét" Binding="{Binding CreatedDate}" />
                 <DataGridTextColumn Header="RFID" Binding="{Binding RFIDCode}"/>
@@ -46,7 +44,6 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-<<<<<<< Updated upstream
         <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="68" Margin="62,667,0,0" VerticalAlignment="Top" Width="160" Background="#FF254098" FontFamily="Arial" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" FontWeight="UltraBold" Click="QuitButton_Click"/>
         <Button  x:Name="SaleManagementButton" HorizontalAlignment="Left" Height="70" Margin="62,445,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" Click="SaleManagementButton_Click" >
             <TextBlock Text="Quản lý Sale" TextWrapping="Wrap" TextAlignment="Center"/>
@@ -54,13 +51,15 @@
         <Button  x:Name="BrokerManagementButton" HorizontalAlignment="Left" Height="70" Margin="62,215,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="24" FontWeight="UltraBold" Click="BrokerManagementButton_Click">
             <TextBlock Text="Quản lý Broker" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-=======
         <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="45" Margin="41,718,0,0" VerticalAlignment="Top" Width="106" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="30" Click="QuitButton_Click"/>
         <Button x:Name="OpenServerButton" Content="Mở máy chủ" HorizontalAlignment="Left" Height="46" Margin="814,717,0,0" VerticalAlignment="Top" Width="182" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="30" Click="Broker_Click"/>
+
+        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="45" Margin="41,718,0,0" VerticalAlignment="Top" Width="106" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="30" Click="QuitButton_Click"/>
+        <Button x:Name="OpenServerButton" Content="Mở máy chủ" HorizontalAlignment="Left" Height="46" Margin="814,717,0,0" VerticalAlignment="Top" Width="182" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="30" Click="QuitButton_Click"/>
         <TextBlock x:Name="ServerStatusTextBlock" Text="Offline" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1026,717,0,0" 
                    FontFamily="Montserrat" FontSize="22" Foreground="#FF254098" FontWeight="Bold" />
         <TextBlock x:Name="NumberofconnectionTextBlock" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1026,738,0,0" 
             FontFamily="Montserrat" FontSize="12" Foreground="#FF254098" FontWeight="Bold" Height="21" Width="133" ><Run Text="Onl"/><LineBreak/><Run/></TextBlock>
->>>>>>> Stashed changes
+
     </Grid>
 </Window>

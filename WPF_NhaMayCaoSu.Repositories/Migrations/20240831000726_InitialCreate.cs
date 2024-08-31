@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -16,7 +17,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 {
                     CameraId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Camera1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Camera2 = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Camera2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<short>(type: "smallint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,15 +31,12 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 {
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RFIDCode = table.Column<long>(type: "bigint", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<short>(type: "smallint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.CustomerId);
-                    table.UniqueConstraint("AK_Customers_RFIDCode", x => x.RFIDCode);
                 });
 
             migrationBuilder.CreateTable(
@@ -45,7 +44,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: table => new
                 {
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleName = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    RoleName = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IsAvailable = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,29 +53,24 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sales",
+                name: "RFIDs",
                 columns: table => new
                 {
-                    SaleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductWeight = table.Column<double>(type: "float", nullable: true),
-                    WeightImageUrl = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ProductDensity = table.Column<double>(type: "float", nullable: true),
-                    DensityImageUrl = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<short>(type: "smallint", nullable: false),
-                    IsEdited = table.Column<bool>(type: "bit", nullable: false),
-                    LastEditedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    RFIDCode = table.Column<long>(type: "bigint", nullable: false),
-                    Type = table.Column<short>(type: "smallint", nullable: false),
+                    RFID_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RFIDCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<short>(type: "smallint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sales", x => x.SaleId);
+                    table.PrimaryKey("PK_RFIDs", x => x.RFID_Id);
+                    table.UniqueConstraint("AK_RFIDs_RFIDCode", x => x.RFIDCode);
                     table.ForeignKey(
-                        name: "FK_Sales_Customers_RFIDCode",
-                        column: x => x.RFIDCode,
+                        name: "FK_RFIDs_Customers_CustomerId",
+                        column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "RFIDCode",
+                        principalColumn: "CustomerId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -102,6 +97,49 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Sales",
+                columns: table => new
+                {
+                    SaleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CustomerName = table.Column<long>(type: "bigint", nullable: false),
+                    ProductDensity = table.Column<float>(type: "real", nullable: true),
+                    ProductWeight = table.Column<float>(type: "real", nullable: true),
+                    LastEditedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<short>(type: "smallint", nullable: false),
+                    RFIDCode = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sales", x => x.SaleId);
+                    table.ForeignKey(
+                        name: "FK_Sales_RFIDs_RFIDCode",
+                        column: x => x.RFIDCode,
+                        principalTable: "RFIDs",
+                        principalColumn: "RFIDCode",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ImageType = table.Column<long>(type: "bigint", nullable: false),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SaleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.ImageId);
+                    table.ForeignKey(
+                        name: "FK_Images_Sales_SaleId",
+                        column: x => x.SaleId,
+                        principalTable: "Sales",
+                        principalColumn: "SaleId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_RoleId",
                 table: "Accounts",
@@ -114,8 +152,18 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customers_RFIDCode",
-                table: "Customers",
+                name: "IX_Images_SaleId",
+                table: "Images",
+                column: "SaleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RFIDs_CustomerId",
+                table: "RFIDs",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RFIDs_RFIDCode",
+                table: "RFIDs",
                 column: "RFIDCode",
                 unique: true);
 
@@ -126,15 +174,10 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sales_DensityImageUrl",
-                table: "Sales",
-                column: "DensityImageUrl",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Sales_RFIDCode",
                 table: "Sales",
-                column: "RFIDCode");
+                column: "RFIDCode",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -147,10 +190,16 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 name: "Cameras");
 
             migrationBuilder.DropTable(
-                name: "Sales");
+                name: "Images");
 
             migrationBuilder.DropTable(
                 name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "Sales");
+
+            migrationBuilder.DropTable(
+                name: "RFIDs");
 
             migrationBuilder.DropTable(
                 name: "Customers");

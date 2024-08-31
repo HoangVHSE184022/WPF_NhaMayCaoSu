@@ -5,18 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
-        Title="Broker Window" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Background="#e0ffff ">
+        Title="Broker Window" Height="800" Width="1200" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Label Content="Quản lý broker" HorizontalAlignment="Left" Height="68" Margin="32,31,0,0" VerticalAlignment="Top" Width="642" FontFamily="Arial" FontSize="46" Foreground="#FF002366" FontWeight="Bold"/>
-        <Label Content="Server status"  HorizontalAlignment="Left" Height="46" Margin="216,243,0,0" VerticalAlignment="Top" Width="384" FontFamily="Arial" FontSize="30" Foreground="#FF002366"/>
-        <Label x:Name="ServerStatusLabel" Content="Offline" HorizontalAlignment="Left" Height="46" Margin="600,243,0,0" VerticalAlignment="Top" Width="340" FontFamily="Arial" FontSize="30" Foreground="#FF002366"/>
-        <Label Content="Board connection status" HorizontalAlignment="Left" Height="46" Margin="216,346,0,0" VerticalAlignment="Top"  Width="384" FontFamily="Arial" FontSize="30" Foreground="#FF002366"/>
-        <Label x:Name="BoardConnectionStatusLabel" Content="On/Off" HorizontalAlignment="Left" Height="46" Margin="600,346,0,0" VerticalAlignment="Top" Width="340" FontFamily="Arial" FontSize="30" Foreground="#FF002366"/>
-        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="68" Margin="62,667,0,0" VerticalAlignment="Top" Width="160" Background="#FF254098" FontFamily="Arial" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" FontWeight="UltraBold" Click="QuitButton_Click"/>
-        <Rectangle HorizontalAlignment="Left" Height="108" Margin="42,104,0,0" Stroke="Black" VerticalAlignment="Top" Width="1078" Fill="#FF002366" RadiusX="30" RadiusY="30"/>
-        <Button x:Name="StartButton" Content="Start" HorizontalAlignment="Left" Height="48" Margin="158,134,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="26" FontWeight="UltraBold" Click="StartBroker_Click"/>
-        <Button x:Name="RestartButton" Content="Restart" HorizontalAlignment="Center" Height="48" Margin="0,134,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#FF002366" BorderThickness="0" FontSize="26" FontWeight="UltraBold" Click="RestartBroker_Click"/>
-        <Button x:Name="StopButton" Content="Stop" HorizontalAlignment="Left" Height="48" Margin="882,134,0,0" VerticalAlignment="Top" Width="160" Background="#F5F5F5" FontFamily="Arial" Foreground="#9b111e" BorderThickness="0" FontSize="26" FontWeight="UltraBold" Click="StopBroker_Click"/>
-        <ListBox x:Name="ConnectedClientsListBox" HorizontalAlignment="Left" Height="174" Margin="238,416,0,0" VerticalAlignment="Top" Width="702" FontFamily="Arial" FontSize="24" Foreground="#FF002366"/>
+        <Menu HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Monserrat" Foreground="#FF002366" FontSize="24">
+            <MenuItem x:Name="ShowButton" Header="Hiển thị" Click="ShowButton_Click"/>
+            <MenuItem x:Name="ConfigButton" Header="Cấu hình" Click="ConfigButton_Click"/>
+            <MenuItem x:Name="BrokerManagementButton" Header="Broker" Click="BrokerManagementButton_Click"/>
+            <MenuItem Header="Quản lý">
+                <MenuItem x:Name="CustomerManagementButton" Header="Khách hàng" Click="CustomerManagementButton_Click"/>
+                <MenuItem x:Name="SaleManagementButton" Header="Sale" Click="SaleManagementButton_Click"/>
+                <MenuItem x:Name="AccountManagementButton" Header="Tài khoản" Click="AccountManagementButton_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <Label Content="Quản lý broker" HorizontalAlignment="Left" Height="53" Margin="32,60,0,0" VerticalAlignment="Top" Width="271" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
+        <Label Content="Trạng thái server:"  HorizontalAlignment="Left" Height="46" Margin="164,213,0,0" VerticalAlignment="Top" Width="261" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
+        <Label x:Name="ServerStatusLabel" Content="Offline" HorizontalAlignment="Left" Height="46" Margin="501,218,0,0" VerticalAlignment="Top" Width="340" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
+        <Label Content="Trạng thái kết nối bảng:" HorizontalAlignment="Left" Height="46" Margin="164,264,0,0" VerticalAlignment="Top"  Width="332" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
+        <Label x:Name="BoardConnectionStatusLabel" Content="On/Off" HorizontalAlignment="Left" Height="46" Margin="501,264,0,0" VerticalAlignment="Top" Width="340" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
+        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="40" Margin="1053,660,0,0" VerticalAlignment="Top" Width="121" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36"  Click="QuitButton_Click"/>
+        <Button x:Name="StartButton" Content="Start" HorizontalAlignment="Left" Height="48" Margin="158,134,0,0" VerticalAlignment="Top" Width="160"  FontFamily="Montserrat" Foreground="#FF002366" Background="#FFCACACA" BorderThickness="0" FontSize="26" Click="StartBroker_Click"/>
+        <Button x:Name="RestartButton" Content="Restart" HorizontalAlignment="Center" Height="48" Margin="0,134,0,0" VerticalAlignment="Top" Width="160" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="26" Click="RestartBroker_Click"/>
+        <Button x:Name="StopButton" Content="Stop" HorizontalAlignment="Left" Height="48" Margin="882,134,0,0" VerticalAlignment="Top" Width="160" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#9b111e" BorderThickness="0" FontSize="26" Click="StopBroker_Click"/>
+        <ListBox x:Name="ConnectedClientsListBox" HorizontalAlignment="Center" Height="244" Margin="0,412,0,0" VerticalAlignment="Top" Width="884" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" Foreground="#FF002366"/>
+        <Label Content="IP:" HorizontalAlignment="Left" Height="46" Margin="164,315,0,0" VerticalAlignment="Top"  Width="332" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
+        <Label x:Name="IPconnecttionLabel" Content="Không có kết nối" HorizontalAlignment="Left" Height="46" Margin="501,315,0,0" VerticalAlignment="Top" Width="340" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
+        <Label Content="Port:" HorizontalAlignment="Left" Height="46" Margin="164,366,0,0" VerticalAlignment="Top"  Width="332" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
+        <Label x:Name="PortconnecttionLabel" Content="Không có kết nối" HorizontalAlignment="Left" Height="46" Margin="501,366,0,0" VerticalAlignment="Top" Width="340" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
+        <Label x:Name="IPconnecttionSmallLabel" Content="Không có kết nối" HorizontalAlignment="Left" Height="24" Margin="1053,705,0,0" VerticalAlignment="Top" Width="121" FontFamily="Montserrat" FontSize="12" Foreground="#FF002366"/>
     </Grid>
 </Window>
