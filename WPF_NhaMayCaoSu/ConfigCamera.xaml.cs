@@ -1,18 +1,32 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media.Imaging;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Drawing;
 using System.IO;
+using WPF_NhaMayCaoSu.Repository.Models;
+using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu
 {
     public partial class ConfigCamera : Window
     {
+        private readonly CameraService _cameraService = new();
+
         public ConfigCamera()
         {
             InitializeComponent();
+            LoadSavedUrlsAsync();
+        }
+
+        private async Task LoadSavedUrlsAsync()
+        {
+            var camera = await _cameraService.GetNewestCameraAsync();
+            if (camera != null)
+            {
+                txtUrl1.Text = camera.Camera1;
+                txtUrl2.Text = camera.Camera2;
+            }
         }
 
         private void btnCapture1_Click(object sender, RoutedEventArgs e)
@@ -37,16 +51,10 @@ namespace WPF_NhaMayCaoSu
 
                         if (!frame.IsEmpty)
                         {
-                            // Convert frame to Image<Bgr, byte>
                             Image<Bgr, byte> image = frame.ToImage<Bgr, byte>();
-
-                            // Convert Image<Bgr, byte> to Bitmap
                             Bitmap bitmap = image.ToBitmap();
-
-                            // Display the image in the Image control
                             imageControl.Source = ConvertBitmapToBitmapImage(bitmap);
 
-                            // Save the image to disk
                             string imagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), $"capture_{DateTime.Now:yyyyMMdd_HHmmss}.png");
                             bitmap.Save(imagePath, System.Drawing.Imaging.ImageFormat.Png);
 
@@ -81,6 +89,52 @@ namespace WPF_NhaMayCaoSu
 
                 return bitmapImage;
             }
+        }
+
+        private async void SaveUrlCamera1_Click(object sender, RoutedEventArgs e)
+        {
+            var camera = await _cameraService.GetNewestCameraAsync();
+            if (camera == null)
+            {
+                camera = new Camera
+                {
+                    CameraId = Guid.NewGuid(),
+                    Camera1 = txtUrl1.Text,
+                    Camera2 = "NoURLYet",
+                    Status = 1
+                };
+                await _cameraService.CreateCameraAsync(camera);
+            }
+            else
+            {
+                camera.Camera1 = txtUrl1.Text;
+                await _cameraService.UpdateCameraAsync(camera);
+            }
+
+            MessageBox.Show("Camera 1 URL has been saved.");
+        }
+
+        private async void SaveUrlCamera2_Click(object sender, RoutedEventArgs e)
+        {
+            var camera = await _cameraService.GetNewestCameraAsync();
+            if (camera == null)
+            {
+                camera = new Camera
+                {
+                    CameraId = Guid.NewGuid(),
+                    Camera1 = "NoURLYet",
+                    Camera2 = txtUrl2.Text,
+                    Status = 1
+                };
+                await _cameraService.CreateCameraAsync(camera);
+            }
+            else
+            {
+                camera.Camera2 = txtUrl2.Text;
+                await _cameraService.UpdateCameraAsync(camera);
+            }
+
+            MessageBox.Show("Camera 2 URL has been saved.");
         }
 
         private void btnQuit_Click(object sender, RoutedEventArgs e)

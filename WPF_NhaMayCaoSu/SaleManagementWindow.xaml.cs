@@ -8,7 +8,7 @@ namespace WPF_NhaMayCaoSu
     /// <summary>
     /// Interaction logic for SaleManagementWindow.xaml
     /// </summary>
-    public partial class SaleManagementWindow : System.Windows.Window
+    public partial class SaleManagementWindow : Window
     {
 
         private SaleService _service = new();
@@ -39,7 +39,7 @@ namespace WPF_NhaMayCaoSu
 
 
             CameraService cameraService = new CameraService();
-            Camera newestCamera = await cameraService.GetNewestCamera();
+            Camera newestCamera = await cameraService.GetNewestCameraAsync();
             string imageFilePath = string.Empty;
 
 

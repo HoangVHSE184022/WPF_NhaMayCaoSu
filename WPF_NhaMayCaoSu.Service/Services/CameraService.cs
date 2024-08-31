@@ -1,4 +1,6 @@
-﻿using WPF_NhaMayCaoSu.Repository.Models;
+﻿using System;
+using System.Threading.Tasks;
+using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
@@ -8,34 +10,34 @@ namespace WPF_NhaMayCaoSu.Service.Services
     {
         private readonly CameraRepository _cameraRepository = new();
 
-        public async Task CreateCamera(Camera camera)
+        public async Task CreateCameraAsync(Camera camera)
         {
-            await _cameraRepository.AddCamera(camera);
+            await _cameraRepository.AddCameraAsync(camera);
         }
 
-        public async Task DeleteCamera(Guid id)
+        public async Task DeleteCameraAsync(Guid id)
         {
-            await _cameraRepository.DeleteCamera(id);
+            await _cameraRepository.DeleteCameraAsync(id);
         }
 
-        public async Task<Camera> GetCamera()
+        public async Task<Camera> GetCameraAsync()
         {
-            return await _cameraRepository.GetCamera();
+            return await _cameraRepository.GetCameraAsync();
         }
 
-        public async Task UpdateCamera(Camera camera)
+        public async Task UpdateCameraAsync(Camera camera)
         {
-            await _cameraRepository.UpdateCamera(camera);
+            await _cameraRepository.UpdateCameraAsync(camera);
         }
 
-        public async Task<Camera> GetCameraById(Guid cameraId)
+        public async Task<Camera> GetCameraByIdAsync(Guid cameraId)
         {
-            return await _cameraRepository.GetCameraById(cameraId);
+            return await _cameraRepository.GetCameraByIdAsync(cameraId);
         }
 
-        public async Task<Camera> GetNewestCamera()
+        public async Task<Camera> GetNewestCameraAsync()
         {
-            return await _cameraRepository.GetNewestCamera();
+            return await _cameraRepository.GetNewestCameraAsync();
         }
     }
 }
