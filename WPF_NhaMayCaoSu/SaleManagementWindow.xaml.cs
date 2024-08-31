@@ -33,8 +33,7 @@ namespace WPF_NhaMayCaoSu
         {
             Sale x = new();
 
-            x.ProductWeight = Double.Parse(WeightTextBox.Text);
-            x.WeightImageUrl = URLWeightTextBox.Text;
+            x.ProductWeight = float.Parse(WeightTextBox.Text);
             x.Status = short.Parse(StatusTextBox.Text);
             x.RFIDCode = (RFIDCodeTextBox.Text);
 
@@ -55,11 +54,11 @@ namespace WPF_NhaMayCaoSu
                 //    x.WeightImageUrl = await firebaseService.SaveImagePathToDatabaseAsync(imageFilePath, firebaseFileName);
                 //}
 
-                x.CreatedDate = DateTime.Now;
-                x.IsEdited = false;
-                x.LastEditedTime = null;
-                x.ProductDensity = null;
-                x.DensityImageUrl = null;
+                //x.CreatedDate = DateTime.Now;
+                //x.IsEdited = false;
+                //x.LastEditedTime = null;
+                //x.ProductDensity = null;
+                //x.DensityImageUrl = null;
                 MessageBox.Show(Constants.SuccessMessageSaleCreated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                 await _service.CreateSaleAsync(x);
             }
@@ -75,11 +74,11 @@ namespace WPF_NhaMayCaoSu
                 //    x.DensityImageUrl = await firebaseService.SaveImagePathToDatabaseAsync(imageFilePath, firebaseFileName);
                 //}
 
-                x.ProductDensity = Double.Parse(DensityTextBox.Text);
-                x.DensityImageUrl = URLDensityTextBox.Text;
-                x.SaleId = SelectedSale.SaleId;
-                x.CreatedDate = SelectedSale.CreatedDate;
-                x.IsEdited = true;
+                //x.ProductDensity = Double.Parse(DensityTextBox.Text);
+                //x.DensityImageUrl = URLDensityTextBox.Text;
+                //x.SaleId = SelectedSale.SaleId;
+                //x.CreatedDate = SelectedSale.CreatedDate;
+                //x.IsEdited = true;
                 x.LastEditedTime = DateTime.Now;
                 MessageBox.Show(Constants.SuccessMessageSaleUpdated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                 await _service.UpdateSaleAsync(x);
@@ -150,15 +149,15 @@ namespace WPF_NhaMayCaoSu
             {
                 RFIDCodeTextBox.Text = SelectedSale.RFIDCode.ToString();
                 WeightTextBox.Text = SelectedSale.ProductWeight.ToString();
-                if (SelectedSale.WeightImageUrl != null)
-                {
-                    URLWeightTextBox.Text = SelectedSale.WeightImageUrl.ToString();
-                }
-                DensityTextBox.Text = SelectedSale.ProductDensity.ToString();
-                if (SelectedSale.DensityImageUrl != null)
-                {
-                    URLDensityTextBox.Text = SelectedSale.DensityImageUrl.ToString();
-                }
+                //if (SelectedSale.WeightImageUrl != null)
+                //{
+                //    URLWeightTextBox.Text = SelectedSale.WeightImageUrl.ToString();
+                //}
+                //DensityTextBox.Text = SelectedSale.ProductDensity.ToString();
+                //if (SelectedSale.DensityImageUrl != null)
+                //{
+                //    URLDensityTextBox.Text = SelectedSale.DensityImageUrl.ToString();
+                //}
 
                 StatusTextBox.Text = SelectedSale.Status.ToString();
                 ModeLabel.Content = Constants.ModeLabelEditSale;

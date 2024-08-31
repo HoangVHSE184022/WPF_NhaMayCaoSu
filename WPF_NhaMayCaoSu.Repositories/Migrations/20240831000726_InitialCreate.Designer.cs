@@ -12,7 +12,7 @@ using WPF_NhaMayCaoSu.Repository.Context;
 namespace WPF_NhaMayCaoSu.Repository.Migrations
 {
     [DbContext(typeof(CaoSuWpfDbContext))]
-    [Migration("20240830093129_InitialCreate")]
+    [Migration("20240831000726_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -90,12 +90,53 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("CustomerName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<short>("Status")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("CustomerId");
+
+                    b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.Image", b =>
+                {
+                    b.Property<Guid>("ImageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("ImageType")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("SaleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ImageId");
+
+                    b.HasIndex("SaleId");
+
+                    b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.RFID", b =>
+                {
+                    b.Property<Guid>("RFID_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");
@@ -107,12 +148,14 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
 
-                    b.HasKey("CustomerId");
+                    b.HasKey("RFID_Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("RFIDCode")
                         .IsUnique();
 
-                    b.ToTable("Customers");
+                    b.ToTable("RFIDs");
                 });
 
             modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.Role", b =>
@@ -142,23 +185,17 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DensityImageUrl")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsEdited")
-                        .HasColumnType("bit");
+                    b.Property<long>("CustomerName")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("LastEditedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<double?>("ProductDensity")
-                        .HasColumnType("float");
+                    b.Property<float?>("ProductDensity")
+                        .HasColumnType("real");
 
-                    b.Property<double?>("ProductWeight")
-                        .HasColumnType("float");
+                    b.Property<float?>("ProductWeight")
+                        .HasColumnType("real");
 
                     b.Property<string>("RFIDCode")
                         .IsRequired()
@@ -167,19 +204,10 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
 
-                    b.Property<short>("Type")
-                        .HasColumnType("smallint");
-
-                    b.Property<string>("WeightImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("SaleId");
 
-                    b.HasIndex("DensityImageUrl")
-                        .IsUnique()
-                        .HasFilter("[DensityImageUrl] IS NOT NULL");
-
-                    b.HasIndex("RFIDCode");
+                    b.HasIndex("RFIDCode")
+                        .IsUnique();
 
                     b.ToTable("Sales");
                 });
@@ -195,26 +223,53 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.Sale", b =>
+            modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.Image", b =>
+                {
+                    b.HasOne("WPF_NhaMayCaoSu.Repository.Models.Sale", "Sale")
+                        .WithMany("Images")
+                        .HasForeignKey("SaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sale");
+                });
+
+            modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.RFID", b =>
                 {
                     b.HasOne("WPF_NhaMayCaoSu.Repository.Models.Customer", "Customer")
-                        .WithMany("Sales")
-                        .HasForeignKey("RFIDCode")
-                        .HasPrincipalKey("RFIDCode")
+                        .WithMany("RFIDs")
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.Sale", b =>
+                {
+                    b.HasOne("WPF_NhaMayCaoSu.Repository.Models.RFID", "RFID")
+                        .WithOne()
+                        .HasForeignKey("WPF_NhaMayCaoSu.Repository.Models.Sale", "RFIDCode")
+                        .HasPrincipalKey("WPF_NhaMayCaoSu.Repository.Models.RFID", "RFIDCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RFID");
+                });
+
             modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.Customer", b =>
                 {
-                    b.Navigation("Sales");
+                    b.Navigation("RFIDs");
                 });
 
             modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.Role", b =>
                 {
                     b.Navigation("Accounts");
+                });
+
+            modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.Sale", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

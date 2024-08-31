@@ -53,10 +53,7 @@ namespace WPF_NhaMayCaoSu
             Customer customer = new()
             {
                 CustomerName = AccountNameTextBox.Text,
-                RFIDCode = RFIDCodeTextBox.Text,
                 Status = status,
-                CreatedDate = SelectedCustomer == null ? DateTime.Now : SelectedCustomer.CreatedDate,
-                ExpirationDate = SelectedCustomer == null ? DateTime.Now.AddDays(1) : SelectedCustomer.ExpirationDate,
                 CustomerId = SelectedCustomer?.CustomerId ?? Guid.NewGuid()
             };
 
@@ -85,7 +82,6 @@ namespace WPF_NhaMayCaoSu
             if (SelectedCustomer != null)
             {
                 AccountNameTextBox.Text = SelectedCustomer.CustomerName;
-                RFIDCodeTextBox.Text = SelectedCustomer.RFIDCode.ToString();
                 StatusTextBox.Text = SelectedCustomer.Status.ToString();
                 ModeLabel.Content = Constants.ModeLabelEditCustomer;
             }

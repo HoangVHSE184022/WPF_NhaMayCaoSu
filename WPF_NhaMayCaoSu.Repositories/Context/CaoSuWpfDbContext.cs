@@ -7,10 +7,12 @@ namespace WPF_NhaMayCaoSu.Repository.Context
     public class CaoSuWpfDbContext : DbContext
     {
         public DbSet<Sale> Sales { get; set; }
-        public DbSet<Account> Accounts { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<Role> Roles { get; set; }
         public DbSet<Camera> Cameras { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<RFID> RFIDs { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Image> Images { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
         private string GetConnectionString()
         {
@@ -39,39 +41,51 @@ namespace WPF_NhaMayCaoSu.Repository.Context
                 .HasKey(s => s.SaleId);
 
             modelBuilder.Entity<Sale>()
-                .HasOne(s => s.Customer)
-                .WithMany(c => c.Sales)
-                .HasForeignKey(s => s.RFIDCode)
-                .HasPrincipalKey(c => c.RFIDCode);
-
-            modelBuilder.Entity<Sale>()
-                .HasIndex(s => s.DensityImageUrl)
-                .IsUnique();
+                .HasOne(s => s.RFID)
+                .WithOne()
+                .HasForeignKey<Sale>(s => s.RFIDCode)
+                .HasPrincipalKey<RFID>(r => r.RFIDCode);
 
             modelBuilder.Entity<Account>()
                 .HasKey(a => a.AccountId);
+
             modelBuilder.Entity<Account>()
                 .HasOne(a => a.Role)
                 .WithMany(r => r.Accounts)
                 .HasForeignKey(a => a.RoleId);
+
             modelBuilder.Entity<Account>()
                 .HasIndex(a => a.Username)
                 .IsUnique();
 
             modelBuilder.Entity<Customer>()
                 .HasKey(c => c.CustomerId);
-            modelBuilder.Entity<Customer>()
-                .HasIndex(c => c.RFIDCode)
-                .IsUnique();
 
             modelBuilder.Entity<Role>()
                 .HasKey(r => r.RoleId);
+
             modelBuilder.Entity<Role>()
                 .HasIndex(r => r.RoleName)
                 .IsUnique();
 
             modelBuilder.Entity<Camera>()
                 .HasKey(c => c.CameraId);
+
+            modelBuilder.Entity<RFID>()
+                .HasKey(r => r.RFID_Id);
+
+            modelBuilder.Entity<RFID>()
+                .HasIndex(r => r.RFIDCode)
+                .IsUnique();
+
+            modelBuilder.Entity<Image>()
+                .HasKey(i => i.ImageId);
+
+            modelBuilder.Entity<Image>()
+                .HasOne(i => i.Sale)
+                .WithMany(s => s.Images)
+                .HasForeignKey(i => i.SaleId);
         }
+
     }
 }
