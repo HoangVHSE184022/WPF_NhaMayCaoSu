@@ -34,7 +34,7 @@ namespace WPF_NhaMayCaoSu
         {
             // Validate required fields
             if (string.IsNullOrWhiteSpace(AccountNameTextBox.Text) ||
-                string.IsNullOrWhiteSpace(RFIDCodeTextBox.Text) ||
+                string.IsNullOrWhiteSpace(PhoneTextBox.Text) ||
                 string.IsNullOrWhiteSpace(StatusTextBox.Text))
             {
                 MessageBox.Show(Constants.ErrorMessageMissingFields, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -54,7 +54,8 @@ namespace WPF_NhaMayCaoSu
             {
                 CustomerName = AccountNameTextBox.Text,
                 Status = status,
-                CustomerId = SelectedCustomer?.CustomerId ?? Guid.NewGuid()
+                CustomerId = SelectedCustomer?.CustomerId ?? Guid.NewGuid(),
+                Phone = PhoneTextBox.Text
             };
 
             if (SelectedCustomer == null)
@@ -74,10 +75,10 @@ namespace WPF_NhaMayCaoSu
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModeLabel.Content = Constants.ModeLabelAddCustomer;
-            await _mqttClientService.ConnectAsync();
-            await _mqttClientService.SubscribeAsync("CreateRFID");
+            //await _mqttClientService.ConnectAsync();
+            //await _mqttClientService.SubscribeAsync("CreateRFID");
 
-            _mqttClientService.MessageReceived += OnMqttMessageReceived;
+            //_mqttClientService.MessageReceived += OnMqttMessageReceived;
 
             if (SelectedCustomer != null)
             {
@@ -88,42 +89,48 @@ namespace WPF_NhaMayCaoSu
         }
 
 
-        private void OnMqttMessageReceived(object sender, string data)
-        {
-            try
-            {
-                if (data.StartsWith("CreateRFID:"))
-                {
-                    string rfidString = data.Substring("CreateRFID:".Length);
+        //private void OnMqttMessageReceived(object sender, string data)
+        //{
+        //    try
+        //    {
+        //        if (data.StartsWith("CreateRFID:"))
+        //        {
+        //            string rfidString = data.Substring("CreateRFID:".Length);
 
-                    if (!rfidString.IsNullOrEmpty())
-                    {
-                        RFIDCodeTextBox.Dispatcher.Invoke(() =>
-                        {
-                            RFIDCodeTextBox.Text = rfidString;
-                        });
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Failed to parse RFID number.");
-                    }
-                }
-                else
-                {
-                    Debug.WriteLine("Unexpected message format.");
-                }
-            }
-            catch (Exception ex)
-            {
-                // Handle any general errors
-                Debug.WriteLine($"Error processing message: {ex.Message}");
-            }
-        }
+        //            if (!rfidString.IsNullOrEmpty())
+        //            {
+        //                RFIDCodeTextBox.Dispatcher.Invoke(() =>
+        //                {
+        //                    RFIDCodeTextBox.Text = rfidString;
+        //                });
+        //            }
+        //            else
+        //            {
+        //                Debug.WriteLine("Failed to parse RFID number.");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            Debug.WriteLine("Unexpected message format.");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Handle any general errors
+        //        Debug.WriteLine($"Error processing message: {ex.Message}");
+        //    }
+        //}
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
             customerListWindow.ShowDialog();
+        }
+
+        private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            RFIDListWindow rFIDListWindow = new RFIDListWindow();
+            rFIDListWindow.ShowDialog();
         }
 
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)

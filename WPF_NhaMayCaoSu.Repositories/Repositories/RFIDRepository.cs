@@ -21,6 +21,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             _context = new CaoSuWpfDbContext();
 
             return await _context.RFIDs
+                                 .Include("Customer")
                                  .Where(r => r.Status == 1)
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)

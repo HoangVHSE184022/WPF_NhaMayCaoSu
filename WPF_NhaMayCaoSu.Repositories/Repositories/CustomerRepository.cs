@@ -42,7 +42,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         public async Task<Customer> GetCustomerById(Guid id)
         {
             _context = new();
-            return await _context.Customers.FirstOrDefaultAsync(x => x.CustomerId == id);
+            return await _context.Customers.Include(c => c.RFIDs).FirstOrDefaultAsync(x => x.CustomerId == id);
         }
 
         public async Task UpdateCustomer(Customer customer)
