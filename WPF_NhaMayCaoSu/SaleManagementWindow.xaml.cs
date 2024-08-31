@@ -1,12 +1,7 @@
-﻿using OpenCvSharp;
-using OpenCvSharp.WpfExtensions;
-using System.IO;
-using System.Windows;
-using System.Windows.Media.Imaging;
+﻿using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
-using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -50,32 +45,11 @@ namespace WPF_NhaMayCaoSu
 
             if (SelectedSale == null)
             {
-                //imageFilePath = await CaptureImageFromCameraAsync(newestCamera, cameraIndex: 1);
-
-                //// Save image to Firebase and set WeightImageUrl
-                //if (!string.IsNullOrEmpty(imageFilePath))
-                //{
-                //    FirebaseService firebaseService = new();
-                //    string firebaseFileName = Path.GetFileName(imageFilePath);
-                //    x.WeightImageUrl = await firebaseService.SaveImagePathToDatabaseAsync(imageFilePath, firebaseFileName);
-                //}
-
-                
                 MessageBox.Show(Constants.SuccessMessageSaleCreated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                 await _service.CreateSaleAsync(x);
             }
             else
             {
-                //imageFilePath = await CaptureImageFromCameraAsync(newestCamera, cameraIndex: 2);
-
-                //// Save image to Firebase and set DensityImageUrl
-                //if (!string.IsNullOrEmpty(imageFilePath))
-                //{
-                //    FirebaseService firebaseService = new();
-                //    string firebaseFileName = Path.GetFileName(imageFilePath);
-                //    x.DensityImageUrl = await firebaseService.SaveImagePathToDatabaseAsync(imageFilePath, firebaseFileName);
-                //}
-
                 x.SaleId = SelectedSale.SaleId;
                 x.LastEditedTime = DateTime.Now;
                 MessageBox.Show(Constants.SuccessMessageSaleUpdated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
@@ -86,59 +60,7 @@ namespace WPF_NhaMayCaoSu
         }
 
 
-        //private async Task<string> CaptureImageFromCameraAsync(Camera camera, int cameraIndex)
-        //{
-        //    string localFilePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.jpg");
-
-        //    try
-        //    {
-        //        string cameraUrl = cameraIndex == 1 ? camera.Camera1 : camera.Camera2;
-        //        if (!string.IsNullOrEmpty(cameraUrl))
-        //        {
-        //            using (var capture = new VideoCapture(cameraUrl))
-        //            {
-        //                if (capture.IsOpened())
-        //                {
-        //                    using (var frame = new Mat())
-        //                    {
-        //                        capture.Read(frame);
-        //                        if (!frame.Empty())
-        //                        {
-        //                            BitmapSource bitmapSource = frame.ToBitmapSource();
-        //                            using (var stream = new FileStream(localFilePath, FileMode.Create, FileAccess.Write))
-        //                            {
-        //                                BitmapEncoder encoder = new JpegBitmapEncoder();
-        //                                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
-        //                                encoder.Save(stream);
-        //                            }
-        //                            MessageBox.Show(string.Format(Constants.SuccessMessageCapturedFrame, cameraIndex), Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
-        //                        }
-        //                        else
-        //                        {
-        //                            MessageBox.Show(string.Format(Constants.ErrorMessageCaptureFrameFailed, cameraIndex), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-        //                        }
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    MessageBox.Show(string.Format(Constants.ErrorMessageOpenCameraFailed, cameraIndex), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            throw new Exception(string.Format(Constants.ErrorMessageInvalidCameraUrl, cameraIndex));
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(string.Format(Constants.ErrorMessageCaptureImage, cameraIndex, ex.Message), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-        //        return string.Empty;
-        //    }
-
-        //    return localFilePath;
-        //}
-
+       
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModeLabel.Content = Constants.ModeLabelAddSale; ;
@@ -147,16 +69,6 @@ namespace WPF_NhaMayCaoSu
             {
                 RFIDCodeTextBox.Text = SelectedSale.RFIDCode.ToString();
                 WeightTextBox.Text = SelectedSale.ProductWeight.ToString();
-                //if (SelectedSale.WeightImageUrl != null)
-                //{
-                //    URLWeightTextBox.Text = SelectedSale.WeightImageUrl.ToString();
-                //}
-                //DensityTextBox.Text = SelectedSale.ProductDensity.ToString();
-                //if (SelectedSale.DensityImageUrl != null)
-                //{
-                //    URLDensityTextBox.Text = SelectedSale.DensityImageUrl.ToString();
-                //}
-
                 StatusTextBox.Text = SelectedSale.Status.ToString();
                 ModeLabel.Content = Constants.ModeLabelEditSale;
             }

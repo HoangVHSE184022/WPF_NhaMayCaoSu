@@ -74,8 +74,8 @@ namespace WPF_NhaMayCaoSu
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
-            DualCameraWindow dualCameraWindow = new DualCameraWindow(_cameraService);
-            dualCameraWindow.ShowDialog();
+            ConfigCamera configCamera = new ConfigCamera();
+            configCamera.ShowDialog();
         }
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
