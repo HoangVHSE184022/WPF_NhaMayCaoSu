@@ -1,6 +1,7 @@
 ﻿using MQTTnet;
 using MQTTnet.Server;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
 public class MqttServerService : IMqttServerService
@@ -14,6 +15,7 @@ public class MqttServerService : IMqttServerService
         _connectedClients = new ConcurrentDictionary<string, string>();
         // Configure the MQTT server options for non-TLS
         MqttServerOptionsBuilder optionsBuilder = new MqttServerOptionsBuilder()
+            .WithDefaultEndpointBoundIPAddress(System.Net.IPAddress.Any)
             .WithDefaultEndpoint()
             .WithDefaultEndpointPort(1883) 
             .WithConnectionBacklog(100)
@@ -44,11 +46,12 @@ public class MqttServerService : IMqttServerService
         {
             if (_connectedClients != null && !string.IsNullOrEmpty(e.ClientId))
             {
-                _connectedClients[e.ClientId] = e.Endpoint;
+                // Extract the IP address from the endpoint
+                string clientIp = e.Endpoint.ToString().Split(':')[0];
+
+                _connectedClients[e.ClientId] = clientIp;
 
                 ClientsChanged?.Invoke(this, EventArgs.Empty); // Trigger the event
-
-                Console.WriteLine($"Client connected: {e.ClientId}, IP: {e.Endpoint}");
             }
             return Task.CompletedTask;
         };
@@ -60,8 +63,6 @@ public class MqttServerService : IMqttServerService
                 _connectedClients.TryRemove(e.ClientId, out _);
 
                 ClientsChanged?.Invoke(this, EventArgs.Empty); // Trigger the event
-
-                Console.WriteLine($"Client disconnected: {e.ClientId}");
             }
             return Task.CompletedTask;
         };
@@ -76,7 +77,7 @@ public class MqttServerService : IMqttServerService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error starting MQTT broker: {ex.Message}");
+            Debug.WriteLine($"Error starting MQTT broker: {ex.Message}");
         }
     }
 
@@ -85,11 +86,11 @@ public class MqttServerService : IMqttServerService
         try
         {
             await _mqttServer.StopAsync();
-            Console.WriteLine("MQTT broker stopped.");
+            Debug.WriteLine("MQTT broker stopped.");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error stopping MQTT broker: {ex.Message}");
+            Debug.WriteLine($"Error stopping MQTT broker: {ex.Message}");
         }
     }
 
@@ -99,11 +100,11 @@ public class MqttServerService : IMqttServerService
         {
             await StopBrokerAsync();
             await StartBrokerAsync();
-            Console.WriteLine("MQTT broker restarted.");
+            Debug.WriteLine("MQTT broker restarted.");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error restarting MQTT broker: {ex.Message}");
+            Debug.WriteLine($"Error restarting MQTT broker: {ex.Message}");
         }
     }
 

@@ -23,8 +23,8 @@ namespace WPF_NhaMayCaoSu.Service.Services
             _client = factory.CreateMqttClient();
 
             MqttClientOptionsBuilder optionsBuilder = new MqttClientOptionsBuilder();
-            optionsBuilder.WithClientId("e_scale")
-                           .WithTcpServer("127.0.0.1", 1883)
+            optionsBuilder.WithClientId("this_computer")
+                           .WithTcpServer("192.168.100.176", 1883)
                            .WithCredentials("admin", "admin")
                            .WithCleanSession();
 
