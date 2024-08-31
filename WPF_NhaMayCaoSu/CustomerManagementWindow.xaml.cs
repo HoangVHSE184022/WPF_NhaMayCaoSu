@@ -84,6 +84,7 @@ namespace WPF_NhaMayCaoSu
             {
                 AccountNameTextBox.Text = SelectedCustomer.CustomerName;
                 StatusTextBox.Text = SelectedCustomer.Status.ToString();
+                PhoneTextBox.Text = SelectedCustomer.Phone.ToString();
                 ModeLabel.Content = Constants.ModeLabelEditCustomer;
             }
         }
