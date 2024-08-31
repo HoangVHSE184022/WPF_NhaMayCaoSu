@@ -20,6 +20,7 @@ namespace WPF_NhaMayCaoSu
             InitializeComponent();
             _mqttServerService = new MqttServerService();
             _mqttClientService = new MqttClientService();
+            _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;
         }
 
         public void FoundEvent(Sale sale)
@@ -106,6 +107,14 @@ namespace WPF_NhaMayCaoSu
                     MessageBox.Show(Constants.BrokerStopErrorMessage + "\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+        }
+
+        private void OnDeviceCountChanged(object sender, int deviceCount)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                NumberofconnectionTextBlock.Text = $"Onl\n{deviceCount}";
+            });
         }
     }
 }

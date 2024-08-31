@@ -10,6 +10,7 @@ public class MqttServerService : IMqttServerService
     private readonly ConcurrentDictionary<string, string> _connectedClients;
     public event EventHandler ClientsChanged;
     public event EventHandler<int> DeviceCountChanged;
+    private int _deviceCount;
 
     public MqttServerService()
     {
