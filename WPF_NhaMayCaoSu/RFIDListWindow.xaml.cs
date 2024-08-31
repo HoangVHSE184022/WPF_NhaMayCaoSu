@@ -21,6 +21,7 @@ namespace WPF_NhaMayCaoSu
     /// </summary>
     public partial class RFIDListWindow : Window
     {
+        public Account CurrentAccount { get; set; } = null;
         private RFIDService _service = new();
         public RFIDListWindow()
         {
@@ -47,18 +48,21 @@ namespace WPF_NhaMayCaoSu
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
+            customerListWindow.CurrentAccount = CurrentAccount;
             customerListWindow.ShowDialog();
         }
 
         private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
         {
             RFIDListWindow rFIDListWindow = new RFIDListWindow();
+            rFIDListWindow.CurrentAccount = CurrentAccount;
             rFIDListWindow.ShowDialog();
         }
 
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
         {
             SaleListWindow saleListWindow = new SaleListWindow();
+            saleListWindow.CurrentAccount = CurrentAccount;
             saleListWindow.ShowDialog();
         }
 
@@ -66,12 +70,14 @@ namespace WPF_NhaMayCaoSu
         private void AccountManagementButton_Click(object sender, RoutedEventArgs e)
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
+            accountManagementWindow.CurrentAccount = CurrentAccount;
             accountManagementWindow.ShowDialog();
         }
 
         private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             BrokerWindow brokerWindow = new BrokerWindow();
+            brokerWindow.CurrentAccount = CurrentAccount;
             brokerWindow.ShowDialog();
         }
 
@@ -82,7 +88,9 @@ namespace WPF_NhaMayCaoSu
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
         {
-
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.CurrentAccount = CurrentAccount;
+            mainWindow.Show();
         }
 
         private void AddRFIDButton_Click(object sender, RoutedEventArgs e)
