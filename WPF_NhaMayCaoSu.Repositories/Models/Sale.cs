@@ -3,16 +3,14 @@
     public class Sale
     {
         public Guid SaleId { get; set; }
-        public double? ProductDensity { get; set; }
-        public string? DensityImageUrl { get; set; }
-        public double? ProductWeight { get; set; }
-        public string? WeightImageUrl { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public short Status { get; set; }
-        public bool IsEdited { get; set; }
+        public long CustomerName { get; set; }
+        public float? ProductDensity { get; set; }
+        public float? ProductWeight { get; set; }
         public DateTime? LastEditedTime { get; set; }
+        public short Status { get; set; }
         public string RFIDCode { get; set; }
-        public Customer Customer { get; set; }
-        public short Type { get; set; }
+
+        public ICollection<Image> Images { get; set; }
+        public RFID RFID { get; set; }
     }
 }
