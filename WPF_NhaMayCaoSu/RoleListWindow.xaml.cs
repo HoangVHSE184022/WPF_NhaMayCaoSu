@@ -11,38 +11,23 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu
 {
     /// <summary>
-    /// Interaction logic for RFIDListWindow.xaml
+    /// Interaction logic for RoleListWindow.xaml
     /// </summary>
-    public partial class RFIDListWindow : Window
+    public partial class RoleListWindow : Window
     {
+
         public Account CurrentAccount { get; set; } = null;
-        private RFIDService _service = new();
-        public RFIDListWindow()
+        private RoleService _service = new();
+        public RoleListWindow()
         {
             InitializeComponent();
-        }
-
-        private void QuitButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private async void LoadDataGrid()
-        {
-            RFIDDataGrid.ItemsSource = null;
-            RFIDDataGrid.Items.Clear();
-            RFIDDataGrid.ItemsSource = await _service.GetAllRFIDsAsync(1, 10);
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            LoadDataGrid();
         }
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
@@ -50,13 +35,6 @@ namespace WPF_NhaMayCaoSu
             CustomerListWindow customerListWindow = new CustomerListWindow();
             customerListWindow.CurrentAccount = CurrentAccount;
             customerListWindow.ShowDialog();
-        }
-
-        private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
-        {
-            RFIDListWindow rFIDListWindow = new RFIDListWindow();
-            rFIDListWindow.CurrentAccount = CurrentAccount;
-            rFIDListWindow.ShowDialog();
         }
 
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
@@ -74,6 +52,13 @@ namespace WPF_NhaMayCaoSu
             accountManagementWindow.ShowDialog();
         }
 
+        private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            RFIDListWindow rFIDListWindow = new RFIDListWindow();
+            rFIDListWindow.CurrentAccount = CurrentAccount;
+            rFIDListWindow.ShowDialog();
+        }
+
         private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             BrokerWindow brokerWindow = new BrokerWindow();
@@ -88,23 +73,44 @@ namespace WPF_NhaMayCaoSu
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.CurrentAccount = CurrentAccount;
-            mainWindow.Show();
+            MainWindow window = new MainWindow();
+            window.CurrentAccount = CurrentAccount;
+            window.Show();
         }
 
-        private void AddRFIDButton_Click(object sender, RoutedEventArgs e)
+        private async void LoadDataGrid()
         {
-            RFIDManagementWindow rFIDManagementWindow = new RFIDManagementWindow();
-            rFIDManagementWindow.ShowDialog();
+            RoleDataGrid.ItemsSource = null;
+            RoleDataGrid.Items.Clear();
+            RoleDataGrid.ItemsSource = await _service.GetAllRolesAsync(1, 10);
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
             LoadDataGrid();
         }
 
-        private void EditRFIDButton_Click(object sender, RoutedEventArgs e)
+        private void AddRoleButton_Click(object sender, RoutedEventArgs e)
         {
-            RFIDManagementWindow rFIDManagementWindow = new RFIDManagementWindow();
-            rFIDManagementWindow.SelectedRFID = RFIDDataGrid.SelectedItem as RFID;
-            rFIDManagementWindow.ShowDialog();
+            RoleManagementWindow roleManagementWindow = new RoleManagementWindow();
+            roleManagementWindow.CurrentAccount = CurrentAccount;
+            roleManagementWindow.ShowDialog();
+            LoadDataGrid();
+        }
+
+        private void EditRoleButton_Click(object sender, RoutedEventArgs e)
+        {
+            Role selected = RoleDataGrid.SelectedItem as Role;
+
+            if (selected == null)
+            {
+                MessageBox.Show("Chọn 1 vai trò trước khi update!", "Chọn vai trò!", MessageBoxButton.OK, MessageBoxImage.Stop);
+                return;
+            }
+
+            RoleManagementWindow roleManagementWindow = new RoleManagementWindow();
+            roleManagementWindow.CurrentAccount = CurrentAccount;
+            roleManagementWindow.ShowDialog();
             LoadDataGrid();
         }
 
@@ -113,6 +119,11 @@ namespace WPF_NhaMayCaoSu
             RoleListWindow roleListWindow = new();
             roleListWindow.CurrentAccount = CurrentAccount;
             roleListWindow.ShowDialog();
+        }
+
+        private void QuitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

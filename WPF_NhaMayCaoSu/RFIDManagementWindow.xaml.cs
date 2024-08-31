@@ -147,6 +147,11 @@ namespace WPF_NhaMayCaoSu
             Close();
         }
 
-       
+        private void RoleManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            RoleListWindow roleListWindow = new();
+            roleListWindow.CurrentAccount = CurrentAccount;
+            roleListWindow.ShowDialog();
+        }
     }
 }

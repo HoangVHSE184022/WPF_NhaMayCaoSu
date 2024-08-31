@@ -130,6 +130,13 @@ namespace WPF_NhaMayCaoSu
                 NumberofconnectionTextBlock.Text = $"Onl\n{deviceCount}";
             });
         }
+
+        private void RoleManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            RoleListWindow roleListWindow = new();
+            roleListWindow.CurrentAccount = CurrentAccount;
+            roleListWindow.ShowDialog();
+        }
     }
 }
 

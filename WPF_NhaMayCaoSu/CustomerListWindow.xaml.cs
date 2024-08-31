@@ -28,6 +28,7 @@ namespace WPF_NhaMayCaoSu
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             CustomerManagementWindow customerManagementWindow = new CustomerManagementWindow();
+            customerManagementWindow.CurrentAccount = CurrentAccount;
             customerManagementWindow.ShowDialog();
             LoadDataGrid();
         }
@@ -44,6 +45,7 @@ namespace WPF_NhaMayCaoSu
             }
 
             CustomerManagementWindow customerManagementWindow = new CustomerManagementWindow();
+            customerManagementWindow.CurrentAccount = CurrentAccount;
             customerManagementWindow.SelectedCustomer = selected;
             customerManagementWindow.ShowDialog();
             LoadDataGrid();
@@ -108,6 +110,13 @@ namespace WPF_NhaMayCaoSu
             MainWindow mainWindow = new();
             mainWindow.CurrentAccount = CurrentAccount;
             mainWindow.Show();
+        }
+
+        private void RoleManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            RoleListWindow roleListWindow = new();
+            roleListWindow.CurrentAccount = CurrentAccount;
+            roleListWindow.ShowDialog();
         }
     }
 }

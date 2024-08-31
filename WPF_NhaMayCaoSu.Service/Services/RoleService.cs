@@ -1,41 +1,39 @@
 ﻿using WPF_NhaMayCaoSu.Repository.IRepositories;
 using WPF_NhaMayCaoSu.Repository.Models;
+using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu.Service.Services
 {
     public class RoleService : IRoleService
     {
-        private readonly IRoleRepository _roleRepository;
+        
+        private readonly RoleRepository _repo = new();
 
-        public RoleService(IRoleRepository roleRepository)
-        {
-            _roleRepository = roleRepository;
-        }
 
         public async Task CreateRoleAsync(Role role)
         {
-            await _roleRepository.CreateRoleAsync(role);
+            await _repo.CreateRoleAsync(role);
         }
 
         public async Task<IEnumerable<Role>> GetAllRolesAsync(int pageNumber = 1, int pageSize = 5)
         {
-            return await _roleRepository.GetAllRolesAsync(pageNumber, pageSize);
+            return await _repo.GetAllRolesAsync(pageNumber, pageSize);
         }
 
         public async Task<Role> GetRoleByIdAsync(Guid roleId)
         {
-            return await _roleRepository.GetRoleByIdAsync(roleId);
+            return await _repo.GetRoleByIdAsync(roleId);
         }
 
         public async Task UpdateRoleAsync(Role role)
         {
-            await _roleRepository.UpdateRoleAsync(role);
+            await _repo.UpdateRoleAsync(role);
         }
 
         public async Task DeleteRoleAsync(Guid roleId)
         {
-            await _roleRepository.DeleteRoleAsync(roleId);
+            await _repo.DeleteRoleAsync(roleId);
         }
     }
 }
