@@ -9,10 +9,13 @@ public class MqttServerService : IMqttServerService
     private readonly MQTTnet.Server.MqttServer _mqttServer;
     private readonly ConcurrentDictionary<string, string> _connectedClients;
     public event EventHandler ClientsChanged;
+    public event EventHandler<int> DeviceCountChanged;
+    private int _deviceCount;
 
     public MqttServerService()
     {
         _connectedClients = new ConcurrentDictionary<string, string>();
+        _deviceCount = 0;
         // Configure the MQTT server options for non-TLS
         MqttServerOptionsBuilder optionsBuilder = new MqttServerOptionsBuilder()
             .WithDefaultEndpointBoundIPAddress(System.Net.IPAddress.Any)
@@ -50,8 +53,10 @@ public class MqttServerService : IMqttServerService
                 string clientIp = e.Endpoint.ToString().Split(':')[0];
 
                 _connectedClients[e.ClientId] = clientIp;
+                _deviceCount++;
 
                 ClientsChanged?.Invoke(this, EventArgs.Empty); // Trigger the event
+                DeviceCountChanged?.Invoke(this, _deviceCount);
             }
             return Task.CompletedTask;
         };
@@ -61,8 +66,10 @@ public class MqttServerService : IMqttServerService
             if (_connectedClients != null && !string.IsNullOrEmpty(e.ClientId))
             {
                 _connectedClients.TryRemove(e.ClientId, out _);
+                _deviceCount--;
 
                 ClientsChanged?.Invoke(this, EventArgs.Empty); // Trigger the event
+                DeviceCountChanged?.Invoke(this, _deviceCount);
             }
             return Task.CompletedTask;
         };
