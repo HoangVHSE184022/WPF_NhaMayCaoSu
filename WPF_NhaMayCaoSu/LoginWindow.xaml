@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
-        Title="Login" Height="800" Width="1200" WindowStartupLocation="CenterScreen">
+        Title="Login" Height="800" Width="1200" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid Margin="0,-7,0,7">
         <Label Content="LOGIN" HorizontalAlignment="Center" Height="126" Margin="0,139,0,0" VerticalAlignment="Top" Width="296" FontFamily="Montserrat" FontSize="96" Foreground="Black" />
         <Label Content="Username" HorizontalAlignment="Left" Height="55" Margin="301,294,0,0" VerticalAlignment="Top" Width="197" FontFamily="Montserrat" FontSize="40

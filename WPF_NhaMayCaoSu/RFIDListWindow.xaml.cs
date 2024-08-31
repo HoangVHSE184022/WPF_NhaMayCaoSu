@@ -1,20 +1,28 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
-using WPF_NhaMayCaoSu.Core.Utils;
-using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu
 {
     /// <summary>
-    /// Interaction logic for SaleListWindow.xaml
+    /// Interaction logic for RFIDListWindow.xaml
     /// </summary>
-    public partial class SaleListWindow : Window
+    public partial class RFIDListWindow : Window
     {
-
-        private SaleService _service = new();
-
-        public SaleListWindow()
+        private RFIDService _service = new();
+        public RFIDListWindow()
         {
             InitializeComponent();
         }
@@ -24,40 +32,16 @@ namespace WPF_NhaMayCaoSu
             Close();
         }
 
-        private void AddSaleButton_Click(object sender, RoutedEventArgs e)
-        {
-            SaleManagementWindow saleManagementWindow = new SaleManagementWindow();
-            saleManagementWindow.ShowDialog();
-            LoadDataGrid();
-        }
-
-        private void EditSaleButton_Click(object sender, RoutedEventArgs e)
-        {
-
-            Sale selected = SaleDataGrid.SelectedItem as Sale;
-
-            if (selected == null)
-            {
-                MessageBox.Show(Constants.ErrorMessageSelectSale, Constants.ErrorTitleSelectSale, MessageBoxButton.OK, MessageBoxImage.Stop);
-                return;
-            }
-
-            SaleManagementWindow saleManagementWindow = new SaleManagementWindow();
-            saleManagementWindow.SelectedSale = selected;
-            saleManagementWindow.ShowDialog();
-            LoadDataGrid();
-        }
-
         private async void LoadDataGrid()
         {
-            SaleDataGrid.ItemsSource = null;
-            SaleDataGrid.Items.Clear();
-            SaleDataGrid.ItemsSource = await _service.GetAllSaleAsync(1, 10);
+            RFIDDataGrid.ItemsSource = null;
+            RFIDDataGrid.Items.Clear();
+            RFIDDataGrid.ItemsSource = await _service.GetAllRFIDsAsync(1, 10);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //LoadDataGrid();
+            LoadDataGrid();
         }
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
@@ -93,13 +77,27 @@ namespace WPF_NhaMayCaoSu
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new();
-            mainWindow.Show();
+
+        }
+
+        private void AddRFIDButton_Click(object sender, RoutedEventArgs e)
+        {
+            RFIDManagementWindow rFIDManagementWindow = new RFIDManagementWindow();
+            rFIDManagementWindow.ShowDialog();
+            LoadDataGrid();
+        }
+
+        private void EditRFIDButton_Click(object sender, RoutedEventArgs e)
+        {
+            RFIDManagementWindow rFIDManagementWindow = new RFIDManagementWindow();
+            rFIDManagementWindow.SelectedRFID = RFIDDataGrid.SelectedItem as RFID;
+            rFIDManagementWindow.ShowDialog();
+            LoadDataGrid();
         }
     }
 }

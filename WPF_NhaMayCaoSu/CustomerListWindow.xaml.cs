@@ -58,13 +58,19 @@ namespace WPF_NhaMayCaoSu
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //LoadDataGrid();
+            LoadDataGrid();
         }
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
             customerListWindow.ShowDialog();
+        }
+
+        private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            RFIDListWindow rFIDListWindow = new RFIDListWindow();
+            rFIDListWindow.ShowDialog();
         }
 
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)

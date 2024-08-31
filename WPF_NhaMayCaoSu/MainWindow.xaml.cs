@@ -53,6 +53,12 @@ namespace WPF_NhaMayCaoSu
             accountManagementWindow.ShowDialog();
         }
 
+        private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            RFIDListWindow rFIDListWindow = new RFIDListWindow();
+            rFIDListWindow.ShowDialog();
+        }
+
         private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             BrokerWindow brokerWindow = new BrokerWindow();
@@ -67,7 +73,8 @@ namespace WPF_NhaMayCaoSu
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
         {
-
+            MainWindow window = new MainWindow();
+            window.Show();
         }
 
         private async void Broker_Click(object sender, RoutedEventArgs e)

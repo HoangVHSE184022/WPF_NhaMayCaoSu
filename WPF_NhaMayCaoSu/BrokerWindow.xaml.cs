@@ -121,6 +121,12 @@ namespace WPF_NhaMayCaoSu
             customerListWindow.ShowDialog();
         }
 
+        private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            RFIDListWindow rFIDListWindow = new RFIDListWindow();
+            rFIDListWindow.ShowDialog();
+        }
+
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
         {
             SaleListWindow saleListWindow = new SaleListWindow();

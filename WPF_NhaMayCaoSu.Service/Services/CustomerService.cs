@@ -31,5 +31,11 @@ namespace WPF_NhaMayCaoSu.Service.Services
         {
             await _repository.UpdateCustomer(customer);
         }
+
+        public async Task<int> CountCustomerRFIDs(Guid customerId)
+        {
+            var customer = await _repository.GetCustomerById(customerId);
+            return customer?.RFIDs?.Count ?? 0;
+        }
     }
 }
