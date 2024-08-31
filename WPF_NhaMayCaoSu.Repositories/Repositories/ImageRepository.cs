@@ -7,12 +7,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 {
     public class ImageRepository : IImageRepository
     {
-        private readonly CaoSuWpfDbContext _context;
-
-        public ImageRepository(CaoSuWpfDbContext context)
-        {
-            _context = context;
-        }
+        private CaoSuWpfDbContext _context;
 
         public async Task AddImageAsync(Image image)
         {

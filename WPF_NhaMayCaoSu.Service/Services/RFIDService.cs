@@ -10,40 +10,40 @@ namespace WPF_NhaMayCaoSu.Service.Services
 
         public async Task AddRFIDAsync(RFID rfid)
         {
-            await _repo.AddRFID(rfid);
+            await _repo.AddRFIDAsync(rfid);
         }
         public async Task<IEnumerable<RFID>> GetAllRFIDsAsync(int pageNumber, int pageSize)
         {
-            return await _repo.GetAllRFIDs(pageNumber, pageSize);
+            return await _repo.GetAllRFIDsAsync(pageNumber, pageSize);
         }
 
         public async Task<RFID> GetRFIDByIdAsync(Guid rfidId)
         {
-            return await _repo.GetRFIDById(rfidId);
+            return await _repo.GetRFIDByIdAsync(rfidId);
         }
 
         public async Task UpdateRFIDAsync(RFID rfid)
         {
-            await _repo.UpdateRFID(rfid);
+            await _repo.UpdateRFIDAsync(rfid);
         }
 
         public async Task DeleteRFIDAsync(Guid rfidId)
         {
-            await _repo.DeleteRFID(rfidId);
+            await _repo.DeleteRFIDAsync(rfidId);
         }
         public async Task<IEnumerable<RFID>> GetRFIDsByCustomerIdAsync(Guid customerId)
         {
-            return await _repo.GetRFIDsByCustomerId(customerId);
+            return await _repo.GetRFIDsByCustomerIdAsync(customerId);
         }
 
         public async Task<IEnumerable<RFID>> GetRFIDsByStatusAsync(short status)
         {
-            return await _repo.GetRFIDsByStatus(status);
+            return await _repo.GetRFIDsByStatusAsync(status);
         }
 
         public async Task<IEnumerable<RFID>> GetRFIDsByExpirationDateAsync(DateTime expirationDate)
         {
-            return await _repo.GetRFIDsByExpirationDate(expirationDate);
+            return await _repo.GetRFIDsByExpirationDateAsync(expirationDate);
         }
     }
 }
