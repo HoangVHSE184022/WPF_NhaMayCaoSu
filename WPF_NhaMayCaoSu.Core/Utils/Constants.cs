@@ -80,5 +80,14 @@ namespace WPF_NhaMayCaoSu.Core.Utils
 
         public const string ModeLabelAddSale = "Thêm Sale mới";
         public const string ModeLabelEditSale = "Chỉnh sửa Sale";
+
+        public const string OpenServerText = "Mở máy chủ";
+        public const string CloseServerText = "Đóng máy chủ";
+
+        public const string ServerOnlineStatus = "Online";
+        public const string ServerOfflineStatus = "Offline";
+
+        public const string BrokerStartErrorMessage = "Đã xảy ra lỗi khi khởi động máy chủ.";
+        public const string BrokerStopErrorMessage = "Đã xảy ra lỗi khi dừng máy chủ.";
     }
 }

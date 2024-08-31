@@ -1,6 +1,6 @@
 ﻿using System.Windows;
+using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
-using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu
@@ -10,10 +10,10 @@ namespace WPF_NhaMayCaoSu
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly CameraService _cameraService = new();
         private readonly SessionService _sessionService;
         private readonly MqttServerService _mqttServerService;
         private readonly MqttClientService _mqttClientService;
+        private readonly CameraService _cameraService = new();
 
         public MainWindow()
         {
@@ -79,27 +79,45 @@ namespace WPF_NhaMayCaoSu
 
         private async void Broker_Click(object sender, RoutedEventArgs e)
         {
-            if(OpenServerButton.Content == "Mở máy chủ")
+            try
             {
-                // Start the MQTT broker
-                await _mqttServerService.StartBrokerAsync();
+                if (OpenServerButton.Content.ToString() == Constants.OpenServerText)
+                {
+                    // Start the MQTT broker
+                    await _mqttServerService.StartBrokerAsync();
 
-                OpenServerButton.Content = "Đóng máy chủ";
+                    OpenServerButton.Content = Constants.CloseServerText;
 
-                await _mqttClientService.ConnectAsync();
-                ServerStatusTextBlock.Text = "Online";
+                    await _mqttClientService.ConnectAsync();
+                    ServerStatusTextBlock.Text = Constants.ServerOnlineStatus;
+                }
+                else
+                {
+                    // Stop the MQTT broker
+                    await _mqttServerService.StopBrokerAsync();
+
+                    OpenServerButton.Content = Constants.OpenServerText;
+
+                    await _mqttClientService.CloseConnectionAsync();
+                    ServerStatusTextBlock.Text = Constants.ServerOfflineStatus;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                // Stop the MQTT broker
-                await _mqttServerService.StopBrokerAsync();
-
-                // Update the ServerStatusLabel to "Offline"
-                OpenServerButton.Content = "Mở máy chủ";
-
-                await _mqttClientService.CloseConnectionAsync();
-                ServerStatusTextBlock.Text = "Offline";
+                if (OpenServerButton.Content.ToString() == Constants.OpenServerText)
+                {
+                    MessageBox.Show(Constants.BrokerStartErrorMessage + "\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    MessageBox.Show(Constants.BrokerStopErrorMessage + "\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
     }
 }
+
+
+
+
+
