@@ -96,6 +96,7 @@ namespace WPF_NhaMayCaoSu
         private void AddRFIDButton_Click(object sender, RoutedEventArgs e)
         {
             RFIDManagementWindow rFIDManagementWindow = new RFIDManagementWindow();
+            rFIDManagementWindow.CurrentAccount = CurrentAccount;
             rFIDManagementWindow.ShowDialog();
             LoadDataGrid();
         }
@@ -104,6 +105,7 @@ namespace WPF_NhaMayCaoSu
         {
             RFIDManagementWindow rFIDManagementWindow = new RFIDManagementWindow();
             rFIDManagementWindow.SelectedRFID = RFIDDataGrid.SelectedItem as RFID;
+            rFIDManagementWindow.CurrentAccount = CurrentAccount;
             rFIDManagementWindow.ShowDialog();
             LoadDataGrid();
         }

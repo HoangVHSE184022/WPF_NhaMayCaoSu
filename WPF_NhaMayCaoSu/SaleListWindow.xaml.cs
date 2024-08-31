@@ -27,6 +27,7 @@ namespace WPF_NhaMayCaoSu
         private void AddSaleButton_Click(object sender, RoutedEventArgs e)
         {
             SaleManagementWindow saleManagementWindow = new SaleManagementWindow();
+            saleManagementWindow.CurrentAccount = CurrentAccount;
             saleManagementWindow.ShowDialog();
             LoadDataGrid();
         }
@@ -44,6 +45,7 @@ namespace WPF_NhaMayCaoSu
 
             SaleManagementWindow saleManagementWindow = new SaleManagementWindow();
             saleManagementWindow.SelectedSale = selected;
+            saleManagementWindow.CurrentAccount = CurrentAccount;
             saleManagementWindow.ShowDialog();
             LoadDataGrid();
         }

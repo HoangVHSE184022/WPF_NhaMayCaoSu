@@ -48,9 +48,6 @@ namespace WPF_NhaMayCaoSu
             account.Password = password;
             account.RoleId = roleId;
             await _accountService.RegisterAsync(account);
-            AccountNameTextBox.Text = "";
-            UsernameTextBox.Text = "";
-            PasswordTextBox.Password = "";
             MessageBox.Show(Constants.SuccessMessageCreateAccount, Constants.TitleRegisterSuccess, MessageBoxButton.OK);
             LoginWindow login = new();
             login.Show();
@@ -121,7 +118,8 @@ namespace WPF_NhaMayCaoSu
                 ModeLabel.Content = "Cập nhật tài khoản";
                 AccountNameTextBox.Text = CurrentAccount.AccountName;
                 UsernameTextBox.Text = CurrentAccount.Username;
-                
+                LoginButton.Content = "";
+                LoginButton.IsEnabled = false;
             }
         }
     }
