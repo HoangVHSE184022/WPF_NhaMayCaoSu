@@ -10,10 +10,10 @@ namespace WPF_NhaMayCaoSu
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly CameraService _cameraService = new();
         private readonly SessionService _sessionService;
         private readonly MqttServerService _mqttServerService;
         private readonly MqttClientService _mqttClientService;
+        private readonly CameraService _cameraService = new();
 
         public MainWindow()
         {
@@ -72,7 +72,7 @@ namespace WPF_NhaMayCaoSu
 
         private async void Broker_Click(object sender, RoutedEventArgs e)
         {
-            if(OpenServerButton.Content == "Mở máy chủ")
+            if (OpenServerButton.Content == "Mở máy chủ")
             {
                 // Start the MQTT broker
                 await _mqttServerService.StartBrokerAsync();
@@ -96,3 +96,8 @@ namespace WPF_NhaMayCaoSu
         }
     }
 }
+
+
+
+
+
