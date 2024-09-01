@@ -3,7 +3,7 @@
     public class Sale
     {
         public Guid SaleId { get; set; }
-        public long CustomerName { get; set; }
+        public string CustomerName { get; set; }
         public float? ProductDensity { get; set; }
         public float? ProductWeight { get; set; }
         public DateTime? LastEditedTime { get; set; }

@@ -41,7 +41,6 @@ namespace WPF_NhaMayCaoSu
             if (SelectedRole != null)
             {
                 RoleTextBox.Text = SelectedRole.RoleName.ToString();
-                StatusTextBox.Text = SelectedRole.IsAvailable.ToString();
                 ModeLabel.Content = "Chỉnh sửa vai trò";
             }
         }
@@ -56,7 +55,6 @@ namespace WPF_NhaMayCaoSu
             Role role = new()
             {
                 RoleName = RoleTextBox.Text,
-                IsAvailable = Convert.ToBoolean(StatusTextBox.Text),
                 RoleId = SelectedRole?.RoleId ?? Guid.NewGuid()
             };
 
