@@ -125,7 +125,7 @@ namespace WPF_NhaMayCaoSu
         {
             Dispatcher.Invoke(() =>
             {
-                NumberofconnectionTextBlock.Text = $"Onl\n{deviceCount}";
+                NumberofconnectionTextBlock.Text = $"Onl:{deviceCount} Thiết bị";
             });
         }
 
