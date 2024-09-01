@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using MQTTnet;
+﻿using MQTTnet;
 using MQTTnet.Server;
 using System.Collections.Concurrent;
 using System.Diagnostics;

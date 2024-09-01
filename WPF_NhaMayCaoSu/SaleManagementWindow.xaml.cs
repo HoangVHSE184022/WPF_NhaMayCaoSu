@@ -146,7 +146,7 @@ namespace WPF_NhaMayCaoSu
             {
                 CameraService cameraService = new CameraService();
                 Camera newestCamera = await cameraService.GetNewestCameraAsync();
-
+                
                 if (newestCamera == null)
                 {
                     Application.Current.Dispatcher.Invoke(() =>
@@ -164,8 +164,9 @@ namespace WPF_NhaMayCaoSu
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         ProcessMqttMessage(messageContent, "RFID", "Weight", RFIDCodeTextBox, WeightTextBox);
-                        Debug.WriteLine(filePathUrl);
-                        URLWeightTextBox.Text = filePathUrl;
+                        ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLWeightTextBox);
+                        _ = ProcessCustomerMessage(RFIDCodeTextBox.Text);
+                        StatusTextBox.Text = "1";
                     });
                 }
                 else if (data.StartsWith("Can_tieu_ly:"))
@@ -177,6 +178,8 @@ namespace WPF_NhaMayCaoSu
                     {
                         ProcessMqttMessage(messageContent, "RFID", "Density", RFIDCodeTextBox, DensityTextBox);
                         ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLDensityTextBox);
+                        _ = ProcessCustomerMessage(RFIDCodeTextBox.Text);
+                        StatusTextBox.Text = "1";
                     });
                 }
                 else
@@ -314,6 +317,36 @@ namespace WPF_NhaMayCaoSu
             roleListWindow.CurrentAccount = CurrentAccount;
             roleListWindow.ShowDialog();
         }
+
+        private async Task ProcessCustomerMessage(string rfidValue)
+        {
+            try
+            {
+                CustomerService customerService = new CustomerService();
+
+                Customer customer = await customerService.GetCustomerByRFIDCodeAsync(rfidValue);
+
+                if (customer != null)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        CustomerNameTextBox.Text = customer.CustomerName;
+                    });
+                }
+                else
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        MessageBox.Show("RFID này chưa được đăng ký. Hãy đăng ký RFID trước để nhận thông tin", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error processing customer message: {ex.Message}");
+            }
+        }
+
 
 
         private void ProcessCameraUrlMessage(string cameraUrl, string rfidValue, System.Windows.Controls.TextBox urlTextBox)

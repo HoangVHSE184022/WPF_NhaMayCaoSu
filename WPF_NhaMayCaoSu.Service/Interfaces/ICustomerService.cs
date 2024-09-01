@@ -10,5 +10,6 @@ namespace WPF_NhaMayCaoSu.Service.Interfaces
         Task<IEnumerable<Customer>> GetAllCustomers(int pageNumber, int pageSize);
         Task<Customer> GetCustomerById(Guid id);
         Task<int> CountCustomerRFIDs(Guid customerId);
+        Task<Customer?> GetCustomerByRFIDCodeAsync(string rfidCode);
     }
 }
