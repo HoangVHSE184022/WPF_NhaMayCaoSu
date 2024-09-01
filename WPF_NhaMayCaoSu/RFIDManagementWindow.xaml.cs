@@ -87,8 +87,6 @@ namespace WPF_NhaMayCaoSu
                 Debug.WriteLine($"Error processing message: {ex.Message}");
             }
         }
-
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             // Validate required fields
