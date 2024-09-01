@@ -31,8 +31,7 @@
         <DataGrid x:Name="RoleDataGrid" HorizontalAlignment="Left" Height="613" Margin="32,129,0,0" VerticalAlignment="Top" Width="1009" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Width="200" Binding="{Binding RoleId}"/>
-                <DataGridTextColumn Header="Vai trò" Width="650" Binding="{Binding RoleName}"/>
-                <DataGridTextColumn Header="Trạng thái" Width="150" Binding="{Binding IsAvailable}"/>
+                <DataGridTextColumn Header="Vai trò" Width="800" Binding="{Binding RoleName}"/>
 
             </DataGrid.Columns>
 

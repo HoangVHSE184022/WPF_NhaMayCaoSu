@@ -82,6 +82,7 @@ namespace WPF_NhaMayCaoSu
 
             if (SelectedRFID == null)
             {
+                rFID.CreatedDate = DateTime.Now;
                 await _service.AddRFIDAsync(rFID);
                 MessageBox.Show("Đã tạo thành công!", Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
             }
