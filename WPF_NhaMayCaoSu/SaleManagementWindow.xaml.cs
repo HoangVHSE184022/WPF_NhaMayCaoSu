@@ -3,6 +3,10 @@ using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
 using System.Diagnostics;
+using System.IO;
+using Emgu.CV;
+using Emgu.CV.Structure;
+using System.Drawing;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -21,6 +25,8 @@ namespace WPF_NhaMayCaoSu
         private double? oldWeightValue = null;
         private DateTime? firstMessageTime = null;
         private string lastRFID = null;
+        private string oldUrl1 = null;
+        private string oldUrl2 = null;
 
         public SaleManagementWindow()
         {
@@ -63,59 +69,6 @@ namespace WPF_NhaMayCaoSu
 
             Close();
         }
-
-        //private async Task<string> CaptureImageFromCameraAsync(Camera camera, int cameraIndex)
-        //{
-        //    string localFilePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.jpg");
-
-        //    try
-        //    {
-        //        string cameraUrl = cameraIndex == 1 ? camera.Camera1 : camera.Camera2;
-        //        if (!string.IsNullOrEmpty(cameraUrl))
-        //        {
-        //            using (var capture = new VideoCapture(cameraUrl))
-        //            {
-        //                if (capture.IsOpened())
-        //                {
-        //                    using (var frame = new Mat())
-        //                    {
-        //                        capture.Read(frame);
-        //                        if (!frame.Empty())
-        //                        {
-        //                            BitmapSource bitmapSource = frame.ToBitmapSource();
-        //                            using (var stream = new FileStream(localFilePath, FileMode.Create, FileAccess.Write))
-        //                            {
-        //                                BitmapEncoder encoder = new JpegBitmapEncoder();
-        //                                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
-        //                                encoder.Save(stream);
-        //                            }
-        //                            MessageBox.Show(string.Format(Constants.SuccessMessageCapturedFrame, cameraIndex), Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
-        //                        }
-        //                        else
-        //                        {
-        //                            MessageBox.Show(string.Format(Constants.ErrorMessageCaptureFrameFailed, cameraIndex), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-        //                        }
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    MessageBox.Show(string.Format(Constants.ErrorMessageOpenCameraFailed, cameraIndex), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            throw new Exception(string.Format(Constants.ErrorMessageInvalidCameraUrl, cameraIndex));
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(string.Format(Constants.ErrorMessageCaptureImage, cameraIndex, ex.Message), Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-        //        return string.Empty;
-        //    }
-
-        //    return localFilePath;
-        //}
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -187,19 +140,44 @@ namespace WPF_NhaMayCaoSu
             mainWindow.Show();
         }
 
-        private void OnMqttMessageReceived(object sender, string data)
+        private async void OnMqttMessageReceived(object sender, string data)
         {
             try
             {
+                CameraService cameraService = new CameraService();
+                Camera newestCamera = await cameraService.GetNewestCameraAsync();
+
+                if (newestCamera == null)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        MessageBox.Show("Failed to retrieve camera information.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    });
+                    return;
+                }
+
                 if (data.StartsWith("Can_ta:"))
                 {
                     string messageContent = data.Substring("Can_ta:".Length);
-                    ProcessMqttMessage(messageContent, "RFID", "Weight", RFIDCodeTextBox, WeightTextBox);
+                    string filePathUrl = await CaptureImageFromCameraAsync(newestCamera, 1);
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ProcessMqttMessage(messageContent, "RFID", "Weight", RFIDCodeTextBox, WeightTextBox);
+                        Debug.WriteLine(filePathUrl);
+                        URLWeightTextBox.Text = filePathUrl;
+                    });
                 }
                 else if (data.StartsWith("Can_tieu_ly:"))
                 {
                     string messageContent = data.Substring("Can_tieu_ly:".Length);
-                    ProcessMqttMessage(messageContent, "RFID", "Density", RFIDCodeTextBox, DensityTextBox);
+                    string filePathUrl = await CaptureImageFromCameraAsync(newestCamera, 2);
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ProcessMqttMessage(messageContent, "RFID", "Density", RFIDCodeTextBox, DensityTextBox);
+                        ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLDensityTextBox);
+                    });
                 }
                 else
                 {
@@ -211,6 +189,7 @@ namespace WPF_NhaMayCaoSu
                 Debug.WriteLine($"Error processing message: {ex.Message}");
             }
         }
+
 
         private void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, System.Windows.Controls.TextBox firstTextBox, System.Windows.Controls.TextBox secondTextBox)
         {
@@ -335,6 +314,107 @@ namespace WPF_NhaMayCaoSu
             roleListWindow.CurrentAccount = CurrentAccount;
             roleListWindow.ShowDialog();
         }
+
+
+        private void ProcessCameraUrlMessage(string cameraUrl, string rfidValue, System.Windows.Controls.TextBox urlTextBox)
+        {
+            try
+            {
+                DateTime currentTime = DateTime.Now;
+
+                // Ensure the UI update is executed on the UI thread
+                urlTextBox.Dispatcher.Invoke(() =>
+                {
+                    // Check if the RFID is the same and the time difference is less than 5 minutes
+                    if (lastRFID == rfidValue && firstMessageTime.HasValue && currentTime.Subtract(firstMessageTime.Value).TotalMinutes <= 5)
+                    {
+                        // Append the new URL to the existing URL
+                        if (urlTextBox == URLWeightTextBox)
+                        {
+                            oldUrl1 = string.IsNullOrEmpty(oldUrl1) ? cameraUrl : $"{oldUrl1}\n{cameraUrl}";
+                            urlTextBox.Text = oldUrl1;
+                        }
+                        else if (urlTextBox == URLDensityTextBox)
+                        {
+                            oldUrl2 = string.IsNullOrEmpty(oldUrl2) ? cameraUrl : $"{oldUrl2}\n{cameraUrl}";
+                            urlTextBox.Text = oldUrl2;
+                        }
+                    }
+                    else
+                    {
+                        // If it's a new RFID or more than 5 minutes have passed, reset the URLs
+                        if (urlTextBox == URLWeightTextBox)
+                        {
+                            oldUrl1 = cameraUrl;
+                            urlTextBox.Text = oldUrl1;
+                        }
+                        else if (urlTextBox == URLDensityTextBox)
+                        {
+                            oldUrl2 = cameraUrl;
+                            urlTextBox.Text = oldUrl2;
+                        }
+
+                        // Update the last RFID and timestamp
+                        lastRFID = rfidValue;
+                        firstMessageTime = currentTime;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error processing camera URL message: {ex.Message}");
+            }
+        }
+
+
+
+        private async Task<string> CaptureImageFromCameraAsync(Camera camera, int cameraIndex)
+        {
+            string localFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), $"{Guid.NewGuid()}_Camera{cameraIndex}.jpg");
+
+            try
+            {
+                string cameraUrl = cameraIndex == 1 ? camera.Camera1 : camera.Camera2;
+                if (string.IsNullOrEmpty(cameraUrl))
+                {
+                    throw new Exception($"Camera URL for Camera {cameraIndex} is invalid.");
+                }
+
+                using (var capture = new VideoCapture(cameraUrl))
+                {
+                    if (!capture.IsOpened)
+                    {
+                        throw new Exception($"Failed to open Camera {cameraIndex}.");
+                    }
+
+                    using (var frame = new Mat())
+                    {
+                        capture.Read(frame);
+                        if (frame.IsEmpty)
+                        {
+                            throw new Exception($"Failed to capture image from Camera {cameraIndex}.");
+                        }
+
+                        // Convert frame to Image<Bgr, byte>
+                        Image<Bgr, byte> image = frame.ToImage<Bgr, byte>();
+
+                        // Convert Image<Bgr, byte> to Bitmap
+                        Bitmap bitmap = image.ToBitmap();
+
+                        // Save the image to disk
+                        bitmap.Save(localFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error capturing image from Camera {cameraIndex}: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return string.Empty;
+            }
+
+            return localFilePath.ToString();
+        }
+
     }
 }
 
