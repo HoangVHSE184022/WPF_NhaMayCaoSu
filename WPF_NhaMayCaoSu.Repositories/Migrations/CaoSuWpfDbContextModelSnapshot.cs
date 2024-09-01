@@ -66,11 +66,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Camera1")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Camera2")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<short>("Status")
@@ -109,12 +107,15 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ImagePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("ImageType")
-                        .HasColumnType("bigint");
+                    b.Property<short>("ImageType")
+                        .HasColumnType("smallint");
 
                     b.Property<Guid>("SaleId")
                         .HasColumnType("uniqueidentifier");
@@ -131,6 +132,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<Guid>("RFID_Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
@@ -161,9 +165,6 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit");
-
                     b.Property<string>("RoleName")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -182,8 +183,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("CustomerName")
-                        .HasColumnType("bigint");
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastEditedTime")
                         .HasColumnType("datetime2");

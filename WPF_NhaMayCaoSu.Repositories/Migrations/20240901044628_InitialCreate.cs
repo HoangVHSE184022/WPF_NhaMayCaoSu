@@ -16,8 +16,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: table => new
                 {
                     CameraId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Camera1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Camera2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Camera1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Camera2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<short>(type: "smallint", nullable: false)
                 },
                 constraints: table =>
@@ -44,8 +44,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: table => new
                 {
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IsAvailable = table.Column<bool>(type: "bit", nullable: false)
+                    RoleName = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -58,6 +57,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 {
                     RFID_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RFIDCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<short>(type: "smallint", nullable: false)
@@ -102,7 +102,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: table => new
                 {
                     SaleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CustomerName = table.Column<long>(type: "bigint", nullable: false),
+                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductDensity = table.Column<float>(type: "real", nullable: true),
                     ProductWeight = table.Column<float>(type: "real", nullable: true),
                     LastEditedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -125,8 +125,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: table => new
                 {
                     ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ImageType = table.Column<long>(type: "bigint", nullable: false),
+                    ImageType = table.Column<short>(type: "smallint", nullable: false),
                     ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SaleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
