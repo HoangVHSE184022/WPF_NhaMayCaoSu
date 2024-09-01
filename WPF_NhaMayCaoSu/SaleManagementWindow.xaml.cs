@@ -7,6 +7,7 @@ using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Service.Interfaces;
+using System.Diagnostics;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -19,6 +20,7 @@ namespace WPF_NhaMayCaoSu
         private SaleService _service = new();
 
         public Sale SelectedSale { get; set; } = null;
+        private MqttClientService _mqttClientService = new MqttClientService();
 
         public SaleManagementWindow()
         {
@@ -142,9 +144,13 @@ namespace WPF_NhaMayCaoSu
         //    return localFilePath;
         //}
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ModeLabel.Content = Constants.ModeLabelAddSale; ;
+            ModeLabel.Content = Constants.ModeLabelAddSale;
+            await _mqttClientService.SubscribeAsync("Can_ta");
+            await _mqttClientService.SubscribeAsync("Can_tieu_ly");
+
+            _mqttClientService.MessageReceived += (s, data) => OnMqttMessageReceived(s, data);
 
             if (SelectedSale != null)
             {
@@ -206,6 +212,81 @@ namespace WPF_NhaMayCaoSu
             MainWindow mainWindow = new();
             mainWindow.Show();
         }
+        private void OnMqttMessageReceived(object sender, string data)
+        {
+            try
+            {
+                if (data.StartsWith("Can_ta:"))
+                {
+                    ProcessMqttMessage(data.Substring("Can_ta:".Length), "RFID", "Weight", RFIDCodeTextBox, WeightTextBox);
+                }
+                else if (data.StartsWith("Can_tieu_ly:"))
+                {
+                    ProcessMqttMessage(data.Substring("Can_tieu_ly:".Length), "RFID", "Density", RFIDCodeTextBox, DensityTextBox);
+                }
+                else
+                {
+                    Debug.WriteLine("Unexpected message topic.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error processing message: {ex.Message}");
+            }
+        }
+
+        private void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, System.Windows.Controls.TextBox firstTextBox, System.Windows.Controls.TextBox secondTextBox)
+        {
+            try
+            {
+                string[] messages = messageContent.Split(';');
+
+                string firstValue = null;
+                string secondValue = null;
+
+                foreach (string message in messages)
+                {
+                    if (message.StartsWith(firstKey + ":"))
+                    {
+                        firstValue = message.Substring((firstKey + ":").Length);
+                    }
+                    else if (message.StartsWith(secondKey + ":"))
+                    {
+                        secondValue = message.Substring((secondKey + ":").Length);
+                    }
+                }
+                if (!string.IsNullOrEmpty(firstValue))
+                {
+                    firstTextBox.Dispatcher.Invoke(() =>
+                    {
+                        firstTextBox.Text = firstValue;
+                    });
+                }
+                else
+                {
+                    Debug.WriteLine($"Failed to parse {firstKey}.");
+                }
+
+                // Cập nhật TextBox cho giá trị thứ hai
+                if (!string.IsNullOrEmpty(secondValue))
+                {
+                    secondTextBox.Dispatcher.Invoke(() =>
+                    {
+                        secondTextBox.Text = secondValue;
+                    });
+                }
+                else
+                {
+                    Debug.WriteLine($"Failed to parse {secondKey}.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error processing message content: {ex.Message}");
+            }
+        }
+
+
     }
 }
 
