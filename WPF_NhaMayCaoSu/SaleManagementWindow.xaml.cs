@@ -296,7 +296,7 @@ namespace WPF_NhaMayCaoSu
                     else if (firstKey == "RFID" && secondKey == "Density")
                     {
                         // Kiểm tra trong cơ sở dữ liệu xem có bản ghi với RFID này không và chưa có giá trị Density
-                        var saleRecord = await _service.GetSaleByRFIDAsync(rfidValue);
+                        Sale saleRecord = await _service.GetSaleByRFIDAsync(rfidValue);
 
                         if (saleRecord != null && saleRecord.ProductWeight.HasValue && !saleRecord.ProductDensity.HasValue)
                         {

@@ -103,6 +103,10 @@ namespace WPF_NhaMayCaoSu
                 // Restart the MQTT broker
                 await _mqttServerService.RestartBrokerAsync();
                 ServerStatusLabel.Content = Constants.StatusOnline;
+                PortconnecttionLabel.Content = "1883";
+                string localIpAddress = GetLocalIpAddress();
+                IPconnecttionSmallLabel.Content = $"Local IP: {localIpAddress}";
+                IPconnecttionLabel.Content = $"{localIpAddress}";
 
                 await _mqttClientService.ConnectAsync();
 

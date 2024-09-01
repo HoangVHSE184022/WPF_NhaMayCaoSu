@@ -24,8 +24,9 @@ namespace WPF_NhaMayCaoSu.Service.Services
             _client = factory.CreateMqttClient();
 
             MqttClientOptionsBuilder optionsBuilder = new MqttClientOptionsBuilder();
+            string ipLocal = GetLocalIpAddress();
             optionsBuilder.WithClientId("this_computer")
-                           .WithTcpServer("192.168.1.171", 1883)
+                           .WithTcpServer($"{ipLocal}", 1883)
                            .WithCredentials("admin", "admin")
                            .WithCleanSession();
 
@@ -35,6 +36,21 @@ namespace WPF_NhaMayCaoSu.Service.Services
             _client.ConnectedAsync += OnConnectedAsync;
             _client.DisconnectedAsync += OnDisconnectedAsync;
             _client.ApplicationMessageReceivedAsync += OnMessageReceivedAsync;
+        }
+
+        private string GetLocalIpAddress()
+        {
+            System.Net.IPAddress[] ipAddresses = System.Net.Dns.GetHostAddresses(System.Net.Dns.GetHostName());
+
+            foreach (System.Net.IPAddress ip in ipAddresses)
+            {
+                // Check for IPv4 addresses
+                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            return "N/A";
         }
 
         private Task OnConnectedAsync(MqttClientConnectedEventArgs arg)
