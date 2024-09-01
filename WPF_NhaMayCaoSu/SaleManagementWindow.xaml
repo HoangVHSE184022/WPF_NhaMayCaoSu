@@ -27,16 +27,18 @@
         <TextBox x:Name="WeightTextBox" HorizontalAlignment="Left" Height="46" Margin="276,200,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  Width="850" FontFamily="Montserrat" FontSize="30" Background="#FFCACACA" BorderThickness="0"/>
         <Label Content="URL số ký" HorizontalAlignment="Left" Height="46" Margin="32,270,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
         <TextBox x:Name="URLWeightTextBox" HorizontalAlignment="Left" Height="46" Margin="276,270,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  Width="850" FontFamily="Montserrat" FontSize="30" Background="#FFCACACA" BorderThickness="0"/>
-        <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Height="40" Margin="1008,716,0,0" VerticalAlignment="Top" Width="121" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" Click="SaveButton_Click"/>
-        <Button x:Name="QuitButton" Content="Quit" HorizontalAlignment="Left" Height="40" Margin="72,709,0,0" VerticalAlignment="Top" Width="121"  FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="36" Background="#FFCACACA" Click="QuitButton_Click"/>
-        <Label Content="Trạng thái" HorizontalAlignment="Left" Height="46" Margin="32,480,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
-        <TextBox x:Name="StatusTextBox" HorizontalAlignment="Left" Height="46" Margin="276,480,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  Width="850" FontFamily="Montserrat" Background="#FFCACACA" FontSize="30" BorderThickness="0"/>
         <Label Content="Tỉ trọng" HorizontalAlignment="Left" Height="46" Margin="35,340,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366" />
         <TextBox x:Name="DensityTextBox" HorizontalAlignment="Left" Height="46" Margin="279,340,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  Width="850" FontFamily="Montserrat" Background="#FFCACACA" FontSize="30" BorderThickness="0"/>
         <Label Content="URL tỉ trọng" HorizontalAlignment="Left" Height="46" Margin="32,410,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
         <TextBox x:Name="URLDensityTextBox" HorizontalAlignment="Left" Height="46" Margin="276,410,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  Width="850" FontFamily="Montserrat" FontSize="30" Background="#FFCACACA" BorderThickness="0"/>
+        <Label Content="Trạng thái" HorizontalAlignment="Left" Height="46" Margin="32,480,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
+        <TextBox x:Name="StatusTextBox" HorizontalAlignment="Left" Height="46" Margin="276,480,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  Width="850" FontFamily="Montserrat" Background="#FFCACACA" FontSize="30" BorderThickness="0"/>
+
         <Label Content="Mã RFID" HorizontalAlignment="Left" Height="46" Margin="32,550,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
         <TextBox x:Name="RFIDCodeTextBox" HorizontalAlignment="Left" Height="46" Margin="276,550,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  Width="850" FontFamily="Montserrat" Background="#FFCACACA" FontSize="30" BorderThickness="0"/>
+        <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Height="40" Margin="1008,716,0,0" VerticalAlignment="Top" Width="121" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" Click="SaveButton_Click"/>
+        <Button x:Name="QuitButton" Content="Quit" HorizontalAlignment="Left" Height="40" Margin="72,709,0,0" VerticalAlignment="Top" Width="121"  FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="36" Background="#FFCACACA" Click="QuitButton_Click"/>
+        
 
     </Grid>
 </Window>

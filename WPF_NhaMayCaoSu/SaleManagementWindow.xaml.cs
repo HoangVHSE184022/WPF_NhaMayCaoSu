@@ -31,7 +31,7 @@ namespace WPF_NhaMayCaoSu
         {
             Sale x = new();
 
-            //x.CustomerName = long.Parse(CustomerNameTextBox.Text);
+            x.CustomerName = CustomerNameTextBox.Text;
             x.ProductWeight = int.Parse(WeightTextBox.Text);
             x.ProductDensity = int.Parse(DensityTextBox.Text);
             x.Status = short.Parse(StatusTextBox.Text);
@@ -67,8 +67,12 @@ namespace WPF_NhaMayCaoSu
 
             if (SelectedSale != null)
             {
+                CustomerNameTextBox.Text = SelectedSale.CustomerName.ToString();
                 RFIDCodeTextBox.Text = SelectedSale.RFIDCode.ToString();
                 WeightTextBox.Text = SelectedSale.ProductWeight.ToString();
+                URLWeightTextBox.Text = SelectedSale.ProductDensity.ToString();
+                DensityTextBox.Text = SelectedSale.ProductDensity.ToString();
+                URLDensityTextBox.Text = SelectedSale.ProductDensity.ToString();
                 StatusTextBox.Text = SelectedSale.Status.ToString();
                 ModeLabel.Content = Constants.ModeLabelEditSale;
             }
