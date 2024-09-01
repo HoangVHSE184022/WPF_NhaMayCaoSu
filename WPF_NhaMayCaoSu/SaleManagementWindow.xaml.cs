@@ -18,6 +18,9 @@ namespace WPF_NhaMayCaoSu
 
         public Sale SelectedSale { get; set; } = null;
         private MqttClientService _mqttClientService = new MqttClientService();
+        private double? oldWeightValue = null;
+        private DateTime? firstMessageTime = null;
+        private string lastRFID = null;
 
         public SaleManagementWindow()
         {
@@ -213,50 +216,51 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                // Split the messageContent by colon
+                // Split message by :
                 string[] messages = messageContent.Split(':');
-
-                // Expecting the messageContent to be in "RFID:Weight" or "RFID:Density"
-                string firstValue = null;
-                string secondValue = null;
 
                 if (messages.Length == 2)
                 {
-                    firstValue = messages[0];
-                    secondValue = messages[1];
-                }
-                else
-                {
-                    Debug.WriteLine("Message format incorrect, unable to parse.");
-                }
+                    string rfidValue = messages[0];
+                    double currentValue = double.Parse(messages[1]);
+                    DateTime currentTime = DateTime.Now;
 
-                if (!string.IsNullOrEmpty(firstValue))
-                {
+                    if (firstKey == "RFID" && secondKey == "Weight")
+                    {
+                        if (lastRFID == rfidValue && oldWeightValue.HasValue && firstMessageTime.HasValue)
+                        {
+                            // Check if first topic comes around 5 minutes
+                            if (currentTime.Subtract(firstMessageTime.Value).TotalMinutes <= 5)
+                            {
+                                currentValue += oldWeightValue.Value;
+                            }
+                        }
+
+                        // Save old Value
+                        oldWeightValue = currentValue;
+                        firstMessageTime = currentTime;
+                        lastRFID = rfidValue;
+                    }
+
+                    // Update UI
                     firstTextBox.Dispatcher.Invoke(() =>
                     {
-                        firstTextBox.Text = firstValue;
+                        firstTextBox.Text = rfidValue;
                     });
-                }
-                else
-                {
-                    Debug.WriteLine($"Failed to parse {firstKey}.");
-                }
 
-                if (!string.IsNullOrEmpty(secondValue))
-                {
                     secondTextBox.Dispatcher.Invoke(() =>
                     {
-                        secondTextBox.Text = secondValue;
+                        secondTextBox.Text = currentValue.ToString();
                     });
                 }
                 else
                 {
-                    Debug.WriteLine($"Failed to parse {secondKey}.");
+                    Debug.WriteLine("Định dạng tin nhắn không chính xác, không thể phân tích.");
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error processing message content: {ex.Message}");
+                Debug.WriteLine($"Lỗi khi xử lý nội dung tin nhắn: {ex.Message}");
             }
         }
 
