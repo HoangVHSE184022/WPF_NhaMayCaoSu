@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
@@ -40,7 +28,7 @@ namespace WPF_NhaMayCaoSu
             await _mqttClientService.ConnectAsync();
             await _mqttClientService.SubscribeAsync("CreateRFID");
 
-            _mqttClientService.MessageReceived += OnMqttMessageReceived;
+
 
             CustomerComboBox.ItemsSource = await _customerService.GetAllCustomers(1,100);
 
@@ -55,6 +43,7 @@ namespace WPF_NhaMayCaoSu
                 CustomerComboBox.SelectedValue = SelectedRFID.CustomerId.ToString();
                 ModeLabel.Content = "Chỉnh sửa RFID";
             }
+            _mqttClientService.MessageReceived += OnMqttMessageReceived;
         }
 
         private void OnMqttMessageReceived(object sender, string data)
