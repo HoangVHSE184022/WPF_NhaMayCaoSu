@@ -1,4 +1,5 @@
-﻿using WPF_NhaMayCaoSu.Repository.Models;
+﻿using WPF_NhaMayCaoSu.Repository.IRepositories;
+using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
@@ -36,6 +37,11 @@ namespace WPF_NhaMayCaoSu.Service.Services
         {
             var customer = await _repository.GetCustomerById(customerId);
             return customer?.RFIDs?.Count ?? 0;
+        }
+
+        public async Task<Customer?> GetCustomerByRFIDCodeAsync(string rfidCode)
+        {
+            return await _repository.GetCustomerByRFIDCodeAsync(rfidCode);
         }
     }
 }

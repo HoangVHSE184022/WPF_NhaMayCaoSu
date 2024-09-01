@@ -9,5 +9,6 @@ namespace WPF_NhaMayCaoSu.Repository.IRepositories
         Task DeleteCustomer(Guid id);
         Task<IEnumerable<Customer>> GetAllAsync(int pageNumber, int pageSize);
         Task<Customer> GetCustomerById(Guid id);
+        Task<Customer?> GetCustomerByRFIDCodeAsync(string rfidCode);
     }
 }
