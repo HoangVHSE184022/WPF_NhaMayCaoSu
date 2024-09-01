@@ -219,7 +219,7 @@ namespace WPF_NhaMayCaoSu
                 // Split message by :
                 string[] messages = messageContent.Split(':');
 
-                if (messages.Length == 2)
+               if (messages.Length == 2)
                 {
                     string rfidValue = messages[0];
                     double currentValue = double.Parse(messages[1]);
