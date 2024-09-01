@@ -6,6 +6,7 @@ using WPF_NhaMayCaoSu.Service.Interfaces;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using MQTTnet.Adapter;
 
 namespace WPF_NhaMayCaoSu.Service.Services
 {
@@ -90,11 +91,25 @@ namespace WPF_NhaMayCaoSu.Service.Services
 
         public async Task ConnectAsync()
         {
-            if (_client.IsConnected != true)
+            if (!_client.IsConnected)
             {
-                await _client.ConnectAsync(_options);
+                try
+                {
+                    await _client.ConnectAsync(_options);
+                }
+                catch (MqttConnectingFailedException ex)
+                {
+                    Debug.WriteLine("Failed to connect to MQTT server: " + ex.Message);
+                    throw new Exception("Failed to connect to MQTT server. Please ensure the server is turned on.", ex);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("An error occurred while connecting to MQTT server: " + ex.Message);
+                    throw new Exception("An error occurred while connecting to the MQTT server. Please ensure the server is turned on.", ex);
+                }
             }
         }
+
 
         public async Task SubscribeAsync(string topic)
         {
