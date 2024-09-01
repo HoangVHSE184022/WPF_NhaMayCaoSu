@@ -190,11 +190,13 @@ namespace WPF_NhaMayCaoSu
             {
                 if (data.StartsWith("Can_ta:"))
                 {
-                    ProcessMqttMessage(data.Substring("Can_ta:".Length), "RFID", "Weight", RFIDCodeTextBox, WeightTextBox);
+                    string messageContent = data.Substring("Can_ta:".Length);
+                    ProcessMqttMessage(messageContent, "RFID", "Weight", RFIDCodeTextBox, WeightTextBox);
                 }
                 else if (data.StartsWith("Can_tieu_ly:"))
                 {
-                    ProcessMqttMessage(data.Substring("Can_tieu_ly:".Length), "RFID", "Density", RFIDCodeTextBox, DensityTextBox);
+                    string messageContent = data.Substring("Can_tieu_ly:".Length);
+                    ProcessMqttMessage(messageContent, "RFID", "Density", RFIDCodeTextBox, DensityTextBox);
                 }
                 else
                 {
@@ -211,22 +213,23 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                string[] messages = messageContent.Split(';');
+                // Split the messageContent by colon
+                string[] messages = messageContent.Split(':');
 
+                // Expecting the messageContent to be in "RFID:Weight" or "RFID:Density"
                 string firstValue = null;
                 string secondValue = null;
 
-                foreach (string message in messages)
+                if (messages.Length == 2)
                 {
-                    if (message.StartsWith(firstKey + ":"))
-                    {
-                        firstValue = message.Substring((firstKey + ":").Length);
-                    }
-                    else if (message.StartsWith(secondKey + ":"))
-                    {
-                        secondValue = message.Substring((secondKey + ":").Length);
-                    }
+                    firstValue = messages[0];
+                    secondValue = messages[1];
                 }
+                else
+                {
+                    Debug.WriteLine("Message format incorrect, unable to parse.");
+                }
+
                 if (!string.IsNullOrEmpty(firstValue))
                 {
                     firstTextBox.Dispatcher.Invoke(() =>
@@ -239,7 +242,6 @@ namespace WPF_NhaMayCaoSu
                     Debug.WriteLine($"Failed to parse {firstKey}.");
                 }
 
-                // Cập nhật TextBox cho giá trị thứ hai
                 if (!string.IsNullOrEmpty(secondValue))
                 {
                     secondTextBox.Dispatcher.Invoke(() =>
@@ -257,8 +259,6 @@ namespace WPF_NhaMayCaoSu
                 Debug.WriteLine($"Error processing message content: {ex.Message}");
             }
         }
-
-
 
         private void RoleManagementButton_Click(object sender, RoutedEventArgs e)
         {
