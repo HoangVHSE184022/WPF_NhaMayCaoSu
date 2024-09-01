@@ -13,6 +13,8 @@ namespace WPF_NhaMayCaoSu
     public partial class AccountManagementWindow : Window
     {
         private readonly AccountService _accountService = new();
+        private readonly RoleService _roleService = new();
+        public Account CurrentAccount { get; set; } = null;
         public AccountManagementWindow()
         {
             InitializeComponent();
@@ -28,19 +30,24 @@ namespace WPF_NhaMayCaoSu
             string accountName = AccountNameTextBox.Text;
             string username = UsernameTextBox.Text;
             string password = PasswordTextBox.Password;
+            Guid roleId = Guid.Parse(RoleComboBox.SelectedValue.ToString());
             if(accountName.IsNullOrEmpty() || username.IsNullOrEmpty() || password.IsNullOrEmpty())
             {
                 MessageBox.Show(Constants.ErrorMessageMissingInfo, Constants.TitlePleaseTryAgain, MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (PasswordTextBox.Password != ConfirmPasswordTextBox.Password)
+            {
+                MessageBox.Show("Sai mật khẩu xác nhận", "Xác nhận mật khẩu thất bại",MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             Account account = new();
             account.AccountName = accountName;
             account.Username = username;
             account.Password = password;
+            account.RoleId = roleId;
             await _accountService.RegisterAsync(account);
-            AccountNameTextBox.Text = "";
-            UsernameTextBox.Text = "";
-            PasswordTextBox.Password = "";
             MessageBox.Show(Constants.SuccessMessageCreateAccount, Constants.TitleRegisterSuccess, MessageBoxButton.OK);
             LoginWindow login = new();
             login.Show();
@@ -57,12 +64,14 @@ namespace WPF_NhaMayCaoSu
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
+            customerListWindow.CurrentAccount = CurrentAccount;
             customerListWindow.ShowDialog();
         }
 
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
         {
             SaleListWindow saleListWindow = new SaleListWindow();
+            saleListWindow.CurrentAccount = CurrentAccount;
             saleListWindow.ShowDialog();
         }
 
@@ -70,12 +79,14 @@ namespace WPF_NhaMayCaoSu
         private void AccountManagementButton_Click(object sender, RoutedEventArgs e)
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
+            accountManagementWindow.CurrentAccount = CurrentAccount;
             accountManagementWindow.ShowDialog();
         }
 
         private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             BrokerWindow brokerWindow = new BrokerWindow();
+            brokerWindow.CurrentAccount = CurrentAccount;
             brokerWindow.ShowDialog();
         }
 
@@ -86,7 +97,30 @@ namespace WPF_NhaMayCaoSu
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow window = new();
+            window.CurrentAccount = CurrentAccount;
+            window.Show();
+        }
 
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ModeLabel.Content = "Đăng ký tài khoản";
+
+            RoleComboBox.ItemsSource = await _roleService.GetAllRolesAsync(1, 100);
+
+            RoleComboBox.DisplayMemberPath = "RoleName";
+            RoleComboBox.SelectedValuePath = "RoleId";
+            
+            //RoleComboBox.IsEnabled = false;
+
+            if (CurrentAccount != null)
+            {
+                ModeLabel.Content = "Cập nhật tài khoản";
+                AccountNameTextBox.Text = CurrentAccount.AccountName;
+                UsernameTextBox.Text = CurrentAccount.Username;
+                LoginButton.Content = "";
+                LoginButton.IsEnabled = false;
+            }
         }
     }
 }

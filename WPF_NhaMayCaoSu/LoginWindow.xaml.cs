@@ -34,6 +34,7 @@ namespace WPF_NhaMayCaoSu
                 else
                 {
                     MainWindow mainWindow = new MainWindow();
+                    mainWindow.CurrentAccount = account;
                     mainWindow.Show();
                     Close();
                 }
@@ -55,8 +56,9 @@ namespace WPF_NhaMayCaoSu
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
-            accountManagementWindow.Show();
             Close();
+            accountManagementWindow.Show();
+            
         }
     }
 }

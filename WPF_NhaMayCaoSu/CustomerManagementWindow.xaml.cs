@@ -17,6 +17,7 @@ namespace WPF_NhaMayCaoSu
     {
         private CustomerService _service = new();
         private MqttClientService _mqttClientService = new MqttClientService();
+        public Account CurrentAccount { get; set; } = null;
 
         public Customer SelectedCustomer { get; set; } = null;
 
@@ -84,6 +85,7 @@ namespace WPF_NhaMayCaoSu
             {
                 AccountNameTextBox.Text = SelectedCustomer.CustomerName;
                 StatusTextBox.Text = SelectedCustomer.Status.ToString();
+                PhoneTextBox.Text = SelectedCustomer.Phone.ToString();
                 ModeLabel.Content = Constants.ModeLabelEditCustomer;
             }
         }
@@ -124,18 +126,21 @@ namespace WPF_NhaMayCaoSu
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
+            customerListWindow.CurrentAccount = CurrentAccount;
             customerListWindow.ShowDialog();
         }
 
         private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
         {
             RFIDListWindow rFIDListWindow = new RFIDListWindow();
+            rFIDListWindow.CurrentAccount = CurrentAccount;
             rFIDListWindow.ShowDialog();
         }
 
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
         {
             SaleListWindow saleListWindow = new SaleListWindow();
+            saleListWindow.CurrentAccount = CurrentAccount;
             saleListWindow.ShowDialog();
         }
 
@@ -143,12 +148,14 @@ namespace WPF_NhaMayCaoSu
         private void AccountManagementButton_Click(object sender, RoutedEventArgs e)
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
+            accountManagementWindow.CurrentAccount = CurrentAccount;
             accountManagementWindow.ShowDialog();
         }
 
         private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             BrokerWindow brokerWindow = new BrokerWindow();
+            brokerWindow.CurrentAccount = CurrentAccount;
             brokerWindow.ShowDialog();
         }
 
@@ -159,7 +166,16 @@ namespace WPF_NhaMayCaoSu
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow mainWindow = new();
+            mainWindow.CurrentAccount = CurrentAccount;
+            mainWindow.Show();
+        }
 
+        private void RoleManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            RoleListWindow roleListWindow = new();
+            roleListWindow.CurrentAccount = CurrentAccount;
+            roleListWindow.ShowDialog();
         }
 
     }

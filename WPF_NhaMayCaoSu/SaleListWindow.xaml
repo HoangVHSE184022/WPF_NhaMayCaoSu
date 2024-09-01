@@ -16,6 +16,7 @@
                 <MenuItem x:Name="RFIDManagementButton" Header="RFID" Click="RFIDManagementButton_Click"/>
                 <MenuItem x:Name="SaleManagementButton" Header="Sale" Click="SaleManagementButton_Click"/>
                 <MenuItem x:Name="AccountManagementButton" Header="Tài khoản" Click="AccountManagementButton_Click"/>
+                <MenuItem x:Name="RoleManagementButton" Header="Vai trò" Click="RoleManagementButton_Click"/>
             </MenuItem>
         </Menu>
 
@@ -30,13 +31,13 @@
         <DataGrid x:Name="SaleDataGrid" HorizontalAlignment="Left" Height="641" Margin="27,105,0,0" VerticalAlignment="Top" Width="973" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Width="50" Binding="{Binding SaleId}"/>
-                <DataGridTextColumn Header="Weight" Width="100" Binding="{Binding ProductWeight}"/>
-                <DataGridTextColumn Header="Density" Width="100" Binding="{Binding ProductDensity}"/>
-                <DataGridTextColumn Header="Created" Width="100" Binding="{Binding CreatedDate}"/>
-                <DataGridTextColumn Header="Status" Width="90" Binding="{Binding Status}"/>
-                <DataGridTextColumn Header="Edited" Width="90" Binding="{Binding IsEdited}"/>
-                <DataGridTextColumn Header="LastEdited" Width="100" Binding="{Binding LastEditedTime}"/>
-                <DataGridTextColumn Header="RFIDCode" Width="150" Binding="{Binding RFIDCode}"/>
+                <DataGridTextColumn Header="Tên khách hàng" Width="200" Binding="{Binding CustomerName}"/>
+                <DataGridTextColumn Header="Số ký" Width="100" Binding="{Binding ProductWeight}"/>
+                <DataGridTextColumn Header="Tỉ trọng" Width="100" Binding="{Binding ProductDensity}"/>
+                <DataGridTextColumn Header="Lần chỉnh sửa cuối" Width="210" Binding="{Binding LastEditedTime}"/>
+                <DataGridTextColumn Header="Trạng thái" Width="120" Binding="{Binding Status}"/>
+                <DataGridTextColumn Header="Mã RFID" Width="200" Binding="{Binding RFIDCode}"/>
+
 
 
             </DataGrid.Columns>

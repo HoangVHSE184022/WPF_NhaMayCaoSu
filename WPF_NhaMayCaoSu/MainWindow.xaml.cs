@@ -14,10 +14,13 @@ namespace WPF_NhaMayCaoSu
         private readonly MqttServerService _mqttServerService;
         private readonly MqttClientService _mqttClientService;
         private readonly CameraService _cameraService = new();
+        public Account CurrentAccount { get; set; } = null;
+        private BrokerWindow broker;
 
         public MainWindow()
         {
             InitializeComponent();
+            broker = new BrokerWindow();
             _mqttServerService = new MqttServerService();
             _mqttClientService = new MqttClientService();
             _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;
@@ -38,12 +41,14 @@ namespace WPF_NhaMayCaoSu
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
+            customerListWindow.CurrentAccount = CurrentAccount;
             customerListWindow.ShowDialog();
         }
 
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
         {
             SaleListWindow saleListWindow = new SaleListWindow();
+            saleListWindow.CurrentAccount = CurrentAccount;
             saleListWindow.ShowDialog();
         }
 
@@ -51,31 +56,31 @@ namespace WPF_NhaMayCaoSu
         private void AccountManagementButton_Click(object sender, RoutedEventArgs e)
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
+            accountManagementWindow.CurrentAccount = CurrentAccount;
             accountManagementWindow.ShowDialog();
         }
 
         private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
         {
             RFIDListWindow rFIDListWindow = new RFIDListWindow();
+            rFIDListWindow.CurrentAccount = CurrentAccount;
             rFIDListWindow.ShowDialog();
         }
 
         private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            BrokerWindow brokerWindow = new BrokerWindow();
-            brokerWindow.ShowDialog();
+            broker.Show();
         }
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
-            DualCameraWindow dualCameraWindow = new DualCameraWindow(_cameraService);
-            dualCameraWindow.ShowDialog();
+            ConfigCamera configCamera = new ConfigCamera();
+            configCamera.ShowDialog();
         }
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow window = new MainWindow();
-            window.Show();
+            Show();
         }
 
         private async void Broker_Click(object sender, RoutedEventArgs e)
@@ -122,6 +127,13 @@ namespace WPF_NhaMayCaoSu
             {
                 NumberofconnectionTextBlock.Text = $"Onl\n{deviceCount}";
             });
+        }
+
+        private void RoleManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            RoleListWindow roleListWindow = new();
+            roleListWindow.CurrentAccount = CurrentAccount;
+            roleListWindow.ShowDialog();
         }
     }
 }

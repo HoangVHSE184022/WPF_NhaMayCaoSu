@@ -4,11 +4,11 @@ namespace WPF_NhaMayCaoSu.Repository.IRepositories
 {
     public interface ICameraRepository
     {
-        Task AddCamera(Camera camera);
-        Task<Camera> GetCamera();
-        Task UpdateCamera(Camera camera);
-        Task DeleteCamera(Guid id);
-        Task<Camera> GetCameraById(Guid cameraId);
-        Task<Camera> GetNewestCamera();
+        Task AddCameraAsync(Camera camera);
+        Task<Camera> GetCameraAsync();
+        Task UpdateCameraAsync(Camera camera);
+        Task DeleteCameraAsync(Guid id);
+        Task<Camera> GetCameraByIdAsync(Guid cameraId);
+        Task<Camera> GetNewestCameraAsync();
     }
 }

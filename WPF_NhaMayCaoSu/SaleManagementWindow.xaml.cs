@@ -1,8 +1,4 @@
-﻿using OpenCvSharp;
-using OpenCvSharp.WpfExtensions;
-using System.IO;
-using System.Windows;
-using System.Windows.Media.Imaging;
+﻿using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
@@ -14,10 +10,12 @@ namespace WPF_NhaMayCaoSu
     /// <summary>
     /// Interaction logic for SaleManagementWindow.xaml
     /// </summary>
-    public partial class SaleManagementWindow : System.Windows.Window
+    public partial class SaleManagementWindow : Window
     {
 
         private SaleService _service = new();
+
+        public Account CurrentAccount { get; set; } = null;
 
         public Sale SelectedSale { get; set; } = null;
         private MqttClientService _mqttClientService = new MqttClientService();
@@ -36,52 +34,26 @@ namespace WPF_NhaMayCaoSu
         {
             Sale x = new();
 
-            x.ProductWeight = float.Parse(WeightTextBox.Text);
+            x.CustomerName = CustomerNameTextBox.Text;
+            x.ProductWeight = int.Parse(WeightTextBox.Text);
+            x.ProductDensity = int.Parse(DensityTextBox.Text);
             x.Status = short.Parse(StatusTextBox.Text);
-            x.RFIDCode = (RFIDCodeTextBox.Text);
+            x.RFIDCode = RFIDCodeTextBox.Text;
+
 
             CameraService cameraService = new CameraService();
-            Camera newestCamera = await cameraService.GetNewestCamera();
+            Camera newestCamera = await cameraService.GetNewestCameraAsync();
             string imageFilePath = string.Empty;
 
 
             if (SelectedSale == null)
             {
-                //imageFilePath = await CaptureImageFromCameraAsync(newestCamera, cameraIndex: 1);
-
-                //// Save image to Firebase and set WeightImageUrl
-                //if (!string.IsNullOrEmpty(imageFilePath))
-                //{
-                //    FirebaseService firebaseService = new();
-                //    string firebaseFileName = Path.GetFileName(imageFilePath);
-                //    x.WeightImageUrl = await firebaseService.SaveImagePathToDatabaseAsync(imageFilePath, firebaseFileName);
-                //}
-
-                //x.CreatedDate = DateTime.Now;
-                //x.IsEdited = false;
-                //x.LastEditedTime = null;
-                //x.ProductDensity = null;
-                //x.DensityImageUrl = null;
                 MessageBox.Show(Constants.SuccessMessageSaleCreated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                 await _service.CreateSaleAsync(x);
             }
             else
             {
-                //imageFilePath = await CaptureImageFromCameraAsync(newestCamera, cameraIndex: 2);
-
-                //// Save image to Firebase and set DensityImageUrl
-                //if (!string.IsNullOrEmpty(imageFilePath))
-                //{
-                //    FirebaseService firebaseService = new();
-                //    string firebaseFileName = Path.GetFileName(imageFilePath);
-                //    x.DensityImageUrl = await firebaseService.SaveImagePathToDatabaseAsync(imageFilePath, firebaseFileName);
-                //}
-
-                //x.ProductDensity = Double.Parse(DensityTextBox.Text);
-                //x.DensityImageUrl = URLDensityTextBox.Text;
-                //x.SaleId = SelectedSale.SaleId;
-                //x.CreatedDate = SelectedSale.CreatedDate;
-                //x.IsEdited = true;
+                x.SaleId = SelectedSale.SaleId;
                 x.LastEditedTime = DateTime.Now;
                 MessageBox.Show(Constants.SuccessMessageSaleUpdated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                 await _service.UpdateSaleAsync(x);
@@ -89,7 +61,6 @@ namespace WPF_NhaMayCaoSu
 
             Close();
         }
-
 
         //private async Task<string> CaptureImageFromCameraAsync(Camera camera, int cameraIndex)
         //{
@@ -154,18 +125,12 @@ namespace WPF_NhaMayCaoSu
 
             if (SelectedSale != null)
             {
+                CustomerNameTextBox.Text = SelectedSale.CustomerName.ToString();
                 RFIDCodeTextBox.Text = SelectedSale.RFIDCode.ToString();
                 WeightTextBox.Text = SelectedSale.ProductWeight.ToString();
-                //if (SelectedSale.WeightImageUrl != null)
-                //{
-                //    URLWeightTextBox.Text = SelectedSale.WeightImageUrl.ToString();
-                //}
-                //DensityTextBox.Text = SelectedSale.ProductDensity.ToString();
-                //if (SelectedSale.DensityImageUrl != null)
-                //{
-                //    URLDensityTextBox.Text = SelectedSale.DensityImageUrl.ToString();
-                //}
-
+                URLWeightTextBox.Text = SelectedSale.ProductDensity.ToString();
+                DensityTextBox.Text = SelectedSale.ProductDensity.ToString();
+                URLDensityTextBox.Text = SelectedSale.ProductDensity.ToString();
                 StatusTextBox.Text = SelectedSale.Status.ToString();
                 ModeLabel.Content = Constants.ModeLabelEditSale;
             }
@@ -174,18 +139,21 @@ namespace WPF_NhaMayCaoSu
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
+            customerListWindow.CurrentAccount = CurrentAccount;
             customerListWindow.ShowDialog();
         }
 
         private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
         {
             RFIDListWindow rFIDListWindow = new RFIDListWindow();
+            rFIDListWindow.CurrentAccount = CurrentAccount;
             rFIDListWindow.ShowDialog();
         }
 
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
         {
             SaleListWindow saleListWindow = new SaleListWindow();
+            saleListWindow.CurrentAccount = CurrentAccount;
             saleListWindow.ShowDialog();
         }
 
@@ -193,12 +161,14 @@ namespace WPF_NhaMayCaoSu
         private void AccountManagementButton_Click(object sender, RoutedEventArgs e)
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
+            accountManagementWindow.CurrentAccount = CurrentAccount;
             accountManagementWindow.ShowDialog();
         }
 
         private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             BrokerWindow brokerWindow = new BrokerWindow();
+            brokerWindow.CurrentAccount = CurrentAccount;
             brokerWindow.ShowDialog();
         }
 
@@ -210,8 +180,10 @@ namespace WPF_NhaMayCaoSu
         private void ShowButton_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mainWindow = new();
+            mainWindow.ShowDialog();
             mainWindow.Show();
         }
+
         private void OnMqttMessageReceived(object sender, string data)
         {
             try
@@ -287,6 +259,13 @@ namespace WPF_NhaMayCaoSu
         }
 
 
+
+        private void RoleManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            RoleListWindow roleListWindow = new();
+            roleListWindow.CurrentAccount = CurrentAccount;
+            roleListWindow.ShowDialog();
+        }
     }
 }
 

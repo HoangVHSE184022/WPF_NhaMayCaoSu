@@ -44,7 +44,6 @@ namespace WPF_NhaMayCaoSu.Service.Services
             account.AccountId = Guid.NewGuid();
             account.CreatedDate = DateTime.UtcNow;
             account.Status = 1;
-            account.RoleId = Guid.Parse("5c71937e-8502-4a6d-b2d8-c939b21a6181");
             await _accountRepository.Register(account);
         }
     }
