@@ -18,9 +18,34 @@ namespace WPF_NhaMayCaoSu
         public BrokerWindow()
         {
             InitializeComponent();
-            _mqttServerService = new MqttServerService();
+            _mqttServerService = MqttServerService.Instance;
+            _mqttServerService.BrokerStatusChanged += (sender, e) => UpdateBrokerUI();
+            UpdateBrokerUI();
             _mqttServerService.ClientsChanged += MqttService_ClientsChanged;
             _mqttClientService = new MqttClientService();
+        }
+
+        private void UpdateBrokerUI()
+        {
+            if (MqttServerService.IsBrokerRunning)
+            {
+                ServerStatusLabel.Content = Constants.StatusOnline;
+                StartButton.IsEnabled = false;
+                StopButton.IsEnabled = true;
+                PortconnecttionLabel.Content = "1883";
+                string localIpAddress = GetLocalIpAddress();
+                IPconnecttionSmallLabel.Content = $"Local IP: {localIpAddress}";
+                IPconnecttionLabel.Content = $"{localIpAddress}";
+            }
+            else
+            {
+                ServerStatusLabel.Content = Constants.StatusOffline;
+                StartButton.IsEnabled = true;
+                StopButton.IsEnabled = false;
+                PortconnecttionLabel.Content = "Không có kết nối";
+                IPconnecttionSmallLabel.Content = "Không có kết nối";
+                IPconnecttionLabel.Content = "Không có kết nối";
+            }
         }
 
         //Get local IP of server
@@ -43,6 +68,11 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
+                if (MqttServerService.IsBrokerRunning)
+                {
+                    MessageBox.Show("The broker is already running.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
                 // Start the MQTT broker
                 await _mqttServerService.StartBrokerAsync();
 

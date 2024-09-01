@@ -7,11 +7,16 @@ using WPF_NhaMayCaoSu.Service.Interfaces;
 
 public class MqttServerService : IMqttServerService
 {
+    private static readonly Lazy<MqttServerService> _instance = new(() => new MqttServerService());
+    public static MqttServerService Instance => _instance.Value;
     private readonly MQTTnet.Server.MqttServer _mqttServer;
     private readonly ConcurrentDictionary<string, string> _connectedClients;
+
     public event EventHandler ClientsChanged;
     public event EventHandler<int> DeviceCountChanged;
+    public event EventHandler BrokerStatusChanged;
     private int _deviceCount;
+    public static bool IsBrokerRunning { get; private set; } = false;
 
     public MqttServerService()
     {
@@ -81,6 +86,8 @@ public class MqttServerService : IMqttServerService
         try
         {
             await _mqttServer.StartAsync();
+            IsBrokerRunning = true;
+            OnBrokerStatusChanged();
             Debug.WriteLine("MQTT broker started.");
         }
         catch (Exception ex)
@@ -94,6 +101,8 @@ public class MqttServerService : IMqttServerService
         try
         {
             await _mqttServer.StopAsync();
+            IsBrokerRunning = false;
+            OnBrokerStatusChanged();
             Debug.WriteLine("MQTT broker stopped.");
         }
         catch (Exception ex)
@@ -102,12 +111,19 @@ public class MqttServerService : IMqttServerService
         }
     }
 
+    protected virtual void OnBrokerStatusChanged()
+    {
+        BrokerStatusChanged?.Invoke(this, EventArgs.Empty);
+    }
+
     public async Task RestartBrokerAsync()
     {
         try
         {
             await StopBrokerAsync();
             await StartBrokerAsync();
+            IsBrokerRunning = true;
+            OnBrokerStatusChanged();
             Debug.WriteLine("MQTT broker restarted.");
         }
         catch (Exception ex)

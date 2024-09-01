@@ -21,9 +21,24 @@ namespace WPF_NhaMayCaoSu
         {
             InitializeComponent();
             broker = new BrokerWindow();
-            _mqttServerService = new MqttServerService();
+            _mqttServerService = MqttServerService.Instance;
+            _mqttServerService.BrokerStatusChanged += (sender, e) => UpdateMainWindowUI();
+            UpdateMainWindowUI();
             _mqttClientService = new MqttClientService();
             _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;
+        }
+        private void UpdateMainWindowUI()
+        {
+            if (MqttServerService.IsBrokerRunning)
+            {
+                OpenServerButton.Content = Constants.CloseServerText;
+                ServerStatusTextBlock.Text = Constants.ServerOnlineStatus;
+            }
+            else
+            {
+                OpenServerButton.Content = Constants.OpenServerText;
+                ServerStatusTextBlock.Text = Constants.ServerOfflineStatus;
+            }
         }
 
         public void FoundEvent(Sale sale)
@@ -87,25 +102,13 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                if (OpenServerButton.Content.ToString() == Constants.OpenServerText)
+                if (MqttServerService.IsBrokerRunning)
                 {
-                    // Start the MQTT broker
-                    await _mqttServerService.StartBrokerAsync();
-
-                    OpenServerButton.Content = Constants.CloseServerText;
-
-                    await _mqttClientService.ConnectAsync();
-                    ServerStatusTextBlock.Text = Constants.ServerOnlineStatus;
+                    await _mqttServerService.StopBrokerAsync();
                 }
                 else
                 {
-                    // Stop the MQTT broker
-                    await _mqttServerService.StopBrokerAsync();
-
-                    OpenServerButton.Content = Constants.OpenServerText;
-
-                    await _mqttClientService.CloseConnectionAsync();
-                    ServerStatusTextBlock.Text = Constants.ServerOfflineStatus;
+                    await _mqttServerService.StartBrokerAsync();
                 }
             }
             catch (Exception ex)
