@@ -264,6 +264,71 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
+        /*private async void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, System.Windows.Controls.TextBox firstTextBox, System.Windows.Controls.TextBox secondTextBox)
+        {
+            try
+            {
+                // Split message by :
+                string[] messages = messageContent.Split(':');
+
+                if (messages.Length == 2)
+                {
+                    string rfidValue = messages[0];
+                    double currentValue = double.Parse(messages[1]);
+                    DateTime currentTime = DateTime.Now;
+
+                    if (firstKey == "RFID" && secondKey == "Weight")
+                    {
+                        if (lastRFID == rfidValue && oldWeightValue.HasValue && firstMessageTime.HasValue)
+                        {
+                            // Check if first topic comes around 5 minutes
+                            if (currentTime.Subtract(firstMessageTime.Value).TotalMinutes <= 5)
+                            {
+                                currentValue += oldWeightValue.Value;
+                            }
+                        }
+
+                        // Save old Value
+                        oldWeightValue = currentValue;
+                        firstMessageTime = currentTime;
+                        lastRFID = rfidValue;
+                    }
+                    else if (firstKey == "RFID" && secondKey == "Density")
+                    {
+                        // Kiểm tra trong cơ sở dữ liệu xem có bản ghi với RFID này không và chưa có giá trị Density
+                        var saleRecord = await _service.GetSaleByRFIDAsync(rfidValue);
+
+                        if (saleRecord != null && saleRecord.ProductWeight.HasValue && !saleRecord.ProductDensity.HasValue)
+                        {
+                            // Cập nhật UI và lưu giá trị Density mới vào cơ sở dữ liệu
+                            saleRecord.ProductDensity = currentValue;
+                            await _service.UpdateSaleAsync(saleRecord);
+
+                            // Cập nhật vào ô Density trên giao diện người dùng
+                            firstTextBox.Dispatcher.Invoke(() =>
+                            {
+                                firstTextBox.Text = rfidValue;
+                            });
+
+                            secondTextBox.Dispatcher.Invoke(() =>
+                            {
+                                secondTextBox.Text = currentValue.ToString();
+                            });
+                        }
+
+                        else
+                        {
+                            Debug.WriteLine("Định dạng tin nhắn không chính xác, không thể phân tích.");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Lỗi khi xử lý nội dung tin nhắn: {ex.Message}");
+            }
+        }*/
+
         private void RoleManagementButton_Click(object sender, RoutedEventArgs e)
         {
             RoleListWindow roleListWindow = new();
