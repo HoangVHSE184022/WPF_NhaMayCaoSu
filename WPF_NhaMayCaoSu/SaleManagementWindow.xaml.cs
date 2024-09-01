@@ -2,7 +2,6 @@
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
-using WPF_NhaMayCaoSu.Service.Interfaces;
 using System.Diagnostics;
 
 namespace WPF_NhaMayCaoSu
@@ -118,6 +117,7 @@ namespace WPF_NhaMayCaoSu
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModeLabel.Content = Constants.ModeLabelAddSale;
+            await _mqttClientService.ConnectAsync();
             await _mqttClientService.SubscribeAsync("Can_ta");
             await _mqttClientService.SubscribeAsync("Can_tieu_ly");
 

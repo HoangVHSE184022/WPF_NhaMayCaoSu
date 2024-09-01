@@ -24,7 +24,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
 
             MqttClientOptionsBuilder optionsBuilder = new MqttClientOptionsBuilder();
             optionsBuilder.WithClientId("this_computer")
-                           .WithTcpServer("192.168.100.176", 1883)
+                           .WithTcpServer("192.168.1.171", 1883)
                            .WithCredentials("admin", "admin")
                            .WithCleanSession();
 
