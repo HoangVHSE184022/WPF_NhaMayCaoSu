@@ -80,7 +80,7 @@ public class MqttServerService : IMqttServerService
         try
         {
             await _mqttServer.StartAsync();
-            Console.WriteLine("MQTT broker started.");
+            Debug.WriteLine("MQTT broker started.");
         }
         catch (Exception ex)
         {

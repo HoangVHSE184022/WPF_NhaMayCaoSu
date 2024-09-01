@@ -124,7 +124,7 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            Hide();
         }
 
         private void MqttService_ClientsChanged(object sender, EventArgs e)
