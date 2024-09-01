@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,7 @@ namespace WPF_NhaMayCaoSu
         private RFIDService _service = new();
         private CustomerService _customerService = new();
         public RFID SelectedRFID { get; set; } = null;
+        private MqttClientService _mqttClientService = new MqttClientService();
         public Account CurrentAccount { get; set; } = null;
         public RFIDManagementWindow()
         {
@@ -35,6 +37,10 @@ namespace WPF_NhaMayCaoSu
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModeLabel.Content = "Thêm RFID mới";
+            await _mqttClientService.ConnectAsync();
+            await _mqttClientService.SubscribeAsync("CreateRFID");
+
+            _mqttClientService.MessageReceived += OnMqttMessageReceived;
 
             CustomerComboBox.ItemsSource = await _customerService.GetAllCustomers(1,100);
 
@@ -51,6 +57,38 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
+        private void OnMqttMessageReceived(object sender, string data)
+        {
+            try
+            {
+                if (data.StartsWith("CreateRFID:"))
+                {
+                    string rfidString = data.Substring("CreateRFID:".Length);
+
+                    if (!string.IsNullOrEmpty(rfidString))
+                    {
+                        RFIDCodeTextBox.Dispatcher.Invoke(() =>
+                        {
+                            RFIDCodeTextBox.Text = rfidString;
+                        });
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Failed to parse RFID number.");
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine("Unexpected message format.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error processing message: {ex.Message}");
+            }
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             // Validate required fields
