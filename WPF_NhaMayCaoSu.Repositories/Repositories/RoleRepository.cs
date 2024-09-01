@@ -21,7 +21,6 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             _context = new();
 
             return await _context.Roles
-                                 .Where(r => r.IsAvailable)
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)
                                  .ToListAsync();
@@ -46,7 +45,6 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             Role role = await _context.Set<Role>().FindAsync(roleId);
             if (role != null)
             {
-                role.IsAvailable = false;
                 _context.Set<Role>().Update(role);
                 await _context.SaveChangesAsync();
             }
