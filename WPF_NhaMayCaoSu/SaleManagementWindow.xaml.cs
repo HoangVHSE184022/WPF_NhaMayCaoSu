@@ -22,6 +22,7 @@ namespace WPF_NhaMayCaoSu
 
         public Sale SelectedSale { get; set; } = null;
         private MqttClientService _mqttClientService = new MqttClientService();
+        private SaleService _saleService =  new SaleService();
         private double? oldWeightValue = null;
         private DateTime? firstMessageTime = null;
         private string lastRFID = null;
@@ -194,7 +195,7 @@ namespace WPF_NhaMayCaoSu
         }
 
 
-        private void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, System.Windows.Controls.TextBox firstTextBox, System.Windows.Controls.TextBox secondTextBox)
+        private async void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, System.Windows.Controls.TextBox firstTextBox, System.Windows.Controls.TextBox secondTextBox)
         {
             try
             {
@@ -211,17 +212,42 @@ namespace WPF_NhaMayCaoSu
                     {
                         if (lastRFID == rfidValue && oldWeightValue.HasValue && firstMessageTime.HasValue)
                         {
-                            // Check if first topic comes around 5 minutes
-                            if (currentTime.Subtract(firstMessageTime.Value).TotalMinutes <= 5)
+                            Sale sale =await _saleService.GetSaleByRfidAsync(rfidValue);
+                            if (sale != null && !sale.ProductDensity.HasValue)
                             {
-                                currentValue += oldWeightValue.Value;
+                                if (sale.ProductWeight.HasValue)
+                                {
+                                    currentValue += sale.ProductWeight.Value;
+                                }
                             }
                         }
-
                         // Save old Value
                         oldWeightValue = currentValue;
                         firstMessageTime = currentTime;
                         lastRFID = rfidValue;
+                    }
+                    else if (firstKey == "RFID" && secondKey == "Density")
+                    {
+                        // Handle the "Can_tieu_ly" topic
+                        Sale sale = await _saleService.GetSaleByRfidAsync(rfidValue);
+
+                        if (sale != null && sale.ProductWeight.HasValue && !sale.ProductDensity.HasValue)
+                        {
+                            if (!sale.ProductWeight.HasValue)
+                            {
+                                throw new Exception("Product weight is missing. Cannot update density without weight.");
+                            }
+
+                            if (sale.ProductDensity.HasValue)
+                            {
+                                throw new Exception("Product density is already set. Cannot update an existing density value.");
+                            }
+                            currentValue = double.Parse(messages[1]);
+                        }
+                        else
+                        {
+                            throw new Exception("Sale with the specified RFID was not found.");
+                        }
                     }
 
                     // Update UI

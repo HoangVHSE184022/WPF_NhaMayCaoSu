@@ -1,4 +1,5 @@
-﻿using WPF_NhaMayCaoSu.Repository.Models;
+﻿using WPF_NhaMayCaoSu.Repository.IRepositories;
+using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
@@ -25,6 +26,11 @@ namespace WPF_NhaMayCaoSu.Service.Services
         public async Task<Sale> GetSaleByIdAsync(Guid saleId)
         {
             return await _repo.GetSaleByIdAsync(saleId);
+        }
+
+        public async Task<Sale> GetSaleByRfidAsync(string rfid)
+        {
+            return await _repo.GetSaleByRFIDCode(rfid);
         }
 
         public async Task UpdateSaleAsync(Sale sale)
