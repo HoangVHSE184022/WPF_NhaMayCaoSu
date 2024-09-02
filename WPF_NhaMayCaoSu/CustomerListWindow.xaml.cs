@@ -118,5 +118,25 @@ namespace WPF_NhaMayCaoSu
             roleListWindow.CurrentAccount = CurrentAccount;
             roleListWindow.ShowDialog();
         }
+
+        private void AddRFIDButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Get the selected customer from the DataGrid
+            Customer selectedCustomer = CustomerDataGrid.SelectedItem as Customer;
+
+            if (selectedCustomer != null)
+            {
+                // Create and show the RFIDManagementWindow
+                RFIDManagementWindow rfidManagementWindow = new RFIDManagementWindow(selectedCustomer);
+                rfidManagementWindow.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Please select a customer first.", "No Customer Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+            LoadDataGrid();
+        }
+
     }
 }

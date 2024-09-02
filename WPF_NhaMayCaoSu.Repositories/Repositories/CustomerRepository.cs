@@ -33,6 +33,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             _context = new();
 
             return await _context.Customers
+                                 .Include(c => c.RFIDs)
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)
                                  .ToListAsync();

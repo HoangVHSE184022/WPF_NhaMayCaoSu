@@ -17,10 +17,20 @@ namespace WPF_NhaMayCaoSu
         public RFID SelectedRFID { get; set; } = null;
         private MqttClientService _mqttClientService = new MqttClientService();
         public Account CurrentAccount { get; set; } = null;
+
+        private Customer _customer;
         public RFIDManagementWindow()
         {
             InitializeComponent();
         }
+
+        public RFIDManagementWindow(Customer customer)
+        {
+            InitializeComponent();
+            _customer = customer;
+        }
+
+
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -29,7 +39,7 @@ namespace WPF_NhaMayCaoSu
             await _mqttClientService.SubscribeAsync("CreateRFID");
 
 
-
+            CustomerComboBox.ItemsSource = null;
             CustomerComboBox.ItemsSource = await _customerService.GetAllCustomers(1,100);
 
             CustomerComboBox.DisplayMemberPath = "CustomerName";
@@ -42,6 +52,13 @@ namespace WPF_NhaMayCaoSu
                 StatusTextBox.Text = SelectedRFID.Status.ToString();
                 CustomerComboBox.SelectedValue = SelectedRFID.CustomerId.ToString();
                 ModeLabel.Content = "Chỉnh sửa RFID";
+            }
+
+            if (_customer != null)
+            {
+                ExpDateDatePicker.Text = DateTime.Now.AddDays(30).ToString("dd/MM/yyyy");
+                StatusTextBox.Text = "1";
+                CustomerComboBox.SelectedValue = _customer.CustomerId.ToString();
             }
             _mqttClientService.MessageReceived += OnMqttMessageReceived;
         }
@@ -123,7 +140,7 @@ namespace WPF_NhaMayCaoSu
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
-            customerListWindow.CurrentAccount = CurrentAccount;
+            customerListWindow.CurrentAccount = CurrentAccount;           
             customerListWindow.ShowDialog();
         }
 
