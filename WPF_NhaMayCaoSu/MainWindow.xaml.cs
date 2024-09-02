@@ -29,6 +29,7 @@ namespace WPF_NhaMayCaoSu
             _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;
             _sessionSaleList = new();
             UpdateMainWindowUI();
+
         }
 
         private void OnSalesDataUpdated(object sender, List<Sale> updatedSales)
