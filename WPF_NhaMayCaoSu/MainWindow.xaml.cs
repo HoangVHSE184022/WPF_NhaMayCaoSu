@@ -25,9 +25,20 @@ namespace WPF_NhaMayCaoSu
             _mqttServerService = MqttServerService.Instance;
             _mqttServerService.BrokerStatusChanged += (sender, e) => UpdateMainWindowUI();
             _mqttClientService = new MqttClientService();
+            _mqttClientService.SalesDataUpdated += OnSalesDataUpdated; // Subscribe to the event
             _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;
             _sessionSaleList = new();
             UpdateMainWindowUI();
+
+        }
+
+        private void OnSalesDataUpdated(object sender, List<Sale> updatedSales)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                SalesDataGrid.ItemsSource = null;
+                SalesDataGrid.ItemsSource = updatedSales;
+            });
         }
         private void UpdateMainWindowUI()
         {
@@ -47,9 +58,11 @@ namespace WPF_NhaMayCaoSu
 
         public void FoundEvent(Sale sale)
         {
-            _sessionSaleList.Add(sale);
-            SalesDataGrid.ItemsSource = null;
-            SalesDataGrid.ItemsSource = _sessionSaleList;
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    SalesDataGrid.ItemsSource = null;
+                    SalesDataGrid.ItemsSource = _mqttClientService._sessionSaleList;
+                });
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
@@ -91,8 +104,6 @@ namespace WPF_NhaMayCaoSu
             broker.Show();
         }
         
-
-
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
             ConfigCamera configCamera = new ConfigCamera();
