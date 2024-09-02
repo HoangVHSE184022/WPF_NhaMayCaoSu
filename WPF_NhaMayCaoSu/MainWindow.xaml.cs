@@ -10,10 +10,10 @@ namespace WPF_NhaMayCaoSu
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly SessionService _sessionService;
         private readonly MqttServerService _mqttServerService;
         private readonly MqttClientService _mqttClientService;
         private readonly CameraService _cameraService = new();
+        private readonly List<Sale> _sessionSaleList;
         public Account CurrentAccount { get; set; } = null;
         private BrokerWindow broker;
 
@@ -25,6 +25,7 @@ namespace WPF_NhaMayCaoSu
             _mqttServerService.BrokerStatusChanged += (sender, e) => UpdateMainWindowUI();
             _mqttClientService = new MqttClientService();
             _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;
+            _sessionSaleList = new();
             UpdateMainWindowUI();
         }
         private void UpdateMainWindowUI()
@@ -45,9 +46,9 @@ namespace WPF_NhaMayCaoSu
 
         public void FoundEvent(Sale sale)
         {
-            _sessionService.AddToSalelist(sale);
+            _sessionSaleList.Add(sale);
             SalesDataGrid.ItemsSource = null;
-            SalesDataGrid.ItemsSource = _sessionService.GetAllSales();
+            SalesDataGrid.ItemsSource = _sessionSaleList;
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
