@@ -33,6 +33,7 @@
                 <DataGridTextColumn Header="ID" Width="100" Binding="{Binding RFID_Id}"/>
                 <DataGridTextColumn Header="Mã RFID" Width="220" Binding="{Binding RFIDCode}"/>
                 <DataGridTextColumn Header="Ngày tạo" Width="200" Binding="{Binding CreatedDate}"/>
+                <DataGridTextColumn Header="Ngày tạo" Width="200" Binding="{Binding CreatedDate}" />
                 <DataGridTextColumn Header="Ngày hết hạn" Width="200" Binding="{Binding ExpirationDate}"/>
                 <DataGridTextColumn Header="Trạng thái" Width="130" Binding="{Binding Status}"/>
                 <DataGridTextColumn Header="Chủ sở hữu" Width="170" Binding="{Binding Customer.CustomerName}"/>
