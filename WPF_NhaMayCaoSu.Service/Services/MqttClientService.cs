@@ -22,6 +22,8 @@ namespace WPF_NhaMayCaoSu.Service.Services
         public event EventHandler<string> MessageReceived;
         public bool IsConnected => _client?.IsConnected ?? false;
         public List<Sale> _sessionSaleList { get; private set; }
+        public event EventHandler<List<Sale>> SalesDataUpdated;
+
 
         public MqttClientService()
         {
@@ -41,6 +43,11 @@ namespace WPF_NhaMayCaoSu.Service.Services
             _client.ConnectedAsync += OnConnectedAsync;
             _client.DisconnectedAsync += OnDisconnectedAsync;
             _client.ApplicationMessageReceivedAsync += OnMessageReceivedAsync;
+        }
+
+        private void UpdateDataGrid()
+        {
+            SalesDataUpdated?.Invoke(this, _sessionSaleList);
         }
 
         private string GetLocalIpAddress()
@@ -133,15 +140,15 @@ namespace WPF_NhaMayCaoSu.Service.Services
             return Task.CompletedTask;
         }
 
-        private void UpdateDataGrid()
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                var mainWindow = (MainWindow)Application.Current.MainWindow;
-                mainWindow.SalesDataGrid.ItemsSource = null;
-                mainWindow.SalesDataGrid.ItemsSource = _sessionSaleList;
-            });
-        }
+        //private void UpdateDataGrid()
+        //{
+        //    Application.Current.Dispatcher.Invoke(() =>
+        //    {
+        //        var mainWindow = (MainWindow)Application.Current.MainWindow;
+        //        mainWindow.SalesDataGrid.ItemsSource = null;
+        //        mainWindow.SalesDataGrid.ItemsSource = _sessionSaleList;
+        //    });
+        //}
 
 
         public async Task ConnectAsync()

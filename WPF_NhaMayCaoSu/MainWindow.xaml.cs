@@ -25,9 +25,19 @@ namespace WPF_NhaMayCaoSu
             _mqttServerService = MqttServerService.Instance;
             _mqttServerService.BrokerStatusChanged += (sender, e) => UpdateMainWindowUI();
             _mqttClientService = new MqttClientService();
+            _mqttClientService.SalesDataUpdated += OnSalesDataUpdated; // Subscribe to the event
             _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;
             _sessionSaleList = new();
             UpdateMainWindowUI();
+        }
+
+        private void OnSalesDataUpdated(object sender, List<Sale> updatedSales)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                SalesDataGrid.ItemsSource = null;
+                SalesDataGrid.ItemsSource = updatedSales;
+            });
         }
         private void UpdateMainWindowUI()
         {
