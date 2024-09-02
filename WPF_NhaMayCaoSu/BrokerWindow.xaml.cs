@@ -2,6 +2,7 @@
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -130,20 +131,26 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
+                StartButton.IsEnabled = false;
+                StopButton.IsEnabled = false;
+                RestartButton.IsEnabled = false;
                 // Restart the MQTT broker
-                await _mqttServerService.RestartBrokerAsync();
+                await _mqttServerService.StopBrokerAsync();
+                await _mqttClientService.CloseConnectionAsync();
+                PortconnecttionLabel.Content = "Không có kết nối";
+                IPconnecttionSmallLabel.Content = $"Không có kết nối";
+                IPconnecttionLabel.Content = "Không có kết nối";
+                await Task.Delay(1000);
+                await _mqttServerService.StartBrokerAsync();
+                await _mqttClientService.ConnectAsync();
                 ServerStatusLabel.Content = Constants.StatusOnline;
                 PortconnecttionLabel.Content = "1883";
                 string localIpAddress = GetLocalIpAddress();
                 IPconnecttionSmallLabel.Content = $"Local IP: {localIpAddress}";
                 IPconnecttionLabel.Content = $"{localIpAddress}";
 
-                await _mqttClientService.ConnectAsync();
-
-                // Disable the Start button when the server is restarted
-                StartButton.IsEnabled = false;
-
                 // Enable the Stop button
+                RestartButton.IsEnabled = true;
                 StopButton.IsEnabled = true;
             }
             catch (Exception ex)
