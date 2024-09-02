@@ -47,9 +47,11 @@ namespace WPF_NhaMayCaoSu
 
         public void FoundEvent(Sale sale)
         {
-            _sessionSaleList.Add(sale);
-            SalesDataGrid.ItemsSource = null;
-            SalesDataGrid.ItemsSource = _sessionSaleList;
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    SalesDataGrid.ItemsSource = null;
+                    SalesDataGrid.ItemsSource = _mqttClientService._sessionSaleList;
+                });
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
@@ -91,8 +93,6 @@ namespace WPF_NhaMayCaoSu
             broker.Show();
         }
         
-
-
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
             ConfigCamera configCamera = new ConfigCamera();
