@@ -131,6 +131,11 @@ public class MqttServerService : IMqttServerService
         }
     }
 
+    public int GetDeviceCount()
+    {
+        return _deviceCount;
+    }
+
     // Get device info that connect to mqtt server
     public IReadOnlyDictionary<string, string> GetConnectedClients()
     {

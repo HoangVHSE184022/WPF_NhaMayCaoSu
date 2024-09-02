@@ -10,5 +10,6 @@ namespace WPF_NhaMayCaoSu.Service.Interfaces
         IReadOnlyDictionary<string, string> GetConnectedClients();
 
         event EventHandler ClientsChanged;
+        int GetDeviceCount();
     }
 }

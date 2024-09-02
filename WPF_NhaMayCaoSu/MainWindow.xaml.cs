@@ -23,9 +23,9 @@ namespace WPF_NhaMayCaoSu
             broker = new BrokerWindow();
             _mqttServerService = MqttServerService.Instance;
             _mqttServerService.BrokerStatusChanged += (sender, e) => UpdateMainWindowUI();
-            UpdateMainWindowUI();
             _mqttClientService = new MqttClientService();
             _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;
+            UpdateMainWindowUI();
         }
         private void UpdateMainWindowUI()
         {
@@ -33,6 +33,8 @@ namespace WPF_NhaMayCaoSu
             {
                 OpenServerButton.Content = Constants.CloseServerText;
                 ServerStatusTextBlock.Text = Constants.ServerOnlineStatus;
+                int deviceCount = _mqttServerService.GetDeviceCount();
+                NumberofconnectionTextBlock.Text = $"Onl: {deviceCount} Thiết bị";
             }
             else
             {
@@ -105,11 +107,14 @@ namespace WPF_NhaMayCaoSu
                 if (MqttServerService.IsBrokerRunning)
                 {
                     await _mqttServerService.StopBrokerAsync();
+                    await _mqttClientService.CloseConnectionAsync();
                 }
                 else
                 {
                     await _mqttServerService.StartBrokerAsync();
+                    await _mqttClientService.ConnectAsync();
                 }
+                UpdateMainWindowUI();
             }
             catch (Exception ex)
             {
