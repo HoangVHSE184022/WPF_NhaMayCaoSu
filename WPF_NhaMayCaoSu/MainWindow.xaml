@@ -29,7 +29,7 @@
                 <DataGridTextColumn Header="Cân nặng" Binding="{Binding Weight}" />
                 <DataGridTextColumn Header="Tỉ Trọng" Binding="{Binding Density}" />
                 <DataGridTextColumn Header="Tên khách hàng" Binding="{Binding Customer.CustomerName}" />
-                <DataGridTemplateColumn Header="Chỉnh sửa">
+                <DataGridTemplateColumn Header="Thao tác">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Width="25" Height="25" Name="ControlButton" Click="ControlButton_Click">

@@ -146,12 +146,13 @@ namespace WPF_NhaMayCaoSu
             roleListWindow.CurrentAccount = CurrentAccount;
             roleListWindow.ShowDialog();
         }
-
-        private void ControlButton_Click(object sender, RoutedEventArgs e)
+        private async void ControlButton_Click(object sender, RoutedEventArgs e)
         {
             int choice = 0;
-            if(SalesDataGrid.SelectedItem is Sale selectedSale)
+            Sale scannedSale = new();
+            if (SalesDataGrid.SelectedItem is Sale selectedSale)
             {
+                scannedSale = selectedSale;
                 if(selectedSale.ProductWeight == null && selectedSale.ProductDensity == null)
                 {
                     choice = 1;
@@ -167,14 +168,30 @@ namespace WPF_NhaMayCaoSu
             }
             switch(choice){
                 case 1:
+                    CreateSale(scannedSale);
                     break;
                 case 2:
+                    AddWeight(scannedSale);
                     break;
-                case 3: 
+                case 3:
+                    AddDensity(scannedSale);
                     break;
                 default:
                     break;
             }
+        }
+        private void CreateSale(Sale sale)
+        {
+            SaleManagementWindow window = new();
+            window.ShowDialog();
+        }
+        private async void AddWeight(Sale sale)
+        {
+
+        }
+        private async void AddDensity(Sale sale)
+        {
+
         }
     }
 }
