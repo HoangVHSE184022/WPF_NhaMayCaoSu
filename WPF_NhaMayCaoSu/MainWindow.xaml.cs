@@ -168,7 +168,7 @@ namespace WPF_NhaMayCaoSu
             }
             switch(choice){
                 case 1:
-                    CreateSale(scannedSale);
+                    CreateRFID(scannedSale);
                     break;
                 case 2:
                     AddWeight(scannedSale);
@@ -180,18 +180,24 @@ namespace WPF_NhaMayCaoSu
                     break;
             }
         }
-        private void CreateSale(Sale sale)
+        private void CreateRFID(Sale sale)
         {
-            SaleManagementWindow window = new();
+            RFIDManagementWindow window = new();
             window.ShowDialog();
         }
         private async void AddWeight(Sale sale)
         {
+            //Tạo 2 trường hợp if else cho 2 trường hợp: Tạo và cập nhật
 
+
+            MessageBox.Show("Dữ liệu cân tạ cập nhật thành công", "Cập nhật dữ liệu", MessageBoxButton.OK);
         }
         private async void AddDensity(Sale sale)
         {
+            //function to automagically add Density to db
+            //await.......
 
+            MessageBox.Show("Dữ liệu cân tiểu li cập nhật thành công","Cập nhật dữ liệu",MessageBoxButton.OK);
         }
     }
 }
