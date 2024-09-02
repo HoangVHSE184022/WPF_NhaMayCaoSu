@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
@@ -148,6 +149,10 @@ namespace WPF_NhaMayCaoSu
         }
         private async void ControlButton_Click(object sender, RoutedEventArgs e)
         {
+            if (sender is Button button)
+            {
+                button.IsEnabled = false;
+            }
             int choice = 0;
             Sale scannedSale = new();
             if (SalesDataGrid.SelectedItem is Sale selectedSale)
