@@ -176,10 +176,10 @@ namespace WPF_NhaMayCaoSu
                     CreateRFID(scannedSale);
                     break;
                 case 2:
-                    AddWeight(scannedSale);
+                    await AddWeight(scannedSale);
                     break;
                 case 3:
-                    AddDensity(scannedSale);
+                    await AddDensity(scannedSale);
                     break;
                 default:
                     break;
@@ -190,14 +190,14 @@ namespace WPF_NhaMayCaoSu
             RFIDManagementWindow window = new();
             window.ShowDialog();
         }
-        private async void AddWeight(Sale sale)
+        private async Task AddWeight(Sale sale)
         {
             //Tạo 2 trường hợp if else cho 2 trường hợp: Tạo và cập nhật
 
 
             MessageBox.Show("Dữ liệu cân tạ cập nhật thành công", "Cập nhật dữ liệu", MessageBoxButton.OK);
         }
-        private async void AddDensity(Sale sale)
+        private async Task AddDensity(Sale sale)
         {
             //function to automagically add Density to db
             //await.......
