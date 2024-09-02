@@ -32,7 +32,7 @@
                 <DataGridTemplateColumn Header="Thao tác">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Width="25" Height="25" Name="ControlButton" Click="ControlButton_Click">
+                            <Button Width="25" Height="25" x:Name="ControlButton" Click="ControlButton_Click" Tag="{Binding}" Content="Action" >
                                 <Button.Template>
                                     <ControlTemplate TargetType="{x:Type Button}">
                                         <Grid>
