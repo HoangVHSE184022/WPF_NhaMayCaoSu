@@ -229,19 +229,10 @@ namespace WPF_NhaMayCaoSu
                     else if (firstKey == "RFID" && secondKey == "Density")
                     {
                         // Handle the "Can_tieu_ly" topic
-                        Sale sale = await _saleService.GetSaleByRfidAsync(rfidValue);
+                        Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfidValue);
 
                         if (sale != null && sale.ProductWeight.HasValue && !sale.ProductDensity.HasValue)
                         {
-                            if (!sale.ProductWeight.HasValue)
-                            {
-                                throw new Exception("Product weight is missing. Cannot update density without weight.");
-                            }
-
-                            if (sale.ProductDensity.HasValue)
-                            {
-                                throw new Exception("Product density is already set. Cannot update an existing density value.");
-                            }
                             currentValue = double.Parse(messages[1]);
                         }
                         else

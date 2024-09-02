@@ -10,5 +10,6 @@ namespace WPF_NhaMayCaoSu.Service.Interfaces
         Task UpdateSaleAsync(Sale sale);
         Task DeleteSaleAsync(Guid saleId);
         Task<Sale> GetSaleByRfidAsync(string rfid);
+        Task<Sale> GetSaleByRFIDCodeWithoutDensity(string rfid);
     }
 }
