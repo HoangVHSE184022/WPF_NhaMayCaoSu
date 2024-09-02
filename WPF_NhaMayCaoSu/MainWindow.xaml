@@ -32,7 +32,7 @@
                 <DataGridTemplateColumn Header="Chỉnh sửa">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Width="25" Height="25">
+                            <Button Width="25" Height="25" Name="ControlButton" Click="ControlButton_Click">
                                 <Button.Template>
                                     <ControlTemplate TargetType="{x:Type Button}">
                                         <Grid>

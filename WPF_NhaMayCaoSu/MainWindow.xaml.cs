@@ -89,6 +89,8 @@ namespace WPF_NhaMayCaoSu
         {
             broker.Show();
         }
+        
+
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
@@ -143,6 +145,36 @@ namespace WPF_NhaMayCaoSu
             RoleListWindow roleListWindow = new();
             roleListWindow.CurrentAccount = CurrentAccount;
             roleListWindow.ShowDialog();
+        }
+
+        private void ControlButton_Click(object sender, RoutedEventArgs e)
+        {
+            int choice = 0;
+            if(SalesDataGrid.SelectedItem is Sale selectedSale)
+            {
+                if(selectedSale.ProductWeight == null && selectedSale.ProductDensity == null)
+                {
+                    choice = 1;
+                }
+                else if(selectedSale.ProductDensity == null && selectedSale.ProductWeight != null)
+                {
+                    choice = 2;
+                }
+                else if(selectedSale.ProductWeight == null && selectedSale.ProductDensity != null)
+                {
+                     choice = 3;
+                }
+            }
+            switch(choice){
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3: 
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
