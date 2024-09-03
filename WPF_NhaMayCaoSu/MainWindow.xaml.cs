@@ -58,11 +58,11 @@ namespace WPF_NhaMayCaoSu
 
         public void FoundEvent(Sale sale)
         {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    SalesDataGrid.ItemsSource = null;
-                    SalesDataGrid.ItemsSource = _mqttClientService._sessionSaleList;
-                });
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                SalesDataGrid.ItemsSource = null;
+                SalesDataGrid.ItemsSource = _mqttClientService._sessionSaleList;
+            });
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
@@ -74,6 +74,7 @@ namespace WPF_NhaMayCaoSu
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
             customerListWindow.CurrentAccount = CurrentAccount;
+            Close();
             customerListWindow.ShowDialog();
         }
 
@@ -81,6 +82,7 @@ namespace WPF_NhaMayCaoSu
         {
             SaleListWindow saleListWindow = new SaleListWindow();
             saleListWindow.CurrentAccount = CurrentAccount;
+            Close();
             saleListWindow.ShowDialog();
         }
 
@@ -89,6 +91,7 @@ namespace WPF_NhaMayCaoSu
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
             accountManagementWindow.CurrentAccount = CurrentAccount;
+            Close();
             accountManagementWindow.ShowDialog();
         }
 
@@ -96,6 +99,7 @@ namespace WPF_NhaMayCaoSu
         {
             RFIDListWindow rFIDListWindow = new RFIDListWindow();
             rFIDListWindow.CurrentAccount = CurrentAccount;
+            Close();
             rFIDListWindow.ShowDialog();
         }
 
@@ -103,7 +107,7 @@ namespace WPF_NhaMayCaoSu
         {
             broker.Show();
         }
-        
+
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
             ConfigCamera configCamera = new ConfigCamera();
@@ -112,7 +116,7 @@ namespace WPF_NhaMayCaoSu
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
         {
-            Show();
+            MessageBox.Show("Bạn đang ở cửa sổ hiển thị!", "Lặp cửa sổ!", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private async void Broker_Click(object sender, RoutedEventArgs e)
@@ -169,20 +173,21 @@ namespace WPF_NhaMayCaoSu
             if (SalesDataGrid.SelectedItem is Sale selectedSale)
             {
                 scannedSale = selectedSale;
-                if(selectedSale.ProductWeight == null && selectedSale.ProductDensity == null)
+                if (selectedSale.ProductWeight == null && selectedSale.ProductDensity == null)
                 {
                     choice = 1;
                 }
-                else if(selectedSale.ProductDensity == null && selectedSale.ProductWeight != null)
+                else if (selectedSale.ProductDensity == null && selectedSale.ProductWeight != null)
                 {
                     choice = 2;
                 }
-                else if(selectedSale.ProductWeight == null && selectedSale.ProductDensity != null)
+                else if (selectedSale.ProductWeight == null && selectedSale.ProductDensity != null)
                 {
-                     choice = 3;
+                    choice = 3;
                 }
             }
-            switch(choice){
+            switch (choice)
+            {
                 case 1:
                     CreateRFID(scannedSale);
                     break;
@@ -213,7 +218,7 @@ namespace WPF_NhaMayCaoSu
             //function to automagically add Density to db
             //await.......
 
-            MessageBox.Show("Dữ liệu cân tiểu li cập nhật thành công","Cập nhật dữ liệu",MessageBoxButton.OK);
+            MessageBox.Show("Dữ liệu cân tiểu li cập nhật thành công", "Cập nhật dữ liệu", MessageBoxButton.OK);
         }
     }
 }
