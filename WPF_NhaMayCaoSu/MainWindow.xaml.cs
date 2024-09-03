@@ -159,7 +159,12 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            App.Current.Shutdown();
+            MessageBoxResult result = MessageBox.Show("hành động này sẽ đóng ứng dụng, bạn chắc chứ?", "Thoát", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            { 
+                App.Current.Shutdown();
+            }    
+            
         }
 
 
