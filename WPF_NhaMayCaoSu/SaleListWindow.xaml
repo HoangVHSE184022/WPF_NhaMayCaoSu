@@ -42,7 +42,8 @@
 
             </DataGrid.Columns>
         </DataGrid>
-        <TextBox x:Name="SearchTextBox" Width="309" Height="30" VerticalAlignment="Top" Margin="691,70,0,0" HorizontalAlignment="Left" FontFamily="Montserrat" FontSize="18" Text="Tìm kiếm theo tên khách hàng"/>
+        <Label x:Name="SearchLabel" Content="Nhập tên khách hàng:" Width="188" Height="30" VerticalAlignment="Top" Margin="0,69,0,0" HorizontalAlignment="Center" FontFamily="Montserrat" FontSize="18" />
+        <TextBox x:Name="SearchTextBox" Width="309" Height="30" VerticalAlignment="Top" Margin="691,70,0,0" HorizontalAlignment="Left" FontFamily="Montserrat" FontSize="18"/>
         <Button x:Name="SearchButton" Content="Tìm kiếm" Width="121" Height="30" VerticalAlignment="Top" Margin="1044,70,0,0" HorizontalAlignment="Left" FontFamily="Montserrat" FontSize="18" Click="SearchButton_Click"/>
     </Grid>
 </Window>

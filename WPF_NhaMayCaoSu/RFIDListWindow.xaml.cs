@@ -110,5 +110,22 @@ namespace WPF_NhaMayCaoSu
             roleListWindow.CurrentAccount = CurrentAccount;
             roleListWindow.ShowDialog();
         }
+
+        private async void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string searchTerm = SearchTextBox.Text.Trim().ToLower();
+
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                LoadDataGrid();
+            }
+            else
+            {
+                RFIDDataGrid.ItemsSource = null;
+                RFIDDataGrid.Items.Clear();
+                var sales = await _service.GetAllRFIDsAsync(1, 10);
+                RFIDDataGrid.ItemsSource = sales.Where(s => s.Customer.CustomerName.ToLower().Contains(searchTerm));
+            }
+        }
     }
 }
