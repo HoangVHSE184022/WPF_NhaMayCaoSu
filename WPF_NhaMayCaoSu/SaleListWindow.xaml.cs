@@ -123,5 +123,24 @@ namespace WPF_NhaMayCaoSu
             Close();
             roleListWindow.ShowDialog();
         }
+
+        private async void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string searchTerm = SearchTextBox.Text.Trim().ToLower();
+
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                LoadDataGrid();
+            }
+            else
+            {
+                SaleDataGrid.ItemsSource = null;
+                SaleDataGrid.Items.Clear();
+                var sales = await _service.GetAllSaleAsync(1, 10);
+                SaleDataGrid.ItemsSource = sales.Where(s => s.CustomerName.ToLower().Contains(searchTerm));
+            }
+        }
+
+
     }
 }
