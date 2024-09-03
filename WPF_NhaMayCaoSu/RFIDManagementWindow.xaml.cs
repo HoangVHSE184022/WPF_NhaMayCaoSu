@@ -140,7 +140,8 @@ namespace WPF_NhaMayCaoSu
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
-            customerListWindow.CurrentAccount = CurrentAccount;           
+            customerListWindow.CurrentAccount = CurrentAccount;
+            Close();
             customerListWindow.ShowDialog();
         }
 
@@ -148,6 +149,7 @@ namespace WPF_NhaMayCaoSu
         {
             RFIDListWindow rFIDListWindow = new RFIDListWindow();
             rFIDListWindow.CurrentAccount = CurrentAccount;
+            Close();
             rFIDListWindow.ShowDialog();
         }
 
@@ -155,6 +157,7 @@ namespace WPF_NhaMayCaoSu
         {
             SaleListWindow saleListWindow = new SaleListWindow();
             saleListWindow.CurrentAccount = CurrentAccount;
+            Close();
             saleListWindow.ShowDialog();
         }
 
@@ -163,6 +166,7 @@ namespace WPF_NhaMayCaoSu
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
             accountManagementWindow.CurrentAccount = CurrentAccount;
+            Close();
             accountManagementWindow.ShowDialog();
         }
 
@@ -170,6 +174,7 @@ namespace WPF_NhaMayCaoSu
         {
             BrokerWindow brokerWindow = new BrokerWindow();
             brokerWindow.CurrentAccount = CurrentAccount;
+            Close();
             brokerWindow.ShowDialog();
         }
 
@@ -182,6 +187,7 @@ namespace WPF_NhaMayCaoSu
         {
             MainWindow window = new MainWindow();
             window.CurrentAccount = CurrentAccount;
+            Close();
             window.Show();
         }
 
@@ -194,6 +200,7 @@ namespace WPF_NhaMayCaoSu
         {
             RoleListWindow roleListWindow = new();
             roleListWindow.CurrentAccount = CurrentAccount;
+            Close();
             roleListWindow.ShowDialog();
         }
     }

@@ -37,20 +37,20 @@ namespace WPF_NhaMayCaoSu
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
             customerListWindow.CurrentAccount = CurrentAccount;
+            Close();
             customerListWindow.ShowDialog();
         }
 
         private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            RFIDListWindow rFIDListWindow = new RFIDListWindow();
-            rFIDListWindow.CurrentAccount = CurrentAccount;
-            rFIDListWindow.ShowDialog();
+            MessageBox.Show("Bạn đang ở cửa sổ Quản lý RFID!", "Lặp cửa sổ!", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
         {
             SaleListWindow saleListWindow = new SaleListWindow();
             saleListWindow.CurrentAccount = CurrentAccount;
+            Close();
             saleListWindow.ShowDialog();
         }
 
@@ -59,6 +59,7 @@ namespace WPF_NhaMayCaoSu
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
             accountManagementWindow.CurrentAccount = CurrentAccount;
+            Close();
             accountManagementWindow.ShowDialog();
         }
 
@@ -66,6 +67,7 @@ namespace WPF_NhaMayCaoSu
         {
             BrokerWindow brokerWindow = new BrokerWindow();
             brokerWindow.CurrentAccount = CurrentAccount;
+            Close();
             brokerWindow.ShowDialog();
         }
 
@@ -78,6 +80,7 @@ namespace WPF_NhaMayCaoSu
         {
             MainWindow mainWindow = new MainWindow();
             mainWindow.CurrentAccount = CurrentAccount;
+            Close();
             mainWindow.Show();
         }
 

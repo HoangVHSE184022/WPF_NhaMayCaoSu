@@ -34,6 +34,7 @@ namespace WPF_NhaMayCaoSu
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
             customerListWindow.CurrentAccount = CurrentAccount;
+            Close();
             customerListWindow.ShowDialog();
         }
 
@@ -41,6 +42,7 @@ namespace WPF_NhaMayCaoSu
         {
             SaleListWindow saleListWindow = new SaleListWindow();
             saleListWindow.CurrentAccount = CurrentAccount;
+            Close();
             saleListWindow.ShowDialog();
         }
 
@@ -48,7 +50,8 @@ namespace WPF_NhaMayCaoSu
         private void AccountManagementButton_Click(object sender, RoutedEventArgs e)
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
-            accountManagementWindow.CurrentAccount = CurrentAccount;
+            accountManagementWindow.CurrentAccount = CurrentAccount; 
+            Close();
             accountManagementWindow.ShowDialog();
         }
 
@@ -56,6 +59,7 @@ namespace WPF_NhaMayCaoSu
         {
             RFIDListWindow rFIDListWindow = new RFIDListWindow();
             rFIDListWindow.CurrentAccount = CurrentAccount;
+            Close();
             rFIDListWindow.ShowDialog();
         }
 
@@ -63,6 +67,7 @@ namespace WPF_NhaMayCaoSu
         {
             BrokerWindow brokerWindow = new BrokerWindow();
             brokerWindow.CurrentAccount = CurrentAccount;
+            Close();
             brokerWindow.ShowDialog();
         }
 
@@ -75,6 +80,7 @@ namespace WPF_NhaMayCaoSu
         {
             MainWindow window = new MainWindow();
             window.CurrentAccount = CurrentAccount;
+            Close();
             window.Show();
         }
 
@@ -116,9 +122,7 @@ namespace WPF_NhaMayCaoSu
 
         private void RoleManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            RoleListWindow roleListWindow = new();
-            roleListWindow.CurrentAccount = CurrentAccount;
-            roleListWindow.ShowDialog();
+            MessageBox.Show("Bạn đang ở cửa sổ Quản lý vai trò!", "Lặp cửa sổ!", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)

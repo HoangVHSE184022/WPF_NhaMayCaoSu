@@ -65,6 +65,7 @@ namespace WPF_NhaMayCaoSu
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
             customerListWindow.CurrentAccount = CurrentAccount;
+            Close();
             customerListWindow.ShowDialog();
         }
 
@@ -72,21 +73,21 @@ namespace WPF_NhaMayCaoSu
         {
             SaleListWindow saleListWindow = new SaleListWindow();
             saleListWindow.CurrentAccount = CurrentAccount;
+            Close();
             saleListWindow.ShowDialog();
         }
 
 
         private void AccountManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
-            accountManagementWindow.CurrentAccount = CurrentAccount;
-            accountManagementWindow.ShowDialog();
+            MessageBox.Show("Bạn đang ở cửa sổ này rồi!", "Lặp cửa sổ!", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             BrokerWindow brokerWindow = new BrokerWindow();
             brokerWindow.CurrentAccount = CurrentAccount;
+            Close();
             brokerWindow.ShowDialog();
         }
 
@@ -99,6 +100,7 @@ namespace WPF_NhaMayCaoSu
         {
             MainWindow window = new();
             window.CurrentAccount = CurrentAccount;
+            Close();
             window.Show();
         }
 
