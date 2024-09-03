@@ -66,6 +66,7 @@ namespace WPF_NhaMayCaoSu
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
             customerListWindow.CurrentAccount = CurrentAccount;
+            Close();
             customerListWindow.ShowDialog();
         }
 
@@ -73,14 +74,13 @@ namespace WPF_NhaMayCaoSu
         {
             RFIDListWindow rFIDListWindow = new RFIDListWindow();
             rFIDListWindow.CurrentAccount = CurrentAccount;
+            Close();
             rFIDListWindow.ShowDialog();
         }
 
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            SaleListWindow saleListWindow = new SaleListWindow();
-            saleListWindow.CurrentAccount = CurrentAccount;
-            saleListWindow.ShowDialog();
+            MessageBox.Show("Bạn đang ở cửa sổ Quản lý Sale!", "Lặp cửa sổ!", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
 
@@ -88,6 +88,7 @@ namespace WPF_NhaMayCaoSu
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
             accountManagementWindow.CurrentAccount = CurrentAccount;
+            Close();
             accountManagementWindow.ShowDialog();
         }
 
@@ -95,6 +96,7 @@ namespace WPF_NhaMayCaoSu
         {
             BrokerWindow brokerWindow = new BrokerWindow();
             brokerWindow.CurrentAccount = CurrentAccount;
+            Close();
             brokerWindow.ShowDialog();
         }
 
@@ -107,6 +109,7 @@ namespace WPF_NhaMayCaoSu
         {
             MainWindow mainWindow = new();
             mainWindow.ShowDialog();
+            Close();
             mainWindow.Show();
         }
 
@@ -114,6 +117,7 @@ namespace WPF_NhaMayCaoSu
         {
             RoleListWindow roleListWindow = new();
             roleListWindow.CurrentAccount = CurrentAccount;
+            Close();
             roleListWindow.ShowDialog();
         }
     }

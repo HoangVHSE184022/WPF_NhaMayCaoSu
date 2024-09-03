@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
-        Title="Show Information" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" ResizeMode="NoResize">
+         
+        Title="Show Information" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" WindowStyle="SingleBorderWindow">
+
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
