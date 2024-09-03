@@ -13,6 +13,8 @@ namespace WPF_NhaMayCaoSu
     {
         private readonly CameraService _cameraService = new();
 
+        public Account CurrentAccount { get; set; }
+
         public ConfigCamera()
         {
             InitializeComponent();
@@ -139,6 +141,7 @@ namespace WPF_NhaMayCaoSu
 
         private void btnQuit_Click(object sender, RoutedEventArgs e)
         {
+
             Close();
         }
     }
