@@ -154,8 +154,6 @@ namespace WPF_NhaMayCaoSu
             {
                 Debug.WriteLine($"Error processing message: {ex.Message}");
             }
-            Application.Current.Dispatcher.Invoke(() =>
-            {
         }
 
 
