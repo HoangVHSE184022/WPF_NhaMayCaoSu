@@ -70,6 +70,7 @@ namespace WPF_NhaMayCaoSu
             App.Current.Shutdown();
         }
 
+
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
