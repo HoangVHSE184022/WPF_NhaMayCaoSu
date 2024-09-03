@@ -74,20 +74,33 @@ namespace WPF_NhaMayCaoSu
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModeLabel.Content = Constants.ModeLabelAddSale;
-            await _mqttClientService.ConnectAsync();
-            await _mqttClientService.SubscribeAsync("Can_ta");
-            await _mqttClientService.SubscribeAsync("Can_tieu_ly");
 
-            _mqttClientService.MessageReceived += (s, data) => OnMqttMessageReceived(s, data);
+            try
+            {
+                await _mqttClientService.ConnectAsync();
+                await _mqttClientService.SubscribeAsync("Can_ta");
+                await _mqttClientService.SubscribeAsync("Can_tieu_ly");
+
+                _mqttClientService.MessageReceived += (s, data) => OnMqttMessageReceived(s, data);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể kết nối đến máy chủ MQTT. Vui lòng kiểm tra lại kết nối. Bạn sẽ được chuyển về màn hình quản lý Broker.", "Lỗi kết nối", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                BrokerWindow brokerWindow = new BrokerWindow();
+                brokerWindow.ShowDialog();
+                this.Close();
+                return;
+            }
 
             if (SelectedSale != null)
             {
-                CustomerNameTextBox.Text = SelectedSale.CustomerName.ToString();
-                RFIDCodeTextBox.Text = SelectedSale.RFIDCode.ToString();
-                WeightTextBox.Text = SelectedSale.ProductWeight.ToString();
-                URLWeightTextBox.Text = SelectedSale.ProductDensity.ToString();
-                DensityTextBox.Text = SelectedSale.ProductDensity.ToString();
-                URLDensityTextBox.Text = SelectedSale.ProductDensity.ToString();
+                CustomerNameTextBox.Text = SelectedSale.CustomerName;
+                RFIDCodeTextBox.Text = SelectedSale.RFIDCode;
+                WeightTextBox.Text = SelectedSale.ProductWeight?.ToString();
+                URLWeightTextBox.Text = SelectedSale.ProductDensity?.ToString();
+                DensityTextBox.Text = SelectedSale.ProductDensity?.ToString();
+                URLDensityTextBox.Text = SelectedSale.ProductDensity?.ToString();
                 StatusTextBox.Text = SelectedSale.Status.ToString();
                 ModeLabel.Content = Constants.ModeLabelEditSale;
             }

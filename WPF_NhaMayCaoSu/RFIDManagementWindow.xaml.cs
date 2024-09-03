@@ -39,12 +39,24 @@ namespace WPF_NhaMayCaoSu
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModeLabel.Content = "Thêm RFID mới";
-            await _mqttClientService.ConnectAsync();
-            await _mqttClientService.SubscribeAsync("CreateRFID");
 
+            try
+            {
+                await _mqttClientService.ConnectAsync();
+                await _mqttClientService.SubscribeAsync("CreateRFID");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể kết nối đến máy chủ MQTT. Vui lòng kiểm tra lại kết nối. Bạn sẽ được chuyển về màn hình quản lý Broker.", "Lỗi kết nối", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                BrokerWindow brokerWindow = new BrokerWindow();
+                brokerWindow.ShowDialog();
+                this.Close();
+                return;
+            }
 
             CustomerComboBox.ItemsSource = null;
-            CustomerComboBox.ItemsSource = await _customerService.GetAllCustomers(1,100);
+            CustomerComboBox.ItemsSource = await _customerService.GetAllCustomers(1, 100);
 
             CustomerComboBox.DisplayMemberPath = "CustomerName";
             CustomerComboBox.SelectedValuePath = "CustomerId";
@@ -64,8 +76,10 @@ namespace WPF_NhaMayCaoSu
                 StatusTextBox.Text = "1";
                 CustomerComboBox.SelectedValue = _customer.CustomerId.ToString();
             }
+
             _mqttClientService.MessageReceived += OnMqttMessageReceived;
         }
+
 
         private void OnMqttMessageReceived(object sender, string data)
         {

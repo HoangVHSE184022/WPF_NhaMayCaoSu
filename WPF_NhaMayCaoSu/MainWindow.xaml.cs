@@ -273,12 +273,23 @@ namespace WPF_NhaMayCaoSu
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            await _mqttClientService.ConnectAsync();
-            await _mqttClientService.SubscribeAsync("CreateRFID");
-            await _mqttClientService.SubscribeAsync("Can_ta");
-            await _mqttClientService.SubscribeAsync("Can_tieu_ly");
-            _mqttClientService.MessageReceived += OnMqttMessageReceived;
+            try
+            {
+                await _mqttClientService.ConnectAsync();
+                await _mqttClientService.SubscribeAsync("CreateRFID");
+                await _mqttClientService.SubscribeAsync("Can_ta");
+                await _mqttClientService.SubscribeAsync("Can_tieu_ly");
+                _mqttClientService.MessageReceived += OnMqttMessageReceived;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể kết nối đến máy chủ MQTT. Vui lòng kiểm tra lại kết nối. Bạn sẽ được chuyển về màn hình quản lý Broker.", "Lỗi kết nối", MessageBoxButton.OK, MessageBoxImage.Error);
+                BrokerWindow brokerWindow = new BrokerWindow();
+                brokerWindow.ShowDialog();
+                this.Close();
+            }
         }
+
 
         private void RoleManagementButton_Click(object sender, RoutedEventArgs e)
         {
