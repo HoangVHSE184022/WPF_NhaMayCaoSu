@@ -165,7 +165,10 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.CurrentAccount = CurrentAccount;
             Hide();
+            mainWindow.Show();
         }
 
         private void MqttService_ClientsChanged(object sender, EventArgs e)

@@ -28,7 +28,10 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow mainWindow = new();
+            mainWindow.CurrentAccount = CurrentAccount;
             Close();
+            mainWindow.Show();
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
