@@ -30,7 +30,11 @@ namespace WPF_NhaMayCaoSu
             _customer = customer;
         }
 
-
+        public RFIDManagementWindow(string rfidCode)
+        {
+            InitializeComponent();
+            RFIDCodeTextBox.Text = rfidCode;
+        }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {

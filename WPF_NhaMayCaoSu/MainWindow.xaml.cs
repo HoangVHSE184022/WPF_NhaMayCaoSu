@@ -66,6 +66,8 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
+                Sale scannedSale = new Sale();
+                int choice = 0;
                 if (data.StartsWith("CreateRFID:"))
                 {
                     string rfidString = data.Substring("CreateRFID:".Length);
@@ -74,16 +76,17 @@ namespace WPF_NhaMayCaoSu
                     {
                         SalesDataGrid.Dispatcher.Invoke(() =>
                         {
-                            _sessionSaleList.Add(new Sale
+                            scannedSale = new Sale
                             {
                                 SaleId = Guid.NewGuid(),
                                 RFIDCode = rfidString,
                                 LastEditedTime = DateTime.Now,
                                 Status = 1
-                            });
-                            Debug.WriteLine("Sale:" + _sessionSaleList);
+                            };
+                            _sessionSaleList.Add(scannedSale);
                             SalesDataGrid.ItemsSource = null;
                             SalesDataGrid.ItemsSource = _sessionSaleList;
+                            choice = 1;
                         });
                     }
                     else
@@ -148,6 +151,20 @@ namespace WPF_NhaMayCaoSu
                 else
                 {
                     Debug.WriteLine("Unknown message format.");
+                }
+                switch (choice)
+                {
+                    case 1:
+                        CreateRFID(scannedSale);
+                        break;
+                    case 2:
+                        AddWeight(scannedSale);
+                        break;
+                    case 3:
+                        AddDensity(scannedSale);
+                        break;
+                    default:
+                        break;
                 }
             }
             catch (Exception ex)
@@ -310,9 +327,10 @@ namespace WPF_NhaMayCaoSu
         }
         private void CreateRFID(Sale sale)
         {
-            RFIDManagementWindow window = new();
+            RFIDManagementWindow window = new RFIDManagementWindow(sale.RFIDCode);
             window.ShowDialog();
         }
+
         private async void AddWeight(Sale sale)
         {
             //Tạo 2 trường hợp if else cho 2 trường hợp: Tạo và cập nhật
