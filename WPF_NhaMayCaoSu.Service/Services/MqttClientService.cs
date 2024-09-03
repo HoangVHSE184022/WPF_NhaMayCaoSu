@@ -21,8 +21,6 @@ namespace WPF_NhaMayCaoSu.Service.Services
 
         public event EventHandler<string> MessageReceived;
         public bool IsConnected => _client?.IsConnected ?? false;
-        public List<Sale> _sessionSaleList { get; private set; }
-        public event EventHandler<List<Sale>> SalesDataUpdated;
 
 
         public MqttClientService()
@@ -43,11 +41,6 @@ namespace WPF_NhaMayCaoSu.Service.Services
             _client.ConnectedAsync += OnConnectedAsync;
             _client.DisconnectedAsync += OnDisconnectedAsync;
             _client.ApplicationMessageReceivedAsync += OnMessageReceivedAsync;
-        }
-
-        private void UpdateDataGrid()
-        {
-            SalesDataUpdated?.Invoke(this, _sessionSaleList);
         }
 
         private string GetLocalIpAddress()
@@ -82,24 +75,18 @@ namespace WPF_NhaMayCaoSu.Service.Services
             string message = Encoding.UTF8.GetString(arg.ApplicationMessage.Payload);
             Console.WriteLine($"Message received on topic {arg.ApplicationMessage.Topic}: {message}");
 
+            // Phân tích tin nhắn JSON
             var jsonMessage = JsonConvert.DeserializeObject<JObject>(message);
             string rfid = jsonMessage["RFID"]?.ToString();
             string density = jsonMessage["Density"]?.ToString();
             string weight = jsonMessage["Weight"]?.ToString();
 
+            // Kiểm tra topic và xử lý tin nhắn tương ứng
             switch (arg.ApplicationMessage.Topic)
             {
                 case "CreateRFID":
                     if (!string.IsNullOrEmpty(rfid))
                     {
-                        _sessionSaleList.Add(new Sale
-                        {
-                            SaleId = Guid.NewGuid(),
-                            RFIDCode = rfid,
-                            LastEditedTime = DateTime.Now,
-                            Status = 1 // Hoặc giá trị trạng thái khác
-                        });
-                        UpdateDataGrid();
                         MessageReceived?.Invoke(this, $"CreateRFID:{rfid}");
                     }
                     break;
@@ -107,15 +94,6 @@ namespace WPF_NhaMayCaoSu.Service.Services
                 case "Can_tieu_ly":
                     if (!string.IsNullOrEmpty(rfid) && !string.IsNullOrEmpty(density))
                     {
-                        _sessionSaleList.Add(new Sale
-                        {
-                            SaleId = Guid.NewGuid(),
-                            RFIDCode = rfid,
-                            ProductDensity = float.Parse(density),
-                            LastEditedTime = DateTime.Now,
-                            Status = 1
-                        });
-                        UpdateDataGrid();
                         MessageReceived?.Invoke(this, $"Can_tieu_ly:{rfid}:{density}");
                     }
                     break;
@@ -123,15 +101,6 @@ namespace WPF_NhaMayCaoSu.Service.Services
                 case "Can_ta":
                     if (!string.IsNullOrEmpty(rfid) && !string.IsNullOrEmpty(weight))
                     {
-                        _sessionSaleList.Add(new Sale
-                        {
-                            SaleId = Guid.NewGuid(),
-                            RFIDCode = rfid,
-                            ProductWeight = float.Parse(weight),
-                            LastEditedTime = DateTime.Now,
-                            Status = 1
-                        });
-                        UpdateDataGrid();
                         MessageReceived?.Invoke(this, $"Can_ta:{rfid}:{weight}");
                     }
                     break;
@@ -140,15 +109,6 @@ namespace WPF_NhaMayCaoSu.Service.Services
             return Task.CompletedTask;
         }
 
-        //private void UpdateDataGrid()
-        //{
-        //    Application.Current.Dispatcher.Invoke(() =>
-        //    {
-        //        var mainWindow = (MainWindow)Application.Current.MainWindow;
-        //        mainWindow.SalesDataGrid.ItemsSource = null;
-        //        mainWindow.SalesDataGrid.ItemsSource = _sessionSaleList;
-        //    });
-        //}
 
 
         public async Task ConnectAsync()
