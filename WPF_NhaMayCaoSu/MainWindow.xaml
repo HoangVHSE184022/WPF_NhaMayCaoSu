@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
-        Title="Show Information" Height="800" Width="1200" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow">
+         
+        Title="Show Information" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" WindowStyle="SingleBorderWindow">
+
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
@@ -24,11 +26,11 @@
         </Menu>
         <DataGrid x:Name="SalesDataGrid" HorizontalAlignment="Center" Height="677" VerticalAlignment="Top" Width="1118" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False" Margin="0,36,0,0">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Thời gian quét" Binding="{Binding CreatedDate}" />
+                <DataGridTextColumn Header="Thời gian quét" Binding="{Binding LastEditedTime, StringFormat=G}" />
                 <DataGridTextColumn Header="RFID" Binding="{Binding RFIDCode}"/>
-                <DataGridTextColumn Header="Cân nặng" Binding="{Binding Weight}" />
-                <DataGridTextColumn Header="Tỉ Trọng" Binding="{Binding Density}" />
-                <DataGridTextColumn Header="Tên khách hàng" Binding="{Binding Customer.CustomerName}" />
+                <DataGridTextColumn Header="Cân nặng" Binding="{Binding ProductWeight}" />
+                <DataGridTextColumn Header="Tỉ Trọng" Binding="{Binding ProductDensity}" />
+                <DataGridTextColumn Header="Tên khách hàng" Binding="{Binding CustomerName}" />
                 <DataGridTemplateColumn Header="Thao tác">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

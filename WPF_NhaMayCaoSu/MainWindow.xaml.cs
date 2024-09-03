@@ -1,8 +1,15 @@
-﻿using System.Windows;
+﻿using MQTTnet.Client;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Diagnostics;
+using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
+using System.Windows.Media.Media3D;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -14,9 +21,9 @@ namespace WPF_NhaMayCaoSu
         private readonly MqttServerService _mqttServerService;
         private readonly MqttClientService _mqttClientService;
         private readonly CameraService _cameraService = new();
-        private readonly List<Sale> _sessionSaleList;
         public Account CurrentAccount { get; set; } = null;
         private BrokerWindow broker;
+        private List<Sale> _sessionSaleList { get; set; } = new();
 
         public MainWindow()
         {
@@ -25,17 +32,16 @@ namespace WPF_NhaMayCaoSu
             _mqttServerService = MqttServerService.Instance;
             _mqttServerService.BrokerStatusChanged += (sender, e) => UpdateMainWindowUI();
             _mqttClientService = new MqttClientService();
-            _mqttClientService.SalesDataUpdated += OnSalesDataUpdated; // Subscribe to the event
             _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;
-            _sessionSaleList = new();
             UpdateMainWindowUI();
 
         }
 
         private void OnSalesDataUpdated(object sender, List<Sale> updatedSales)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(() =>
             {
+                Debug.WriteLine(updatedSales);
                 SalesDataGrid.ItemsSource = null;
                 SalesDataGrid.ItemsSource = updatedSales;
             });
@@ -56,14 +62,102 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
-        public void FoundEvent(Sale sale)
+        private void OnMqttMessageReceived(object sender, string data)
         {
+            try
+            {
+                if (data.StartsWith("CreateRFID:"))
+                {
+                    string rfidString = data.Substring("CreateRFID:".Length);
+
+                    if (!string.IsNullOrEmpty(rfidString))
+                    {
+                        SalesDataGrid.Dispatcher.Invoke(() =>
+                        {
+                            _sessionSaleList.Add(new Sale
+                            {
+                                SaleId = Guid.NewGuid(),
+                                RFIDCode = rfidString,
+                                LastEditedTime = DateTime.Now,
+                                Status = 1
+                            });
+                            Debug.WriteLine("Sale:" + _sessionSaleList);
+                            SalesDataGrid.ItemsSource = null;
+                            SalesDataGrid.ItemsSource = _sessionSaleList;
+                        });
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Failed to parse RFID number.");
+                    }
+                }
+                else if (data.StartsWith("Can_ta:"))
+                {
+                    string[] parts = data.Substring("Can_ta:".Length).Split(':');
+                    if (parts.Length == 2 && float.TryParse(parts[1], out float weight))
+                    {
+                        string rfidString = parts[0];
+
+                        SalesDataGrid.Dispatcher.Invoke(() =>
+                        {
+                            _sessionSaleList.Add(new Sale
+                            {
+                                SaleId = Guid.NewGuid(),
+                                RFIDCode = rfidString,
+                                ProductWeight = weight,
+                                LastEditedTime = DateTime.Now,
+                                Status = 1
+                            });
+                            Debug.WriteLine("Sale:" + _sessionSaleList);
+                            SalesDataGrid.ItemsSource = null;
+                            SalesDataGrid.ItemsSource = _sessionSaleList;
+                        });
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Failed to parse Can_ta data.");
+                    }
+                }
+                else if (data.StartsWith("Can_tieu_ly:"))
+                {
+                    string[] parts = data.Substring("Can_tieu_ly:".Length).Split(':');
+                    if (parts.Length == 2 && float.TryParse(parts[1], out float density))
+                    {
+                        string rfidString = parts[0];
+
+                        SalesDataGrid.Dispatcher.Invoke(() =>
+                        {
+                            _sessionSaleList.Add(new Sale
+                            {
+                                SaleId = Guid.NewGuid(),
+                                RFIDCode = rfidString,
+                                ProductDensity = density,
+                                LastEditedTime = DateTime.Now,
+                                Status = 1
+                            });
+                            Debug.WriteLine("Sale:" + _sessionSaleList);
+                            SalesDataGrid.ItemsSource = null;
+                            SalesDataGrid.ItemsSource = _sessionSaleList;
+                        });
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Failed to parse Can_tieu_ly data.");
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine("Unknown message format.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error processing message: {ex.Message}");
+            }
             Application.Current.Dispatcher.Invoke(() =>
             {
-                SalesDataGrid.ItemsSource = null;
-                SalesDataGrid.ItemsSource = _mqttClientService._sessionSaleList;
-            });
         }
+
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
@@ -154,6 +248,15 @@ namespace WPF_NhaMayCaoSu
             {
                 NumberofconnectionTextBlock.Text = $"Onl:{deviceCount} Thiết bị";
             });
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            await _mqttClientService.ConnectAsync();
+            await _mqttClientService.SubscribeAsync("CreateRFID");
+            await _mqttClientService.SubscribeAsync("Can_ta");
+            await _mqttClientService.SubscribeAsync("Can_tieu_ly");
+            _mqttClientService.MessageReceived += OnMqttMessageReceived;
         }
 
         private void RoleManagementButton_Click(object sender, RoutedEventArgs e)
