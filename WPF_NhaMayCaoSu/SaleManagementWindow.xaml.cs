@@ -264,7 +264,6 @@ namespace WPF_NhaMayCaoSu
                                 CustomerName = customer.CustomerName
                             };
                             Debug.WriteLine($"Sale created: {sale}");
-                            await _saleService.CreateSaleAsync(sale);
                             Debug.WriteLine("Successfully save new sale to db");
                         }
 
@@ -277,7 +276,6 @@ namespace WPF_NhaMayCaoSu
                                 {
                                     currentValue += sale.ProductWeight.Value;
                                     sale.ProductWeight = currentValue;
-                                    await _saleService.UpdateSaleAsync(sale);
                                     Debug.WriteLine("Successfully update weight");
                                 }
                             }
@@ -297,7 +295,6 @@ namespace WPF_NhaMayCaoSu
                             currentValue = float.Parse(messages[1]);
                             Debug.Write(currentValue);
                             sale.ProductDensity = currentValue;
-                            await _saleService.UpdateSaleAsync(sale);
                             Debug.WriteLine("Successfully save density");
                         }
                         else
