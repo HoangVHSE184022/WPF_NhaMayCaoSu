@@ -20,12 +20,11 @@
             </MenuItem>
         </Menu>
         <Label Content="Hình ảnh cân tạ" HorizontalAlignment="Left" Height="46" Margin="212,81,0,0" VerticalAlignment="Top" Width="216" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
-        <Image x:Name="WeightImage" HorizontalAlignment="Left" Height="450" Margin="70,147,0,0" VerticalAlignment="Top" Width="500
-               "/>
+        <Image x:Name="WeightImage" Margin="70,147,630,187"/>
 
-        <Label Content="Hình ảnh cân tiểu ly" HorizontalAlignment="Left" Height="46" Margin="792,81,0,0" VerticalAlignment="Top" Width="276" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
-        <Image x:Name="DensityImage" HorizontalAlignment="Left" Height="450" Margin="640,147,0,0" VerticalAlignment="Top" Width="500                "/>
-        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="45" Margin="41,718,0,0" VerticalAlignment="Top" Width="106" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="30" Click="QuitButton_Click"/>
+        <Label Content="Hình ảnh cân tiểu ly" Height="46" Margin="0,81,132,0" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366" HorizontalAlignment="Right" Width="276"/>
+        <Image x:Name="DensityImage" Margin="640,147,60,187"/>
+        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="45" Margin="41,0,0,21" VerticalAlignment="Bottom" Width="106" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="30" Click="QuitButton_Click"/>
 
     </Grid>
 </Window>

@@ -19,16 +19,16 @@
                 <MenuItem x:Name="RoleManagementButton" Header="Vai trò" Click="RoleManagementButton_Click"/>
             </MenuItem>
         </Menu>
-        
+
         <Label Content="Quản lý khách hàng" HorizontalAlignment="Left" Height="57" Margin="32,50,0,0" VerticalAlignment="Top" Width="343" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
-        <Button x:Name="AddCustomerButton" HorizontalAlignment="Left" Height="40" Margin="1047,146,0,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="Button_Click" >
+        <Button x:Name="AddCustomerButton" Margin="0,146,32,0" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="Button_Click" HorizontalAlignment="Right" Width="121" Height="40" VerticalAlignment="Top" >
             <TextBlock Text="Thêm mới" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="EditCustomerButton1" HorizontalAlignment="Left" Height="40" Margin="1047,228,0,0" VerticalAlignment="Top" Width="121" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="EditCustomerButton1_Click" >
+        <Button x:Name="EditCustomerButton1" Margin="0,228,32,0" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="EditCustomerButton1_Click" HorizontalAlignment="Right" Width="121" Height="40" VerticalAlignment="Top" >
             <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="40" Margin="1047,702,0,0" VerticalAlignment="Top" Width="121" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" Click="QuitButton_Click"/>
-        <DataGrid x:Name="CustomerDataGrid" HorizontalAlignment="Left" Height="613" Margin="32,129,0,0" VerticalAlignment="Top" Width="1009" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
+        <Button x:Name="QuitButton" Content="QUIT" Margin="0,0,32,42" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" Click="QuitButton_Click" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="121"/>
+        <DataGrid x:Name="CustomerDataGrid" Margin="32,129,159,42" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Width="100" Binding="{Binding CustomerId}"/>
                 <DataGridTextColumn Header="Tên" Width="250" Binding="{Binding CustomerName}"/>

@@ -20,7 +20,7 @@
             <TextBox Name="txtUrl1" Width="360" Height="25" Grid.Row="0" Margin="0,0,20,10" Text="rtsp://enter_url_for_camera_1"/>
             <Button Name="btnCapture1" Content="Chụp ảnh camera 1" Width="150" Height="30" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnCapture1_Click"/>
             <Image Name="imgCamera1" Stretch="Uniform" Grid.Row="2" Height="300" Margin="0,6,0,43"/>
-            <Button x:Name="SaveUrlCamera1" Content="Lưu url camera 1" Width="150" Height="30" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Click="SaveUrlCamera1_Click" Margin="190,0,0,0"/>
+            <Button x:Name="SaveUrlCamera1" Content="Lưu url camera 1" Height="30" Grid.Row="1" VerticalAlignment="Center" Click="SaveUrlCamera1_Click" Margin="0,0,40,0" HorizontalAlignment="Right" Width="150"/>
         </Grid>
         <Grid Grid.Column="1" Margin="10">
             <Grid.RowDefinitions>
@@ -31,8 +31,8 @@
             <TextBox Name="txtUrl2" Width="360" Height="25" Grid.Row="0" Margin="0,0,20,10" Text="rtsp://enter_url_for_camera_2"/>
             <Button x:Name="btnCapture2" Content="Chụp ảnh camera 2" Width="150" Height="30" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnCapture2_Click"/>
             <Image Name="imgCamera2" Stretch="Uniform" Grid.Row="2" Height="300" Margin="0,6,0,43"/>
-            <Button x:Name="btnQuit" Content="Trở về" Width="66" Height="17" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="304,311,0,0" Click="btnQuit_Click"/>
-            <Button x:Name="SaveUrlCamera2" Content="Lưu url camera 2" Width="150" Height="30" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Click="SaveUrlCamera2_Click" Margin="190,0,0,0"/>
+            <Button x:Name="btnQuit" Content="Trở về" Grid.Row="2" Margin="0,0,10,21" Click="btnQuit_Click" HorizontalAlignment="Right" Width="66" Height="17" VerticalAlignment="Bottom"/>
+            <Button x:Name="SaveUrlCamera2" Content="Lưu url camera 2" Height="30" Grid.Row="1" VerticalAlignment="Center" Click="SaveUrlCamera2_Click" Margin="0,0,40,0" HorizontalAlignment="Right" Width="150"/>
         </Grid>
     </Grid>
 </Window>
