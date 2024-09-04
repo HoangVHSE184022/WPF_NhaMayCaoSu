@@ -64,7 +64,7 @@ namespace WPF_NhaMayCaoSu
             else
             {
                 x.SaleId = SelectedSale.SaleId;
-                x.LastEditedTime = DateTime.Now;
+                x.LastEditedTime = DateTimeOffset.UtcNow;
                 MessageBox.Show(Constants.SuccessMessageSaleUpdated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                 await _service.UpdateSaleAsync(x);
             }
@@ -339,7 +339,7 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                DateTime currentTime = DateTime.Now;
+                DateTimeOffset currentTime = DateTimeOffset.UtcNow;
 
                 // Ensure the UI update is executed on the UI thread
                 urlTextBox.Dispatcher.Invoke(() =>
