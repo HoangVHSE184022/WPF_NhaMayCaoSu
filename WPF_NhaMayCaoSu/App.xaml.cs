@@ -49,7 +49,7 @@ namespace WPF_NhaMayCaoSu
             services.AddSingleton<IMqttClientService, MqttClientService>();
             // Register repositories here
             services.AddScoped<ISaleRepository, SaleRepository>();
-            services.AddSingleton<IAccountRepository, AccountRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             // Register the MainWindow
