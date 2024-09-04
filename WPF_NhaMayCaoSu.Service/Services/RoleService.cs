@@ -1,5 +1,4 @@
-﻿using WPF_NhaMayCaoSu.Repository.IRepositories;
-using WPF_NhaMayCaoSu.Repository.Models;
+﻿using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
@@ -7,7 +6,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
 {
     public class RoleService : IRoleService
     {
-        
+
         private readonly RoleRepository _repo = new();
 
 

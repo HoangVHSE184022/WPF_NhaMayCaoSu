@@ -60,7 +60,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
                 return account;
             }
 
-            return null; 
+            return null;
         }
 
         public async Task Register(Account account)

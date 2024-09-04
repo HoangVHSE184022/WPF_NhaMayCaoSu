@@ -23,7 +23,7 @@ namespace WPF_NhaMayCaoSu
         public Sale SelectedSale { get; set; } = null;
         private MqttClientService _mqttClientService = new MqttClientService();
         private CustomerService customerService = new CustomerService();
-        private SaleService _saleService =  new SaleService();
+        private SaleService _saleService = new SaleService();
         private double? oldWeightValue = null;
         private DateTimeOffset? firstMessageTime = null;
         private string lastRFID = null;
@@ -150,7 +150,7 @@ namespace WPF_NhaMayCaoSu
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
-           
+
         }
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
@@ -167,7 +167,7 @@ namespace WPF_NhaMayCaoSu
             {
                 CameraService cameraService = new CameraService();
                 Camera newestCamera = await cameraService.GetNewestCameraAsync();
-                
+
                 if (newestCamera == null)
                 {
                     Application.Current.Dispatcher.Invoke(() =>
@@ -234,11 +234,11 @@ namespace WPF_NhaMayCaoSu
                     {
                         sale = new Sale
                         {
-                            SaleId = Guid.NewGuid(),   
+                            SaleId = Guid.NewGuid(),
                             RFIDCode = rfidValue,
                             ProductWeight = currentValue,
                             LastEditedTime = currentTime,
-                            Status = 1, 
+                            Status = 1,
                         };
 
                         // Save the new Sale to the database

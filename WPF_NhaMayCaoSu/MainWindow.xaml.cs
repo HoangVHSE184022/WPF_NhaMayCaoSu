@@ -1,15 +1,9 @@
-﻿using MQTTnet.Client;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Diagnostics;
-using System.Text;
+﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
-using System.Windows.Media.Media3D;
-using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -178,10 +172,10 @@ namespace WPF_NhaMayCaoSu
         {
             MessageBoxResult result = MessageBox.Show("Hành động này sẽ đóng ứng dụng, bạn chắc chứ?", "Thoát", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
-            { 
+            {
                 App.Current.Shutdown();
-            }    
-            
+            }
+
         }
 
 
