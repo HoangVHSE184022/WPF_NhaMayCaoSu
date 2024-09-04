@@ -57,7 +57,7 @@ namespace WPF_NhaMayCaoSu
                             Bitmap bitmap = image.ToBitmap();
                             imageControl.Source = ConvertBitmapToBitmapImage(bitmap);
 
-                            string imagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), $"capture_{DateTimeOffset.UtcNow:yyyyMMdd_HHmmss}.png");
+                            string imagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), $"capture_{DateTime.UtcNow:yyyyMMdd_HHmmss}.png");
                             bitmap.Save(imagePath, System.Drawing.Imaging.ImageFormat.Png);
 
                             MessageBox.Show($"Image saved at: {imagePath}");
