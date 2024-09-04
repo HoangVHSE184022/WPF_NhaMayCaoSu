@@ -342,7 +342,7 @@ namespace WPF_NhaMayCaoSu
             window.ShowDialog();
         }
 
-        private async void AddWeight(Sale sale)
+        private async Task AddWeight(Sale sale)
         {
             //Tạo 2 trường hợp if else cho 2 trường hợp: Tạo và cập nhật
 
