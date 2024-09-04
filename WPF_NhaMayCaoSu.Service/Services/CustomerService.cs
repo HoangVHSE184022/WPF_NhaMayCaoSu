@@ -1,4 +1,5 @@
-﻿using WPF_NhaMayCaoSu.Repository.IRepositories;
+﻿using Microsoft.IdentityModel.Tokens;
+using WPF_NhaMayCaoSu.Repository.IRepositories;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
@@ -41,6 +42,8 @@ namespace WPF_NhaMayCaoSu.Service.Services
 
         public async Task<Customer?> GetCustomerByRFIDCodeAsync(string rfidCode)
         {
+            RFIDService rFIDService = new();
+            RFID rFID = await rFIDService.GetRFIDByRFIDCodeAsync(rfidCode);
             return await _repository.GetCustomerByRFIDCodeAsync(rfidCode);
         }
     }
