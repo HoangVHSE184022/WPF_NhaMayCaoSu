@@ -179,6 +179,7 @@ namespace WPF_NhaMayCaoSu
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
+
             ConfigCamera configCamera = new ConfigCamera();
             configCamera.ShowDialog();
         }
@@ -430,6 +431,11 @@ namespace WPF_NhaMayCaoSu
             return localFilePath.ToString();
         }
 
-
+        private void ControlButton_Click(object sender, RoutedEventArgs e)
+        {
+            Sale sale = SaleDataGrid.SelectedItem as Sale;
+            ViewImagesWindow window = new(sale);
+            window.ShowDialog();
+        }
     }
 }
