@@ -124,7 +124,6 @@ namespace WPF_NhaMayCaoSu
 
                 _mqttClientService.MessageReceived += (s, data) =>
                 {
-                    Debug.WriteLine("MessageReceived event has been triggered");
                     OnMqttMessageReceived(s, data);
                 };
             }
@@ -290,7 +289,6 @@ namespace WPF_NhaMayCaoSu
                                 CustomerName = customer.CustomerName
                             };
                             await _service.CreateSaleAsync(sale);
-                            Debug.WriteLine(sale);
                             string imagePath = CaptureImageFromCamera(newestCamera, 1);
                             if (!string.IsNullOrEmpty(imagePath))
                             {
@@ -303,7 +301,6 @@ namespace WPF_NhaMayCaoSu
                                     SaleId = sale.SaleId
                                 };
                                 await _imageService.AddImageAsync(image);
-                                Debug.WriteLine(image);
                             }
                         }
                         oldWeightValue = currentValue;
