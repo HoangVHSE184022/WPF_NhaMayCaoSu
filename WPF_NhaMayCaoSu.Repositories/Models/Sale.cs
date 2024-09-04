@@ -6,7 +6,7 @@
         public string CustomerName { get; set; }
         public float? ProductDensity { get; set; }
         public float? ProductWeight { get; set; }
-        public DateTimeOffset? LastEditedTime { get; set; }
+        public DateTime? LastEditedTime { get; set; }
         public short Status { get; set; }
         public string RFIDCode { get; set; }
 

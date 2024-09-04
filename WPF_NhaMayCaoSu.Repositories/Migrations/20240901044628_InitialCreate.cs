@@ -58,6 +58,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     RFIDCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(type: "datetime2", nullable: false),
                     ExpirationDate = table.Column<DateTimeOffset>(type: "datetime2", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<short>(type: "smallint", nullable: false)
                 },
@@ -82,6 +84,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     Username = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(type: "datetime2", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<long>(type: "bigint", nullable: false),
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -105,6 +108,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     ProductDensity = table.Column<float>(type: "real", nullable: true),
                     ProductWeight = table.Column<float>(type: "real", nullable: true),
                     LastEditedTime = table.Column<DateTimeOffset>(type: "datetime2", nullable: true),
+                    LastEditedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<short>(type: "smallint", nullable: false),
                     RFIDCode = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -127,6 +131,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     ImageType = table.Column<short>(type: "smallint", nullable: false),
                     ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(type: "datetime2", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SaleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>

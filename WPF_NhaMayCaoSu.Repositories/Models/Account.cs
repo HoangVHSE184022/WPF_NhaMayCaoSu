@@ -6,7 +6,7 @@
         public string AccountName { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public DateTimeOffset CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
         public long Status { get; set; }
         public Guid RoleId { get; set; }
 
