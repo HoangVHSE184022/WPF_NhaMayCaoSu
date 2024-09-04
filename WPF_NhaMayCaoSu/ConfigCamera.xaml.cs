@@ -60,18 +60,18 @@ namespace WPF_NhaMayCaoSu
                             string imagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), $"capture_{DateTime.UtcNow:yyyyMMdd_HHmmss}.png");
                             bitmap.Save(imagePath, System.Drawing.Imaging.ImageFormat.Png);
 
-                            MessageBox.Show($"Image saved at: {imagePath}");
+                            MessageBox.Show($"Hình ảnh đã được lưu tại: {imagePath}");
                         }
                         else
                         {
-                            MessageBox.Show("Failed to capture image from the RTSP stream.");
+                            MessageBox.Show("Không thể chụp ảnh từ luồng RTSP.");
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}");
+                MessageBox.Show($"Đã xảy ra lỗi: {ex.Message}");
             }
         }
 
@@ -102,7 +102,7 @@ namespace WPF_NhaMayCaoSu
                 {
                     CameraId = Guid.NewGuid(),
                     Camera1 = txtUrl1.Text,
-                    Camera2 = "NoURLYet",
+                    Camera2 = "Chưa có URL",
                     Status = 1
                 };
                 await _cameraService.CreateCameraAsync(camera);
@@ -113,7 +113,7 @@ namespace WPF_NhaMayCaoSu
                 await _cameraService.UpdateCameraAsync(camera);
             }
 
-            MessageBox.Show("Camera 1 URL has been saved.");
+            MessageBox.Show("URL Camera 1 đã được lưu.");
         }
 
         private async void SaveUrlCamera2_Click(object sender, RoutedEventArgs e)
@@ -124,7 +124,7 @@ namespace WPF_NhaMayCaoSu
                 camera = new Camera
                 {
                     CameraId = Guid.NewGuid(),
-                    Camera1 = "NoURLYet",
+                    Camera1 = "Chưa có URL",
                     Camera2 = txtUrl2.Text,
                     Status = 1
                 };
@@ -136,12 +136,11 @@ namespace WPF_NhaMayCaoSu
                 await _cameraService.UpdateCameraAsync(camera);
             }
 
-            MessageBox.Show("Camera 2 URL has been saved.");
+            MessageBox.Show("URL Camera 2 đã được lưu.");
         }
 
         private void btnQuit_Click(object sender, RoutedEventArgs e)
         {
-
             Close();
         }
     }
