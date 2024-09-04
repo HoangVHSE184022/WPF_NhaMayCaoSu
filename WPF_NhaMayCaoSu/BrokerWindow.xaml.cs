@@ -165,7 +165,10 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.CurrentAccount = CurrentAccount;
             Hide();
+            mainWindow.Show();
         }
 
         private void MqttService_ClientsChanged(object sender, EventArgs e)
@@ -186,6 +189,7 @@ namespace WPF_NhaMayCaoSu
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
             customerListWindow.CurrentAccount = CurrentAccount;
+            Close();
             customerListWindow.ShowDialog();
         }
 
@@ -193,6 +197,7 @@ namespace WPF_NhaMayCaoSu
         {
             RFIDListWindow rFIDListWindow = new RFIDListWindow();
             rFIDListWindow.CurrentAccount = CurrentAccount;
+            Close();
             rFIDListWindow.ShowDialog();
         }
 
@@ -200,6 +205,7 @@ namespace WPF_NhaMayCaoSu
         {
             SaleListWindow saleListWindow = new SaleListWindow();
             saleListWindow.CurrentAccount = CurrentAccount;
+            Close();
             saleListWindow.ShowDialog();
         }
 
@@ -208,14 +214,13 @@ namespace WPF_NhaMayCaoSu
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
             accountManagementWindow.CurrentAccount = CurrentAccount;
+            Close();
             accountManagementWindow.ShowDialog();
         }
 
         private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            BrokerWindow brokerWindow = new BrokerWindow();
-            brokerWindow.CurrentAccount = CurrentAccount;
-            brokerWindow.ShowDialog();
+            MessageBox.Show("Bạn đang ở cửa sổ quản lý broker!", "Lặp cửa sổ!", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
@@ -227,6 +232,7 @@ namespace WPF_NhaMayCaoSu
         {
             MainWindow mainWindow = new();
             mainWindow.CurrentAccount = CurrentAccount;
+            Close();
             mainWindow.Show();
         }
 
@@ -234,6 +240,7 @@ namespace WPF_NhaMayCaoSu
         {
             RoleListWindow roleListWindow = new();
             roleListWindow.CurrentAccount = CurrentAccount;
+            Close();
             roleListWindow.ShowDialog();
         }
     }

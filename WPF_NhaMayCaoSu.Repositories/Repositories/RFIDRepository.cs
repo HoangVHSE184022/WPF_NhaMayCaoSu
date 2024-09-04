@@ -34,6 +34,12 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             return await _context.RFIDs.FirstOrDefaultAsync(r => r.RFID_Id == rfidId);
         }
 
+        public async Task<RFID> GetRFIDByRFIDCodeAsync(string RFIDCode)
+        {
+            _context = new CaoSuWpfDbContext();
+            return await _context.RFIDs.FirstOrDefaultAsync(r => r.RFIDCode == RFIDCode);
+        }
+
         public async Task UpdateRFIDAsync(RFID rfid)
         {
             _context = new CaoSuWpfDbContext();

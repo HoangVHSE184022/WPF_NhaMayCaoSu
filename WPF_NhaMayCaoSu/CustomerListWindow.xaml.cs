@@ -22,7 +22,10 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow mainWindow = new();
+            mainWindow.CurrentAccount = CurrentAccount;
             Close();
+            mainWindow.Show();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -66,15 +69,14 @@ namespace WPF_NhaMayCaoSu
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            CustomerListWindow customerListWindow = new CustomerListWindow();
-            customerListWindow.CurrentAccount = CurrentAccount;
-            customerListWindow.ShowDialog();
+            MessageBox.Show("Bạn đang ở cửa sổ Quản lý Khách hàng!", "Lặp cửa sổ!", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
         {
             RFIDListWindow rFIDListWindow = new RFIDListWindow();
             rFIDListWindow.CurrentAccount = CurrentAccount;
+            Close();
             rFIDListWindow.ShowDialog();
         }
 
@@ -82,6 +84,7 @@ namespace WPF_NhaMayCaoSu
         {
             SaleListWindow saleListWindow = new SaleListWindow();
             saleListWindow.CurrentAccount = CurrentAccount;
+            Close();
             saleListWindow.ShowDialog();
         }
 
@@ -90,6 +93,7 @@ namespace WPF_NhaMayCaoSu
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
             accountManagementWindow.CurrentAccount = CurrentAccount;
+            Close();
             accountManagementWindow.ShowDialog();
         }
 
@@ -97,6 +101,7 @@ namespace WPF_NhaMayCaoSu
         {
             BrokerWindow brokerWindow = new BrokerWindow();
             brokerWindow.CurrentAccount = CurrentAccount;
+            Close();
             brokerWindow.ShowDialog();
         }
 

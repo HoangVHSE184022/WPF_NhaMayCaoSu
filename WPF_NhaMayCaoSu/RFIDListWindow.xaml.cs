@@ -18,7 +18,10 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow mainWindow = new();
+            mainWindow.CurrentAccount = CurrentAccount;
             Close();
+            mainWindow.Show();
         }
 
         private async void LoadDataGrid()
@@ -37,20 +40,20 @@ namespace WPF_NhaMayCaoSu
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
             customerListWindow.CurrentAccount = CurrentAccount;
+            Close();
             customerListWindow.ShowDialog();
         }
 
         private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            RFIDListWindow rFIDListWindow = new RFIDListWindow();
-            rFIDListWindow.CurrentAccount = CurrentAccount;
-            rFIDListWindow.ShowDialog();
+            MessageBox.Show("Bạn đang ở cửa sổ Quản lý RFID!", "Lặp cửa sổ!", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
         {
             SaleListWindow saleListWindow = new SaleListWindow();
             saleListWindow.CurrentAccount = CurrentAccount;
+            Close();
             saleListWindow.ShowDialog();
         }
 
@@ -59,6 +62,7 @@ namespace WPF_NhaMayCaoSu
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
             accountManagementWindow.CurrentAccount = CurrentAccount;
+            Close();
             accountManagementWindow.ShowDialog();
         }
 
@@ -66,6 +70,7 @@ namespace WPF_NhaMayCaoSu
         {
             BrokerWindow brokerWindow = new BrokerWindow();
             brokerWindow.CurrentAccount = CurrentAccount;
+            Close();
             brokerWindow.ShowDialog();
         }
 
@@ -78,6 +83,7 @@ namespace WPF_NhaMayCaoSu
         {
             MainWindow mainWindow = new MainWindow();
             mainWindow.CurrentAccount = CurrentAccount;
+            Close();
             mainWindow.Show();
         }
 
@@ -103,6 +109,23 @@ namespace WPF_NhaMayCaoSu
             RoleListWindow roleListWindow = new();
             roleListWindow.CurrentAccount = CurrentAccount;
             roleListWindow.ShowDialog();
+        }
+
+        private async void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string searchTerm = SearchTextBox.Text.Trim().ToLower();
+
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                LoadDataGrid();
+            }
+            else
+            {
+                RFIDDataGrid.ItemsSource = null;
+                RFIDDataGrid.Items.Clear();
+                var sales = await _service.GetAllRFIDsAsync(1, 10);
+                RFIDDataGrid.ItemsSource = sales.Where(s => s.Customer.CustomerName.ToLower().Contains(searchTerm));
+            }
         }
     }
 }

@@ -7,6 +7,10 @@ using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using MQTTnet.Adapter;
+using static System.Net.Mime.MediaTypeNames;
+using WPF_NhaMayCaoSu.Repository.Models;
+using System.Windows;
+
 
 namespace WPF_NhaMayCaoSu.Service.Services
 {
@@ -17,6 +21,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
 
         public event EventHandler<string> MessageReceived;
         public bool IsConnected => _client?.IsConnected ?? false;
+
 
         public MqttClientService()
         {
@@ -105,6 +110,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
         }
 
 
+
         public async Task ConnectAsync()
         {
             if (!_client.IsConnected)
@@ -115,16 +121,17 @@ namespace WPF_NhaMayCaoSu.Service.Services
                 }
                 catch (MqttConnectingFailedException ex)
                 {
-                    Debug.WriteLine("Failed to connect to MQTT server: " + ex.Message);
-                    throw new Exception("Failed to connect to MQTT server. Please ensure the server is turned on.", ex);
+                    Debug.WriteLine("Kết nối đến máy chủ MQTT thất bại: " + ex.Message);
+                    throw new Exception("Kết nối đến máy chủ MQTT thất bại. Vui lòng đảm bảo rằng máy chủ đã được bật.", ex);
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("An error occurred while connecting to MQTT server: " + ex.Message);
-                    throw new Exception("An error occurred while connecting to the MQTT server. Please ensure the server is turned on.", ex);
+                    Debug.WriteLine("Đã xảy ra lỗi khi kết nối đến máy chủ MQTT: " + ex.Message);
+                    throw new Exception("Đã xảy ra lỗi khi kết nối đến máy chủ MQTT. Vui lòng đảm bảo rằng máy chủ đã được bật.", ex);
                 }
             }
         }
+
 
 
         public async Task SubscribeAsync(string topic)

@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
-        Title="Sale List" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" ResizeMode="NoResize">
+        Title="Sale List" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" WindowStyle="SingleBorderWindow">
     <Grid>
-        <Menu HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Monserrat" Foreground="#FF002366" FontSize="24">
+        <Menu HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Monserrat" Foreground="#FF002366" FontSize="16">
             <MenuItem x:Name="ShowButton" Header="Hiển thị" Click="ShowButton_Click"/>
             <MenuItem x:Name="ConfigButton" Header="Cấu hình" Click="ConfigButton_Click"/>
             <MenuItem x:Name="BrokerManagementButton" Header="Broker" Click="BrokerManagementButton_Click"/>
@@ -42,7 +42,8 @@
 
             </DataGrid.Columns>
         </DataGrid>
-
-
+        <Label x:Name="SearchLabel" Content="Nhập tên khách hàng:" Width="188" Height="30" VerticalAlignment="Top" Margin="0,69,0,0" HorizontalAlignment="Center" FontFamily="Montserrat" FontSize="18" />
+        <TextBox x:Name="SearchTextBox" Width="309" Height="30" VerticalAlignment="Top" Margin="691,70,0,0" HorizontalAlignment="Left" FontFamily="Montserrat" FontSize="18"/>
+        <Button x:Name="SearchButton" Content="Tìm kiếm" Width="121" Height="30" VerticalAlignment="Top" Margin="1044,70,0,0" HorizontalAlignment="Left" FontFamily="Montserrat" FontSize="18" Click="SearchButton_Click"/>
     </Grid>
 </Window>

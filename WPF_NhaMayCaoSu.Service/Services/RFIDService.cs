@@ -22,6 +22,11 @@ namespace WPF_NhaMayCaoSu.Service.Services
             return await _repo.GetRFIDByIdAsync(rfidId);
         }
 
+        public async Task<RFID> GetRFIDByRFIDCodeAsync(string RFIDCode)
+        {
+            return await _repo.GetRFIDByRFIDCodeAsync(RFIDCode);
+        }
+
         public async Task UpdateRFIDAsync(RFID rfid)
         {
             await _repo.UpdateRFIDAsync(rfid);

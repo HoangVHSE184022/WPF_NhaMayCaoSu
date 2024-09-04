@@ -22,7 +22,10 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow window = new();
+            window.CurrentAccount = CurrentAccount;
             Close();
+            window.Show();
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -31,7 +34,7 @@ namespace WPF_NhaMayCaoSu
             string username = UsernameTextBox.Text;
             string password = PasswordTextBox.Password;
             Guid roleId = Guid.Parse(RoleComboBox.SelectedValue.ToString());
-            if(accountName.IsNullOrEmpty() || username.IsNullOrEmpty() || password.IsNullOrEmpty())
+            if (accountName.IsNullOrEmpty() || username.IsNullOrEmpty() || password.IsNullOrEmpty())
             {
                 MessageBox.Show(Constants.ErrorMessageMissingInfo, Constants.TitlePleaseTryAgain, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -39,7 +42,7 @@ namespace WPF_NhaMayCaoSu
 
             if (PasswordTextBox.Password != ConfirmPasswordTextBox.Password)
             {
-                MessageBox.Show("Sai mật khẩu xác nhận", "Xác nhận mật khẩu thất bại",MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Sai mật khẩu xác nhận", "Xác nhận mật khẩu thất bại", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             Account account = new();
@@ -65,6 +68,7 @@ namespace WPF_NhaMayCaoSu
         {
             CustomerListWindow customerListWindow = new CustomerListWindow();
             customerListWindow.CurrentAccount = CurrentAccount;
+            Close();
             customerListWindow.ShowDialog();
         }
 
@@ -72,33 +76,34 @@ namespace WPF_NhaMayCaoSu
         {
             SaleListWindow saleListWindow = new SaleListWindow();
             saleListWindow.CurrentAccount = CurrentAccount;
+            Close();
             saleListWindow.ShowDialog();
         }
 
 
         private void AccountManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
-            accountManagementWindow.CurrentAccount = CurrentAccount;
-            accountManagementWindow.ShowDialog();
+            MessageBox.Show("Bạn đang ở cửa sổ này rồi!", "Lặp cửa sổ!", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             BrokerWindow brokerWindow = new BrokerWindow();
             brokerWindow.CurrentAccount = CurrentAccount;
+            Close();
             brokerWindow.ShowDialog();
         }
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
         {
             MainWindow window = new();
             window.CurrentAccount = CurrentAccount;
+            Close();
             window.Show();
         }
 
@@ -110,7 +115,7 @@ namespace WPF_NhaMayCaoSu
 
             RoleComboBox.DisplayMemberPath = "RoleName";
             RoleComboBox.SelectedValuePath = "RoleId";
-            
+
             //RoleComboBox.IsEnabled = false;
 
             if (CurrentAccount != null)
