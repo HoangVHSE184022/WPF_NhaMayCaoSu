@@ -7,16 +7,18 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 {
     public class ImageRepository : IImageRepository
     {
-        private CaoSuWpfDbContext _context;
+        private CaoSuWpfDbContext? _context;
 
         public async Task AddImageAsync(Image image)
         {
+            _context = new();
             await _context.Images.AddAsync(image);
             await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Image>> GetAllImagesAsync(int pageNumber, int pageSize)
         {
+            _context = new();
             return await _context.Images
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)
@@ -25,11 +27,13 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
         public async Task<Image> GetImageByIdAsync(Guid imageId)
         {
+            _context = new();
             return await _context.Images.FirstOrDefaultAsync(img => img.ImageId == imageId);
         }
 
         public async Task<IEnumerable<Image>> GetImagesBySaleIdAsync(Guid saleId)
         {
+            _context = new();
             return await _context.Images
                                  .Where(img => img.SaleId == saleId)
                                  .ToListAsync();
@@ -37,12 +41,14 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
         public async Task UpdateImageAsync(Image image)
         {
+            _context = new();
             _context.Images.Update(image);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteImageAsync(Guid imageId)
         {
+            _context = new();
             Image image = await _context.Images.FindAsync(imageId);
             if (image != null)
             {

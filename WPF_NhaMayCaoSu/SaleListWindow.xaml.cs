@@ -6,6 +6,8 @@ using System.Diagnostics;
 using Emgu.CV.Structure;
 using Emgu.CV;
 using System.Drawing;
+using System.IO;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -16,6 +18,7 @@ namespace WPF_NhaMayCaoSu
     {
 
         private SaleService _service = new();
+        private ImageService _imageService = new();
         private int _currentPage = 1;
         private int _pageSize = 10;
         private int _totalPages;
@@ -24,11 +27,13 @@ namespace WPF_NhaMayCaoSu
         public Sale SelectedSale { get; set; } = null;
         private MqttClientService _mqttClientService = new();
         private CustomerService customerService = new();
+        private CameraService cameraService = new();
         private double? oldWeightValue = null;
         private DateTime? firstMessageTime = null;
         private string lastRFID = string.Empty;
         private string oldUrl1 = string.Empty;
         private string oldUrl2 = string.Empty;
+
         public Account CurrentAccount { get; set; } = null;
         public SaleListWindow()
         {
@@ -260,6 +265,8 @@ namespace WPF_NhaMayCaoSu
             {
                 // Split message by :
                 string[] messages = messageContent.Split(':');
+                
+                Camera newestCamera = await cameraService.GetNewestCameraAsync();
 
                 if (messages.Length == 2)
                 {
@@ -267,13 +274,14 @@ namespace WPF_NhaMayCaoSu
                     float currentValue = float.Parse(messages[1]);
                     DateTime currentTime = DateTime.Now;
 
+                    Sale sale = null;
+
                     if (firstKey == "RFID" && secondKey == "Weight")
                     {
-                        Sale sale = await _service.GetSaleByRFIDCodeWithoutDensity(rfidValue);
+                        sale = await _service.GetSaleByRFIDCodeWithoutDensity(rfidValue);
                         if (sale == null || sale.ProductDensity.HasValue)
                         {
                             Customer customer = await customerService.GetCustomerByRFIDCodeAsync(rfidValue);
-                            Debug.WriteLine(customer);
                             sale = new Sale
                             {
                                 SaleId = Guid.NewGuid(),
@@ -284,9 +292,7 @@ namespace WPF_NhaMayCaoSu
                                 Status = 1,
                                 CustomerName = customer.CustomerName
                             };
-                            Debug.WriteLine($"Sale created: {sale}");
                             await _service.CreateSaleAsync(sale);
-                            Debug.WriteLine("Successfully save to db new sale");
                         }
 
                         if (lastRFID == rfidValue && oldWeightValue.HasValue && firstMessageTime.HasValue)
@@ -299,27 +305,51 @@ namespace WPF_NhaMayCaoSu
                                     currentValue += sale.ProductWeight.Value;
                                     sale.ProductWeight = currentValue;
                                     await _service.UpdateSaleAsync(sale);
-                                    Debug.WriteLine("Successfully weight to db new sale");
                                 }
                             }
                         }
-                        // Save old Value
+
+                        string imagePath = CaptureImageFromCamera(newestCamera, 1);
+                        if (!string.IsNullOrEmpty(imagePath))
+                        {
+                            Repository.Models.Image image = new Repository.Models.Image
+                            {
+                                ImageId = Guid.NewGuid(),
+                                ImageType = 1,
+                                ImagePath = imagePath,
+                                CreatedDate = currentTime,
+                                SaleId = sale.SaleId
+                            };
+                            await _imageService.AddImageAsync(image);
+                        }
+
                         oldWeightValue = currentValue;
                         firstMessageTime = currentTime;
                         lastRFID = rfidValue;
                     }
                     else if (firstKey == "RFID" && secondKey == "Density")
                     {
-                        // Handle the "Can_tieu_ly" topic
-                        Sale sale = await _service.GetSaleByRFIDCodeWithoutDensity(rfidValue);
+                        sale = await _service.GetSaleByRFIDCodeWithoutDensity(rfidValue);
 
                         if (sale != null && sale.ProductWeight.HasValue && !sale.ProductDensity.HasValue)
                         {
                             currentValue = float.Parse(messages[1]);
-                            Debug.Write(currentValue);
                             sale.ProductDensity = currentValue;
                             await _service.UpdateSaleAsync(sale);
-                            Debug.WriteLine("Successfully density to db new sale");
+
+                            string imagePath = CaptureImageFromCamera(newestCamera, 2);
+                            if (!string.IsNullOrEmpty(imagePath))
+                            {
+                                Repository.Models.Image image = new Repository.Models.Image
+                                {
+                                    ImageId = Guid.NewGuid(),
+                                    ImageType = 2,
+                                    ImagePath = imagePath,
+                                    CreatedDate = currentTime,
+                                    SaleId = sale.SaleId
+                                };
+                                await _imageService.AddImageAsync(image);
+                            }
                         }
                         else
                         {
@@ -327,7 +357,6 @@ namespace WPF_NhaMayCaoSu
                         }
                     }
 
-                    // Update UI
                     SaleDataGrid.Dispatcher.Invoke(() =>
                     {
                         LoadDataGrid();
@@ -343,6 +372,7 @@ namespace WPF_NhaMayCaoSu
                 Debug.WriteLine($"Lỗi khi xử lý nội dung tin nhắn: {ex.Message}");
             }
         }
+
 
         private string CaptureImageFromCamera(Camera camera, int cameraIndex)
         {
