@@ -25,7 +25,7 @@ namespace WPF_NhaMayCaoSu
         private CustomerService customerService = new CustomerService();
         private SaleService _saleService = new SaleService();
         private double? oldWeightValue = null;
-        private DateTimeOffset? firstMessageTime = null;
+        private DateTime? firstMessageTime = null;
         private string lastRFID = null;
         private string oldUrl1 = null;
         private string oldUrl2 = null;
@@ -64,7 +64,7 @@ namespace WPF_NhaMayCaoSu
             else
             {
                 x.SaleId = SelectedSale.SaleId;
-                x.LastEditedTime = DateTimeOffset.UtcNow;
+                x.LastEditedTime = DateTime.UtcNow;
                 MessageBox.Show(Constants.SuccessMessageSaleUpdated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                 await _service.UpdateSaleAsync(x);
             }
@@ -226,7 +226,7 @@ namespace WPF_NhaMayCaoSu
                 {
                     string rfidValue = messages[0];
                     float currentValue = float.Parse(messages[1]);
-                    DateTimeOffset currentTime = DateTimeOffset.Now;
+                    DateTime currentTime = DateTime.Now;
 
                     Sale sale = await _saleService.GetSaleByRfidAsync(rfidValue);
 
@@ -339,7 +339,7 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                DateTimeOffset currentTime = DateTimeOffset.UtcNow;
+                DateTime currentTime = DateTime.UtcNow;
 
                 // Ensure the UI update is executed on the UI thread
                 urlTextBox.Dispatcher.Invoke(() =>

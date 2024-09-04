@@ -72,7 +72,7 @@ namespace WPF_NhaMayCaoSu
 
             if (_customer != null)
             {
-                ExpDateDatePicker.Text = DateTimeOffset.UtcNow.AddDays(30).ToString("dd/MM/yyyy");
+                ExpDateDatePicker.Text = DateTime.UtcNow.AddDays(30).ToString("dd/MM/yyyy");
                 StatusTextBox.Text = "1";
                 CustomerComboBox.SelectedValue = _customer.CustomerId.ToString();
             }
@@ -142,7 +142,7 @@ namespace WPF_NhaMayCaoSu
 
             if (SelectedRFID == null)
             {
-                rFID.CreatedDate = DateTimeOffset.UtcNow;
+                rFID.CreatedDate = DateTime.UtcNow;
                 await _service.AddRFIDAsync(rFID);
                 MessageBox.Show("Đã tạo thành công!", Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
             }

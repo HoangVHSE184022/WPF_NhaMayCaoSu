@@ -42,7 +42,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
         public async Task RegisterAsync(Account account)
         {
             account.AccountId = Guid.NewGuid();
-            account.CreatedDate = DateTimeOffset.UtcNow;
+            account.CreatedDate = DateTime.UtcNow;
             account.Status = 1;
             await _accountRepository.Register(account);
         }
