@@ -22,9 +22,10 @@ namespace WPF_NhaMayCaoSu
 
         public Sale SelectedSale { get; set; } = null;
         private MqttClientService _mqttClientService = new MqttClientService();
+        private CustomerService customerService = new CustomerService();
         private SaleService _saleService =  new SaleService();
         private double? oldWeightValue = null;
-        private DateTime? firstMessageTime = null;
+        private DateTimeOffset? firstMessageTime = null;
         private string lastRFID = null;
         private string oldUrl1 = null;
         private string oldUrl2 = null;
@@ -221,26 +222,41 @@ namespace WPF_NhaMayCaoSu
                 // Split message by :
                 string[] messages = messageContent.Split(':');
 
-               if (messages.Length == 2)
+                if (messages.Length == 2)
                 {
                     string rfidValue = messages[0];
-                    double currentValue = double.Parse(messages[1]);
-                    DateTime currentTime = DateTime.Now;
+                    float currentValue = float.Parse(messages[1]);
+                    DateTimeOffset currentTime = DateTimeOffset.Now;
 
-                    if (firstKey == "RFID" && secondKey == "Weight")
+                    Sale sale = await _saleService.GetSaleByRfidAsync(rfidValue);
+
+                    if (sale == null)
                     {
-                        if (lastRFID == rfidValue && oldWeightValue.HasValue && firstMessageTime.HasValue)
+                        sale = new Sale
                         {
-                            Sale sale =await _saleService.GetSaleByRfidAsync(rfidValue);
-                            if (sale != null && !sale.ProductDensity.HasValue)
-                            {
-                                if (sale.ProductWeight.HasValue)
-                                {
-                                    currentValue += sale.ProductWeight.Value;
-                                }
-                            }
+                            SaleId = Guid.NewGuid(),   
+                            RFIDCode = rfidValue,
+                            ProductWeight = currentValue,
+                            LastEditedTime = currentTime,
+                            Status = 1, 
+                        };
+
+                        // Save the new Sale to the database
+                        await _saleService.CreateSaleAsync(sale);
+                    }
+
+                    else if (firstKey == "RFID" && secondKey == "Weight")
+                    {
+                        // Update the sale with the new weight value
+                        if (sale.ProductWeight.HasValue)
+                        {
+                            currentValue += sale.ProductWeight.Value;
                         }
-                        // Save old Value
+
+                        sale.ProductWeight = currentValue;
+
+                        await _saleService.UpdateSaleAsync(sale);
+
                         oldWeightValue = currentValue;
                         firstMessageTime = currentTime;
                         lastRFID = rfidValue;
@@ -248,15 +264,15 @@ namespace WPF_NhaMayCaoSu
                     else if (firstKey == "RFID" && secondKey == "Density")
                     {
                         // Handle the "Can_tieu_ly" topic
-                        Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfidValue);
-
-                        if (sale != null && sale.ProductWeight.HasValue && !sale.ProductDensity.HasValue)
+                        if (sale.ProductWeight.HasValue && !sale.ProductDensity.HasValue)
                         {
-                            currentValue = double.Parse(messages[1]);
+                            sale.ProductDensity = currentValue;
+
+                            await _saleService.UpdateSaleAsync(sale);
                         }
                         else
                         {
-                            throw new Exception("Sale with the specified RFID was not found.");
+                            throw new Exception("Sale with the specified RFID was not found or already has density.");
                         }
                     }
 
@@ -282,70 +298,6 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
-        /*private async void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, System.Windows.Controls.TextBox firstTextBox, System.Windows.Controls.TextBox secondTextBox)
-        {
-            try
-            {
-                // Split message by :
-                string[] messages = messageContent.Split(':');
-
-                if (messages.Length == 2)
-                {
-                    string rfidValue = messages[0];
-                    double currentValue = double.Parse(messages[1]);
-                    DateTime currentTime = DateTime.Now;
-
-                    if (firstKey == "RFID" && secondKey == "Weight")
-                    {
-                        if (lastRFID == rfidValue && oldWeightValue.HasValue && firstMessageTime.HasValue)
-                        {
-                            // Check if first topic comes around 5 minutes
-                            if (currentTime.Subtract(firstMessageTime.Value).TotalMinutes <= 5)
-                            {
-                                currentValue += oldWeightValue.Value;
-                            }
-                        }
-
-                        // Save old Value
-                        oldWeightValue = currentValue;
-                        firstMessageTime = currentTime;
-                        lastRFID = rfidValue;
-                    }
-                    else if (firstKey == "RFID" && secondKey == "Density")
-                    {
-                        // Kiểm tra trong cơ sở dữ liệu xem có bản ghi với RFID này không và chưa có giá trị Density
-                        Sale saleRecord = await _service.GetSaleByRFIDAsync(rfidValue);
-
-                        if (saleRecord != null && saleRecord.ProductWeight.HasValue && !saleRecord.ProductDensity.HasValue)
-                        {
-                            // Cập nhật UI và lưu giá trị Density mới vào cơ sở dữ liệu
-                            saleRecord.ProductDensity = currentValue;
-                            await _service.UpdateSaleAsync(saleRecord);
-
-                            // Cập nhật vào ô Density trên giao diện người dùng
-                            firstTextBox.Dispatcher.Invoke(() =>
-                            {
-                                firstTextBox.Text = rfidValue;
-                            });
-
-                            secondTextBox.Dispatcher.Invoke(() =>
-                            {
-                                secondTextBox.Text = currentValue.ToString();
-                            });
-                        }
-
-                        else
-                        {
-                            Debug.WriteLine("Định dạng tin nhắn không chính xác, không thể phân tích.");
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Lỗi khi xử lý nội dung tin nhắn: {ex.Message}");
-            }
-        }*/
 
         private void RoleManagementButton_Click(object sender, RoutedEventArgs e)
         {
@@ -358,8 +310,6 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                CustomerService customerService = new CustomerService();
-
                 Customer customer = await customerService.GetCustomerByRFIDCodeAsync(rfidValue);
 
                 if (customer != null)
@@ -395,7 +345,7 @@ namespace WPF_NhaMayCaoSu
                 urlTextBox.Dispatcher.Invoke(() =>
                 {
                     // Check if the RFID is the same and the time difference is less than 5 minutes
-                    if (lastRFID == rfidValue && firstMessageTime.HasValue && currentTime.Subtract(firstMessageTime.Value).TotalMinutes <= 5)
+                    if (lastRFID == rfidValue && firstMessageTime.HasValue)
                     {
                         // Append the new URL to the existing URL
                         if (urlTextBox == URLWeightTextBox)
