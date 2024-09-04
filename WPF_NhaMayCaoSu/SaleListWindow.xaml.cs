@@ -237,13 +237,13 @@ namespace WPF_NhaMayCaoSu
                 {
                     string messageContent = data.Substring("Can_ta:".Length);
                     string filePathUrl = CaptureImageFromCamera(newestCamera, 1);
-                        ProcessMqttMessage(messageContent, "RFID", "Weight");
+                    ProcessMqttMessage(messageContent, "RFID", "Weight");
                 }
                 else if (data.StartsWith("Can_tieu_ly:"))
                 {
                     string messageContent = data.Substring("Can_tieu_ly:".Length);
                     string filePathUrl = CaptureImageFromCamera(newestCamera, 2);
-                        ProcessMqttMessage(messageContent, "RFID", "Density");
+                    ProcessMqttMessage(messageContent, "RFID", "Density");
                 }
                 else
                 {
@@ -263,7 +263,7 @@ namespace WPF_NhaMayCaoSu
             {
                 // Split message by :
                 string[] messages = messageContent.Split(':');
-                
+
                 Camera newestCamera = await cameraService.GetNewestCameraAsync();
 
                 if (messages.Length == 2)
@@ -271,7 +271,6 @@ namespace WPF_NhaMayCaoSu
                     string rfidValue = messages[0];
                     float currentValue = float.Parse(messages[1]);
                     DateTime currentTime = DateTime.Now;
-
                     Sale sale = null;
 
                     if (firstKey == "RFID" && secondKey == "Weight")
@@ -307,9 +306,9 @@ namespace WPF_NhaMayCaoSu
                                 Debug.WriteLine(image);
                             }
                         }
-
-                      
-
+                        oldWeightValue = currentValue;
+                        firstMessageTime = currentTime;
+                        lastRFID = rfidValue;
                         if (lastRFID == rfidValue && oldWeightValue.HasValue && firstMessageTime.HasValue)
                         {
                             sale = await _service.GetSaleByRFIDCodeWithoutDensity(rfidValue);
@@ -335,14 +334,11 @@ namespace WPF_NhaMayCaoSu
                                 };
                                 await _imageService.AddImageAsync(image);
                             }
-
-                            oldWeightValue = currentValue;
-                            firstMessageTime = currentTime;
-                            lastRFID = rfidValue;
                         }
+                        oldWeightValue = currentValue;
+                        firstMessageTime = currentTime;
+                        lastRFID = rfidValue;
                     }
-
-                    
                     else if (firstKey == "RFID" && secondKey == "Density")
                     {
                         sale = await _service.GetSaleByRFIDCodeWithoutDensity(rfidValue);

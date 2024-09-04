@@ -180,6 +180,7 @@ namespace WPF_NhaMayCaoSu
 
         private async void OnMqttMessageReceived(object sender, string data)
         {
+            Debug.WriteLine("On message received has been triggered");
             try
             {
                 CameraService cameraService = new();
@@ -264,7 +265,7 @@ namespace WPF_NhaMayCaoSu
                             };
                             Debug.WriteLine($"Sale created: {sale}");
                             await _saleService.CreateSaleAsync(sale);
-                            Debug.WriteLine("Successfully save to db new sale");
+                            Debug.WriteLine("Successfully save new sale to db");
                         }
 
                         if (lastRFID == rfidValue && oldWeightValue.HasValue && firstMessageTime.HasValue)
@@ -277,7 +278,7 @@ namespace WPF_NhaMayCaoSu
                                     currentValue += sale.ProductWeight.Value;
                                     sale.ProductWeight = currentValue;
                                     await _saleService.UpdateSaleAsync(sale);
-                                    Debug.WriteLine("Successfully weight to db new sale");
+                                    Debug.WriteLine("Successfully update weight");
                                 }
                             }
                         }
@@ -297,7 +298,7 @@ namespace WPF_NhaMayCaoSu
                             Debug.Write(currentValue);
                             sale.ProductDensity = currentValue;
                             await _saleService.UpdateSaleAsync(sale);
-                            Debug.WriteLine("Successfully density to db new sale");
+                            Debug.WriteLine("Successfully save density");
                         }
                         else
                         {
