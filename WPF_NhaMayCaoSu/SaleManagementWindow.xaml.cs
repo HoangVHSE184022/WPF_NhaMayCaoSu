@@ -17,6 +17,7 @@ namespace WPF_NhaMayCaoSu
     {
 
         private SaleService _service = new();
+        private RFIDService _rfid = new();
 
         public Account CurrentAccount { get; set; } = null;
 
@@ -50,7 +51,7 @@ namespace WPF_NhaMayCaoSu
             }
 
             // Kiểm tra nếu RFID không tồn tại trong cơ sở dữ liệu
-            var existingSale = await _service.GetSaleByRfidAsync(RFIDCodeTextBox.Text);
+            var existingSale = await _rfid.GetRFIDByRFIDCodeAsync(RFIDCodeTextBox.Text);
             if (existingSale == null)
             {
                 MessageBox.Show("RFID không tồn tại trong hệ thống. Vui lòng kiểm tra lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
