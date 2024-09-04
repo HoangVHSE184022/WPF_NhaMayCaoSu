@@ -10,5 +10,6 @@ namespace WPF_NhaMayCaoSu.Repository.IRepositories
         Task UpdateSaleAsync(Sale sale);
         Task DeleteSaleAsync(Guid saleId);
         Task<Sale> GetSaleByRFIDCode(string RFIDCode);
+        Task<int> GetTotalSalesCountAsync();
     }
 }
