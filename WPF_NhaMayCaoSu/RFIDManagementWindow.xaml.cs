@@ -122,6 +122,12 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
+            // Validate Expiration Date (ensure it's not in the past)
+            if (DateTime.Parse(ExpDateDatePicker.Text) < DateTime.Today)
+            {
+                MessageBox.Show("Ngày hết hạn không được là ngày trong quá khứ.", "Lỗi xác thực", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             // Validate Status (ensure it's either 0 or 1)
             if (!short.TryParse(StatusTextBox.Text, out short status) || (status != 0 && status != 1))
