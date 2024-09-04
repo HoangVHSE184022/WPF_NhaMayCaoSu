@@ -121,7 +121,12 @@ namespace WPF_NhaMayCaoSu
                 await _mqttClientService.SubscribeAsync("Can_ta");
                 await _mqttClientService.SubscribeAsync("Can_tieu_ly");
 
-                _mqttClientService.MessageReceived += (s, data) => OnMqttMessageReceived(s, data);
+
+                _mqttClientService.MessageReceived += (s, data) =>
+                {
+                    Debug.WriteLine("MessageReceived event has been triggered");
+                    OnMqttMessageReceived(s, data);
+                };
             }
             catch (Exception ex)
             {
@@ -133,6 +138,7 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
         }
+
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
@@ -231,21 +237,13 @@ namespace WPF_NhaMayCaoSu
                 {
                     string messageContent = data.Substring("Can_ta:".Length);
                     string filePathUrl = CaptureImageFromCamera(newestCamera, 1);
-
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
                         ProcessMqttMessage(messageContent, "RFID", "Weight");
-                    });
                 }
                 else if (data.StartsWith("Can_tieu_ly:"))
                 {
                     string messageContent = data.Substring("Can_tieu_ly:".Length);
                     string filePathUrl = CaptureImageFromCamera(newestCamera, 2);
-
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
                         ProcessMqttMessage(messageContent, "RFID", "Density");
-                    });
                 }
                 else
                 {
@@ -293,7 +291,24 @@ namespace WPF_NhaMayCaoSu
                                 CustomerName = customer.CustomerName
                             };
                             await _service.CreateSaleAsync(sale);
+                            Debug.WriteLine(sale);
+                            string imagePath = CaptureImageFromCamera(newestCamera, 1);
+                            if (!string.IsNullOrEmpty(imagePath))
+                            {
+                                Repository.Models.Image image = new Repository.Models.Image
+                                {
+                                    ImageId = Guid.NewGuid(),
+                                    ImageType = 1,
+                                    ImagePath = imagePath,
+                                    CreatedDate = currentTime,
+                                    SaleId = sale.SaleId
+                                };
+                                await _imageService.AddImageAsync(image);
+                                Debug.WriteLine(image);
+                            }
                         }
+
+                      
 
                         if (lastRFID == rfidValue && oldWeightValue.HasValue && firstMessageTime.HasValue)
                         {
@@ -307,26 +322,27 @@ namespace WPF_NhaMayCaoSu
                                     await _service.UpdateSaleAsync(sale);
                                 }
                             }
-                        }
-
-                        string imagePath = CaptureImageFromCamera(newestCamera, 1);
-                        if (!string.IsNullOrEmpty(imagePath))
-                        {
-                            Repository.Models.Image image = new Repository.Models.Image
+                            String imagePath = CaptureImageFromCamera(newestCamera, 1);
+                            if (!string.IsNullOrEmpty(imagePath))
                             {
-                                ImageId = Guid.NewGuid(),
-                                ImageType = 1,
-                                ImagePath = imagePath,
-                                CreatedDate = currentTime,
-                                SaleId = sale.SaleId
-                            };
-                            await _imageService.AddImageAsync(image);
-                        }
+                                Repository.Models.Image image = new Repository.Models.Image
+                                {
+                                    ImageId = Guid.NewGuid(),
+                                    ImageType = 1,
+                                    ImagePath = imagePath,
+                                    CreatedDate = currentTime,
+                                    SaleId = sale.SaleId
+                                };
+                                await _imageService.AddImageAsync(image);
+                            }
 
-                        oldWeightValue = currentValue;
-                        firstMessageTime = currentTime;
-                        lastRFID = rfidValue;
+                            oldWeightValue = currentValue;
+                            firstMessageTime = currentTime;
+                            lastRFID = rfidValue;
+                        }
                     }
+
+                    
                     else if (firstKey == "RFID" && secondKey == "Density")
                     {
                         sale = await _service.GetSaleByRFIDCodeWithoutDensity(rfidValue);
