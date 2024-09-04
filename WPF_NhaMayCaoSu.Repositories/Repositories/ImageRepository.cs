@@ -35,6 +35,34 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
                                  .ToListAsync();
         }
 
+        public async Task<IEnumerable<Image>> Get2LatestImagesBySaleIdAsync(Guid saleId)
+        {
+            _context = new();
+            Image type1Image = await _context.Images
+                .Where(img => img.SaleId == saleId && img.ImageType == 1)
+                .OrderByDescending(img => img.CreatedDate)
+                .FirstOrDefaultAsync();
+
+            Image type2Image = await _context.Images
+                .Where(img => img.SaleId == saleId && img.ImageType == 2)
+                .OrderByDescending(img => img.CreatedDate)
+                .FirstOrDefaultAsync();
+
+            List<Image> imageList = new List<Image>();
+
+            if (type1Image != null)
+            {
+                imageList.Add(type1Image);
+            }
+
+            if (type2Image != null)
+            {
+                imageList.Add(type2Image);
+            }
+
+            return imageList;
+        }
+
         public async Task UpdateImageAsync(Image image)
         {
             _context.Images.Update(image);

@@ -37,5 +37,10 @@ namespace WPF_NhaMayCaoSu.Service.Services
         {
             await _repo.DeleteImageAsync(imageId);
         }
+
+        public async Task<IEnumerable<Image>> Get2LatestImagesBySaleIdAsync(Guid saleId)
+        {
+            return await _repo.Get2LatestImagesBySaleIdAsync(saleId);
+        }
     }
 }

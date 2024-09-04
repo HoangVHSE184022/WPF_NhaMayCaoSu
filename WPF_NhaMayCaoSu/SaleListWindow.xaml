@@ -32,14 +32,26 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Width="50" Binding="{Binding SaleId}"/>
                 <DataGridTextColumn Header="Tên khách hàng" Width="200" Binding="{Binding CustomerName}"/>
-                <DataGridTextColumn Header="Số ký" Width="100" Binding="{Binding ProductWeight}"/>
+                <DataGridTextColumn Header="Số ký" Width="80" Binding="{Binding ProductWeight}"/>
                 <DataGridTextColumn Header="Tỉ trọng" Width="100" Binding="{Binding ProductDensity}"/>
                 <DataGridTextColumn Header="Lần chỉnh sửa cuối" Width="210" Binding="{Binding LastEditedTime}"/>
                 <DataGridTextColumn Header="Trạng thái" Width="120" Binding="{Binding Status}"/>
-                <DataGridTextColumn Header="Mã RFID" Width="200" Binding="{Binding RFIDCode}"/>
-
-
-
+                <DataGridTextColumn Header="Mã RFID" Width="100" Binding="{Binding RFIDCode}"/>
+                <DataGridTemplateColumn Header="Thao tác">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Width="25" Height="25" x:Name="ControlButton" Click="ControlButton_Click" Tag="{Binding}" Content="Action" >
+                                <Button.Template>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Grid>
+                                            <TextBlock Text="⚙️" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
         <Label x:Name="SearchLabel" Content="Nhập tên khách hàng:" Width="188" Height="30" VerticalAlignment="Top" Margin="0,69,0,0" HorizontalAlignment="Center" FontFamily="Montserrat" FontSize="18" />

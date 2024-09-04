@@ -1,5 +1,7 @@
 ﻿using System.Windows;
+using System.Windows.Media.Imaging;
 using WPF_NhaMayCaoSu.Repository.Models;
+using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -10,11 +12,12 @@ namespace WPF_NhaMayCaoSu
     {
 
         public Account CurrentAccount { get; set; }
-
-
-        public ViewImagesWindow()
+        private readonly Sale sale;
+        private readonly ImageService _imageService = new();
+        public ViewImagesWindow(Sale sale)
         {
             InitializeComponent();
+            this.sale = sale;   
         }
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
@@ -80,6 +83,22 @@ namespace WPF_NhaMayCaoSu
             mainWindow.CurrentAccount = CurrentAccount;
             Close();
             mainWindow.Show();
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<Image> images = await _imageService.Get2LatestImagesBySaleIdAsync(sale.SaleId);
+            foreach (var image in images)
+            {
+                if (image.ImageType == 1)
+                {
+                    WeightImage.Source = new BitmapImage(new Uri(image.ImagePath, UriKind.RelativeOrAbsolute));
+                }
+                else if (image.ImageType == 2)
+                {
+                    DensityImage.Source = new BitmapImage(new Uri(image.ImagePath, UriKind.RelativeOrAbsolute));
+                }
+            }
         }
     }
 }
