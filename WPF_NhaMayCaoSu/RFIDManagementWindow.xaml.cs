@@ -72,7 +72,7 @@ namespace WPF_NhaMayCaoSu
 
             if (_customer != null)
             {
-                ExpDateDatePicker.Text = DateTime.UtcNow.AddDays(30).ToString("dd/MM/yyyy");
+                ExpDateDatePicker.Text = DateTime.UtcNow.AddDays(30).ToString();
                 StatusTextBox.Text = "1";
                 CustomerComboBox.SelectedValue = _customer.CustomerId.ToString();
             }
