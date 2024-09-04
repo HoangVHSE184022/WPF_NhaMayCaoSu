@@ -11,6 +11,7 @@ namespace WPF_NhaMayCaoSu.Repository.Models
         public Guid CustomerId { get; set; }
         public short Status { get; set; }
         public Customer Customer { get; set; }
+        public ICollection<Sale> Sales { get; set; }
     }
 
 }

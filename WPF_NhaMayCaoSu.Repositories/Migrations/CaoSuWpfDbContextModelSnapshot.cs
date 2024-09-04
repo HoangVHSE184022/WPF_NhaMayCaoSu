@@ -205,8 +205,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
 
                     b.HasKey("SaleId");
 
-                    b.HasIndex("RFIDCode")
-                        .IsUnique();
+                    b.HasIndex("RFIDCode");
 
                     b.ToTable("Sales");
                 });
@@ -247,9 +246,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
             modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.Sale", b =>
                 {
                     b.HasOne("WPF_NhaMayCaoSu.Repository.Models.RFID", "RFID")
-                        .WithOne()
-                        .HasForeignKey("WPF_NhaMayCaoSu.Repository.Models.Sale", "RFIDCode")
-                        .HasPrincipalKey("WPF_NhaMayCaoSu.Repository.Models.RFID", "RFIDCode")
+                        .WithMany("Sales")
+                        .HasForeignKey("RFIDCode")
+                        .HasPrincipalKey("RFIDCode")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -259,6 +258,11 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
             modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.Customer", b =>
                 {
                     b.Navigation("RFIDs");
+                });
+
+            modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.RFID", b =>
+                {
+                    b.Navigation("Sales");
                 });
 
             modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.Role", b =>

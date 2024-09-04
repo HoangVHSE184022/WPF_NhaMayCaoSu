@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -176,8 +177,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Sales_RFIDCode",
                 table: "Sales",
-                column: "RFIDCode",
-                unique: true);
+                column: "RFIDCode");
         }
 
         /// <inheritdoc />
