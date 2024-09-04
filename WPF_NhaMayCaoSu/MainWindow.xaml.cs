@@ -74,7 +74,7 @@ namespace WPF_NhaMayCaoSu
                             {
                                 SaleId = Guid.NewGuid(),
                                 RFIDCode = rfidString,
-                                LastEditedTime = DateTime.Now,
+                                LastEditedTime = DateTimeOffset.UtcNow,
                                 Status = 1
                             };
                             _sessionSaleList.Add(scannedSale);
@@ -102,7 +102,7 @@ namespace WPF_NhaMayCaoSu
                                 SaleId = Guid.NewGuid(),
                                 RFIDCode = rfidString,
                                 ProductWeight = weight,
-                                LastEditedTime = DateTime.Now,
+                                LastEditedTime = DateTimeOffset.UtcNow,
                                 Status = 1
                             });
                             Debug.WriteLine("Sale:" + _sessionSaleList);
@@ -129,7 +129,7 @@ namespace WPF_NhaMayCaoSu
                                 SaleId = Guid.NewGuid(),
                                 RFIDCode = rfidString,
                                 ProductDensity = density,
-                                LastEditedTime = DateTime.Now,
+                                LastEditedTime = DateTimeOffset.UtcNow,
                                 Status = 1
                             });
                             Debug.WriteLine("Sale:" + _sessionSaleList);
