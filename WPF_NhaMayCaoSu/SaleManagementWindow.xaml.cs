@@ -25,7 +25,6 @@ namespace WPF_NhaMayCaoSu
         private CustomerService customerService = new CustomerService();
         private SaleService _saleService = new SaleService();
         private double? oldWeightValue = null;
-        private DateTimeOffset? firstMessageTime = null;
         private DateTime? firstMessageTime = null;
         private string lastRFID = null;
         private string oldUrl1 = null;
@@ -65,7 +64,6 @@ namespace WPF_NhaMayCaoSu
             else
             {
                 x.SaleId = SelectedSale.SaleId;
-                x.LastEditedTime = DateTimeOffset.UtcNow;
                 x.LastEditedTime = DateTime.UtcNow;
                 MessageBox.Show(Constants.SuccessMessageSaleUpdated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                 await _service.UpdateSaleAsync(x);
@@ -346,7 +344,6 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                DateTimeOffset currentTime = DateTimeOffset.UtcNow;
                 DateTime currentTime = DateTime.UtcNow;
 
                 // Ensure the UI update is executed on the UI thread
