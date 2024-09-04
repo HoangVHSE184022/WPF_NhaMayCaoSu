@@ -56,9 +56,11 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         public async Task<Customer?> GetCustomerByRFIDCodeAsync(string rfidCode)
         {
             _context = new();
-            return await _context.Customers
-                .Include(c => c.RFIDs)
-                .FirstOrDefaultAsync(c => c.RFIDs.Any(r => r.RFIDCode == rfidCode && r.Status == 1));
+            return await _context.RFIDs
+                                 .Where(r => r.RFIDCode == rfidCode)
+                                 .Select(r => r.Customer)
+                                 .FirstOrDefaultAsync();
         }
+
     }
 }
