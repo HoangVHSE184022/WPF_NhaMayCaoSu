@@ -7,7 +7,6 @@ using System.IO;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Drawing;
-using Azure.Messaging;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -167,7 +166,8 @@ namespace WPF_NhaMayCaoSu
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ConfigCamera configCamera = new ConfigCamera();
+            configCamera.ShowDialog();
         }
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
@@ -197,7 +197,7 @@ namespace WPF_NhaMayCaoSu
                 if (data.StartsWith("Can_ta:"))
                 {
                     string messageContent = data.Substring("Can_ta:".Length);
-                    string filePathUrl = await CaptureImageFromCameraAsync(newestCamera, 1);
+                    string filePathUrl = CaptureImageFromCamera(newestCamera, 1);
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
@@ -210,7 +210,7 @@ namespace WPF_NhaMayCaoSu
                 else if (data.StartsWith("Can_tieu_ly:"))
                 {
                     string messageContent = data.Substring("Can_tieu_ly:".Length);
-                    string filePathUrl = await CaptureImageFromCameraAsync(newestCamera, 2);
+                    string filePathUrl = CaptureImageFromCamera(newestCamera, 2);
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
@@ -419,7 +419,7 @@ namespace WPF_NhaMayCaoSu
 
 
 
-        private async Task<string> CaptureImageFromCameraAsync(Camera camera, int cameraIndex)
+        private string CaptureImageFromCamera(Camera camera, int cameraIndex)
         {
             string localFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), $"{Guid.NewGuid()}_Camera{cameraIndex}.jpg");
 
@@ -428,14 +428,14 @@ namespace WPF_NhaMayCaoSu
                 string cameraUrl = cameraIndex == 1 ? camera.Camera1 : camera.Camera2;
                 if (string.IsNullOrEmpty(cameraUrl))
                 {
-                    throw new Exception($"Camera URL for Camera {cameraIndex} is invalid.");
+                    throw new Exception($"URL của Camera {cameraIndex} không hợp lệ.");
                 }
 
                 using (var capture = new VideoCapture(cameraUrl))
                 {
                     if (!capture.IsOpened)
                     {
-                        throw new Exception($"Failed to open Camera {cameraIndex}.");
+                        throw new Exception($"Không thể mở Camera {cameraIndex}.");
                     }
 
                     using (var frame = new Mat())
@@ -443,28 +443,29 @@ namespace WPF_NhaMayCaoSu
                         capture.Read(frame);
                         if (frame.IsEmpty)
                         {
-                            throw new Exception($"Failed to capture image from Camera {cameraIndex}.");
+                            throw new Exception($"Không thể chụp ảnh từ Camera {cameraIndex}.");
                         }
 
-                        // Convert frame to Image<Bgr, byte>
+                        // Chuyển đổi frame sang Image<Bgr, byte>
                         Image<Bgr, byte> image = frame.ToImage<Bgr, byte>();
 
-                        // Convert Image<Bgr, byte> to Bitmap
+                        // Chuyển đổi Image<Bgr, byte> sang Bitmap
                         Bitmap bitmap = image.ToBitmap();
 
-                        // Save the image to disk
+                        // Lưu hình ảnh vào đĩa
                         bitmap.Save(localFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error capturing image from Camera {cameraIndex}: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Lỗi khi chụp ảnh từ Camera {cameraIndex}: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return string.Empty;
             }
 
             return localFilePath.ToString();
         }
+
 
     }
 }
