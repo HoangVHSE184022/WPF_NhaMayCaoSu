@@ -7,6 +7,7 @@ using System.IO;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Drawing;
+using Azure.Messaging;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -22,14 +23,14 @@ namespace WPF_NhaMayCaoSu
         public Account CurrentAccount { get; set; } = null;
 
         public Sale SelectedSale { get; set; } = null;
-        private MqttClientService _mqttClientService = new MqttClientService();
-        private CustomerService customerService = new CustomerService();
-        private SaleService _saleService = new SaleService();
+        private MqttClientService _mqttClientService = new();
+        private CustomerService customerService = new();
+        private SaleService _saleService = new();
         private double? oldWeightValue = null;
         private DateTime? firstMessageTime = null;
-        private string lastRFID = null;
-        private string oldUrl1 = null;
-        private string oldUrl2 = null;
+        private string lastRFID = string.Empty;
+        private string oldUrl1 = string.Empty;
+        private string oldUrl2 = string.Empty;
 
         public SaleManagementWindow()
         {
@@ -181,7 +182,7 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                CameraService cameraService = new CameraService();
+                CameraService cameraService = new();
                 Camera newestCamera = await cameraService.GetNewestCameraAsync();
 
                 if (newestCamera == null)
@@ -202,6 +203,7 @@ namespace WPF_NhaMayCaoSu
                     {
                         ProcessMqttMessage(messageContent, "RFID", "Weight", RFIDCodeTextBox, WeightTextBox);
                         ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLWeightTextBox);
+                        ProcessCustomerMessage(messageContent);
                         StatusTextBox.Text = "1";
                     });
                 }
@@ -214,6 +216,7 @@ namespace WPF_NhaMayCaoSu
                     {
                         ProcessMqttMessage(messageContent, "RFID", "Density", RFIDCodeTextBox, DensityTextBox);
                         ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLDensityTextBox);
+                        ProcessCustomerMessage(messageContent);
                         StatusTextBox.Text = "1";
                     });
                 }
@@ -332,11 +335,14 @@ namespace WPF_NhaMayCaoSu
             roleListWindow.ShowDialog();
         }
 
-        private async Task ProcessCustomerMessage(string rfidValue)
+        private async Task ProcessCustomerMessage(string messageContent)
         {
             try
             {
-                Customer customer = await customerService.GetCustomerByRFIDCodeAsync(rfidValue);
+                string[] messages = messageContent.Split(':');
+                string rfidValue = messages[0];
+
+                Customer? customer = await customerService.GetCustomerByRFIDCodeAsync(rfidValue);
 
                 if (customer != null)
                 {
@@ -356,8 +362,11 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error processing customer message: {ex.Message}");
+                Debug.WriteLine($"Stack Trace: {ex.StackTrace}");
+                // Log thêm các thông tin từ GetCustomerByRFIDCodeAsync nếu có thể
             }
         }
+
 
 
 
