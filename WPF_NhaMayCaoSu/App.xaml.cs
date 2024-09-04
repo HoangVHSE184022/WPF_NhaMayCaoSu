@@ -41,21 +41,21 @@ namespace WPF_NhaMayCaoSu
         private void ConfigureServices(IServiceCollection services)
         {
             // Register services here
-            services.AddSingleton<ISaleService, SaleService>();
-            services.AddSingleton<IAccountService, AccountService>();
-            services.AddSingleton<IRoleService, RoleService>();
-            services.AddSingleton<ICustomerService, CustomerService>();
+            services.AddScoped<ISaleService, SaleService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<ICustomerService, CustomerService>();
             services.AddSingleton<IMqttServerService, MqttServerService>();
             services.AddSingleton<IMqttClientService, MqttClientService>();
             // Register repositories here
-            services.AddSingleton<ISaleRepository, SaleRepository>();
+            services.AddScoped<ISaleRepository, SaleRepository>();
             services.AddSingleton<IAccountRepository, AccountRepository>();
-            services.AddSingleton<IRoleRepository, RoleRepository>();
-            services.AddSingleton<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
             // Register the MainWindow
-            services.AddSingleton<MainWindow>();
-            services.AddSingleton<LoginWindow>();
-            services.AddSingleton<BrokerWindow>();
+            services.AddScoped<MainWindow>();
+            services.AddScoped<LoginWindow>();
+            services.AddScoped<BrokerWindow>();
         }
 
     }
