@@ -21,14 +21,14 @@
         </Menu>
 
         <Label Content="Quản lý vai trò" HorizontalAlignment="Left" Height="57" Margin="32,50,0,0" VerticalAlignment="Top" Width="343" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
-        <Button x:Name="AddRoleButton" HorizontalAlignment="Left" Height="40" Margin="1047,146,0,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="AddRoleButton_Click" >
+        <Button x:Name="AddRoleButton" HorizontalAlignment="Right" Height="40" Margin="0,146,32,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="AddRoleButton_Click" >
             <TextBlock Text="Thêm mới" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="EditRoleButton1" HorizontalAlignment="Left" Height="40" Margin="1047,228,0,0" VerticalAlignment="Top" Width="121" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="EditRoleButton_Click" >
+        <Button x:Name="EditRoleButton1" HorizontalAlignment="Right" Height="40" Margin="0,228,32,0" VerticalAlignment="Top" Width="121" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="EditRoleButton_Click" >
             <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="40" Margin="1047,702,0,0" VerticalAlignment="Top" Width="121" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" Click="QuitButton_Click"/>
-        <DataGrid x:Name="RoleDataGrid" HorizontalAlignment="Left" Height="613" Margin="32,129,0,0" VerticalAlignment="Top" Width="1009" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
+        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Right" Height="40" Margin="0,0,32,42" VerticalAlignment="Bottom" Width="121" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" Click="QuitButton_Click"/>
+        <DataGrid x:Name="RoleDataGrid" Margin="32,129,159,42" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Width="200" Binding="{Binding RoleId}"/>
                 <DataGridTextColumn Header="Vai trò" Width="800" Binding="{Binding RoleName}"/>
