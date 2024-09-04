@@ -12,6 +12,9 @@ namespace WPF_NhaMayCaoSu
     {
 
         private SaleService _service = new();
+        private int _currentPage = 1;
+        private int _pageSize = 10;
+        private int _totalPages;
         public Account CurrentAccount { get; set; } = null;
         public SaleListWindow()
         {
@@ -54,10 +57,39 @@ namespace WPF_NhaMayCaoSu
 
         private async void LoadDataGrid()
         {
+            var sales = await _service.GetAllSaleAsync(_currentPage, _pageSize);
+            int totalSalesCount = await _service.GetTotalSalesCountAsync();
+            _totalPages = (int)Math.Ceiling((double)totalSalesCount / _pageSize);
+
             SaleDataGrid.ItemsSource = null;
             SaleDataGrid.Items.Clear();
-            SaleDataGrid.ItemsSource = await _service.GetAllSaleAsync(1, 10);
+            SaleDataGrid.ItemsSource = sales;
+
+            PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
+
+            // Disable/Enable pagination buttons
+            PreviousPageButton.IsEnabled = _currentPage > 1;
+            NextPageButton.IsEnabled = _currentPage < _totalPages;
         }
+
+        private void PreviousPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPage > 1)
+            {
+                _currentPage--;
+                LoadDataGrid();
+            }
+        }
+
+        private void NextPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPage < _totalPages)
+            {
+                _currentPage++;
+                LoadDataGrid();
+            }
+        }
+
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -142,5 +174,5 @@ namespace WPF_NhaMayCaoSu
         }
 
 
-    }
+    }   
 }

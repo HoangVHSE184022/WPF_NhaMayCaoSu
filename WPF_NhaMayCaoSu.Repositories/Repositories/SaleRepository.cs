@@ -68,5 +68,10 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             _context.Update(sale);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<int> GetTotalSalesCountAsync()
+        {
+            return await _context.Sales.CountAsync();
+        }
     }
 }
