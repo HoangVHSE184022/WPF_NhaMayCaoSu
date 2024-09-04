@@ -255,6 +255,7 @@ namespace WPF_NhaMayCaoSu
                                 RFIDCode = rfidValue,
                                 ProductWeight = currentValue,
                                 LastEditedTime = currentTime,
+                                ProductDensity = null,
                                 Status = 1,
                                 CustomerName = customer.CustomerName
                             };
@@ -290,6 +291,8 @@ namespace WPF_NhaMayCaoSu
                         if (sale != null && sale.ProductWeight.HasValue && !sale.ProductDensity.HasValue)
                         {
                             currentValue = float.Parse(messages[1]);
+                            Debug.Write(currentValue);
+                            sale.ProductDensity = currentValue;
                             await _saleService.UpdateSaleAsync(sale);
                             Debug.WriteLine("Successfully density to db new sale");
                         }
