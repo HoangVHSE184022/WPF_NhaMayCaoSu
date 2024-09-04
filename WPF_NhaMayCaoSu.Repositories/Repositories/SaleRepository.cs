@@ -48,13 +48,17 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         public async Task<Sale> GetSaleByRFIDCode(string RFIDCode)
         {
             _context = new();
-            return await _context.Sales.Include("Customer").FirstOrDefaultAsync(x => x.RFIDCode == RFIDCode);
+            return await _context.Sales
+                                 .Include(s => s.RFID) 
+                                 .FirstOrDefaultAsync(x => x.RFIDCode == RFIDCode);
         }
 
         public async Task<Sale> GetSaleByRFIDCodeWithoutDensity(string RFIDCode)
         {
             _context = new();
-            return await _context.Sales.Include("Customer").FirstOrDefaultAsync(x => x.RFIDCode == RFIDCode && x.ProductDensity == null);
+            return await _context.Sales
+                                 .Include(s => s.RFID) 
+                                 .FirstOrDefaultAsync(x => x.RFIDCode == RFIDCode && x.ProductDensity == null);
         }
 
 
