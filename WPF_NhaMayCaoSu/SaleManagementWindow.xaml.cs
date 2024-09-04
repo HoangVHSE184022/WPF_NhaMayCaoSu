@@ -42,19 +42,33 @@ namespace WPF_NhaMayCaoSu
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            Sale x = new();
+            // Kiểm tra nếu RFID không hợp lệ hoặc rỗng
+            if (string.IsNullOrWhiteSpace(RFIDCodeTextBox.Text))
+            {
+                MessageBox.Show("RFID không hợp lệ hoặc chưa được nhập. Vui lòng kiểm tra lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-            x.CustomerName = CustomerNameTextBox.Text;
-            x.ProductWeight = int.Parse(WeightTextBox.Text);
-            x.ProductDensity = int.Parse(DensityTextBox.Text);
-            x.Status = short.Parse(StatusTextBox.Text);
-            x.RFIDCode = RFIDCodeTextBox.Text;
+            // Kiểm tra nếu RFID không tồn tại trong cơ sở dữ liệu
+            var existingSale = await _service.GetSaleByRfidAsync(RFIDCodeTextBox.Text);
+            if (existingSale == null)
+            {
+                MessageBox.Show("RFID không tồn tại trong hệ thống. Vui lòng kiểm tra lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
+            Sale x = new Sale
+            {
+                CustomerName = CustomerNameTextBox.Text,
+                ProductWeight = int.Parse(WeightTextBox.Text),
+                ProductDensity = int.Parse(DensityTextBox.Text),
+                Status = short.Parse(StatusTextBox.Text),
+                RFIDCode = RFIDCodeTextBox.Text
+            };
 
             CameraService cameraService = new CameraService();
             Camera newestCamera = await cameraService.GetNewestCameraAsync();
             string imageFilePath = string.Empty;
-
 
             if (SelectedSale == null)
             {
@@ -71,6 +85,7 @@ namespace WPF_NhaMayCaoSu
 
             Close();
         }
+
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
