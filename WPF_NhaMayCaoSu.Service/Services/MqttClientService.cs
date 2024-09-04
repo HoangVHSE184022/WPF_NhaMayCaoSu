@@ -7,9 +7,6 @@ using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using MQTTnet.Adapter;
-using static System.Net.Mime.MediaTypeNames;
-using WPF_NhaMayCaoSu.Repository.Models;
-using System.Windows;
 
 
 namespace WPF_NhaMayCaoSu.Service.Services
