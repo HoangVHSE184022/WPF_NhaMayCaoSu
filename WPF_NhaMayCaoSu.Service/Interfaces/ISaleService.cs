@@ -11,5 +11,6 @@ namespace WPF_NhaMayCaoSu.Service.Interfaces
         Task DeleteSaleAsync(Guid saleId);
         Task<Sale> GetSaleByRfidAsync(string rfid);
         Task<Sale> GetSaleByRFIDCodeWithoutDensity(string rfid);
+        Task<int> GetTotalSalesCountAsync();
     }
 }

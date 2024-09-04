@@ -72,7 +72,7 @@ namespace WPF_NhaMayCaoSu
 
             if (_customer != null)
             {
-                ExpDateDatePicker.Text = DateTimeOffset.UtcNow.AddDays(30).ToString("dd/MM/yyyy");
+                ExpDateDatePicker.Text = DateTime.UtcNow.AddDays(30).ToString();
                 StatusTextBox.Text = "1";
                 CustomerComboBox.SelectedValue = _customer.CustomerId.ToString();
             }
@@ -122,6 +122,12 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
+            // Validate Expiration Date (ensure it's not in the past)
+            if (DateTime.Parse(ExpDateDatePicker.Text) < DateTime.Today)
+            {
+                MessageBox.Show("Ngày hết hạn không được là ngày trong quá khứ.", "Lỗi xác thực", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             // Validate Status (ensure it's either 0 or 1)
             if (!short.TryParse(StatusTextBox.Text, out short status) || (status != 0 && status != 1))
@@ -142,7 +148,7 @@ namespace WPF_NhaMayCaoSu
 
             if (SelectedRFID == null)
             {
-                rFID.CreatedDate = DateTimeOffset.UtcNow;
+                rFID.CreatedDate = DateTime.UtcNow;
                 await _service.AddRFIDAsync(rFID);
                 MessageBox.Show("Đã tạo thành công!", Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -198,7 +204,8 @@ namespace WPF_NhaMayCaoSu
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ConfigCamera configCamera = new ConfigCamera();
+            configCamera.ShowDialog();
         }
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)

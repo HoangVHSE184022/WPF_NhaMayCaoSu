@@ -42,9 +42,9 @@ namespace WPF_NhaMayCaoSu.Repository.Context
 
             modelBuilder.Entity<Sale>()
                 .HasOne(s => s.RFID)
-                .WithOne()
-                .HasForeignKey<Sale>(s => s.RFIDCode)
-                .HasPrincipalKey<RFID>(r => r.RFIDCode);
+                .WithMany(r => r.Sales) 
+                .HasForeignKey(s => s.RFIDCode) 
+                .HasPrincipalKey(r => r.RFIDCode);
 
             modelBuilder.Entity<Account>()
                 .HasKey(a => a.AccountId);

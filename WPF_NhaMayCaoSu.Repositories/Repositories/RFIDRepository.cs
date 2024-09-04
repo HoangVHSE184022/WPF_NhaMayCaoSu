@@ -7,7 +7,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 {
     public class RFIDRepository : IRFIDRepository
     {
-        private CaoSuWpfDbContext _context;
+        private CaoSuWpfDbContext? _context;
 
         public async Task AddRFIDAsync(RFID rfid)
         {

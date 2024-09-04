@@ -17,18 +17,19 @@ namespace WPF_NhaMayCaoSu
     {
 
         private SaleService _service = new();
+        private RFIDService _rfid = new();
 
         public Account CurrentAccount { get; set; } = null;
 
         public Sale SelectedSale { get; set; } = null;
-        private MqttClientService _mqttClientService = new MqttClientService();
-        private CustomerService customerService = new CustomerService();
-        private SaleService _saleService = new SaleService();
+        private MqttClientService _mqttClientService = new();
+        private CustomerService customerService = new();
+        private SaleService _saleService = new();
         private double? oldWeightValue = null;
-        private DateTimeOffset? firstMessageTime = null;
-        private string lastRFID = null;
-        private string oldUrl1 = null;
-        private string oldUrl2 = null;
+        private DateTime? firstMessageTime = null;
+        private string lastRFID = string.Empty;
+        private string oldUrl1 = string.Empty;
+        private string oldUrl2 = string.Empty;
 
         public SaleManagementWindow()
         {
@@ -42,19 +43,33 @@ namespace WPF_NhaMayCaoSu
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            Sale x = new();
+            // Kiểm tra nếu RFID không hợp lệ hoặc rỗng
+            if (string.IsNullOrWhiteSpace(RFIDCodeTextBox.Text))
+            {
+                MessageBox.Show("RFID không hợp lệ hoặc chưa được nhập. Vui lòng kiểm tra lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-            x.CustomerName = CustomerNameTextBox.Text;
-            x.ProductWeight = int.Parse(WeightTextBox.Text);
-            x.ProductDensity = int.Parse(DensityTextBox.Text);
-            x.Status = short.Parse(StatusTextBox.Text);
-            x.RFIDCode = RFIDCodeTextBox.Text;
+            // Kiểm tra nếu RFID không tồn tại trong cơ sở dữ liệu
+            var existingSale = await _rfid.GetRFIDByRFIDCodeAsync(RFIDCodeTextBox.Text);
+            if (existingSale == null)
+            {
+                MessageBox.Show("RFID không tồn tại trong hệ thống. Vui lòng kiểm tra lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
+            Sale x = new Sale
+            {
+                CustomerName = CustomerNameTextBox.Text,
+                ProductWeight = int.Parse(WeightTextBox.Text),
+                ProductDensity = int.Parse(DensityTextBox.Text),
+                Status = short.Parse(StatusTextBox.Text),
+                RFIDCode = RFIDCodeTextBox.Text
+            };
 
             CameraService cameraService = new CameraService();
             Camera newestCamera = await cameraService.GetNewestCameraAsync();
             string imageFilePath = string.Empty;
-
 
             if (SelectedSale == null)
             {
@@ -64,13 +79,14 @@ namespace WPF_NhaMayCaoSu
             else
             {
                 x.SaleId = SelectedSale.SaleId;
-                x.LastEditedTime = DateTimeOffset.UtcNow;
+                x.LastEditedTime = DateTime.UtcNow;
                 MessageBox.Show(Constants.SuccessMessageSaleUpdated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                 await _service.UpdateSaleAsync(x);
             }
 
             Close();
         }
+
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -150,7 +166,8 @@ namespace WPF_NhaMayCaoSu
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ConfigCamera configCamera = new ConfigCamera();
+            configCamera.ShowDialog();
         }
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
@@ -163,9 +180,10 @@ namespace WPF_NhaMayCaoSu
 
         private async void OnMqttMessageReceived(object sender, string data)
         {
+            Debug.WriteLine("On message received has been triggered");
             try
             {
-                CameraService cameraService = new CameraService();
+                CameraService cameraService = new();
                 Camera newestCamera = await cameraService.GetNewestCameraAsync();
 
                 if (newestCamera == null)
@@ -180,26 +198,26 @@ namespace WPF_NhaMayCaoSu
                 if (data.StartsWith("Can_ta:"))
                 {
                     string messageContent = data.Substring("Can_ta:".Length);
-                    string filePathUrl = await CaptureImageFromCameraAsync(newestCamera, 1);
+                    string filePathUrl = CaptureImageFromCamera(newestCamera, 1);
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         ProcessMqttMessage(messageContent, "RFID", "Weight", RFIDCodeTextBox, WeightTextBox);
                         ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLWeightTextBox);
-                        _ = ProcessCustomerMessage(RFIDCodeTextBox.Text);
+                        ProcessCustomerMessage(messageContent);
                         StatusTextBox.Text = "1";
                     });
                 }
                 else if (data.StartsWith("Can_tieu_ly:"))
                 {
                     string messageContent = data.Substring("Can_tieu_ly:".Length);
-                    string filePathUrl = await CaptureImageFromCameraAsync(newestCamera, 2);
+                    string filePathUrl = CaptureImageFromCamera(newestCamera, 2);
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         ProcessMqttMessage(messageContent, "RFID", "Density", RFIDCodeTextBox, DensityTextBox);
                         ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLDensityTextBox);
-                        _ = ProcessCustomerMessage(RFIDCodeTextBox.Text);
+                        ProcessCustomerMessage(messageContent);
                         StatusTextBox.Text = "1";
                     });
                 }
@@ -226,37 +244,43 @@ namespace WPF_NhaMayCaoSu
                 {
                     string rfidValue = messages[0];
                     float currentValue = float.Parse(messages[1]);
-                    DateTimeOffset currentTime = DateTimeOffset.Now;
+                    DateTime currentTime = DateTime.Now;
 
-                    Sale sale = await _saleService.GetSaleByRfidAsync(rfidValue);
-
-                    if (sale == null)
+                    if (firstKey == "RFID" && secondKey == "Weight")
                     {
-                        sale = new Sale
+                        Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfidValue);
+                        if (sale == null || sale.ProductDensity.HasValue)
                         {
-                            SaleId = Guid.NewGuid(),
-                            RFIDCode = rfidValue,
-                            ProductWeight = currentValue,
-                            LastEditedTime = currentTime,
-                            Status = 1,
-                        };
-
-                        // Save the new Sale to the database
-                        await _saleService.CreateSaleAsync(sale);
-                    }
-
-                    else if (firstKey == "RFID" && secondKey == "Weight")
-                    {
-                        // Update the sale with the new weight value
-                        if (sale.ProductWeight.HasValue)
-                        {
-                            currentValue += sale.ProductWeight.Value;
+                            Customer customer = await customerService.GetCustomerByRFIDCodeAsync(rfidValue);
+                            Debug.WriteLine(customer);
+                            sale = new Sale
+                            {
+                                SaleId = Guid.NewGuid(),
+                                RFIDCode = rfidValue,
+                                ProductWeight = currentValue,
+                                LastEditedTime = currentTime,
+                                ProductDensity = null,
+                                Status = 1,
+                                CustomerName = customer.CustomerName
+                            };
+                            Debug.WriteLine($"Sale created: {sale}");
+                            Debug.WriteLine("Successfully save new sale to db");
                         }
 
-                        sale.ProductWeight = currentValue;
-
-                        await _saleService.UpdateSaleAsync(sale);
-
+                        if (lastRFID == rfidValue && oldWeightValue.HasValue && firstMessageTime.HasValue)
+                        {
+                             sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfidValue);
+                            if (sale != null && !sale.ProductDensity.HasValue)
+                            {
+                                if (sale.ProductWeight.HasValue)
+                                {
+                                    currentValue += sale.ProductWeight.Value;
+                                    sale.ProductWeight = currentValue;
+                                    Debug.WriteLine("Successfully update weight");
+                                }
+                            }
+                        }
+                        // Save old Value
                         oldWeightValue = currentValue;
                         firstMessageTime = currentTime;
                         lastRFID = rfidValue;
@@ -264,15 +288,18 @@ namespace WPF_NhaMayCaoSu
                     else if (firstKey == "RFID" && secondKey == "Density")
                     {
                         // Handle the "Can_tieu_ly" topic
-                        if (sale.ProductWeight.HasValue && !sale.ProductDensity.HasValue)
-                        {
-                            sale.ProductDensity = currentValue;
+                        Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfidValue);
 
-                            await _saleService.UpdateSaleAsync(sale);
+                        if (sale != null && sale.ProductWeight.HasValue && !sale.ProductDensity.HasValue)
+                        {
+                            currentValue = float.Parse(messages[1]);
+                            Debug.Write(currentValue);
+                            sale.ProductDensity = currentValue;
+                            Debug.WriteLine("Successfully save density");
                         }
                         else
                         {
-                            throw new Exception("Sale with the specified RFID was not found or already has density.");
+                            throw new Exception("Sale with the specified RFID was not found.");
                         }
                     }
 
@@ -306,11 +333,14 @@ namespace WPF_NhaMayCaoSu
             roleListWindow.ShowDialog();
         }
 
-        private async Task ProcessCustomerMessage(string rfidValue)
+        private async Task ProcessCustomerMessage(string messageContent)
         {
             try
             {
-                Customer customer = await customerService.GetCustomerByRFIDCodeAsync(rfidValue);
+                string[] messages = messageContent.Split(':');
+                string rfidValue = messages[0];
+
+                Customer? customer = await customerService.GetCustomerByRFIDCodeAsync(rfidValue);
 
                 if (customer != null)
                 {
@@ -330,8 +360,11 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error processing customer message: {ex.Message}");
+                Debug.WriteLine($"Stack Trace: {ex.StackTrace}");
+                // Log thêm các thông tin từ GetCustomerByRFIDCodeAsync nếu có thể
             }
         }
+
 
 
 
@@ -339,7 +372,7 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                DateTimeOffset currentTime = DateTimeOffset.UtcNow;
+                DateTime currentTime = DateTime.UtcNow;
 
                 // Ensure the UI update is executed on the UI thread
                 urlTextBox.Dispatcher.Invoke(() =>
@@ -387,7 +420,7 @@ namespace WPF_NhaMayCaoSu
 
 
 
-        private async Task<string> CaptureImageFromCameraAsync(Camera camera, int cameraIndex)
+        private string CaptureImageFromCamera(Camera camera, int cameraIndex)
         {
             string localFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), $"{Guid.NewGuid()}_Camera{cameraIndex}.jpg");
 
@@ -396,14 +429,14 @@ namespace WPF_NhaMayCaoSu
                 string cameraUrl = cameraIndex == 1 ? camera.Camera1 : camera.Camera2;
                 if (string.IsNullOrEmpty(cameraUrl))
                 {
-                    throw new Exception($"Camera URL for Camera {cameraIndex} is invalid.");
+                    throw new Exception($"URL của Camera {cameraIndex} không hợp lệ.");
                 }
 
                 using (var capture = new VideoCapture(cameraUrl))
                 {
                     if (!capture.IsOpened)
                     {
-                        throw new Exception($"Failed to open Camera {cameraIndex}.");
+                        throw new Exception($"Không thể mở Camera {cameraIndex}.");
                     }
 
                     using (var frame = new Mat())
@@ -411,28 +444,29 @@ namespace WPF_NhaMayCaoSu
                         capture.Read(frame);
                         if (frame.IsEmpty)
                         {
-                            throw new Exception($"Failed to capture image from Camera {cameraIndex}.");
+                            throw new Exception($"Không thể chụp ảnh từ Camera {cameraIndex}.");
                         }
 
-                        // Convert frame to Image<Bgr, byte>
+                        // Chuyển đổi frame sang Image<Bgr, byte>
                         Image<Bgr, byte> image = frame.ToImage<Bgr, byte>();
 
-                        // Convert Image<Bgr, byte> to Bitmap
+                        // Chuyển đổi Image<Bgr, byte> sang Bitmap
                         Bitmap bitmap = image.ToBitmap();
 
-                        // Save the image to disk
+                        // Lưu hình ảnh vào đĩa
                         bitmap.Save(localFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error capturing image from Camera {cameraIndex}: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Lỗi khi chụp ảnh từ Camera {cameraIndex}: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return string.Empty;
             }
 
             return localFilePath.ToString();
         }
+
 
     }
 }

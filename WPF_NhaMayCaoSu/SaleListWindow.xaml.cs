@@ -2,6 +2,12 @@
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
+using System.Diagnostics;
+using Emgu.CV.Structure;
+using Emgu.CV;
+using System.Drawing;
+using System.IO;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -12,6 +18,22 @@ namespace WPF_NhaMayCaoSu
     {
 
         private SaleService _service = new();
+        private ImageService _imageService = new();
+        private int _currentPage = 1;
+        private int _pageSize = 10;
+        private int _totalPages;
+        private RFIDService _rfid = new();
+
+        public Sale SelectedSale { get; set; } = null;
+        private MqttClientService _mqttClientService = new();
+        private CustomerService customerService = new();
+        private CameraService cameraService = new();
+        private double? oldWeightValue = null;
+        private DateTime? firstMessageTime = null;
+        private string lastRFID = string.Empty;
+        private string oldUrl1 = string.Empty;
+        private string oldUrl2 = string.Empty;
+
         public Account CurrentAccount { get; set; } = null;
         public SaleListWindow()
         {
@@ -54,15 +76,68 @@ namespace WPF_NhaMayCaoSu
 
         private async void LoadDataGrid()
         {
+            var sales = await _service.GetAllSaleAsync(_currentPage, _pageSize);
+            int totalSalesCount = await _service.GetTotalSalesCountAsync();
+            _totalPages = (int)Math.Ceiling((double)totalSalesCount / _pageSize);
+
             SaleDataGrid.ItemsSource = null;
             SaleDataGrid.Items.Clear();
-            SaleDataGrid.ItemsSource = await _service.GetAllSaleAsync(1, 10);
+            SaleDataGrid.ItemsSource = sales;
+
+            PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
+
+            // Disable/Enable pagination buttons
+            PreviousPageButton.IsEnabled = _currentPage > 1;
+            NextPageButton.IsEnabled = _currentPage < _totalPages;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+
+
+        private void PreviousPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPage > 1)
+            {
+                _currentPage--;
+                LoadDataGrid();
+            }
+        }
+
+        private void NextPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPage < _totalPages)
+            {
+                _currentPage++;
+                LoadDataGrid();
+            }
+        }
+
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             LoadDataGrid();
+            try
+            {
+                await _mqttClientService.ConnectAsync();
+                await _mqttClientService.SubscribeAsync("Can_ta");
+                await _mqttClientService.SubscribeAsync("Can_tieu_ly");
+
+
+                _mqttClientService.MessageReceived += (s, data) =>
+                {
+                    OnMqttMessageReceived(s, data);
+                };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể kết nối đến máy chủ MQTT. Vui lòng kiểm tra lại kết nối. Bạn sẽ được chuyển về màn hình quản lý Broker.", "Lỗi kết nối", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                BrokerWindow brokerWindow = new BrokerWindow();
+                brokerWindow.ShowDialog();
+                this.Close();
+                return;
+            }
         }
+
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
@@ -105,6 +180,8 @@ namespace WPF_NhaMayCaoSu
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
 
+            ConfigCamera configCamera = new ConfigCamera();
+            configCamera.ShowDialog();
         }
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
