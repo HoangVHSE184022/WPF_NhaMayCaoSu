@@ -3,7 +3,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
-             StartupUri="ViewImagesWindow.xaml">
+             StartupUri="BrokerWindow.xaml">
     <Application.Resources>
         <Style TargetType="Label">
             <Setter Property="FontFamily" Value="pack://application:,,,/assets/fonts/#Montserrat-VariableFont_wght" />
