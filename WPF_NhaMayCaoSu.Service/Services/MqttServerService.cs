@@ -25,7 +25,7 @@ public class MqttServerService : IMqttServerService
         MqttServerOptionsBuilder optionsBuilder = new MqttServerOptionsBuilder()
             .WithDefaultEndpointBoundIPAddress(System.Net.IPAddress.Any)
             .WithDefaultEndpoint()
-            .WithDefaultEndpointPort(1883) 
+            .WithDefaultEndpointPort(1883)
             .WithConnectionBacklog(100)
             .WithMaxPendingMessagesPerClient(1000);
 

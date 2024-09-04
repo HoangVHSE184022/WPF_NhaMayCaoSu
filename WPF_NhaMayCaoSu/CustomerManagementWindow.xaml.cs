@@ -2,11 +2,6 @@
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
-using WPF_NhaMayCaoSu.Service.Interfaces;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Diagnostics;
-using Microsoft.IdentityModel.Tokens;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -169,7 +164,7 @@ namespace WPF_NhaMayCaoSu
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)

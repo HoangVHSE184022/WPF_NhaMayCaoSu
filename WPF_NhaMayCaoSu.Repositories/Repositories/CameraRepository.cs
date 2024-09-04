@@ -20,7 +20,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         public async Task<Camera> GetCameraAsync()
         {
             _context = new();
-            return await _context.Cameras.FirstOrDefaultAsync(c => c.Status == 1); 
+            return await _context.Cameras.FirstOrDefaultAsync(c => c.Status == 1);
         }
 
         public async Task UpdateCameraAsync(Camera camera)
@@ -53,7 +53,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             _context = new();
             return await _context.Cameras
                                  .Where(c => c.Status == 1)
-                                 .OrderByDescending(c => c.CameraId) 
+                                 .OrderByDescending(c => c.CameraId)
                                  .FirstOrDefaultAsync();
         }
     }

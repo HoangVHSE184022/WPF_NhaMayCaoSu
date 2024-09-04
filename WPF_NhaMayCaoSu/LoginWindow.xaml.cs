@@ -12,10 +12,10 @@ namespace WPF_NhaMayCaoSu
     {
         private readonly AccountService _accountService = new();
 
-         public LoginWindow()
-         {
-             InitializeComponent();
-         }
+        public LoginWindow()
+        {
+            InitializeComponent();
+        }
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
@@ -40,7 +40,7 @@ namespace WPF_NhaMayCaoSu
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
                 return;
@@ -58,7 +58,7 @@ namespace WPF_NhaMayCaoSu
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
             Close();
             accountManagementWindow.Show();
-            
+
         }
     }
 }

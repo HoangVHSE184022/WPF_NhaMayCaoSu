@@ -2,7 +2,6 @@
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -225,7 +224,7 @@ namespace WPF_NhaMayCaoSu
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
