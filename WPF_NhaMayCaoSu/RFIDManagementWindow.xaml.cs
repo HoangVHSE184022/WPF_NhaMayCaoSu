@@ -113,7 +113,6 @@ namespace WPF_NhaMayCaoSu
         }
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            // Validate required fields
             if (string.IsNullOrWhiteSpace(RFIDCodeTextBox.Text) ||
                 string.IsNullOrWhiteSpace(ExpDateDatePicker.Text) ||
                 string.IsNullOrWhiteSpace(StatusTextBox.Text))
@@ -121,8 +120,13 @@ namespace WPF_NhaMayCaoSu
                 MessageBox.Show(Constants.ErrorMessageMissingFields, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            RFID thisRFID = await _service.GetRFIDByRFIDCodeAsync(SelectedRFID.RFIDCode);
+            if (thisRFID != null)
+            {
+                MessageBox.Show("Error, RFIDCode is already created", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
-            // Validate Expiration Date (ensure it's not in the past)
             if (DateTime.Parse(ExpDateDatePicker.Text) < DateTime.Today)
             {
                 MessageBox.Show("Ngày hết hạn không được là ngày trong quá khứ.", "Lỗi xác thực", MessageBoxButton.OK, MessageBoxImage.Warning);
