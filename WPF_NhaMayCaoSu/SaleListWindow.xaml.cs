@@ -271,13 +271,14 @@ namespace WPF_NhaMayCaoSu
                 {
                     string rfidValue = messages[0];
                     float currentValue = float.Parse(messages[1]);
+                    Debug.Write(messageContent);
                     DateTime currentTime = DateTime.Now;
                     Sale sale = null;
 
                     if (firstKey == "RFID" && secondKey == "Weight")
                     {
                         sale = await _service.GetSaleByRFIDCodeWithoutDensity(rfidValue);
-                        if (sale == null || sale.ProductDensity.HasValue)
+                        if (sale == null)
                         {
                             Customer customer = await customerService.GetCustomerByRFIDCodeAsync(rfidValue);
                             sale = new Sale
@@ -290,6 +291,7 @@ namespace WPF_NhaMayCaoSu
                                 Status = 1,
                                 CustomerName = customer.CustomerName
                             };
+                            Debug.Write("Sale current Weight" + sale.ProductWeight);
                             await _service.CreateSaleAsync(sale);
                             string imagePath = CaptureImageFromCamera(newestCamera, 1);
                             if (!string.IsNullOrEmpty(imagePath))
@@ -304,11 +306,11 @@ namespace WPF_NhaMayCaoSu
                                 };
                                 await _imageService.AddImageAsync(image);
                             }
+                            oldWeightValue = currentValue;
+                            firstMessageTime = currentTime;
+                            lastRFID = rfidValue;
                         }
-                        oldWeightValue = currentValue;
-                        firstMessageTime = currentTime;
-                        lastRFID = rfidValue;
-                        if (lastRFID == rfidValue && oldWeightValue.HasValue && firstMessageTime.HasValue)
+                        else if (lastRFID == rfidValue && oldWeightValue.HasValue && firstMessageTime.HasValue)
                         {
                             sale = await _service.GetSaleByRFIDCodeWithoutDensity(rfidValue);
                             if (sale != null && !sale.ProductDensity.HasValue)
