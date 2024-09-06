@@ -44,5 +44,10 @@ namespace WPF_NhaMayCaoSu.Service.Services
             RFID rFID = await rFIDService.GetRFIDByRFIDCodeAsync(rfidCode);
             return await _repository.GetCustomerByRFIDCodeAsync(rfidCode);
         }
+
+        public async Task<int> GetTotalCustomersCountAsync()
+        {
+            return await _repository.GetTotalCustomersCountAsync();
+        }
     }
 }

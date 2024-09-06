@@ -50,5 +50,10 @@ namespace WPF_NhaMayCaoSu.Service.Services
         {
             return await _repo.GetRFIDsByExpirationDateAsync(expirationDate);
         }
+
+        public async Task<int> GetTotalRFIDsCountAsync()
+        {
+            return await _repo.GetTotalRFIDsCountAsync();
+        }
     }
 }

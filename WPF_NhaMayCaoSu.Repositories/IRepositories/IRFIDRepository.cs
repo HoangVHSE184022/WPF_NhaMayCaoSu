@@ -13,5 +13,6 @@ namespace WPF_NhaMayCaoSu.Repository.IRepositories
         Task<IEnumerable<RFID>> GetRFIDsByCustomerIdAsync(Guid customerId);
         Task<IEnumerable<RFID>> GetRFIDsByStatusAsync(short status);
         Task<IEnumerable<RFID>> GetRFIDsByExpirationDateAsync(DateTime expirationDate);
+        Task<int> GetTotalRFIDsCountAsync();
     }
 }

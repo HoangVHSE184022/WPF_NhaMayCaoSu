@@ -29,5 +29,9 @@
         <Label x:Name="SearchLabel" Content="Nhập tên khách hàng:" Height="30" VerticalAlignment="Top" Margin="0,93,468,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="187" />
         <TextBox x:Name="SearchTextBox" Height="30" VerticalAlignment="Top" Margin="0,94,159,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="309"/>
         <Button x:Name="SearchButton" Content="Tìm kiếm" Height="30" VerticalAlignment="Top" Margin="0,94,32,0" FontFamily="Montserrat" FontSize="18" Click="SearchButton_Click" HorizontalAlignment="Right" Width="121"/>
+
+        <Button x:Name="PreviousPageButton" Content="Trước" Margin="474,0,0,137" Click="PreviousPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
+        <TextBlock x:Name="PageNumberTextBlock" Margin="519,0,0,137" TextAlignment="Center" FontFamily="Montserrat" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="94" />
+        <Button x:Name="NextPageButton" Content="Sau" Margin="618,0,0,137" Click="NextPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
     </Grid>
 </Window>
