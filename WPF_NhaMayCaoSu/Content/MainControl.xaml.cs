@@ -166,26 +166,26 @@ namespace WPF_NhaMayCaoSu.Content
             this.Title = mainWindow.Title;
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
-        {
-            LoginWindow window = new();
-            window.LoginSucceeded += HandleLoginSucceeded;
-            window.ShowDialog();
-        }
-        private void HandleLoginSucceeded(Account account)
-        {
-            CurrentAccount = account;
-            mainWindow.CurrentAccount = account;
-            broker.CurrentAccount = account;
-            customerListWindow.CurrentAccount = account;
-            saleListWindow.CurrentAccount = account;
-            accountManagementWindow.CurrentAccount = account;
-            rfidListWindow.CurrentAccount = account;
-            roleListWindow.CurrentAccount = account;
-            LoginButton.Visibility = Visibility.Hidden;
+        //private void LoginButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    LoginWindow window = new();
+        //    window.LoginSucceeded += HandleLoginSucceeded;
+        //    window.ShowDialog();
+        //}
+        //private void HandleLoginSucceeded(Account account)
+        //{
+        //    CurrentAccount = account;
+        //    mainWindow.CurrentAccount = account;
+        //    broker.CurrentAccount = account;
+        //    customerListWindow.CurrentAccount = account;
+        //    saleListWindow.CurrentAccount = account;
+        //    accountManagementWindow.CurrentAccount = account;
+        //    rfidListWindow.CurrentAccount = account;
+        //    roleListWindow.CurrentAccount = account;
+        //    //LoginButton.Visibility = Visibility.Hidden;
 
-            MessageBox.Show("Đăng nhập tài khoản thành công!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
+        //    MessageBox.Show("Đăng nhập tài khoản thành công!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        //}
 
         private void UpdateMainWindowUI()
         {
