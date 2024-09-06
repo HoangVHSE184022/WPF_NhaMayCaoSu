@@ -61,7 +61,10 @@ namespace WPF_NhaMayCaoSu.Content
         {
             if (CurrentAccount is null)
             {
-                MessageBox.Show("You must be logged in first", "Please login", MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("You must be logged in first", "Please login", MessageBoxButton.OK, MessageBoxImage.Error);
+                LoginWindow window = new();
+                window.LoginSucceeded += HandleLoginSucceeded;
+                window.ShowDialog();
                 return false;
             }
             else if (MqttServerService.IsBrokerRunning == false)
@@ -132,10 +135,10 @@ namespace WPF_NhaMayCaoSu.Content
 
         private void RoleManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!ValidCheck())
-            {
-                return;
-            }
+            //if (!ValidCheck())
+            //{
+            //    return;
+            //}
 
             MainContentControl.Content = roleListWindow.Content;
             roleListWindow.OnWindowLoaded();
@@ -172,20 +175,20 @@ namespace WPF_NhaMayCaoSu.Content
         //    window.LoginSucceeded += HandleLoginSucceeded;
         //    window.ShowDialog();
         //}
-        //private void HandleLoginSucceeded(Account account)
-        //{
-        //    CurrentAccount = account;
-        //    mainWindow.CurrentAccount = account;
-        //    broker.CurrentAccount = account;
-        //    customerListWindow.CurrentAccount = account;
-        //    saleListWindow.CurrentAccount = account;
-        //    accountManagementWindow.CurrentAccount = account;
-        //    rfidListWindow.CurrentAccount = account;
-        //    roleListWindow.CurrentAccount = account;
-        //    //LoginButton.Visibility = Visibility.Hidden;
+        private void HandleLoginSucceeded(Account account)
+        {
+            CurrentAccount = account;
+            mainWindow.CurrentAccount = account;
+            broker.CurrentAccount = account;
+            customerListWindow.CurrentAccount = account;
+            saleListWindow.CurrentAccount = account;
+            accountManagementWindow.CurrentAccount = account;
+            rfidListWindow.CurrentAccount = account;
+            roleListWindow.CurrentAccount = account;
+            //LoginButton.Visibility = Visibility.Hidden;
 
-        //    MessageBox.Show("Đăng nhập tài khoản thành công!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-        //}
+            MessageBox.Show("Đăng nhập tài khoản thành công!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
 
         private string GetLocalIpAddress()
