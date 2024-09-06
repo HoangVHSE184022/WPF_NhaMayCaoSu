@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using WPF_NhaMayCaoSu.Repository.Models;
 
+
 namespace WPF_NhaMayCaoSu.Repository.Context
 {
     public class CaoSuWpfDbContext : DbContext
@@ -42,8 +43,8 @@ namespace WPF_NhaMayCaoSu.Repository.Context
 
             modelBuilder.Entity<Sale>()
                 .HasOne(s => s.RFID)
-                .WithMany(r => r.Sales) 
-                .HasForeignKey(s => s.RFIDCode) 
+                .WithMany(r => r.Sales)
+                .HasForeignKey(s => s.RFIDCode)
                 .HasPrincipalKey(r => r.RFIDCode);
 
             modelBuilder.Entity<Account>()
@@ -85,6 +86,45 @@ namespace WPF_NhaMayCaoSu.Repository.Context
                 .HasOne(i => i.Sale)
                 .WithMany(s => s.Images)
                 .HasForeignKey(i => i.SaleId);
+
+            var adminRoleId = Guid.NewGuid();
+            var userRoleId = Guid.NewGuid();
+
+            modelBuilder.Entity<Role>().HasData(
+                new Role
+                {
+                    RoleId = adminRoleId,
+                    RoleName = "Admin"
+                },
+                new Role
+                {
+                    RoleId = userRoleId, 
+                    RoleName = "User"
+                }
+            );
+
+            modelBuilder.Entity<Account>().HasData(
+                new Account
+                {
+                    AccountId = Guid.NewGuid(),
+                    AccountName = "Administrator",
+                    Username = "admin",
+                    Password = BCrypt.Net.BCrypt.HashPassword("admin123"),  
+                    CreatedDate = DateTime.UtcNow,
+                    Status = 1,
+                    RoleId = adminRoleId
+                },
+                new Account
+                {
+                    AccountId = Guid.NewGuid(),
+                    AccountName = "Standard User",
+                    Username = "user",
+                    Password = BCrypt.Net.BCrypt.HashPassword("user123"),
+                    CreatedDate = DateTime.UtcNow,
+                    Status = 1,
+                    RoleId = userRoleId
+                }
+            );
         }
 
     }
