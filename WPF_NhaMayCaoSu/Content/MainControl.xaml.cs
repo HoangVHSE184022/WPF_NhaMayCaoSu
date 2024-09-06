@@ -56,6 +56,10 @@ namespace WPF_NhaMayCaoSu.Content
         {
 
         }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
 
         private bool ValidCheck()
         {
@@ -78,11 +82,11 @@ namespace WPF_NhaMayCaoSu.Content
         // Toggle the visibility of BrokerWindow content
         private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            
+
             MainContentControl.Content = broker.Content;
             broker.OnWindowLoaded();
             this.Title = broker.Title;
-            
+
         }
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)

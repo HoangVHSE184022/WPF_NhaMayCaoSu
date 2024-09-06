@@ -120,8 +120,11 @@ namespace WPF_NhaMayCaoSu
                 ModeLabel.Content = "Cập nhật tài khoản";
                 AccountNameTextBox.Text = CurrentAccount.AccountName;
                 UsernameTextBox.Text = CurrentAccount.Username;
-                LoginButton.Content = "";
-                LoginButton.IsEnabled = false;
+                LoginButton.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                SaveButton.Visibility = Visibility.Collapsed;
             }
         }
         public void OnWindowLoaded()
