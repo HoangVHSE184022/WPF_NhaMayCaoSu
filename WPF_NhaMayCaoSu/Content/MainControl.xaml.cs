@@ -57,6 +57,21 @@ namespace WPF_NhaMayCaoSu.Content
 
         }
 
+        private bool ValidCheck()
+        {
+            if (CurrentAccount is null)
+            {
+                MessageBox.Show("You must be logged in first", "Please login", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            else if (MqttServerService.IsBrokerRunning == false)
+            {
+                MessageBox.Show("You must start the server first", "Sever status offline", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
+        }
+
         // Toggle the visibility of BrokerWindow content
         private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
         {
@@ -69,14 +84,8 @@ namespace WPF_NhaMayCaoSu.Content
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentAccount is null)
+            if (!ValidCheck())
             {
-                MessageBox.Show("You must be logged in first", "Please login", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            else if (MqttServerService.IsBrokerRunning == false)
-            {
-                MessageBox.Show("You must start the server first", "Sever status offline", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -87,16 +96,11 @@ namespace WPF_NhaMayCaoSu.Content
 
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentAccount is null)
+            if (!ValidCheck())
             {
-                MessageBox.Show("You must be logged in first", "Please login", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            else if (MqttServerService.IsBrokerRunning == false)
-            {
-                MessageBox.Show("You must start the server first", "Sever status offline", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+
             MainContentControl.Content = saleListWindow.Content;
             saleListWindow.OnWindowLoaded();
             this.Title = saleListWindow.Title;
@@ -104,16 +108,11 @@ namespace WPF_NhaMayCaoSu.Content
 
         private void AccountManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentAccount is null)
+            if (!ValidCheck())
             {
-                MessageBox.Show("You must be logged in first", "Please login", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            else if (MqttServerService.IsBrokerRunning == false)
-            {
-                MessageBox.Show("You must start the server first", "Sever status offline", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+
             MainContentControl.Content = accountManagementWindow.Content;
             accountManagementWindow.OnWindowLoaded();
             this.Title = accountManagementWindow.Title;
@@ -121,16 +120,11 @@ namespace WPF_NhaMayCaoSu.Content
 
         private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentAccount is null)
+            if (!ValidCheck())
             {
-                MessageBox.Show("You must be logged in first", "Please login", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            else if (MqttServerService.IsBrokerRunning == false)
-            {
-                MessageBox.Show("You must start the server first", "Sever status offline", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+
             MainContentControl.Content = rfidListWindow.Content;
             rfidListWindow.OnWindowLoaded();
             this.Title = rfidListWindow.Title;
@@ -138,16 +132,11 @@ namespace WPF_NhaMayCaoSu.Content
 
         private void RoleManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentAccount is null)
+            if (!ValidCheck())
             {
-                MessageBox.Show("You must be logged in first", "Please login", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            else if (MqttServerService.IsBrokerRunning == false)
-            {
-                MessageBox.Show("You must start the server first", "Sever status offline", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+
             MainContentControl.Content = roleListWindow.Content;
             roleListWindow.OnWindowLoaded();
             this.Title = roleListWindow.Title;
@@ -155,16 +144,11 @@ namespace WPF_NhaMayCaoSu.Content
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentAccount is null)
+            if (!ValidCheck())
             {
-                MessageBox.Show("You must be logged in first", "Please login", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            else if (MqttServerService.IsBrokerRunning == false)
-            {
-                MessageBox.Show("You must start the server first", "Sever status offline", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+
             MainContentControl.Content = configCamera.Content;
             configCamera.OnWindowLoaded();
             this.Title = configCamera.Title;
@@ -172,16 +156,11 @@ namespace WPF_NhaMayCaoSu.Content
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentAccount is null)
+            if (!ValidCheck())
             {
-                MessageBox.Show("You must be logged in first", "Please login", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            else if (MqttServerService.IsBrokerRunning == false)
-            {
-                MessageBox.Show("You must start the server first", "Sever status offline", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+
             MainContentControl.Content = mainWindow.Content;
             mainWindow.OnWindowLoaded();
             this.Title = mainWindow.Title;
