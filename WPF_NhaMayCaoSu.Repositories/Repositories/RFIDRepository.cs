@@ -82,5 +82,11 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
                                  .Where(r => r.ExpirationDate.Date == expirationDate.Date && r.Status == 1)
                                  .ToListAsync();
         }
+
+        public async Task<int> GetTotalRFIDsCountAsync()
+        {
+            _context = new();
+            return await _context.RFIDs.CountAsync();
+        }
     }
 }

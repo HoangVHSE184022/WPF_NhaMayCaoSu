@@ -60,5 +60,11 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
                 .Include(c => c.RFIDs)
                 .FirstOrDefaultAsync(c => c.RFIDs.Any(r => r.RFIDCode == rfidCode && r.Status == 1));
         }
+
+        public async Task<int> GetTotalCustomersCountAsync()
+        {
+            _context = new();
+            return await _context.Customers.CountAsync();
+        }
     }
 }
