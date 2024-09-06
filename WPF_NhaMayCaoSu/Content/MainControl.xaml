@@ -28,5 +28,7 @@
             FontFamily="Montserrat" FontSize="22" Foreground="#FF254098" FontWeight="Bold" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="71" />
         <TextBlock x:Name="NumberofconnectionTextBlock" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,41,25" 
             FontFamily="Montserrat" FontSize="12" Foreground="#FF254098" FontWeight="Bold" Height="21" Width="133" ><Run Text="Onl"/><LineBreak/><Run/></TextBlock>
+        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Margin="41,0,0,21" Width="106" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="30" Click="QuitButton_Click" Height="45" VerticalAlignment="Bottom"/>
+        <Label x:Name="IPconnecttionSmallLabel" Content="Không có kết nối" Margin="0,0,53,10" FontFamily="Montserrat" FontSize="12" Foreground="#FF002366" HorizontalAlignment="Right" Width="121" Height="24" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

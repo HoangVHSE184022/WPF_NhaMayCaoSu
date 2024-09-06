@@ -42,7 +42,6 @@ namespace WPF_NhaMayCaoSu
                 StopButton.IsEnabled = true;
                 PortconnecttionLabel.Content = "1883";
                 string localIpAddress = GetLocalIpAddress();
-                IPconnecttionSmallLabel.Content = $"Local IP: {localIpAddress}";
                 IPconnecttionLabel.Content = $"{localIpAddress}";
             }
             else
@@ -51,7 +50,6 @@ namespace WPF_NhaMayCaoSu
                 StartButton.IsEnabled = true;
                 StopButton.IsEnabled = false;
                 PortconnecttionLabel.Content = "Không có kết nối";
-                IPconnecttionSmallLabel.Content = "Không có kết nối";
                 IPconnecttionLabel.Content = "Không có kết nối";
             }
         }
@@ -88,7 +86,6 @@ namespace WPF_NhaMayCaoSu
                 ServerStatusLabel.Content = Constants.StatusOnline;
                 PortconnecttionLabel.Content = "1883";
                 string localIpAddress = GetLocalIpAddress();
-                IPconnecttionSmallLabel.Content = $"Local IP: {localIpAddress}";
                 IPconnecttionLabel.Content = $"{localIpAddress}";
 
 
@@ -145,7 +142,6 @@ namespace WPF_NhaMayCaoSu
                 await _mqttServerService.StopBrokerAsync();
                 await _mqttClientService.CloseConnectionAsync();
                 PortconnecttionLabel.Content = "Không có kết nối";
-                IPconnecttionSmallLabel.Content = $"Không có kết nối";
                 IPconnecttionLabel.Content = "Không có kết nối";
                 await Task.Delay(1000);
                 await _mqttServerService.StartBrokerAsync();
@@ -153,7 +149,6 @@ namespace WPF_NhaMayCaoSu
                 ServerStatusLabel.Content = Constants.StatusOnline;
                 PortconnecttionLabel.Content = "1883";
                 string localIpAddress = GetLocalIpAddress();
-                IPconnecttionSmallLabel.Content = $"Local IP: {localIpAddress}";
                 IPconnecttionLabel.Content = $"{localIpAddress}";
 
                 // Enable the Stop button

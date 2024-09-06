@@ -12,8 +12,8 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
     <Grid>
-        
-        <DataGrid x:Name="SalesDataGrid" HorizontalAlignment="Left" Width="1118" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False" Margin="41,36,0,71">
+
+        <DataGrid x:Name="SalesDataGrid" HorizontalAlignment="Center" Width="1118" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False" Margin="0,36,0,161">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Thời gian quét" Binding="{Binding LastEditedTime, StringFormat=G}" />
                 <DataGridTextColumn Header="RFID" Binding="{Binding RFIDCode}"/>
@@ -37,6 +37,5 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Margin="41,0,0,21" Width="106" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="30" Click="QuitButton_Click" Height="45" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

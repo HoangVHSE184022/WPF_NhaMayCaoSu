@@ -187,6 +187,22 @@ namespace WPF_NhaMayCaoSu.Content
         //    MessageBox.Show("Đăng nhập tài khoản thành công!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         //}
 
+
+        private string GetLocalIpAddress()
+        {
+            System.Net.IPAddress[] ipAddresses = System.Net.Dns.GetHostAddresses(System.Net.Dns.GetHostName());
+
+            foreach (System.Net.IPAddress ip in ipAddresses)
+            {
+                // Check for IPv4 addresses
+                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            return "N/A";
+        }
+
         private void UpdateMainWindowUI()
         {
             if (MqttServerService.IsBrokerRunning)
@@ -195,11 +211,13 @@ namespace WPF_NhaMayCaoSu.Content
                 ServerStatusTextBlock.Text = Constants.ServerOnlineStatus;
                 int deviceCount = _mqttServerService.GetDeviceCount();
                 NumberofconnectionTextBlock.Text = $"Onl: {deviceCount} Thiết bị";
+                IPconnecttionSmallLabel.Content = $"Local IP: {GetLocalIpAddress()}";
             }
             else
             {
                 OpenServerButton.Content = Constants.OpenServerText;
                 ServerStatusTextBlock.Text = Constants.ServerOfflineStatus;
+                IPconnecttionSmallLabel.Content = "Không có kết nối";
             }
         }
 
@@ -238,6 +256,15 @@ namespace WPF_NhaMayCaoSu.Content
                     MessageBox.Show(Constants.BrokerStopErrorMessage + "\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+        }
+        private void QuitButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Hành động này sẽ đóng ứng dụng, bạn chắc chứ?", "Thoát", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                App.Current.Shutdown();
+            }
+
         }
     }
 
