@@ -12,18 +12,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
     <Grid>
-        <Menu HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Monserrat" Foreground="#FF002366" FontSize="16">
-            <MenuItem x:Name="ShowButton" Header="Hiển thị" Click="ShowButton_Click"/>
-            <MenuItem x:Name="ConfigButton" Header="Cấu hình" Click="ConfigButton_Click"/>
-            <MenuItem x:Name="BrokerManagementButton" Header="Broker" Click="BrokerManagementButton_Click"/>
-            <MenuItem Header="Quản lý">
-                <MenuItem x:Name="CustomerManagementButton" Header="Khách hàng" Click="CustomerManagementButton_Click"/>
-                <MenuItem x:Name="RFIDManagementButton" Header="RFID" Click="RFIDManagementButton_Click"/>
-                <MenuItem x:Name="SaleManagementButton" Header="Sale" Click="SaleManagementButton_Click"/>
-                <MenuItem x:Name="AccountManagementButton" Header="Tài khoản" Click="AccountManagementButton_Click"/>
-                <MenuItem x:Name="RoleManagementButton" Header="Vai trò" Click="RoleManagementButton_Click"/>
-            </MenuItem>
-        </Menu>
+        
         <DataGrid x:Name="SalesDataGrid" HorizontalAlignment="Left" Width="1118" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False" Margin="41,36,0,71">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Thời gian quét" Binding="{Binding LastEditedTime, StringFormat=G}" />
