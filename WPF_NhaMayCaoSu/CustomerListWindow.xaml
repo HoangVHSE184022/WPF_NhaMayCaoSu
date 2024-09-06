@@ -14,7 +14,7 @@
         <Button x:Name="EditCustomerButton1" Margin="0,228,32,0" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="EditCustomerButton1_Click" HorizontalAlignment="Right" Width="121" Height="40" VerticalAlignment="Top" >
             <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="QuitButton" Content="QUIT" Margin="0,0,32,42" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" Click="QuitButton_Click" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="121"/>
+        <Button x:Name="QuitButton" Content="QUIT" Margin="0,0,32,119" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" Click="QuitButton_Click" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="121"/>
         <DataGrid x:Name="CustomerDataGrid" Margin="32,129,159,42" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Width="100" Binding="{Binding CustomerId}"/>

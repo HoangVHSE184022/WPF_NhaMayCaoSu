@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Windows;
+using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
+using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu.Content
 {
@@ -12,7 +14,8 @@ namespace WPF_NhaMayCaoSu.Content
     {
         public Account CurrentAccount { get; set; }
 
-        // Keep instances of windows (UserControls recommended) as class-level references
+        private readonly MqttServerService _mqttServerService;
+        private readonly MqttClientService _mqttClientService;
         private readonly BrokerWindow broker;
         private CustomerListWindow customerListWindow;
         private SaleListWindow saleListWindow;
@@ -26,7 +29,6 @@ namespace WPF_NhaMayCaoSu.Content
         {
             InitializeComponent();
 
-            // Initialize the windows (or UserControls)
             broker = new BrokerWindow();
             customerListWindow = new CustomerListWindow();
             saleListWindow = new SaleListWindow();
@@ -36,7 +38,6 @@ namespace WPF_NhaMayCaoSu.Content
             mainWindow = new();
             configCamera = new();
 
-            // Set CurrentAccount for each window once
             mainWindow.CurrentAccount = CurrentAccount;
             broker.CurrentAccount = CurrentAccount;
             customerListWindow.CurrentAccount = CurrentAccount;
@@ -45,8 +46,11 @@ namespace WPF_NhaMayCaoSu.Content
             rfidListWindow.CurrentAccount = CurrentAccount;
             roleListWindow.CurrentAccount = CurrentAccount;
 
-            // Show broker content by default
             MainContentControl.Content = broker.Content;
+            _mqttServerService = MqttServerService.Instance;
+            _mqttServerService.BrokerStatusChanged += (sender, e) => UpdateMainWindowUI();
+            _mqttClientService = new MqttClientService();
+            _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -211,6 +215,59 @@ namespace WPF_NhaMayCaoSu.Content
             LoginButton.Visibility = Visibility.Hidden;
 
             MessageBox.Show("Đăng nhập tài khoản thành công!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void UpdateMainWindowUI()
+        {
+            if (MqttServerService.IsBrokerRunning)
+            {
+                OpenServerButton.Content = Constants.CloseServerText;
+                ServerStatusTextBlock.Text = Constants.ServerOnlineStatus;
+                int deviceCount = _mqttServerService.GetDeviceCount();
+                NumberofconnectionTextBlock.Text = $"Onl: {deviceCount} Thiết bị";
+            }
+            else
+            {
+                OpenServerButton.Content = Constants.OpenServerText;
+                ServerStatusTextBlock.Text = Constants.ServerOfflineStatus;
+            }
+        }
+
+        private void OnDeviceCountChanged(object sender, int deviceCount)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                NumberofconnectionTextBlock.Text = $"Onl:{deviceCount} Thiết bị";
+            });
+        }
+
+        private async void Broker_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (MqttServerService.IsBrokerRunning)
+                {
+                    await _mqttServerService.StopBrokerAsync();
+                    await _mqttClientService.CloseConnectionAsync();
+                }
+                else
+                {
+                    await _mqttServerService.StartBrokerAsync();
+                    await _mqttClientService.ConnectAsync();
+                }
+                UpdateMainWindowUI();
+            }
+            catch (Exception ex)
+            {
+                if (OpenServerButton.Content.ToString() == Constants.OpenServerText)
+                {
+                    MessageBox.Show(Constants.BrokerStartErrorMessage + "\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    MessageBox.Show(Constants.BrokerStopErrorMessage + "\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 

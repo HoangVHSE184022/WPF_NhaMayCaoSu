@@ -8,11 +8,11 @@
         Loaded="Window_Loaded"
         Title="Broker Window" Height="800" Width="1200" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow">
     <Grid>
-       
+
         <Label Content="Quản lý broker" HorizontalAlignment="Left" Height="53" Margin="32,60,0,0" VerticalAlignment="Top" Width="271" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
         <Label Content="Trạng thái server:"  HorizontalAlignment="Left" Height="46" Margin="164,213,0,0" VerticalAlignment="Top" Width="261" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
         <Label x:Name="ServerStatusLabel" Content="Offline" HorizontalAlignment="Left" Height="46" Margin="501,218,0,0" VerticalAlignment="Top" Width="340" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
-        <Button x:Name="QuitButton" Content="QUIT" Margin="0,0,26,84" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36"  Click="QuitButton_Click" HorizontalAlignment="Right" Width="121" Height="40" VerticalAlignment="Bottom"/>
+        <Button x:Name="QuitButton" Content="QUIT" Margin="0,0,22,157" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36"  Click="QuitButton_Click" HorizontalAlignment="Right" Width="121" Height="40" VerticalAlignment="Bottom"/>
         <Button x:Name="StartButton" Content="Start" Height="48" Margin="158,134,0,0" VerticalAlignment="Top"  FontFamily="Montserrat" Foreground="#FF002366" Background="#FFCACACA" BorderThickness="0" FontSize="26" Click="StartBroker_Click" HorizontalAlignment="Left" Width="160"/>
         <Button x:Name="RestartButton" Content="Restart" HorizontalAlignment="Left" Height="48" Margin="520,134,0,0" VerticalAlignment="Top" Width="160" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="26" Click="RestartBroker_Click"/>
         <Button x:Name="StopButton" Content="Stop" Height="48" Margin="882,134,0,0" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#9b111e" BorderThickness="0" FontSize="26" Click="StopBroker_Click" HorizontalAlignment="Left" Width="160"/>
@@ -21,6 +21,6 @@
         <Label x:Name="IPconnecttionLabel" Content="Không có kết nối" HorizontalAlignment="Left" Height="46" Margin="501,261,0,0" VerticalAlignment="Top" Width="340" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
         <Label Content="Port:" HorizontalAlignment="Left" Height="46" Margin="164,312,0,0" VerticalAlignment="Top"  Width="332" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
         <Label x:Name="PortconnecttionLabel" Content="Không có kết nối" HorizontalAlignment="Left" Height="46" Margin="501,312,0,0" VerticalAlignment="Top" Width="340" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
-        <Label x:Name="IPconnecttionSmallLabel" Content="Không có kết nối" Margin="0,0,26,55" FontFamily="Montserrat" FontSize="12" Foreground="#FF002366" HorizontalAlignment="Right" Width="121" Height="24" VerticalAlignment="Bottom"/>
+        <Label x:Name="IPconnecttionSmallLabel" Content="Không có kết nối" Margin="0,0,22,128" FontFamily="Montserrat" FontSize="12" Foreground="#FF002366" HorizontalAlignment="Right" Width="121" Height="24" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

@@ -15,7 +15,7 @@
         <Button x:Name="EditRoleButton1" HorizontalAlignment="Right" Height="40" Margin="0,228,32,0" VerticalAlignment="Top" Width="121" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="EditRoleButton_Click" >
             <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Right" Height="40" Margin="0,0,32,42" VerticalAlignment="Bottom" Width="121" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" Click="QuitButton_Click"/>
+        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Right" Height="40" Margin="0,0,33,118" VerticalAlignment="Bottom" Width="121" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" Click="QuitButton_Click"/>
         <DataGrid x:Name="RoleDataGrid" Margin="32,129,159,42" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Width="200" Binding="{Binding RoleId}"/>
