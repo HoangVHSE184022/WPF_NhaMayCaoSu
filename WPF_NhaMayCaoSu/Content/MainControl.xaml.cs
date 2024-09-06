@@ -56,41 +56,49 @@ namespace WPF_NhaMayCaoSu.Content
         private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             MainContentControl.Content = broker.Content;
+            this.Title = broker.Title;
         }
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
             MainContentControl.Content = customerListWindow.Content;
+            this.Title = customerListWindow.Title;
         }
 
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
         {
             MainContentControl.Content = saleListWindow.Content;
+            this.Title = saleListWindow.Title;
         }
 
         private void AccountManagementButton_Click(object sender, RoutedEventArgs e)
         {
             MainContentControl.Content = accountManagementWindow.Content;
+            this.Title = accountManagementWindow.Title;
         }
 
         private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
         {
             MainContentControl.Content = rfidListWindow.Content;
+            this.Title = rfidListWindow.Title;
         }
 
         private void RoleManagementButton_Click(object sender, RoutedEventArgs e)
         {
             MainContentControl.Content = roleListWindow.Content;
+            this.Title = roleListWindow.Title;
         }
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
         {
             MainContentControl.Content = configCamera.Content;
+            this.Title = configCamera.Title;
         }
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
         {
             MainContentControl.Content = mainWindow.Content;
+            this.Title = mainWindow.Title;
         }
 
         
