@@ -42,10 +42,7 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new();
-            mainWindow.CurrentAccount = CurrentAccount;
             Close();
-            mainWindow.Show();
         }
 
         private void AddSaleButton_Click(object sender, RoutedEventArgs e)
@@ -136,6 +133,10 @@ namespace WPF_NhaMayCaoSu
                 this.Close();
                 return;
             }
+        }
+        public void OnWindowLoaded()
+        {
+            Window_Loaded(this, null);
         }
 
 

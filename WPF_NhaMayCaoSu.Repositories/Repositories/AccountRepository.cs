@@ -53,7 +53,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         {
             _context = new();
             Account account = await _context.Accounts
-                                        .FirstOrDefaultAsync(a => a.Username.ToLower().Equals(username));
+                                        .FirstOrDefaultAsync(a => a.Username.ToLower().Equals(username.ToLower()));
 
             if (account != null && BCrypt.Net.BCrypt.Verify(password, account.Password))
             {

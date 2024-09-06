@@ -18,7 +18,6 @@ namespace WPF_NhaMayCaoSu
         public ConfigCamera()
         {
             InitializeComponent();
-            LoadSavedUrlsAsync();
         }
 
         private async Task LoadSavedUrlsAsync()
@@ -142,6 +141,16 @@ namespace WPF_NhaMayCaoSu
         private void btnQuit_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            await LoadSavedUrlsAsync();
+
+        }
+        public void OnWindowLoaded()
+        {
+            Window_Loaded(this, null);
         }
     }
 }

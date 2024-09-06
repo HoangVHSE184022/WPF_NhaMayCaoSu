@@ -83,6 +83,10 @@ namespace WPF_NhaMayCaoSu
         {
             LoadDataGrid();
         }
+        public void OnWindowLoaded()
+        {
+            Window_Loaded(this, null);
+        }
 
         private void AddRoleButton_Click(object sender, RoutedEventArgs e)
         {
@@ -115,10 +119,7 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new();
-            mainWindow.CurrentAccount = CurrentAccount;
             Close();
-            mainWindow.Show();
         }
     }
 }

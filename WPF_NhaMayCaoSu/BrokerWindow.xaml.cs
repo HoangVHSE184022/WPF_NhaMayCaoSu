@@ -24,6 +24,14 @@ namespace WPF_NhaMayCaoSu
             _mqttServerService.ClientsChanged += MqttService_ClientsChanged;
             _mqttClientService = new MqttClientService();
         }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+        public void OnWindowLoaded()
+        {
+            Window_Loaded(this, null);
+        }
 
         private void UpdateBrokerUI()
         {
@@ -164,10 +172,7 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.CurrentAccount = CurrentAccount;
-            Hide();
-            mainWindow.Show();
+            Close();
         }
 
         private void MqttService_ClientsChanged(object sender, EventArgs e)
@@ -243,5 +248,7 @@ namespace WPF_NhaMayCaoSu
             Close();
             roleListWindow.ShowDialog();
         }
+
+        
     }
 }

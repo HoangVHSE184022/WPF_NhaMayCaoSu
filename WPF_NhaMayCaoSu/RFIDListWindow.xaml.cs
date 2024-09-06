@@ -18,10 +18,7 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new();
-            mainWindow.CurrentAccount = CurrentAccount;
             Close();
-            mainWindow.Show();
         }
 
         private async void LoadDataGrid()
@@ -34,6 +31,10 @@ namespace WPF_NhaMayCaoSu
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             LoadDataGrid();
+        }
+        public void OnWindowLoaded()
+        {
+            Window_Loaded(this, null);
         }
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)

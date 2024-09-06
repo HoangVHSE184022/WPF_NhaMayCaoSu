@@ -24,11 +24,8 @@ namespace WPF_NhaMayCaoSu
             InitializeComponent();
             broker = new BrokerWindow();
             _mqttServerService = MqttServerService.Instance;
-            _mqttServerService.BrokerStatusChanged += (sender, e) => UpdateMainWindowUI();
             _mqttClientService = new MqttClientService();
-            _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;
-            UpdateMainWindowUI();
-
+            
         }
 
         private void OnSalesDataUpdated(object sender, List<Sale> updatedSales)
@@ -40,21 +37,7 @@ namespace WPF_NhaMayCaoSu
                 SalesDataGrid.ItemsSource = updatedSales;
             });
         }
-        private void UpdateMainWindowUI()
-        {
-            if (MqttServerService.IsBrokerRunning)
-            {
-                OpenServerButton.Content = Constants.CloseServerText;
-                ServerStatusTextBlock.Text = Constants.ServerOnlineStatus;
-                int deviceCount = _mqttServerService.GetDeviceCount();
-                NumberofconnectionTextBlock.Text = $"Onl: {deviceCount} Thiết bị";
-            }
-            else
-            {
-                OpenServerButton.Content = Constants.OpenServerText;
-                ServerStatusTextBlock.Text = Constants.ServerOfflineStatus;
-            }
-        }
+        
 
         private void OnMqttMessageReceived(object sender, string data)
         {
@@ -228,43 +211,6 @@ namespace WPF_NhaMayCaoSu
             MessageBox.Show("Bạn đang ở cửa sổ hiển thị!", "Lặp cửa sổ!", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private async void Broker_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (MqttServerService.IsBrokerRunning)
-                {
-                    await _mqttServerService.StopBrokerAsync();
-                    await _mqttClientService.CloseConnectionAsync();
-                }
-                else
-                {
-                    await _mqttServerService.StartBrokerAsync();
-                    await _mqttClientService.ConnectAsync();
-                }
-                UpdateMainWindowUI();
-            }
-            catch (Exception ex)
-            {
-                if (OpenServerButton.Content.ToString() == Constants.OpenServerText)
-                {
-                    MessageBox.Show(Constants.BrokerStartErrorMessage + "\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                else
-                {
-                    MessageBox.Show(Constants.BrokerStopErrorMessage + "\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-        }
-
-        private void OnDeviceCountChanged(object sender, int deviceCount)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                NumberofconnectionTextBlock.Text = $"Onl:{deviceCount} Thiết bị";
-            });
-        }
-
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -282,6 +228,10 @@ namespace WPF_NhaMayCaoSu
                 brokerWindow.ShowDialog();
                 this.Close();
             }
+        }
+        public void OnWindowLoaded()
+        {
+            Window_Loaded(this, null);
         }
 
 

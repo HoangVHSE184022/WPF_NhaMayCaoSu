@@ -2,6 +2,7 @@
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
+using WPF_NhaMayCaoSu.Content;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -11,6 +12,7 @@ namespace WPF_NhaMayCaoSu
     public partial class LoginWindow : Window
     {
         private readonly AccountService _accountService = new();
+        //public event Action<Account> LoginSucceeded;
 
         public LoginWindow()
         {
@@ -33,9 +35,10 @@ namespace WPF_NhaMayCaoSu
                 }
                 else
                 {
-                    MainWindow mainWindow = new MainWindow();
-                    mainWindow.CurrentAccount = account;
-                    mainWindow.Show();
+                    //LoginSucceeded?.Invoke(account);
+                    MainControl control = new();
+                    control.CurrentAccount = account;
+                    control.Show();
                     Close();
                 }
 
@@ -50,7 +53,7 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            App.Current.Shutdown();
+            Close();
         }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
