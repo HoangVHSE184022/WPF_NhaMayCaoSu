@@ -60,16 +60,7 @@ namespace WPF_NhaMayCaoSu.Content
         // Toggle the visibility of BrokerWindow content
         private void BrokerManagementButton_Click(object sender, RoutedEventArgs e)
         {
-            if(CurrentAccount is null)
-            {
-                MessageBox.Show("You must be logged in first","Please login",MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            else if(MqttServerService.IsBrokerRunning == false)
-            {
-                MessageBox.Show("You must start the server first", "Sever status offline", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+            
             MainContentControl.Content = broker.Content;
             broker.OnWindowLoaded();
             this.Title = broker.Title;
