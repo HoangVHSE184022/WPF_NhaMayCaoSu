@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace WPF_NhaMayCaoSu.Repository.Migrations
 {
     /// <inheritdoc />
@@ -139,6 +141,24 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                         principalTable: "Sales",
                         principalColumn: "SaleId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "RoleId", "RoleName" },
+                values: new object[,]
+                {
+                    { new Guid("8fda6d40-6cac-46d7-ade8-830b865249f1"), "Admin" },
+                    { new Guid("9ed29019-5681-43df-8d49-83cfce8e30b0"), "User" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Accounts",
+                columns: new[] { "AccountId", "AccountName", "CreatedDate", "Password", "RoleId", "Status", "Username" },
+                values: new object[,]
+                {
+                    { new Guid("4e104baa-4f15-411a-b62f-bb398d841c0d"), "Standard User", new DateTime(2024, 9, 6, 18, 44, 46, 518, DateTimeKind.Utc).AddTicks(9704), "$2a$11$qv3BLOpzlq/nqtf.W0bWI.SPnCX/CeNCgTbqlxDgbjuMEBY8QP5Qy", new Guid("9ed29019-5681-43df-8d49-83cfce8e30b0"), 1L, "user" },
+                    { new Guid("a9701e97-ae81-4c4e-900d-db9f2fb6bcc3"), "Administrator", new DateTime(2024, 9, 6, 18, 44, 46, 404, DateTimeKind.Utc).AddTicks(9818), "$2a$11$6NXIaRjkB8HPsPIWzW0SYungnA4Rxph9sOYzHbTnl751EIe7hsC1K", new Guid("8fda6d40-6cac-46d7-ade8-830b865249f1"), 1L, "admin" }
                 });
 
             migrationBuilder.CreateIndex(
