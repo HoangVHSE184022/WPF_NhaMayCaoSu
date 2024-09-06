@@ -12,7 +12,7 @@ namespace WPF_NhaMayCaoSu
     public partial class LoginWindow : Window
     {
         private readonly AccountService _accountService = new();
-        //public event Action<Account> LoginSucceeded;
+        public event Action<Account> LoginSucceeded;
 
         public LoginWindow()
         {
@@ -35,10 +35,10 @@ namespace WPF_NhaMayCaoSu
                 }
                 else
                 {
-                    //LoginSucceeded?.Invoke(account);
-                    MainControl control = new();
-                    control.CurrentAccount = account;
-                    control.Show();
+                    LoginSucceeded?.Invoke(account);
+                    //MainControl control = new();
+                    //control.CurrentAccount = account;
+                    //control.Show();
                     Close();
                 }
 
