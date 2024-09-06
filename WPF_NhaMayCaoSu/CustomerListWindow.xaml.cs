@@ -65,6 +65,10 @@ namespace WPF_NhaMayCaoSu
         {
             LoadDataGrid();
         }
+        public void OnWindowLoaded()
+        {
+            Window_Loaded(this, null);
+        }
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {

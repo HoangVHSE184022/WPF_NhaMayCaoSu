@@ -283,6 +283,10 @@ namespace WPF_NhaMayCaoSu
                 this.Close();
             }
         }
+        public void OnWindowLoaded()
+        {
+            Window_Loaded(this, null);
+        }
 
 
         private void RoleManagementButton_Click(object sender, RoutedEventArgs e)

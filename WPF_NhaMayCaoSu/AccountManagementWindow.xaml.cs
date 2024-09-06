@@ -127,5 +127,9 @@ namespace WPF_NhaMayCaoSu
                 LoginButton.IsEnabled = false;
             }
         }
+        public void OnWindowLoaded()
+        {
+            Window_Loaded(this, null);
+        }
     }
 }
