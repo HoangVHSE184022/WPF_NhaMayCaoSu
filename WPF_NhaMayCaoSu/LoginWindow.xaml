@@ -16,6 +16,5 @@
         <PasswordBox x:Name="PasswordTextBox" Height="55" Margin="503,392,291,0" VerticalAlignment="Top" FontSize="40" Padding="10,0,0,0" Background="#FFCACACA"/>
         <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Right" Height="78" Margin="0,518,357,0" VerticalAlignment="Top" Width="174" FontSize="40" Background="#FF254098" FontFamily="Montserrat" Click="LoginButton_Click" Foreground="#FFFFFF" BorderThickness="0"/>
         <Button x:Name="QuitButton" Content="Quit" HorizontalAlignment="Left" Margin="358,518,0,188" Width="174" FontSize="40" Background="#FFCACACA" FontFamily="Montserrat" Click="QuitButton_Click" Foreground="#FF002366" RenderTransformOrigin="0.713,0.462" BorderThickness="0" />
-        <Button x:Name="RegisterButton" Content="Register for new Account" HorizontalAlignment="Center" Height="78" Margin="0,619,0,0" VerticalAlignment="Top" Width="279" FontSize="24" Background="White" FontFamily="Montserrat" Foreground="Black"  BorderThickness="0" Click="RegisterButton_Click"/>
     </Grid>
 </Window>
