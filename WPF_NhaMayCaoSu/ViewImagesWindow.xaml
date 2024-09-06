@@ -25,7 +25,7 @@
 
         <Label Content="Hình ảnh cân tiểu ly" Height="46" Margin="0,81,132,0" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366" HorizontalAlignment="Right" Width="276"/>
         <Image x:Name="DensityImage" Margin="640,147,60,187"/>
-        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Height="45" Margin="41,0,0,21" VerticalAlignment="Bottom" Width="106" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="30" Click="QuitButton_Click"/>
+        <Button x:Name="QuitButton" Content="Thoát" HorizontalAlignment="Left" Height="45" Margin="41,0,0,21" VerticalAlignment="Bottom" Width="106" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="30" Click="QuitButton_Click"/>
 
     </Grid>
 </Window>

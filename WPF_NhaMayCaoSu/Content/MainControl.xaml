@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu.Content"
         mc:Ignorable="d"
         Loaded="Window_Loaded"
+        Closing="Window_Closing"
         Title="BrokerWindow" Height="800" Width="1200" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow" ResizeMode="NoResize">
     <Grid>
         <Menu HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Monserrat" Foreground="#FF002366" FontSize="16">
@@ -23,12 +24,12 @@
 
         <ContentControl x:Name="MainContentControl" Grid.Row="1" />
         <!--<Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Center" Height="78" Margin="0,11,0,0" VerticalAlignment="Top" Width="174" FontSize="40" Background="#FF254098" FontFamily="Montserrat" Click="LoginButton_Click" Foreground="#FFFFFF" BorderThickness="0"/>-->
-        <Button x:Name="OpenServerButton" Content="Mở máy chủ" Margin="0,0,204,21" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="30" Click="Broker_Click" Height="46" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="182"/>
-        <TextBlock x:Name="ServerStatusTextBlock" Text="Offline" Margin="0,0,103,41" 
-            FontFamily="Montserrat" FontSize="22" Foreground="#FF254098" FontWeight="Bold" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="71" />
-        <TextBlock x:Name="NumberofconnectionTextBlock" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,41,25" 
-            FontFamily="Montserrat" FontSize="12" Foreground="#FF254098" FontWeight="Bold" Height="21" Width="133" ><Run Text="Onl"/><LineBreak/><Run/></TextBlock>
-        <Button x:Name="QuitButton" Content="QUIT" HorizontalAlignment="Left" Margin="41,0,0,21" Width="106" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="30" Click="QuitButton_Click" Height="45" VerticalAlignment="Bottom"/>
-        <Label x:Name="IPconnecttionSmallLabel" Content="Không có kết nối" Margin="0,0,53,10" FontFamily="Montserrat" FontSize="12" Foreground="#FF002366" HorizontalAlignment="Right" Width="121" Height="24" VerticalAlignment="Bottom"/>
+        <Button x:Name="OpenServerButton" Content="Mở máy chủ" Margin="0,0,143,26" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="30" Click="Broker_Click" Height="46" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="236"/>
+        <TextBlock x:Name="ServerStatusTextBlock" Text="Offline" Margin="0,0,67,46" 
+            FontFamily="Montserrat" FontSize="22" Foreground="#FF254098" FontWeight="Bold" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="71" RenderTransformOrigin="0.885,-0.059" />
+        <TextBlock x:Name="NumberofconnectionTextBlock" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,17,32" 
+            FontFamily="Montserrat" FontSize="12" Foreground="#FF254098" FontWeight="Bold" Height="17" Width="121" ><Run Text="Onl"/><LineBreak/><Run/></TextBlock>
+        <Button x:Name="QuitButton" Content="Thoát" HorizontalAlignment="Left" Margin="31,0,0,26" Width="106" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="30" Click="QuitButton_Click" Height="46" VerticalAlignment="Bottom"/>
+        <Label x:Name="IPconnecttionSmallLabel" Content="Không có kết nối" Margin="0,0,17,8" FontFamily="Montserrat" FontSize="12" Foreground="#FF002366" HorizontalAlignment="Right" Width="121" Height="24" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>
