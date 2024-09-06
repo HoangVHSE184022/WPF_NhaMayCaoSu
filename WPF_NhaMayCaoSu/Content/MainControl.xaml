@@ -22,5 +22,6 @@
         </Menu>
 
         <ContentControl x:Name="MainContentControl" Grid.Row="1" />
+        <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Center" Height="78" Margin="0,11,0,0" VerticalAlignment="Top" Width="174" FontSize="40" Background="#FF254098" FontFamily="Montserrat" Click="LoginButton_Click" Foreground="#FFFFFF" BorderThickness="0"/>
     </Grid>
 </Window>
