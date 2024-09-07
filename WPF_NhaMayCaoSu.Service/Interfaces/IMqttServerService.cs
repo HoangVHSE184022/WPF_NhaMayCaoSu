@@ -7,9 +7,5 @@ namespace WPF_NhaMayCaoSu.Service.Interfaces
         Task StartBrokerAsync();
         Task StopBrokerAsync();
         Task RestartBrokerAsync();
-        IReadOnlyDictionary<string, string> GetConnectedClients();
-
-        event EventHandler ClientsChanged;
-        int GetDeviceCount();
     }
 }
