@@ -14,6 +14,7 @@ namespace WPF_NhaMayCaoSu.Repository.Context
         public DbSet<Role> Roles { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Board> Boards { get; set; }
 
         private string GetConnectionString()
         {
@@ -38,6 +39,9 @@ namespace WPF_NhaMayCaoSu.Repository.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Board>()
+                .HasKey(b => b.BoardId);
+
             modelBuilder.Entity<Sale>()
                 .HasKey(s => s.SaleId);
 
