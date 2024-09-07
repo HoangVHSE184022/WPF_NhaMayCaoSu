@@ -5,15 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
-         
         Title="Show Information" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" WindowStyle="SingleBorderWindow">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
-    <Grid>
 
-        <DataGrid x:Name="SalesDataGrid" HorizontalAlignment="Center" Width="1118" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False" Margin="0,36,0,161">
+    <Grid>
+        <!-- Define row and column for proper positioning and stretching -->
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <!-- This will take up the remaining space for the DataGrid -->
+            <RowDefinition Height="Auto" MinHeight="81.04" />
+            <!-- For the button at the bottom -->
+        </Grid.RowDefinitions>
+
+        <!-- DataGrid that will stretch when window resizes -->
+        <DataGrid x:Name="SalesDataGrid" Grid.Row="0"
+                  Width="Auto" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA"
+                  AutoGenerateColumns="False" Margin="10,40,10,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Thời gian quét" Binding="{Binding LastEditedTime, StringFormat=G}" />
                 <DataGridTextColumn Header="RFID" Binding="{Binding RFIDCode}"/>
@@ -37,6 +47,13 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Content="⛶" Name="ExpandButton" Click="ExpandButton_Click" HorizontalAlignment="Left" Height="60" Margin="41,628,0,0" VerticalAlignment="Top" Width="71"/>
+
+        <!-- Button to expand that stays at the bottom -->
+        <Button Content="⛶" Name="ExpandButton" Grid.Row="1" Click="ExpandButton_Click"
+                HorizontalAlignment="Center" Height="60" VerticalAlignment="Center" Width="72"/>
+
+        <!-- Close button that stays on top-right -->
+        <Button Content="✖" HorizontalAlignment="Right" VerticalAlignment="Top" Width="30" Height="30" 
+                Name="CloseButton" Click="CloseButton_Click" Visibility="Hidden" Margin="0,10,10,0"/>
     </Grid>
 </Window>

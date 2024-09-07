@@ -16,6 +16,7 @@ namespace WPF_NhaMayCaoSu
         private readonly MqttServerService _mqttServerService;
         private readonly MqttClientService _mqttClientService;
         private readonly CameraService _cameraService = new();
+        private bool isExpanded = false;
         public Account CurrentAccount { get; set; } = null;
         private BrokerWindow broker;
         private List<Sale> _sessionSaleList { get; set; } = new();
@@ -214,6 +215,11 @@ namespace WPF_NhaMayCaoSu
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if(isExpanded == true)
+            {
+                ExpandButton.Visibility = Visibility.Hidden;
+                CloseButton.Visibility = Visibility.Visible;
+            }
             try
             {
                 await _mqttClientService.ConnectAsync();
@@ -311,11 +317,14 @@ namespace WPF_NhaMayCaoSu
             viewWindow.WindowState = WindowState.Maximized;
             viewWindow.WindowStyle = WindowStyle.None;
             viewWindow.ResizeMode = ResizeMode.NoResize; 
-
+            viewWindow.isExpanded = true;
             viewWindow.Show();
         }
 
-
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
 
