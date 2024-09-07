@@ -436,9 +436,29 @@ namespace WPF_NhaMayCaoSu
 
         private void ControlButton_Click(object sender, RoutedEventArgs e)
         {
+            if (SaleDataGrid.SelectedItem == null)
+            {
+                MessageBox.Show("Vui lòng chọn một giao dịch từ danh sách.", "Không có giao dịch được chọn", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             Sale sale = SaleDataGrid.SelectedItem as Sale;
+
+            if (sale == null)
+            {
+                MessageBox.Show("Giao dịch được chọn không hợp lệ hoặc chưa được tải đúng cách.", "Giao dịch không hợp lệ", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (sale.Images == null || !sale.Images.Any())
+            {
+                MessageBox.Show("Giao dịch này không có hình ảnh nào được liên kết để hiển thị.", "Không tìm thấy hình ảnh", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
             ViewImagesWindow window = new(sale);
             window.ShowDialog();
         }
+
     }
 }
