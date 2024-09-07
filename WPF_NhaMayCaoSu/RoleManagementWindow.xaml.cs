@@ -39,6 +39,12 @@ namespace WPF_NhaMayCaoSu
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(RoleTextBox.Text))
+            {
+                MessageBox.Show("Tên vai trò không được để trống.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             Role role = new()
             {
                 RoleName = RoleTextBox.Text,
@@ -58,6 +64,7 @@ namespace WPF_NhaMayCaoSu
 
             Close();
         }
+
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
