@@ -21,6 +21,7 @@ namespace WPF_NhaMayCaoSu.Content
         private SaleListWindow saleListWindow;
         private AccountManagementWindow accountManagementWindow;
         private RFIDListWindow rfidListWindow;
+        private BoardListWindow boardListWindow;
         private RoleListWindow roleListWindow;
         private MainWindow mainWindow;
         private ConfigCamera configCamera;
@@ -31,6 +32,7 @@ namespace WPF_NhaMayCaoSu.Content
 
             broker = new BrokerWindow();
             customerListWindow = new CustomerListWindow();
+            boardListWindow = new BoardListWindow();
             saleListWindow = new SaleListWindow();
             accountManagementWindow = new AccountManagementWindow();
             rfidListWindow = new RFIDListWindow();
@@ -99,6 +101,18 @@ namespace WPF_NhaMayCaoSu.Content
             MainContentControl.Content = customerListWindow.Content;
             customerListWindow.OnWindowLoaded();
             this.Title = customerListWindow.Title;
+        }
+
+        private void BoardManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ValidCheck())
+            {
+                return;
+            }
+
+            MainContentControl.Content = boardListWindow.Content;
+            //boardListWindow.OnWindowLoaded();
+            this.Title = boardListWindow.Title;
         }
 
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
