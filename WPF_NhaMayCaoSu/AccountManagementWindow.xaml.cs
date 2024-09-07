@@ -122,10 +122,7 @@ namespace WPF_NhaMayCaoSu
                 UsernameTextBox.Text = CurrentAccount.Username;
                 LoginButton.Visibility = Visibility.Collapsed;
             }
-            else
-            {
-                SaveButton.Visibility = Visibility.Collapsed;
-            }
+            
         }
         public void OnWindowLoaded()
         {
