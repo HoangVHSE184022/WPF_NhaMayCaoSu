@@ -37,5 +37,6 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <Button Content="⛶" Name="ExpandButton" Click="ExpandButton_Click" HorizontalAlignment="Left" Height="60" Margin="41,628,0,0" VerticalAlignment="Top" Width="71"/>
     </Grid>
 </Window>

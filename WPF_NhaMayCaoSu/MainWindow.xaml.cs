@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Configuration;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using WPF_NhaMayCaoSu.Core.Utils;
@@ -294,6 +295,27 @@ namespace WPF_NhaMayCaoSu
         {
             MessageBox.Show("Dữ liệu cân tiểu li cập nhật thành công", "Cập nhật dữ liệu", MessageBoxButton.OK);
         }
+
+        //protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        //{
+        //    this.Hide();
+        //    e.Cancel = true;
+        //}
+
+        private void ExpandButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow viewWindow = new();
+            viewWindow._sessionSaleList = this._sessionSaleList;
+            viewWindow.CurrentAccount = this.CurrentAccount;
+
+            viewWindow.WindowState = WindowState.Maximized;
+            viewWindow.WindowStyle = WindowStyle.None;
+            viewWindow.ResizeMode = ResizeMode.NoResize; 
+
+            viewWindow.Show();
+        }
+
+
     }
 }
 
