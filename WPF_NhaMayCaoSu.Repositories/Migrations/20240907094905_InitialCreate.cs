@@ -14,6 +14,21 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Boards",
+                columns: table => new
+                {
+                    BoardId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BoardName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BoardIp = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BoardMacAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BoardMode = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Boards", x => x.BoardId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Cameras",
                 columns: table => new
                 {
@@ -148,8 +163,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: new[] { "RoleId", "RoleName" },
                 values: new object[,]
                 {
-                    { new Guid("8fda6d40-6cac-46d7-ade8-830b865249f1"), "Admin" },
-                    { new Guid("9ed29019-5681-43df-8d49-83cfce8e30b0"), "User" }
+                    { new Guid("24a6aa5a-942c-4e3d-a08d-b7fb98a1535f"), "User" },
+                    { new Guid("a73505ab-adf9-40d2-9606-73ee2ebe4916"), "Admin" }
                 });
 
             migrationBuilder.InsertData(
@@ -157,8 +172,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: new[] { "AccountId", "AccountName", "CreatedDate", "Password", "RoleId", "Status", "Username" },
                 values: new object[,]
                 {
-                    { new Guid("4e104baa-4f15-411a-b62f-bb398d841c0d"), "Standard User", new DateTime(2024, 9, 6, 18, 44, 46, 518, DateTimeKind.Utc).AddTicks(9704), "$2a$11$qv3BLOpzlq/nqtf.W0bWI.SPnCX/CeNCgTbqlxDgbjuMEBY8QP5Qy", new Guid("9ed29019-5681-43df-8d49-83cfce8e30b0"), 1L, "user" },
-                    { new Guid("a9701e97-ae81-4c4e-900d-db9f2fb6bcc3"), "Administrator", new DateTime(2024, 9, 6, 18, 44, 46, 404, DateTimeKind.Utc).AddTicks(9818), "$2a$11$6NXIaRjkB8HPsPIWzW0SYungnA4Rxph9sOYzHbTnl751EIe7hsC1K", new Guid("8fda6d40-6cac-46d7-ade8-830b865249f1"), 1L, "admin" }
+                    { new Guid("1f4bea98-5caf-424f-902f-de977b403c29"), "Administrator", new DateTime(2024, 9, 7, 9, 49, 4, 880, DateTimeKind.Utc).AddTicks(1140), "$2a$11$yFa7AyIN55hg25JJPklFAuyL22NVF/g6Hs.YeqfjhgQ6aKiAAJNQG", new Guid("a73505ab-adf9-40d2-9606-73ee2ebe4916"), 1L, "admin" },
+                    { new Guid("7bb0761d-2bba-43e9-a158-e6d1717c8ef6"), "Standard User", new DateTime(2024, 9, 7, 9, 49, 5, 46, DateTimeKind.Utc).AddTicks(3731), "$2a$11$Z7v6c2N645aQF5RrxfYv.un0hpcBw2zJlJUqWYD7E/naDdPIsGxu.", new Guid("24a6aa5a-942c-4e3d-a08d-b7fb98a1535f"), 1L, "user" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -205,6 +220,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Accounts");
+
+            migrationBuilder.DropTable(
+                name: "Boards");
 
             migrationBuilder.DropTable(
                 name: "Cameras");
