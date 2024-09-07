@@ -120,7 +120,7 @@ namespace WPF_NhaMayCaoSu
                 MessageBox.Show(Constants.ErrorMessageMissingFields, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            RFID thisRFID = await _service.GetRFIDByRFIDCodeAsync(SelectedRFID.RFIDCode);
+            RFID thisRFID = await _service.GetRFIDByRFIDCodeAsync(RFIDCodeTextBox.Text);
             if (thisRFID != null)
             {
                 MessageBox.Show("Error, RFIDCode is already created", "Error", MessageBoxButton.OK, MessageBoxImage.Error);

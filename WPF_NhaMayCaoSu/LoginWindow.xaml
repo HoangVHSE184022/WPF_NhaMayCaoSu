@@ -5,16 +5,57 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
-        Title="Login" Height="800" Width="1200" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow">
+        Title="Login" Height="800" Width="1200" 
+        WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow">
+
     <Grid Margin="0,-7,0,7">
-        <Label Content="LOGIN" HorizontalAlignment="Center" Height="126" Margin="0,139,0,0" VerticalAlignment="Top" Width="296" FontFamily="Montserrat" FontSize="96" Foreground="Black" />
-        <Label Content="Username" HorizontalAlignment="Left" Height="55" Margin="301,294,0,0" VerticalAlignment="Top" Width="197" FontFamily="Montserrat" FontSize="40
-               " Foreground="Black" />
-        <Label Content="Password" HorizontalAlignment="Left" Height="54" Margin="301,392,0,0" VerticalAlignment="Top" Width="197" FontFamily="Montserrat" FontSize="40" Foreground="Black" />
-        <TextBox x:Name="UsernameTextBox" Height="55" Margin="503,294,291,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="40" Padding="10,0,0,0" Background="#FFCACACA"/>
-        <PasswordBox x:Name="PasswordTextBox" Height="55" Margin="503,392,291,0" VerticalAlignment="Top" FontSize="40" Padding="10,0,0,0" Background="#FFCACACA"/>
-        <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Right" Height="78" Margin="0,518,357,0" VerticalAlignment="Top" Width="174" FontSize="40" Background="#FF254098" FontFamily="Montserrat" Click="LoginButton_Click" Foreground="#FFFFFF" BorderThickness="0"/>
-        <Button x:Name="QuitButton" Content="Quit" HorizontalAlignment="Left" Margin="358,518,0,188" Height="78" Width="174" FontSize="40" Background="#FFCACACA" FontFamily="Montserrat" Click="QuitButton_Click" Foreground="#FF002366" RenderTransformOrigin="0.713,0.462" BorderThickness="0" />
-        <Button x:Name="RegisterButton" Content="Register for new Account" HorizontalAlignment="Center" Height="78" Margin="0,619,0,0" VerticalAlignment="Top" Width="279" FontSize="24" Background="White" FontFamily="Montserrat" Foreground="Black"  BorderThickness="0" Click="RegisterButton_Click"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="235*" />
+            <RowDefinition Height="157*" />
+            <RowDefinition Height="157*" />
+            <RowDefinition Height="120*" />
+            <RowDefinition Height="115*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="337*" />
+            <ColumnDefinition Width="581*" />
+            <ColumnDefinition Width="282*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Content="ĐĂNG NHẬP"
+               HorizontalAlignment="Center" VerticalAlignment="Top"
+               FontFamily="Montserrat" FontSize="85" Foreground="Black" Grid.Column="1" Height="125" Width="493" Margin="0,100,0,0" />
+
+        <Label Content="Tên Đăng Nhập" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
+               FontFamily="Montserrat" FontSize="40" Foreground="Black" Height="58" Margin="33,0,0,0" HorizontalAlignment="Left" Width="294" />
+
+        <TextBox x:Name="UsernameTextBox" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
+                 Height="55" TextWrapping="Wrap" FontSize="40" Padding="10,0,0,0"
+                 Background="#FFCACACA" />
+
+        <Label Content="Mật Khẩu" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top"
+               FontFamily="Montserrat" FontSize="40" Foreground="Black" Height="58" Margin="0,48,10,0" HorizontalAlignment="Right" Width="207" />
+
+        <PasswordBox x:Name="PasswordTextBox" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
+                     Height="55" FontSize="40" Padding="10,0,0,0" Background="#FFCACACA" />
+
+        <Button x:Name="LoginButton" Grid.Row="3" Grid.Column="1"
+                Content="Đăng Nhập" HorizontalAlignment="Left" VerticalAlignment="Center"
+                Height="78" Width="232" FontSize="40" Background="#FF254098"
+                FontFamily="Montserrat" Foreground="White" BorderThickness="0"
+                Click="LoginButton_Click" Margin="339,0,0,0" />
+
+        <Button x:Name="QuitButton" Grid.Row="3" Grid.Column="1"
+                Content="Thoát" HorizontalAlignment="Left" VerticalAlignment="Center"
+                Height="78" Width="225" FontSize="40" Background="#FFCACACA"
+                FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0"
+                Click="QuitButton_Click" />
+
+        <Button x:Name="RegisterButton" Grid.Row="3" Grid.Column="1"
+                Content="Đăng Ký Tài Khoản Mới" HorizontalAlignment="Center"
+                VerticalAlignment="Top" Height="78" FontSize="24" 
+                Background="White" FontFamily="Montserrat" Foreground="Black"
+                BorderThickness="0" Click="RegisterButton_Click" Width="266" Margin="0,120,0,0" Grid.RowSpan="2" />
     </Grid>
 </Window>

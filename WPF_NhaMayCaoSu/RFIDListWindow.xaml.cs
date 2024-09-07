@@ -11,6 +11,9 @@ namespace WPF_NhaMayCaoSu
     {
         public Account CurrentAccount { get; set; } = null;
         private RFIDService _service = new();
+        private int _currentPage = 1;
+        private int _pageSize = 10;
+        private int _totalPages;
         public RFIDListWindow()
         {
             InitializeComponent();
@@ -23,9 +26,37 @@ namespace WPF_NhaMayCaoSu
 
         private async void LoadDataGrid()
         {
+            var sales = await _service.GetAllRFIDsAsync(_currentPage, _pageSize);
+            int totalRFIDsCount = await _service.GetTotalRFIDsCountAsync();
+            _totalPages = (int)Math.Ceiling((double)totalRFIDsCount / _pageSize);
+
             RFIDDataGrid.ItemsSource = null;
             RFIDDataGrid.Items.Clear();
             RFIDDataGrid.ItemsSource = await _service.GetAllRFIDsAsync(1, 10);
+
+            PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
+
+            // Disable/Enable pagination buttons
+            PreviousPageButton.IsEnabled = _currentPage > 1;
+            NextPageButton.IsEnabled = _currentPage < _totalPages;
+        }
+
+        private void PreviousPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPage > 1)
+            {
+                _currentPage--;
+                LoadDataGrid();
+            }
+        }
+
+        private void NextPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPage < _totalPages)
+            {
+                _currentPage++;
+                LoadDataGrid();
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

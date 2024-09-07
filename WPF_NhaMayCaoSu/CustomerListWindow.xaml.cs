@@ -12,6 +12,9 @@ namespace WPF_NhaMayCaoSu
     {
 
         private CustomerService _service = new();
+        private int _currentPage = 1;
+        private int _pageSize = 10;
+        private int _totalPages;
         public Account CurrentAccount { get; set; } = null;
 
         public CustomerListWindow()
@@ -53,9 +56,37 @@ namespace WPF_NhaMayCaoSu
 
         private async void LoadDataGrid()
         {
+            var sales = await _service.GetAllCustomers(_currentPage, _pageSize);
+            int totalCustomerCount = await _service.GetTotalCustomersCountAsync();
+            _totalPages = (int)Math.Ceiling((double)totalCustomerCount / _pageSize);
+
             CustomerDataGrid.ItemsSource = null;
             CustomerDataGrid.Items.Clear();
             CustomerDataGrid.ItemsSource = await _service.GetAllCustomers(1, 10);
+
+            PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
+
+            // Disable/Enable pagination buttons
+            PreviousPageButton.IsEnabled = _currentPage > 1;
+            NextPageButton.IsEnabled = _currentPage < _totalPages;
+        }
+
+        private void PreviousPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPage > 1)
+            {
+                _currentPage--;
+                LoadDataGrid();
+            }
+        }
+
+        private void NextPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPage < _totalPages)
+            {
+                _currentPage++;
+                LoadDataGrid();
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -142,6 +173,23 @@ namespace WPF_NhaMayCaoSu
             }
 
             LoadDataGrid();
+        }
+
+        private async void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string searchTerm = SearchTextBox.Text.Trim().ToLower();
+
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                LoadDataGrid();
+            }
+            else
+            {
+                CustomerDataGrid.ItemsSource = null;
+                CustomerDataGrid.Items.Clear();
+                var sales = await _service.GetAllCustomers(1, 10);
+                CustomerDataGrid.ItemsSource = sales.Where(s => s.CustomerName.ToLower().Contains(searchTerm));
+            }
         }
 
     }

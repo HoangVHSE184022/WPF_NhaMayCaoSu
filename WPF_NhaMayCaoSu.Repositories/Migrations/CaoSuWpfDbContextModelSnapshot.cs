@@ -57,6 +57,28 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                         .IsUnique();
 
                     b.ToTable("Accounts");
+
+                    b.HasData(
+                        new
+                        {
+                            AccountId = new Guid("a9701e97-ae81-4c4e-900d-db9f2fb6bcc3"),
+                            AccountName = "Administrator",
+                            CreatedDate = new DateTime(2024, 9, 6, 18, 44, 46, 404, DateTimeKind.Utc).AddTicks(9818),
+                            Password = "$2a$11$6NXIaRjkB8HPsPIWzW0SYungnA4Rxph9sOYzHbTnl751EIe7hsC1K",
+                            RoleId = new Guid("8fda6d40-6cac-46d7-ade8-830b865249f1"),
+                            Status = 1L,
+                            Username = "admin"
+                        },
+                        new
+                        {
+                            AccountId = new Guid("4e104baa-4f15-411a-b62f-bb398d841c0d"),
+                            AccountName = "Standard User",
+                            CreatedDate = new DateTime(2024, 9, 6, 18, 44, 46, 518, DateTimeKind.Utc).AddTicks(9704),
+                            Password = "$2a$11$qv3BLOpzlq/nqtf.W0bWI.SPnCX/CeNCgTbqlxDgbjuMEBY8QP5Qy",
+                            RoleId = new Guid("9ed29019-5681-43df-8d49-83cfce8e30b0"),
+                            Status = 1L,
+                            Username = "user"
+                        });
                 });
 
             modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.Camera", b =>
@@ -175,6 +197,18 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                         .IsUnique();
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = new Guid("8fda6d40-6cac-46d7-ade8-830b865249f1"),
+                            RoleName = "Admin"
+                        },
+                        new
+                        {
+                            RoleId = new Guid("9ed29019-5681-43df-8d49-83cfce8e30b0"),
+                            RoleName = "User"
+                        });
                 });
 
             modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.Sale", b =>
