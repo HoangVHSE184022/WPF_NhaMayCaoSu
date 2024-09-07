@@ -73,7 +73,7 @@ namespace WPF_NhaMayCaoSu.Content
             }
             else if (MqttServerService.IsBrokerRunning == false)
             {
-                MessageBox.Show("You must start the server first", "Sever status offline", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Xin hãy khởi động server trước khi sử dụng", "Sever status offline", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             return true;
