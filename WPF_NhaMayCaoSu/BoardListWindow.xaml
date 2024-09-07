@@ -1,0 +1,35 @@
+﻿<Window x:Class="WPF_NhaMayCaoSu.BoardListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
+        mc:Ignorable="d"
+        Title="Board List" Height="800" Width="1200" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow">
+    <Grid>
+        <Label Content="Quản lý Board" HorizontalAlignment="Left" Height="57" Margin="32,50,0,0" VerticalAlignment="Top" Width="343" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
+        <Button x:Name="AddBoardButton" HorizontalAlignment="Right" Height="40" Margin="0,146,32,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24">
+            <TextBlock Text="Thêm mới" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
+        <Button x:Name="EditBoardButton" Height="40" Margin="0,228,32,0" VerticalAlignment="Top" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA"  HorizontalAlignment="Right" Width="121"  >
+            <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
+        <DataGrid x:Name="boardDataGrid" Margin="32,129,159,158" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Width="100"/>
+                <DataGridTextColumn Header="Tên Board" Width="150" />
+                <DataGridTextColumn Header="IP" Width="200"/>
+                <DataGridTextColumn Header="Loại Board" Width="120"/>
+                <DataGridTextColumn Header="Ngày tạo" Width="120"/>
+                <DataGridTextColumn Header="Trạng thái" Width="170"/>
+                <DataGridTextColumn Header="Chuyển loại" Width="170"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+        <Button x:Name="PreviousPageButton" Content="Trước" Margin="474,0,0,137"  FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
+        <TextBlock x:Name="PageNumberTextBlock" Margin="519,0,0,137" TextAlignment="Center" FontFamily="Montserrat" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="94" />
+        <Button x:Name="NextPageButton" Content="Sau" Margin="618,0,0,137" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
+
+    </Grid>
+</Window>
