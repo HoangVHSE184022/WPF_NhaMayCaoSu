@@ -76,7 +76,7 @@ namespace WPF_NhaMayCaoSu
             {
                 if (MqttServerService.IsBrokerRunning)
                 {
-                    MessageBox.Show("The broker is already running.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Máy chủ đã được mở.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
                 // Start the MQTT broker

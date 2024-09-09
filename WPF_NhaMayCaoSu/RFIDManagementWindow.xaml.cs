@@ -98,12 +98,12 @@ namespace WPF_NhaMayCaoSu
                     }
                     else
                     {
-                        Debug.WriteLine("Failed to parse RFID number.");
+                        Debug.WriteLine("Lỗi khi sử dụng mã RFID.");
                     }
                 }
                 else
                 {
-                    Debug.WriteLine("Unexpected message format.");
+                    Debug.WriteLine("Sai kiểu dữ liệu.");
                 }
             }
             catch (Exception ex)
@@ -123,7 +123,7 @@ namespace WPF_NhaMayCaoSu
             RFID thisRFID = await _service.GetRFIDByRFIDCodeAsync(RFIDCodeTextBox.Text);
             if (thisRFID != null)
             {
-                MessageBox.Show("Error, RFIDCode is already created", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("RFID đã được khởi tạo", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
