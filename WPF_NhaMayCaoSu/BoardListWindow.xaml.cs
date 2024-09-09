@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WPF_NhaMayCaoSu.Repository.Models;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -22,6 +11,17 @@ namespace WPF_NhaMayCaoSu
         public BoardListWindow()
         {
             InitializeComponent();
+        }
+        public Account CurrentAccount { get; set; } = null;
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (CurrentAccount?.Role?.RoleName != "Admin")
+            {
+                AddBoardButton.Visibility = Visibility.Collapsed;
+                EditBoardButton.Visibility = Visibility.Collapsed;
+            }
+            //LoadDataGrid();
         }
 
         private void AddBoardButton_Click(object sender, RoutedEventArgs e)

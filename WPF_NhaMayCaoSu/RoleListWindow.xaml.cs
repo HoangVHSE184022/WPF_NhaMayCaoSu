@@ -81,6 +81,11 @@ namespace WPF_NhaMayCaoSu
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if (CurrentAccount?.Role?.RoleName != "Admin")
+            {
+                AddRoleButton.Visibility = Visibility.Collapsed;
+                EditRoleButton1.Visibility = Visibility.Collapsed;
+            }
             LoadDataGrid();
         }
         public void OnWindowLoaded()

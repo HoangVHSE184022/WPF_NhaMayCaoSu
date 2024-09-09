@@ -111,6 +111,11 @@ namespace WPF_NhaMayCaoSu
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if (CurrentAccount?.Role?.RoleName != "Admin")
+            {
+                AddSaleButton.Visibility = Visibility.Collapsed;
+                EditSaleButton.Visibility = Visibility.Collapsed;
+            }
             LoadDataGrid();
             try
             {

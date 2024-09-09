@@ -61,6 +61,11 @@ namespace WPF_NhaMayCaoSu
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if (CurrentAccount?.Role?.RoleName != "Admin")
+            {
+                AddRFIDButton.Visibility = Visibility.Collapsed;
+                EditRFIDButton.Visibility = Visibility.Collapsed;
+            }
             LoadDataGrid();
         }
         public void OnWindowLoaded()
