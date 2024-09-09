@@ -9,5 +9,6 @@ namespace WPF_NhaMayCaoSu.Service.Interfaces
         Task<Role> GetRoleByIdAsync(Guid roleId);
         Task UpdateRoleAsync(Role role);
         Task DeleteRoleAsync(Guid roleId);
+        Task<Role> GetRoleByNameAsync(string roleName);
     }
 }

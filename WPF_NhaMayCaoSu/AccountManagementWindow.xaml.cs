@@ -29,29 +29,103 @@ namespace WPF_NhaMayCaoSu
             string accountName = AccountNameTextBox.Text;
             string username = UsernameTextBox.Text;
             string password = PasswordTextBox.Password;
-            Guid roleId = Guid.Parse(RoleComboBox.SelectedValue.ToString());
+            Guid roleId;
+
+            // Validate that all necessary fields are filled
             if (accountName.IsNullOrEmpty() || username.IsNullOrEmpty() || password.IsNullOrEmpty())
             {
                 MessageBox.Show(Constants.ErrorMessageMissingInfo, Constants.TitlePleaseTryAgain, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
+            // Validate password confirmation
             if (PasswordTextBox.Password != ConfirmPasswordTextBox.Password)
             {
                 MessageBox.Show("Sai mật khẩu xác nhận", "Xác nhận mật khẩu thất bại", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            Account account = new();
-            account.AccountName = accountName;
-            account.Username = username;
-            account.Password = password;
-            account.RoleId = roleId;
-            await _accountService.RegisterAsync(account);
-            MessageBox.Show(Constants.SuccessMessageCreateAccount, Constants.TitleRegisterSuccess, MessageBoxButton.OK);
-            LoginWindow login = new();
-            login.Show();
+
+            // If CurrentAccount is not null (Edit mode)
+            if (CurrentAccount != null)
+            {
+
+                // If the role is "Admin", allow them to choose a new role
+                if (CurrentAccount.Role?.RoleName == "Admin")
+                {
+                    if (RoleComboBox.SelectedValue == null)
+                    {
+                        MessageBox.Show("Vui lòng chọn vai trò.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                    roleId = Guid.Parse(RoleComboBox.SelectedValue.ToString());
+                }
+                else
+                {
+                    // If the user is not an Admin, keep their current role
+                    roleId = CurrentAccount.RoleId;
+                }
+
+                // Create Account object for update
+                Account updatedAccount = new()
+                {
+                    AccountId = CurrentAccount.AccountId,
+                    AccountName = accountName,
+                    Username = username,
+                    Password = password,
+                    RoleId = roleId
+                };
+
+                await _accountService.UpdateAccountAsync(updatedAccount);
+                MessageBox.Show("Cập nhật thành công!", "Cập nhật thành công!", MessageBoxButton.OK);
+            }
+            else  // If CurrentAccount is null (Register mode)
+            {
+
+                // Check if a "User" role exists, create one if it doesn't
+                Role userRole = await _roleService.GetRoleByNameAsync("User");
+                if (userRole == null)
+                {
+                    userRole = new Role
+                    {
+                        RoleId = Guid.NewGuid(),
+                        RoleName = "User"
+                    };
+                    await _roleService.CreateRoleAsync(userRole);
+                }
+
+                // Set roleId to "User"
+                roleId = userRole.RoleId;
+
+                // Create new Account object
+                Account account = new()
+                {
+                    AccountName = accountName,
+                    Username = username,
+                    Password = password,
+                    RoleId = roleId
+                };
+
+                // Check if username is unique
+                Account existingAccount = await _accountService.GetAccountByUsernameAsync(username);
+                if (existingAccount != null)
+                {
+                    MessageBox.Show("Tên người dùng đã tồn tại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                // Register the new account
+                await _accountService.RegisterAsync(account);
+                MessageBox.Show("Bạn đã đăng ký thành công tài khoản dành cho người dùng (User)", "Đăng ký thành công", MessageBoxButton.OK);
+                // Redirect to login window
+                LoginWindow login = new();
+                login.Show();
+            }
+
+            
             Close();
         }
+
+
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
@@ -112,11 +186,19 @@ namespace WPF_NhaMayCaoSu
 
             RoleComboBox.DisplayMemberPath = "RoleName";
             RoleComboBox.SelectedValuePath = "RoleId";
+            SaveButton.Content = "Đăng ký";
 
             //RoleComboBox.IsEnabled = false;
+            if (CurrentAccount?.Role?.RoleName != "Admin")
+
+            {
+                RoleComboBox.Visibility = Visibility.Collapsed;
+                Role.Visibility = Visibility.Collapsed;
+            }
 
             if (CurrentAccount != null)
             {
+                SaveButton.Content = "Cập nhật";
                 ModeLabel.Content = "Cập nhật tài khoản";
                 AccountNameTextBox.Text = CurrentAccount.AccountName;
                 UsernameTextBox.Text = CurrentAccount.Username;

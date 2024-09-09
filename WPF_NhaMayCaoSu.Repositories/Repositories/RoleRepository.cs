@@ -49,5 +49,11 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<Role> GetRoleByNameAsync(string RoleName)
+        {
+            _context = new();
+            return await _context.Roles.FirstOrDefaultAsync(x => x.RoleName == RoleName);
+        }
     }
 }

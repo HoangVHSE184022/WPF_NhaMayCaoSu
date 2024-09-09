@@ -91,6 +91,11 @@ namespace WPF_NhaMayCaoSu
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if (CurrentAccount?.Role?.RoleName != "Admin")
+            {
+                EditCustomerButton1.Visibility = Visibility.Collapsed;
+                AddCustomerButton.Visibility = Visibility.Collapsed;
+            }
             LoadDataGrid();
         }
         public void OnWindowLoaded()
@@ -158,12 +163,16 @@ namespace WPF_NhaMayCaoSu
 
         private void AddRFIDButton_Click(object sender, RoutedEventArgs e)
         {
-            // Get the selected customer from the DataGrid
+            if (CurrentAccount?.Role?.RoleName == "User")
+            {
+                MessageBox.Show(Constants.UnauthorizedMessage, Constants.UnauthorizedTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             Customer selectedCustomer = CustomerDataGrid.SelectedItem as Customer;
 
             if (selectedCustomer != null)
             {
-                // Create and show the RFIDManagementWindow
                 RFIDManagementWindow rfidManagementWindow = new RFIDManagementWindow(selectedCustomer);
                 rfidManagementWindow.ShowDialog();
             }

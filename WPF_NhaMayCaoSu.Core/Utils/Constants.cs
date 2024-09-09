@@ -89,5 +89,8 @@ namespace WPF_NhaMayCaoSu.Core.Utils
 
         public const string BrokerStartErrorMessage = "Đã xảy ra lỗi khi khởi động máy chủ.";
         public const string BrokerStopErrorMessage = "Đã xảy ra lỗi khi dừng máy chủ.";
+
+        public const string UnauthorizedMessage = "Bạn không đủ thẩm quyền để sử dụng tính năng này";
+        public const string UnauthorizedTitle = "Không đủ quyền";
     }
 }

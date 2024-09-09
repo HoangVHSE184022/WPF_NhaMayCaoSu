@@ -46,5 +46,9 @@ namespace WPF_NhaMayCaoSu.Service.Services
             account.Status = 1;
             await _accountRepository.Register(account);
         }
+        public async Task<Account> GetAccountByUsernameAsync(string username)
+        {
+            return await _accountRepository.GetAccountByUsernameAsync(username);
+        }
     }
 }

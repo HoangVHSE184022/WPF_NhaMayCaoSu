@@ -11,6 +11,7 @@ namespace WPF_NhaMayCaoSu.Repository.IRepositories
         Task DeleteAccountAsync(Guid accountId);
         Task<Account> Login(string username, string password);
         Task Register(Account account);
+        Task<Account> GetAccountByUsernameAsync(string username);
 
     }
 }

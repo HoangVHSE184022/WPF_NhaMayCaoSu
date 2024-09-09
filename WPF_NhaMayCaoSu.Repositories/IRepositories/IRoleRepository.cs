@@ -9,5 +9,6 @@ namespace WPF_NhaMayCaoSu.Repository.IRepositories
         Task<Role> GetRoleByIdAsync(Guid roleId);
         Task UpdateRoleAsync(Role role);
         Task DeleteRoleAsync(Guid roleId);
+        Task<Role> GetRoleByNameAsync(string RoleName);
     }
 }

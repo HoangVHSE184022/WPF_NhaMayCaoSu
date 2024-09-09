@@ -34,5 +34,10 @@ namespace WPF_NhaMayCaoSu.Service.Services
         {
             await _repo.DeleteRoleAsync(roleId);
         }
+
+        public async Task<Role> GetRoleByNameAsync(string roleName)
+        {
+            return await _repo.GetRoleByNameAsync(roleName);
+        }
     }
 }
