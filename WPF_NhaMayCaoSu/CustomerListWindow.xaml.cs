@@ -169,7 +169,7 @@ namespace WPF_NhaMayCaoSu
             }
             else
             {
-                MessageBox.Show("Please select a customer first.", "No Customer Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Xin hãy chọn khách hàng trước.", "Lưu ý", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
             LoadDataGrid();
