@@ -52,7 +52,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         public async Task<Account> Login(string username, string password)
         {
             _context = new();
-            Account account = await _context.Accounts
+            Account account = await _context.Accounts.Include("Role")
                                         .FirstOrDefaultAsync(a => a.Username.ToLower().Equals(username.ToLower()));
 
             if (account != null && BCrypt.Net.BCrypt.Verify(password, account.Password))
