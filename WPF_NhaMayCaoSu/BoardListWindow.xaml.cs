@@ -24,6 +24,14 @@ namespace WPF_NhaMayCaoSu
             InitializeComponent();
         }
 
-        
+        private void AddBoardButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void EditBoardButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

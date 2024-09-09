@@ -23,7 +23,7 @@
         <Label Content="Xác nhận mật khẩu" HorizontalAlignment="Left" Height="46" Margin="32,430,0,0" VerticalAlignment="Top" Width="285" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
         <PasswordBox x:Name="ConfirmPasswordTextBox" Height="46" Margin="322,430,74,0" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="30" Background="#FFCACACA" BorderThickness="0"/>
         <ComboBox x:Name="RoleComboBox" HorizontalAlignment="Left" Height="56" FontFamily="Montserrat" FontSize="30" Margin="322,530,0,0" VerticalAlignment="Top" Width="239"/>
-        <Label Content="Vai trò" HorizontalAlignment="Left" Height="46" Margin="32,530,0,0" VerticalAlignment="Top" Width="285" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
+        <Label x:Name="Role" Content="Vai trò" HorizontalAlignment="Left" Height="46" Margin="32,530,0,0" VerticalAlignment="Top" Width="285" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
         <Button x:Name="SaveButton" Content="Lưu" Height="40" Margin="0,0,74,0" VerticalAlignment="Center" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="24" Click="SaveButton_Click" Grid.Row="1" HorizontalAlignment="Right" Width="122"/>
         <Button x:Name="LoginButton" Content="Đăng Nhập" Margin="0,0,74,97" FontSize="24" Background="#FF002366" FontFamily="Montserrat" Foreground="#FFFFFF"  BorderThickness="0" Click="LoginButton_Click" Grid.Row="1" HorizontalAlignment="Right" Width="122" Height="40" VerticalAlignment="Bottom"/>
 

@@ -71,9 +71,31 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
         public async Task UpdateAccountAsync(Account account)
         {
-            _context = new();
+            _context = new CaoSuWpfDbContext();
+
+            // Fetch the existing account from the database to check for password updates
+            Account existingAccount = await _context.Accounts.AsNoTracking().FirstOrDefaultAsync(a => a.AccountId == account.AccountId);
+
+            if (existingAccount == null)
+            {
+                throw new Exception("Account not found.");
+            }
+
+            if (existingAccount.Password != account.Password)
+            {
+                account.Password = BCrypt.Net.BCrypt.HashPassword(account.Password);
+            }
+
             _context.Accounts.Update(account);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<Account> GetAccountByUsernameAsync(string username)
+        {
+            _context = new();
+            return await _context.Accounts
+                                 .Include(a => a.Role)
+                                 .FirstOrDefaultAsync(a => a.Username.ToLower() == username.ToLower());
         }
     }
 }

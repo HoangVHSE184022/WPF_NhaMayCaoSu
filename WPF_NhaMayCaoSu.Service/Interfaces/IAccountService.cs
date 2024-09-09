@@ -11,5 +11,6 @@ namespace WPF_NhaMayCaoSu.Service.Interfaces
         Task DeleteAccountAsync(Guid accountId);
         Task<Account> LoginAsync(string username, string password);
         Task RegisterAsync(Account account);
+        Task<Account> GetAccountByUsernameAsync(string username);
     }
 }
