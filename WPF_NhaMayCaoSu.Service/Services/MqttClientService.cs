@@ -77,6 +77,8 @@ namespace WPF_NhaMayCaoSu.Service.Services
             string rfid = jsonMessage["RFID"]?.ToString();
             string density = jsonMessage["Density"]?.ToString();
             string weight = jsonMessage["Weight"]?.ToString();
+            string macAddress = jsonMessage["MacAddress"]?.ToString();
+            string currentMode = jsonMessage["Mode"]?.ToString();
 
             // Kiểm tra topic và xử lý tin nhắn tương ứng
             switch (arg.ApplicationMessage.Topic)
@@ -99,6 +101,12 @@ namespace WPF_NhaMayCaoSu.Service.Services
                     if (!string.IsNullOrEmpty(rfid) && !string.IsNullOrEmpty(weight))
                     {
                         MessageReceived?.Invoke(this, $"Can_ta:{rfid}:{weight}");
+                    }
+                    break;
+                case "BoardInfo":
+                    if (!string.IsNullOrEmpty(macAddress) && !string.IsNullOrEmpty(currentMode))
+                    {
+                        MessageReceived?.Invoke(this, $"BoardInfo:{macAddress}:{currentMode}");
                     }
                     break;
             }
