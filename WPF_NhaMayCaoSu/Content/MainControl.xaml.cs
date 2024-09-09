@@ -67,7 +67,6 @@ namespace WPF_NhaMayCaoSu.Content
         {
             if (CurrentAccount is null)
             {
-                //MessageBox.Show("You must be logged in first", "Please login", MessageBoxButton.OK, MessageBoxImage.Error);
                 LoginWindow window = new();
                 window.LoginSucceeded += HandleLoginSucceeded;
                 window.ShowDialog();
