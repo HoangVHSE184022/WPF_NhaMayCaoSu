@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Diagnostics;
 using WPF_NhaMayCaoSu.Service.Services;
+using Newtonsoft.Json;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -68,6 +69,46 @@ namespace WPF_NhaMayCaoSu
             boardDataGrid.ItemsSource = null;
             boardDataGrid.ItemsSource = boards;
         }*/
+
+        private async void PublishBoardMode_Click(object sender, RoutedEventArgs e)
+        {
+            Board selected = boardDataGrid.SelectedItem as Board;
+
+            if (selected != null)
+            {
+                string topic = string.Empty;
+
+                // Determine the topic based on the selected board name
+                if (selected.BoardName == "ESP32_Can_ta")
+                {
+                    topic = "Canta_Mode";
+                }
+                else if (selected.BoardName == "ESP32_Can_tieu_ly")
+                {
+                    topic = "Cantieuly_Mode";
+                }
+                else
+                {
+                    MessageBox.Show("Unknown board selected.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                if (selected.BoardMode == 1)
+                {
+                    var payloadObject = new { Mode = selected.BoardMode == 1 ? 2 : 1 };
+                    string payload = JsonConvert.SerializeObject(payloadObject);
+
+                if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+                {
+                    await _mqttClientService.PublishAsync(topic, payload);
+                }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a board to publish.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
 
     }
 }
