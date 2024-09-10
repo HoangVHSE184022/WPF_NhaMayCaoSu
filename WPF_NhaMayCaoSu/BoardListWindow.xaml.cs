@@ -162,7 +162,7 @@ namespace WPF_NhaMayCaoSu
 
         private async void LoadDataGrid()
         {
-            var boards = await _boardService.GetAllBoardsAsync(1, 10);
+            IEnumerable<Board> boards = await _boardService.GetAllBoardsAsync(1, 10);
             boardDataGrid.ItemsSource = null;
             boardDataGrid.ItemsSource = boards;
         }
