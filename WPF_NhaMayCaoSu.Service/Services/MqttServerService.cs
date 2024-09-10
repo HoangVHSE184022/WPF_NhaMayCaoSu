@@ -2,6 +2,7 @@
 using MQTTnet.Server;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Text.Json;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
@@ -16,7 +17,7 @@ public class MqttServerService : IMqttServerService
     public event EventHandler ClientsChanged;
     public event EventHandler<int> DeviceCountChanged;
     public event EventHandler BrokerStatusChanged;
-    public event EventHandler<BoardModelView> BoardReceived;
+    public event EventHandler BoardReceived;
     private int _deviceCount;
     public static bool IsBrokerRunning { get; private set; } = false;
 
@@ -25,7 +26,7 @@ public class MqttServerService : IMqttServerService
         _connectedClients = new ConcurrentDictionary<string, string>();
         _connectedBoard = new List<BoardModelView>();
         _deviceCount = 0;
-        // Configure the MQTT server options for non-TLS
+
         MqttServerOptionsBuilder optionsBuilder = new MqttServerOptionsBuilder()
             .WithDefaultEndpointBoundIPAddress(System.Net.IPAddress.Any)
             .WithDefaultEndpoint()
@@ -33,15 +34,11 @@ public class MqttServerService : IMqttServerService
             .WithConnectionBacklog(100)
             .WithMaxPendingMessagesPerClient(1000);
 
-        // Create the MQTT server
         _mqttServer = new MqttFactory().CreateMqttServer(optionsBuilder.Build());
 
-        // Set up event handler for connection validation with credentials
         _mqttServer.ValidatingConnectionAsync += e =>
         {
-            if (
-                e.UserName != "admin" ||
-                e.Password != "admin")
+            if (e.UserName != "admin" || e.Password != "admin")
             {
                 e.ReasonCode = MQTTnet.Protocol.MqttConnectReasonCode.BadUserNameOrPassword;
             }
@@ -53,18 +50,14 @@ public class MqttServerService : IMqttServerService
             return Task.CompletedTask;
         };
 
-        // Set up event handlers for client connections, disconnections, etc.
         _mqttServer.ClientConnectedAsync += e =>
         {
             if (_connectedClients != null && !string.IsNullOrEmpty(e.ClientId))
             {
-                // Extract the IP address from the endpoint
                 string clientIp = e.Endpoint.ToString().Split(':')[0];
-
                 _connectedClients[e.ClientId] = clientIp;
                 _deviceCount++;
-
-                ClientsChanged?.Invoke(this, EventArgs.Empty); // Trigger the event
+                ClientsChanged?.Invoke(this, EventArgs.Empty);
                 DeviceCountChanged?.Invoke(this, _deviceCount);
             }
             return Task.CompletedTask;
@@ -76,8 +69,7 @@ public class MqttServerService : IMqttServerService
             {
                 _connectedClients.TryRemove(e.ClientId, out _);
                 _deviceCount--;
-
-                ClientsChanged?.Invoke(this, EventArgs.Empty); // Trigger the event
+                ClientsChanged?.Invoke(this, EventArgs.Empty);
                 DeviceCountChanged?.Invoke(this, _deviceCount);
             }
             return Task.CompletedTask;
@@ -85,37 +77,67 @@ public class MqttServerService : IMqttServerService
 
         _mqttServer.InterceptingPublishAsync += async e =>
         {
-            // Process the incoming message here
             string topic = e.ApplicationMessage.Topic;
             string payload = System.Text.Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
+            Debug.WriteLine($"Received message on topic: {topic}, payload: {payload}");
 
-            // Assuming we process messages sent to "BoardInfo"
-            if (topic == "BoardInfo")
+            if (topic == "Canta_info" || topic == "Cantieuly_info")
             {
-                string[] parts = payload.Split(':');
-                if (parts.Length == 2)
+                Debug.WriteLine($"Processing message for topic: {topic}");
+
+                try
                 {
-                    string macAddress = parts[0];
-                    string mode = parts[1];
+                    // Parse JSON to a dictionary
+                    var message = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(payload);
 
-                    var board = new BoardModelView
+                    if (message == null || !message.ContainsKey("MacAddress") || !message.ContainsKey("Mode"))
                     {
-                        BoardId = Guid.NewGuid(),
-                        BoardName = e.ClientId,
-                        BoardIp = _connectedClients.ContainsKey(e.ClientId) ? _connectedClients[e.ClientId] : "Unknown",
-                        BoardMacAddress = macAddress,
-                        BoardMode = mode
-                    };
+                        Debug.WriteLine("Invalid payload structure.");
+                        return;
+                    }
 
-                    // Save the board info (or handle it accordingly)
-                    _connectedBoard.Add(board);
+                    string macAddress = message["MacAddress"].GetString();
+                    int mode = message["Mode"].GetInt32();
+
+                    var board = _connectedBoard.FirstOrDefault(b => b.BoardName == e.ClientId);
+
+                    if (board == null)
+                    {
+                        board = new BoardModelView
+                        {
+                            BoardId = Guid.NewGuid(),
+                            BoardName = e.ClientId,
+                            BoardIp = _connectedClients.ContainsKey(e.ClientId) ? _connectedClients[e.ClientId] : "Unknown",
+                            BoardMacAddress = macAddress,
+                            BoardMode = mode
+                        };
+
+                        _connectedBoard.Add(board);
+                    }
+                    else
+                    {
+                        board.BoardMacAddress = macAddress;
+                        board.BoardMode = mode;
+                        board.BoardIp = _connectedClients.ContainsKey(e.ClientId) ? _connectedClients[e.ClientId] : "Unknown";
+                    }
+
+                    BoardReceived?.Invoke(this, EventArgs.Empty);
+                    Debug.WriteLine($"BoardId: {board.BoardId}");
+                    Debug.WriteLine($"BoardName: {board.BoardName}");
+                    Debug.WriteLine($"BoardIp: {board.BoardIp}");
+                    Debug.WriteLine($"BoardMacAddress: {board.BoardMacAddress}");
+                    Debug.WriteLine($"BoardMode: {board.BoardMode}");
+                    Debug.WriteLine(new string('-', 50));
+                }
+                catch (JsonException ex)
+                {
+                    Debug.WriteLine($"Error parsing JSON payload: {ex.Message}");
                 }
             }
 
             await Task.CompletedTask;
         };
-}
-
+    }
 
     public async Task StartBrokerAsync()
     {
@@ -173,7 +195,6 @@ public class MqttServerService : IMqttServerService
         return _deviceCount;
     }
 
-    // Get device info that connect to mqtt server
     public IReadOnlyDictionary<string, string> GetConnectedClients()
     {
         return _connectedClients;

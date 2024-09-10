@@ -25,7 +25,8 @@ namespace WPF_NhaMayCaoSu
             _boardModes = new Dictionary<string, string>();
 
             // Replace the old event handler
-            _mqttServerService.ClientsChanged += OnClientsChanged;
+            //_mqttServerService.ClientsChanged += OnClientsChanged;
+            _mqttServerService.BoardReceived += OnClientsChanged;
         }
 
 
@@ -44,7 +45,7 @@ namespace WPF_NhaMayCaoSu
                 // Subscribe to incoming MQTT messages
                 _mqttClientService.MessageReceived += (s, data) =>
                 {
-                    ProcessMqttMessage(s, data);
+                    Dispatcher.Invoke(() => ProcessMqttMessage(s, data));
                 };
             }
             catch (Exception ex)
@@ -128,7 +129,12 @@ namespace WPF_NhaMayCaoSu
 
         private void OnClientsChanged(object sender, EventArgs e)
         {
-            LoadDataGrid();
+            Dispatcher.Invoke(() =>
+            {
+                List<BoardModelView> boards = _mqttServerService.GetConnectedBoard();
+                boardDataGrid.ItemsSource = null;
+                boardDataGrid.ItemsSource = boards;
+            });
         }
 
         private async void SaveBoardButton_Click(object sender, RoutedEventArgs e)
@@ -153,12 +159,12 @@ namespace WPF_NhaMayCaoSu
             LoadDataGrid();
         }
 
-        private async void LoadDataGrid()
+        private void LoadDataGrid()
         {
-            IEnumerable<Board> boards = await _boardService.GetAllBoardsAsync(1, 10);
-            boardDataGrid.ItemsSource = null;
-            boardDataGrid.ItemsSource = boards;
+
         }
+
+
 
     }
 }
