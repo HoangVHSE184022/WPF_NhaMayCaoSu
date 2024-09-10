@@ -16,7 +16,7 @@ public class MqttServerService : IMqttServerService
     public event EventHandler ClientsChanged;
     public event EventHandler<int> DeviceCountChanged;
     public event EventHandler BrokerStatusChanged;
-    public event EventHandler<BoardModelView> BoardReceived;
+    public event EventHandler BoardReceived;
     private int _deviceCount;
     public static bool IsBrokerRunning { get; private set; } = false;
 
@@ -108,7 +108,9 @@ public class MqttServerService : IMqttServerService
                     };
 
                     // Save the board info (or handle it accordingly)
+                    Debug.Write(board);
                     _connectedBoard.Add(board);
+                    BoardReceived?.Invoke(this, EventArgs.Empty);
                 }
             }
 
