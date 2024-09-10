@@ -2,6 +2,7 @@
 using MQTTnet.Server;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
 public class MqttServerService : IMqttServerService
@@ -10,16 +11,19 @@ public class MqttServerService : IMqttServerService
     public static MqttServerService Instance => _instance.Value;
     private readonly MQTTnet.Server.MqttServer _mqttServer;
     private readonly ConcurrentDictionary<string, string> _connectedClients;
+    private readonly List<BoardModelView> _connectedBoard;
 
     public event EventHandler ClientsChanged;
     public event EventHandler<int> DeviceCountChanged;
     public event EventHandler BrokerStatusChanged;
+    public event EventHandler<BoardModelView> BoardReceived;
     private int _deviceCount;
     public static bool IsBrokerRunning { get; private set; } = false;
 
     public MqttServerService()
     {
         _connectedClients = new ConcurrentDictionary<string, string>();
+        _connectedBoard = new List<BoardModelView>();
         _deviceCount = 0;
         // Configure the MQTT server options for non-TLS
         MqttServerOptionsBuilder optionsBuilder = new MqttServerOptionsBuilder()
@@ -78,7 +82,40 @@ public class MqttServerService : IMqttServerService
             }
             return Task.CompletedTask;
         };
-    }
+
+        _mqttServer.InterceptingPublishAsync += async e =>
+        {
+            // Process the incoming message here
+            string topic = e.ApplicationMessage.Topic;
+            string payload = System.Text.Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
+
+            // Assuming we process messages sent to "BoardInfo"
+            if (topic == "BoardInfo")
+            {
+                string[] parts = payload.Split(':');
+                if (parts.Length == 2)
+                {
+                    string macAddress = parts[0];
+                    string mode = parts[1];
+
+                    var board = new BoardModelView
+                    {
+                        BoardId = Guid.NewGuid(),
+                        BoardName = e.ClientId,
+                        BoardIp = _connectedClients.ContainsKey(e.ClientId) ? _connectedClients[e.ClientId] : "Unknown",
+                        BoardMacAddress = macAddress,
+                        BoardMode = mode
+                    };
+
+                    // Save the board info (or handle it accordingly)
+                    _connectedBoard.Add(board);
+                }
+            }
+
+            await Task.CompletedTask;
+        };
+}
+
 
     public async Task StartBrokerAsync()
     {
@@ -140,5 +177,10 @@ public class MqttServerService : IMqttServerService
     public IReadOnlyDictionary<string, string> GetConnectedClients()
     {
         return _connectedClients;
+    }
+
+    public List<BoardModelView> GetConnectedBoard()
+    {
+        return _connectedBoard;
     }
 }

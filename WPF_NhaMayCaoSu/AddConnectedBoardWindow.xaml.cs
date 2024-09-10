@@ -8,7 +8,7 @@ namespace WPF_NhaMayCaoSu
     /// <summary>
     /// Interaction logic for BoardListWindow.xaml
     /// </summary>
-    public partial class BoardListWindow : Window
+    public partial class AddConnectedBoardWindow : Window
     {
         private readonly MqttClientService _mqttClientService;
         private readonly MqttServerService _mqttServerService;
@@ -16,7 +16,7 @@ namespace WPF_NhaMayCaoSu
         public Account CurrentAccount { get; set; } = null;
         private readonly Dictionary<string, string> _boardModes;
 
-        public BoardListWindow()
+        public AddConnectedBoardWindow()
         {
             InitializeComponent();
             _mqttServerService = MqttServerService.Instance;
@@ -34,7 +34,6 @@ namespace WPF_NhaMayCaoSu
             if (CurrentAccount?.Role?.RoleName != "Admin")
             {
                 SaveBoardButton.Visibility = Visibility.Collapsed;
-                EditBoardButton.Visibility = Visibility.Collapsed;
             }
             LoadDataGrid();
             try
@@ -134,14 +133,23 @@ namespace WPF_NhaMayCaoSu
 
         private async void SaveBoardButton_Click(object sender, RoutedEventArgs e)
         {
-            AddConnectedBoardWindow addConnectedBoardWindow = new AddConnectedBoardWindow();
-            addConnectedBoardWindow.CurrentAccount = CurrentAccount;
-            addConnectedBoardWindow.ShowDialog();
-            LoadDataGrid();
-        }
-
-        private async void EditBoardButton_Click(object sender, RoutedEventArgs e)
-        {
+            if (boardDataGrid.SelectedItem is Board selectedBoard)
+            {
+                var existingBoard = await _boardService.GetBoardByNameAsync(selectedBoard.BoardName);
+                if (existingBoard != null)
+                {
+                    MessageBox.Show("Board này đã được lưu", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else
+                {
+                    await _boardService.CreateBoardAsync(selectedBoard);
+                    MessageBox.Show("Lưu board thành công", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn một Board từ danh sách.", "No Board Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
             LoadDataGrid();
         }
 
