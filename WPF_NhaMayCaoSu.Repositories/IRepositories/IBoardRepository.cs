@@ -14,5 +14,6 @@ namespace WPF_NhaMayCaoSu.Repository.IRepositories
         Task DeleteBoardAsync(Guid boardId);
         Task<Board> GetBoardByNameAsync(string boardName);
         Task<int> GetTotalBoardsCountAsync();
+        Task<Board> GetBoardByMacAddressAsync(string BoardMacAddress);
     }
 }

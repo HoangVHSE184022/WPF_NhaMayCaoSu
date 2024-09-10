@@ -63,5 +63,11 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             _context = new();
             return await _context.Boards.CountAsync();
         }
+
+        public async Task<Board> GetBoardByMacAddressAsync(string BoardMacAddress)
+        {
+            _context = new();
+            return await _context.Boards.FirstOrDefaultAsync(x => x.BoardMacAddress == BoardMacAddress);
+        }
     }
 }

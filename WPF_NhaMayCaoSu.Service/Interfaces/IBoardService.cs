@@ -14,5 +14,6 @@ namespace WPF_NhaMayCaoSu.Service.Interfaces
         Task DeleteBoardAsync(Guid boardId);
         Task<Board> GetBoardByNameAsync(string boardName);
         Task<int> GetTotalBoardsCountAsync();
+        Task<Board> GetBoardByMacAddressAsync(String BoardMacAddress);
     }
 }
