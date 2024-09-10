@@ -3,6 +3,7 @@ using System.Windows;
 using System.Diagnostics;
 using WPF_NhaMayCaoSu.Service.Services;
 using Newtonsoft.Json;
+using System.Net.Mail;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -35,7 +36,7 @@ namespace WPF_NhaMayCaoSu
                 boardDataGrid.ItemsSource = boards;
             });
         }
-            private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (CurrentAccount?.Role?.RoleName != "Admin")
             {
@@ -44,10 +45,10 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
-    
-     private void OnClientsChanged(object sender, EventArgs e)
+
+        private void OnClientsChanged(object sender, EventArgs e)
         {
-/*            LoadDataGrid();*/
+            /*            LoadDataGrid();*/
         }
 
         private async void SaveBoardButton_Click(object sender, RoutedEventArgs e)
@@ -55,20 +56,68 @@ namespace WPF_NhaMayCaoSu
             AddConnectedBoardWindow addConnectedBoardWindow = new AddConnectedBoardWindow();
             addConnectedBoardWindow.CurrentAccount = CurrentAccount;
             addConnectedBoardWindow.ShowDialog();
-   /*         LoadDataGrid();*/
+            LoadDataGrid();
         }
 
         private async void EditBoardButton_Click(object sender, RoutedEventArgs e)
         {
-            /*LoadDataGrid();*/
+            // Check if a board is selected from the DataGrid
+            if (boardDataGrid.SelectedItem == null)
+            {
+                MessageBox.Show("Vui lòng chọn một Board.", "Không có Board được chọn", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Get the selected board from the DataGrid
+            BoardModelView? selectedBoard = boardDataGrid.SelectedItem as BoardModelView;
+            Debug.WriteLine(selectedBoard.BoardMacAddress);
+            Debug.WriteLine(string.IsNullOrEmpty(selectedBoard.BoardMacAddress));
+
+
+            // Ensure selectedBoard is not null and has valid properties
+            if (selectedBoard == null || string.IsNullOrEmpty(selectedBoard.BoardMacAddress))
+            {
+                MessageBox.Show("Board được chọn không hợp lệ.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            try
+            {
+                var board = new Board
+                {
+                    BoardId = selectedBoard.BoardId,
+                    BoardName = selectedBoard.BoardName,
+                    BoardIp = selectedBoard.BoardIp,
+                    BoardMacAddress = selectedBoard.BoardMacAddress,
+                    BoardMode = selectedBoard.BoardMode
+                };
+                // Check if the board exists in the database
+                var existingBoard = await _boardService.GetBoardByMacAddressAsync(board.BoardMacAddress);
+                if (existingBoard != null)
+                {
+                    MessageBox.Show("Board này đã được lưu.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                // Save the board to the database
+                await _boardService.CreateBoardAsync(board);
+                MessageBox.Show("Lưu board thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi lưu Board: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
-        /*   private async void LoadDataGrid()
+        private async void LoadDataGrid()
         {
             IEnumerable<Board> boards = await _boardService.GetAllBoardsAsync(1, 10);
-            boardDataGrid.ItemsSource = null;
-            boardDataGrid.ItemsSource = boards;
-        }*/
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                boardDataGrid.ItemsSource = null;
+                boardDataGrid.ItemsSource = boards;
+            });
+        }
 
         private async void PublishBoardMode_Click(object sender, RoutedEventArgs e)
         {
@@ -97,10 +146,10 @@ namespace WPF_NhaMayCaoSu
                     var payloadObject = new { Mode = selected.BoardMode == 1 ? 2 : 1 };
                     string payload = JsonConvert.SerializeObject(payloadObject);
 
-                if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
-                {
-                    await _mqttClientService.PublishAsync(topic, payload);
-                }
+                    if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+                    {
+                        await _mqttClientService.PublishAsync(topic, payload);
+                    }
                 }
             }
             else
