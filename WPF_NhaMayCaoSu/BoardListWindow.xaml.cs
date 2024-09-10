@@ -13,7 +13,7 @@ namespace WPF_NhaMayCaoSu
     {
         private readonly MqttClientService _mqttClientService;
         private readonly MqttServerService _mqttServerService;
-        private readonly IBoardService _boardService;
+        private readonly BoardService _boardService;
         public Account CurrentAccount { get; set; } = null;
         private readonly Dictionary<string, string> _boardModes;
 
@@ -125,9 +125,9 @@ namespace WPF_NhaMayCaoSu
             {
                 Debug.WriteLine($"Error processing message: {ex.Message}");
             }
+            LoadDataGrid();
         }
 
-        // New method that gets called when clients change (replaces the old OnMqttMessageReceived)
         private void OnClientsChanged(object sender, EventArgs e)
         {
             LoadDataGrid();
@@ -152,11 +152,12 @@ namespace WPF_NhaMayCaoSu
             {
                 MessageBox.Show("Vui lòng chọn một Board từ danh sách.", "No Board Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+            LoadDataGrid();
         }
 
-        private void EditBoardButton_Click(object sender, RoutedEventArgs e)
+        private async void EditBoardButton_Click(object sender, RoutedEventArgs e)
         {
-            // Edit logic here, similar to Save but modifying the existing board
+            LoadDataGrid();
         }
 
         private async void LoadDataGrid()
