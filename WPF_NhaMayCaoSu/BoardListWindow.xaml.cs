@@ -141,16 +141,18 @@ namespace WPF_NhaMayCaoSu
                     MessageBox.Show("Unknown board selected.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                if (selected.BoardMode == 1)
-                {
-                    var payloadObject = new { Mode = selected.BoardMode == 1 ? 2 : 1 };
-                    string payload = JsonConvert.SerializeObject(payloadObject);
 
-                    if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
-                    {
-                        await _mqttClientService.PublishAsync(topic, payload);
-                    }
+                selected.BoardMode = selected.BoardMode == 1 ? 2 : 1;
+
+                var payloadObject = new { Mode = selected.BoardMode };
+                string payload = JsonConvert.SerializeObject(payloadObject);
+
+                if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+                {
+                    await _mqttClientService.PublishAsync(topic, payload);
                 }
+
+                boardDataGrid.Items.Refresh(); 
             }
             else
             {
