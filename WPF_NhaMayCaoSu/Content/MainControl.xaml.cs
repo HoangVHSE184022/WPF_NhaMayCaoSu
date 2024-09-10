@@ -71,7 +71,10 @@ namespace WPF_NhaMayCaoSu.Content
                 LoginWindow window = new();
                 window.LoginSucceeded += HandleLoginSucceeded;
                 window.ShowDialog();
-                return false;
+                if(CurrentAccount is null)
+                {
+                    return false;
+                }
             }
             else if (MqttServerService.IsBrokerRunning == false)
             {
