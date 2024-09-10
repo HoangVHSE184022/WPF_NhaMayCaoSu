@@ -77,7 +77,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
             string rfid = jsonMessage["RFID"]?.ToString();
             string density = jsonMessage["Density"]?.ToString();
             string weight = jsonMessage["Weight"]?.ToString();
-            string macAddress = jsonMessage["MacAddress"]?.ToString();
+            string macAddress = jsonMessage["MACAddress"]?.ToString();
             string currentMode = jsonMessage["Mode"]?.ToString();
 
             // Kiểm tra topic và xử lý tin nhắn tương ứng
@@ -103,10 +103,16 @@ namespace WPF_NhaMayCaoSu.Service.Services
                         MessageReceived?.Invoke(this, $"Can_ta:{rfid}:{weight}");
                     }
                     break;
-                case "BoardInfo":
+                case "Canta_info":
                     if (!string.IsNullOrEmpty(macAddress) && !string.IsNullOrEmpty(currentMode))
                     {
-                        MessageReceived?.Invoke(this, $"BoardInfo:{macAddress}:{currentMode}");
+                        MessageReceived?.Invoke(this, $"CantaInfo:{macAddress}:{currentMode}");
+                    }
+                    break;
+                case "Cantieuly_info":
+                    if (!string.IsNullOrEmpty(macAddress) && !string.IsNullOrEmpty(currentMode))
+                    {
+                        MessageReceived?.Invoke(this, $"CantieuLyInfo:{macAddress}:{currentMode}");
                     }
                     break;
             }
@@ -149,13 +155,25 @@ namespace WPF_NhaMayCaoSu.Service.Services
 
         public async Task PublishAsync(string topic, string payload)
         {
-            MqttApplicationMessageBuilder messageBuilder = new MqttApplicationMessageBuilder();
-            messageBuilder.WithTopic(topic)
-                          .WithPayload(payload)
-                          .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.ExactlyOnce)
-                          .WithRetainFlag();
+            if (!_client.IsConnected)
+            {
+                try
+                {
+                    await _client.ConnectAsync(_options);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Failed to connect to MQTT broker before publishing: " + ex.Message);
+                    throw; 
+                }
+            }
 
-            MqttApplicationMessage message = messageBuilder.Build();
+            var message = new MqttApplicationMessageBuilder()
+                .WithTopic(topic)
+                .WithPayload(payload)
+                .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.ExactlyOnce)
+                .WithRetainFlag()
+                .Build();
 
             await _client.PublishAsync(message);
         }
