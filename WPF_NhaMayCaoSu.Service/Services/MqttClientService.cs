@@ -77,8 +77,8 @@ namespace WPF_NhaMayCaoSu.Service.Services
             string rfid = jsonMessage["RFID"]?.ToString();
             string density = jsonMessage["Density"]?.ToString();
             string weight = jsonMessage["Weight"]?.ToString();
-            string macAddress = jsonMessage["MACAddress"]?.ToString();
-            string currentMode = jsonMessage["Mode"]?.ToString();
+            string macAddress = jsonMessage["MacAddress"]?.ToString();
+            string currentMode = jsonMessage["CurrentMode"]?.ToString();
 
             // Kiểm tra topic và xử lý tin nhắn tương ứng
             switch (arg.ApplicationMessage.Topic)

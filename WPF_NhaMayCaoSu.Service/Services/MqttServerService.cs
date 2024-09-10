@@ -90,7 +90,7 @@ public class MqttServerService : IMqttServerService
             string payload = System.Text.Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
 
             // Assuming we process messages sent to "BoardInfo"
-            if (topic == "Canta_Info" || topic == "Cantieuly_Info")
+            if (topic == "Canta_info" || topic == "Cantieuly_info")
             {
                 string[] parts = payload.Split(':');
                 if (parts.Length == 2)
