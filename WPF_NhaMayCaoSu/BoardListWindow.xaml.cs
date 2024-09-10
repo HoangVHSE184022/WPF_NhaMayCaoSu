@@ -14,8 +14,7 @@ namespace WPF_NhaMayCaoSu
         private readonly MqttClientService _mqttClientService;
         private readonly MqttServerService _mqttServerService;
         private readonly IBoardService _boardService;
-
-        // Dictionary to store the last received mode for each Board's MAC address
+        public Account CurrentAccount { get; set; } = null;
         private readonly Dictionary<string, string> _boardModes;
 
         public BoardListWindow()
@@ -30,7 +29,6 @@ namespace WPF_NhaMayCaoSu
             _mqttServerService.ClientsChanged += OnClientsChanged;
         }
 
-        public Account CurrentAccount { get; set; } = null;
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -164,23 +162,8 @@ namespace WPF_NhaMayCaoSu
         private async void LoadDataGrid()
         {
             var boards = await _boardService.GetAllBoardsAsync(1, 10);
-
-            var boardViewModels = boards.Select(board => new
-            {
-                board.BoardId,
-                board.BoardName,
-                board.BoardMacAddress,
-                board.BoardIp,
-                BoardMode = _boardModes.ContainsKey(board.BoardMacAddress) ? _boardModes[board.BoardMacAddress] : "N/A"
-            }).ToList();
-
-            // Ensure UI updates happen on the main thread
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                boardDataGrid.ItemsSource = null;
-                boardDataGrid.Items.Clear();
-                boardDataGrid.ItemsSource = boardViewModels;
-            });
+            boardDataGrid.ItemsSource = null;
+            boardDataGrid.ItemsSource = boards;
         }
 
     }
