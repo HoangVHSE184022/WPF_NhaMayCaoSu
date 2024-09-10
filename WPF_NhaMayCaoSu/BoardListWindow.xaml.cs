@@ -119,9 +119,16 @@ namespace WPF_NhaMayCaoSu
             });
         }
 
-        private async void PublishBoardMode_Click(object sender, RoutedEventArgs e)
+        private async void ModeBoardButton_Click(object sender, RoutedEventArgs e)
         {
             Board selected = boardDataGrid.SelectedItem as Board;
+
+            var existingBoard = await _boardService.GetBoardByMacAddressAsync(selected.BoardMacAddress);
+            if (existingBoard == null)
+            {
+                MessageBox.Show("Board này chưa được lưu.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             if (selected != null)
             {
@@ -160,6 +167,7 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
-
+        
+        
     }
 }

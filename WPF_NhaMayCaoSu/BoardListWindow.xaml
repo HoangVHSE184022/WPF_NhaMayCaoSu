@@ -20,7 +20,7 @@
                 <DataGridTextColumn Header="Tên Board" Binding="{Binding BoardName}" Width="170" />
                 <DataGridTextColumn Header="IP" Binding="{Binding BoardIp}" Width="250"/>
                 <DataGridTextColumn Header="MacAddress" Binding="{Binding BoardMacAddress}" Width="250"/>
-                <DataGridTextColumn Header="Trạng thái" Binding="{Binding BoardMode}" Width="170"/>
+                <DataGridTextColumn Header="Mode" Binding="{Binding BoardMode}" Width="170"/>
             </DataGrid.Columns>
 
         </DataGrid>
@@ -28,6 +28,9 @@
         <Button x:Name="PreviousPageButton" Content="Trước" Margin="474,0,0,137"  FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
         <TextBlock x:Name="PageNumberTextBlock" Margin="519,0,0,137" TextAlignment="Center" FontFamily="Montserrat" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="94" />
         <Button x:Name="NextPageButton" Content="Sau" Margin="618,0,0,137" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
+        <Button x:Name="ModeBoardButton" Height="40" Margin="0,310,32,0" VerticalAlignment="Top" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA"  HorizontalAlignment="Right" Width="121" Click="ModeBoardButton_Click"  >
+            <TextBlock Text="Chỉnh mode" TextWrapping="Wrap" TextAlignment="Center" FontSize="20"/>
+        </Button>
 
     </Grid>
 </Window>
