@@ -1,7 +1,7 @@
 ﻿
 namespace WPF_NhaMayCaoSu.Repository.Models
 {
-    public class Board
+    public class BoardModelView
     {
         public Guid BoardId {  get; set; }
         public string BoardName { get; set; }
