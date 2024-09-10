@@ -14,32 +14,41 @@ namespace WPF_NhaMayCaoSu
         private readonly MqttClientService _mqttClientService;
         private readonly MqttServerService _mqttServerService;
         private readonly IBoardService _boardService;
+
+        // Dictionary to store the last received mode for each Board's MAC address
+        private readonly Dictionary<string, string> _boardModes;
+
         public BoardListWindow()
         {
             InitializeComponent();
             _mqttServerService = MqttServerService.Instance;
             _mqttClientService = new MqttClientService();
             _boardService = new BoardService();
-            _mqttServerService.ClientsChanged += OnMqttMessageReceived;
+            _boardModes = new Dictionary<string, string>();
+
+            // Replace the old event handler
+            _mqttServerService.ClientsChanged += OnClientsChanged;
         }
+
         public Account CurrentAccount { get; set; } = null;
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (CurrentAccount?.Role?.RoleName != "Admin")
             {
-                AddBoardButton.Visibility = Visibility.Collapsed;
+                SaveBoardButton.Visibility = Visibility.Collapsed;
                 EditBoardButton.Visibility = Visibility.Collapsed;
             }
+            LoadDataGrid();
             try
             {
                 await _mqttClientService.ConnectAsync();
                 await _mqttClientService.SubscribeAsync("BoardInfo");
 
-
+                // Subscribe to incoming MQTT messages
                 _mqttClientService.MessageReceived += (s, data) =>
                 {
-                    OnMqttMessageReceived(s, data);
+                    ProcessMqttMessage(s, data);
                 };
             }
             catch (Exception ex)
@@ -53,42 +62,126 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
-        private async void OnMqttMessageReceived(object sender, string data)
+        // New method to process incoming MQTT messages
+        private async void ProcessMqttMessage(object sender, string data)
         {
             try
             {
                 if (data.StartsWith("BoardInfo:"))
                 {
                     string messageContent = data.Substring("BoardInfo:".Length);
+                    Debug.WriteLine(messageContent);
                     string[] messages = messageContent.Split(':');
 
                     if (messages.Length == 2)
                     {
-                        string MacAddress = messages[0];
-                        int currentMode = int.Parse(messages[1]);
-                        Board connectedBoard = null;
-                        connectedBoard = await
-                            if (connectedBoard == null)
+                        string macAddress = messages[0];
+                        string currentMode = messages[1];
+
+                        // Store the last received mode for the board
+                        _boardModes[macAddress] = currentMode;
+
+                        // Check if the board is already in the database
+                        Board connectedBoard = await _boardService.GetBoardByMacAddressAsync(macAddress);
+                        if (connectedBoard == null)
                         {
+                            // Create a new board with the ClientID as the name
+                            IReadOnlyDictionary<string, string> connectedClients = _mqttServerService.GetConnectedClients();
+                            string clientName = connectedClients.FirstOrDefault(x => x.Value == macAddress).Key;
+
+                            if (string.IsNullOrEmpty(clientName))
+                            {
+                                MessageBox.Show("Không tìm thấy Client ID cho địa chỉ MAC này.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                return;
+                            }
+
                             connectedBoard = new Board
                             {
-
+                                BoardId = Guid.NewGuid(),
+                                BoardName = clientName,
+                                BoardMacAddress = macAddress,
+                                BoardIp = string.Empty // Assuming IP is not provided
                             };
+
+                            Debug.WriteLine(connectedBoard);
                             await _boardService.CreateBoardAsync(connectedBoard);
+                            MessageBox.Show("Board đã được thêm thành công.");
                         }
                         else
                         {
-                            Debug.WriteLine("Unexpected message topic.");
+                            // Optionally, update board details if needed
+                            await _boardService.UpdateBoardAsync(connectedBoard);
+                            MessageBox.Show("Board đã được cập nhật thành công.");
                         }
+
+                        // Reload the DataGrid to reflect the changes
+                        LoadDataGrid();
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Unexpected message format.");
                     }
                 }
+            }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error processing message: {ex.Message}");
             }
         }
 
+        // New method that gets called when clients change (replaces the old OnMqttMessageReceived)
+        private void OnClientsChanged(object sender, EventArgs e)
+        {
+            LoadDataGrid();
+        }
+
+        private async void SaveBoardButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (boardDataGrid.SelectedItem is Board selectedBoard)
+            {
+                var existingBoard = await _boardService.GetBoardByNameAsync(selectedBoard.BoardName);
+                if (existingBoard != null)
+                {
+                    MessageBox.Show("Board này đã được lưu", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else
+                {
+                    await _boardService.CreateBoardAsync(selectedBoard);
+                    MessageBox.Show("Lưu board thành công", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn một Board từ danh sách.", "No Board Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void EditBoardButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Edit logic here, similar to Save but modifying the existing board
+        }
+
+        private async void LoadDataGrid()
+        {
+            var boards = await _boardService.GetAllBoardsAsync(1, 10);
+
+            var boardViewModels = boards.Select(board => new
+            {
+                board.BoardId,
+                board.BoardName,
+                board.BoardMacAddress,
+                board.BoardIp,
+                BoardMode = _boardModes.ContainsKey(board.BoardMacAddress) ? _boardModes[board.BoardMacAddress] : "N/A"
+            }).ToList();
+
+            // Ensure UI updates happen on the main thread
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                boardDataGrid.ItemsSource = null;
+                boardDataGrid.Items.Clear();
+                boardDataGrid.ItemsSource = boardViewModels;
+            });
+        }
+
     }
 }
-
-

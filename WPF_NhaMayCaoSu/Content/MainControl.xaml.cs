@@ -47,6 +47,7 @@ namespace WPF_NhaMayCaoSu.Content
             accountManagementWindow.CurrentAccount = CurrentAccount;
             rfidListWindow.CurrentAccount = CurrentAccount;
             roleListWindow.CurrentAccount = CurrentAccount;
+            boardListWindow.CurrentAccount = CurrentAccount;
 
             MainContentControl.Content = broker.Content;
             _mqttServerService = MqttServerService.Instance;

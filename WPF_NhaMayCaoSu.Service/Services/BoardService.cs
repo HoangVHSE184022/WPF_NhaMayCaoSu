@@ -46,5 +46,10 @@ namespace WPF_NhaMayCaoSu.Service.Services
         {
             return await _boardRepository.GetTotalBoardsCountAsync();
         }
+
+        public async Task<Board> GetBoardByMacAddressAsync(String BoardMacAddress)
+        {
+            return await _boardRepository.GetBoardByMacAddressAsync(BoardMacAddress);
+        }
     }
 }

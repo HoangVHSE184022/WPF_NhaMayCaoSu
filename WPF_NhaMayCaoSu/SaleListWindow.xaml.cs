@@ -76,10 +76,12 @@ namespace WPF_NhaMayCaoSu
             var sales = await _service.GetAllSaleAsync(_currentPage, _pageSize);
             int totalSalesCount = await _service.GetTotalSalesCountAsync();
             _totalPages = (int)Math.Ceiling((double)totalSalesCount / _pageSize);
-
-            SaleDataGrid.ItemsSource = null;
-            SaleDataGrid.Items.Clear();
-            SaleDataGrid.ItemsSource = sales;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                SaleDataGrid.ItemsSource = null;
+                SaleDataGrid.Items.Clear();
+                SaleDataGrid.ItemsSource = sales;
+            });
 
             PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
 
@@ -143,7 +145,6 @@ namespace WPF_NhaMayCaoSu
         {
             Window_Loaded(this, null);
         }
-
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
