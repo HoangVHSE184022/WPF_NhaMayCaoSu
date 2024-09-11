@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
         Title="Login" Height="800" Width="1200" 
-        WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow">
+        WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow" Icon="assets/images/rubber.ico">
 
     <Grid Margin="0,-7,0,7">
         <Grid.RowDefinitions>
