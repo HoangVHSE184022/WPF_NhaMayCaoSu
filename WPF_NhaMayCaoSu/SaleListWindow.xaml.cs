@@ -135,9 +135,9 @@ namespace WPF_NhaMayCaoSu
             {
                 MessageBox.Show("Không thể kết nối đến máy chủ MQTT. Vui lòng kiểm tra lại kết nối. Bạn sẽ được chuyển về màn hình quản lý Broker.", "Lỗi kết nối", MessageBoxButton.OK, MessageBoxImage.Error);
 
-                BrokerWindow brokerWindow = new BrokerWindow();
-                brokerWindow.ShowDialog();
-                this.Close();
+                //BrokerWindow brokerWindow = new BrokerWindow();
+                //brokerWindow.ShowDialog();
+                //this.Close();
                 return;
             }
         }
