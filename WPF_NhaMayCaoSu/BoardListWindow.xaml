@@ -32,6 +32,9 @@
         <Button x:Name="ModeBoardButton" Height="68" Margin="0,310,32,0" VerticalAlignment="Top" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA"  HorizontalAlignment="Right" Width="121" Click="ModeBoardButton_Click"  >
             <TextBlock Text="Chuyển mode" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
+        <Button x:Name="DeleteBoardButton" Height="40" Margin="0,424,32,0" VerticalAlignment="Top" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA"  HorizontalAlignment="Right" Width="121" Click="DeleteBoardButton_Click"  >
+            <TextBlock Text="Xóa" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
 
     </Grid>
 </Window>
