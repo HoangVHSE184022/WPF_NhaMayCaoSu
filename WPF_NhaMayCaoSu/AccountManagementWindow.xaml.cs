@@ -114,8 +114,16 @@ namespace WPF_NhaMayCaoSu
                 }
 
                 // Register the new account
-                await _accountService.RegisterAsync(account);
-                MessageBox.Show("Bạn đã đăng ký thành công tài khoản dành cho người dùng (User)", "Đăng ký thành công", MessageBoxButton.OK);
+                try
+                {
+                    await _accountService.RegisterAsync(account);
+                    MessageBox.Show("Đăng ký thành công!", "Đăng ký thành công", MessageBoxButton.OK);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi đăng ký tài khoản!", "Lỗi!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                
                 // Redirect to login window
                 LoginWindow login = new();
                 login.Show();
@@ -189,12 +197,12 @@ namespace WPF_NhaMayCaoSu
             SaveButton.Content = "Đăng ký";
 
             //RoleComboBox.IsEnabled = false;
-            if (CurrentAccount?.Role?.RoleName != "Admin")
+            //if (CurrentAccount?.Role?.RoleName != "Admin")
 
-            {
-                RoleComboBox.Visibility = Visibility.Collapsed;
-                Role.Visibility = Visibility.Collapsed;
-            }
+            //{
+            //    RoleComboBox.Visibility = Visibility.Collapsed;
+            //    Role.Visibility = Visibility.Collapsed;
+            //}
 
             if (CurrentAccount != null)
             {

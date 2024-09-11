@@ -8,10 +8,10 @@
         Title="Customer List" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" WindowStyle="SingleBorderWindow">
     <Grid>
         <Label Content="Quản lý khách hàng" HorizontalAlignment="Left" Height="57" Margin="32,50,0,0" VerticalAlignment="Top" Width="343" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
-        <Button x:Name="AddCustomerButton" Margin="0,129,32,0" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="Button_Click" HorizontalAlignment="Right" Width="121" Height="40" VerticalAlignment="Top" >
+        <Button x:Name="AddCustomerButton" Margin="0,158,32,0" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="Button_Click" HorizontalAlignment="Right" Width="121" Height="40" VerticalAlignment="Top" >
             <TextBlock Text="Thêm mới" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="EditCustomerButton1" Margin="0,187,32,0" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="EditCustomerButton1_Click" HorizontalAlignment="Right" Width="121" Height="40" VerticalAlignment="Top" >
+        <Button x:Name="EditCustomerButton1" Margin="0,221,32,0" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="EditCustomerButton1_Click" HorizontalAlignment="Right" Width="121" Height="40" VerticalAlignment="Top" >
             <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
         <DataGrid x:Name="CustomerDataGrid" Margin="32,129,159,157" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
@@ -34,7 +34,7 @@
         </DataGrid>
         <Label x:Name="SearchLabel" Content="Nhập tên khách hàng:" Height="30" VerticalAlignment="Top" Margin="0,93,468,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="187" />
         <TextBox x:Name="SearchTextBox" Height="30" VerticalAlignment="Top" Margin="0,94,159,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="309"/>
-        <Button x:Name="SearchButton" Content="Tìm kiếm" Height="30" VerticalAlignment="Top" Margin="0,94,32,0" FontFamily="Montserrat" FontSize="18" Click="SearchButton_Click" HorizontalAlignment="Right" Width="121"/>
+        <Button x:Name="SearchButton" Content="Tìm kiếm" VerticalAlignment="Top" Margin="0,94,32,0" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" FontSize="24" Click="SearchButton_Click" HorizontalAlignment="Right" Width="121" Height="40"/>
 
         <Button x:Name="PreviousPageButton" Content="Trước" Margin="474,0,0,136" Click="PreviousPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
         <TextBlock x:Name="PageNumberTextBlock" Margin="519,0,0,137" TextAlignment="Center" FontFamily="Montserrat" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="94" />
