@@ -129,11 +129,36 @@ namespace WPF_NhaMayCaoSu
                 CustomerNameTextBox.Text = SelectedSale.CustomerName;
                 RFIDCodeTextBox.Text = SelectedSale.RFIDCode;
                 WeightTextBox.Text = SelectedSale.ProductWeight?.ToString();
-                URLWeightTextBox.Text = SelectedSale.ProductDensity?.ToString();
                 DensityTextBox.Text = SelectedSale.ProductDensity?.ToString();
-                URLDensityTextBox.Text = SelectedSale.ProductDensity?.ToString();
                 StatusTextBox.Text = SelectedSale.Status.ToString();
                 ModeLabel.Content = Constants.ModeLabelEditSale;
+
+                await LoadImagePaths(SelectedSale.SaleId);
+            }
+        }
+
+        private async Task LoadImagePaths(Guid saleId)
+        {
+            try
+            {
+                ImageService imageService = new ImageService();
+                var images = await imageService.GetImagesBySaleIdAsync(saleId);
+
+                foreach (var image in images)
+                {
+                    if (image.ImageType == 1)
+                    {
+                        URLWeightTextBox.Text = image.ImagePath;
+                    }
+                    else if (image.ImageType == 2)
+                    {
+                        URLDensityTextBox.Text = image.ImagePath;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi tải ảnh: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
