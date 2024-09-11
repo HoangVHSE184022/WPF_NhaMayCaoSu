@@ -59,8 +59,7 @@ namespace WPF_NhaMayCaoSu
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
-            Close();
-            accountManagementWindow.Show();
+            accountManagementWindow.ShowDialog();
 
         }
     }
