@@ -60,15 +60,23 @@ namespace WPF_NhaMayCaoSu
             }
             if  (WeightTextBox.Text == null)
             {
-                MessageBox.Show("Dữ liệu cân tạ đang bị trống", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Dữ liệu cân tạ không hợp lệ hoặc chưa được nhập. Vui lòng kiểm tra lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+
+            if (RFIDCodeTextBox.Text == null)
+            {
+                MessageBox.Show("Dữ liệu RFID không hợp lệ hoặc chưa được nhập. Vui lòng kiểm tra lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            float densityValue = string.IsNullOrWhiteSpace(DensityTextBox.Text) ? 0 : float.Parse(DensityTextBox.Text);
 
             Sale x = new Sale
             {
                 CustomerName = CustomerNameTextBox.Text,
                 ProductWeight = float.Parse(WeightTextBox.Text),
-                ProductDensity = float.Parse(DensityTextBox.Text),
+                ProductDensity = densityValue,
                 Status = short.Parse(StatusTextBox.Text),
                 RFIDCode = RFIDCodeTextBox.Text
             };
