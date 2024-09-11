@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
+        Icon="assets/images/rubber.ico"
         Title="Board List" Height="800" Width="1200" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow" Loaded="Window_Loaded">
     <Grid>
         <Label Content="Thêm Board" HorizontalAlignment="Left" Height="57" Margin="32,50,0,0" VerticalAlignment="Top" Width="343" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>

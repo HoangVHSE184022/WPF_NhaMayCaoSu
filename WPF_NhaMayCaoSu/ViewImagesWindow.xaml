@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         Loaded="Window_Loaded"
         mc:Ignorable="d"
+        Icon="assets/images/rubber.ico"
         Title="View Images" Height="800" Width="1200" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow">
     <Grid>
         <Menu HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Monserrat" Foreground="#FF002366" FontSize="16">
