@@ -73,7 +73,6 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         {
             _context = new CaoSuWpfDbContext();
 
-            // Fetch the existing account from the database to check for password updates
             Account existingAccount = await _context.Accounts.AsNoTracking().FirstOrDefaultAsync(a => a.AccountId == account.AccountId);
 
             if (existingAccount == null)

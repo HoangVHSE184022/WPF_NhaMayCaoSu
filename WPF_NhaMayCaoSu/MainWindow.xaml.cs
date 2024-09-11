@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu
@@ -15,7 +16,7 @@ namespace WPF_NhaMayCaoSu
     {
         private readonly MqttServerService _mqttServerService;
         private readonly MqttClientService _mqttClientService;
-        private readonly CameraService _cameraService = new();
+        private readonly ICameraService _cameraService = new CameraService();
         private bool isExpanded = false;
         public Account CurrentAccount { get; set; } = null;
         private BrokerWindow broker;

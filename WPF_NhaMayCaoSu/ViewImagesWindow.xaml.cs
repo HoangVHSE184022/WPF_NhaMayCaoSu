@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media.Imaging;
 using WPF_NhaMayCaoSu.Repository.Models;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu
@@ -13,7 +14,7 @@ namespace WPF_NhaMayCaoSu
 
         public Account CurrentAccount { get; set; }
         private readonly Sale sale;
-        private readonly ImageService _imageService = new();
+        private readonly IImageService _imageService = new ImageService();
         public ViewImagesWindow(Sale sale)
         {
             InitializeComponent();

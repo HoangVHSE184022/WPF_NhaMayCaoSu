@@ -3,6 +3,7 @@ using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Content;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -11,7 +12,7 @@ namespace WPF_NhaMayCaoSu
     /// </summary>
     public partial class LoginWindow : Window
     {
-        private readonly AccountService _accountService = new();
+        private readonly IAccountService _accountService = new AccountService();
         public event Action<Account> LoginSucceeded;
 
         public LoginWindow()

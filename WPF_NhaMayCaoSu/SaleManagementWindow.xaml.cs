@@ -7,6 +7,7 @@ using System.IO;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Drawing;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -16,8 +17,8 @@ namespace WPF_NhaMayCaoSu
     public partial class SaleManagementWindow : Window
     {
 
-        private SaleService _service = new();
-        private RFIDService _rfid = new();
+        private ISaleService _service = new SaleService();
+        private IRFIDService _rfid = new RFIDService();
 
         public Account CurrentAccount { get; set; } = null;
 
