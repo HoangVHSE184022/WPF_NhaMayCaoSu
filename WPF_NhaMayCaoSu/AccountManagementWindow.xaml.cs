@@ -137,8 +137,6 @@ namespace WPF_NhaMayCaoSu
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            LoginWindow login = new();
-            login.Show();
             Close();
         }
 

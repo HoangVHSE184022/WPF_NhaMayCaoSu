@@ -163,8 +163,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: new[] { "RoleId", "RoleName" },
                 values: new object[,]
                 {
-                    { new Guid("11933002-3683-438c-b1b5-c13e4371d919"), "Admin" },
-                    { new Guid("48a1072c-11a5-4aeb-85ac-860ee40ccd67"), "User" }
+                    { new Guid("48c09d85-2ba5-41c3-9281-fd08c31bf739"), "Admin" },
+                    { new Guid("c687d193-cbe8-410d-9ac0-9406d8a907e3"), "User" }
                 });
 
             migrationBuilder.InsertData(
@@ -172,8 +172,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: new[] { "AccountId", "AccountName", "CreatedDate", "Password", "RoleId", "Status", "Username" },
                 values: new object[,]
                 {
-                    { new Guid("93823480-372b-4da9-a223-213ec995b555"), "Standard User", new DateTime(2024, 9, 11, 7, 21, 53, 983, DateTimeKind.Utc).AddTicks(7714), "$2a$11$tZHwYf5DxXyvEv1EerUSVOL3DoKwO33RS0iwGHGDV3e7pNPQGUG6e", new Guid("48a1072c-11a5-4aeb-85ac-860ee40ccd67"), 1L, "user" },
-                    { new Guid("c15ee714-a5b7-4be3-be60-f8edc4bc598d"), "Administrator", new DateTime(2024, 9, 11, 7, 21, 53, 866, DateTimeKind.Utc).AddTicks(2679), "$2a$11$.HAUI.80XnxBmWkeD.lzwuq9HnNeWTBAp9.GK82ByOCYsUJTutzvG", new Guid("11933002-3683-438c-b1b5-c13e4371d919"), 1L, "admin" }
+                    { new Guid("9cbe6fcc-35c7-4db0-b030-6da99b10c4a4"), "Administrator", new DateTime(2024, 9, 11, 8, 31, 9, 314, DateTimeKind.Utc).AddTicks(2572), "$2a$11$A0IIU5cXAvllv.jROeA4N.2RQoOJb4FLbQLm4a0Oq3bRPCLkOXO5a", new Guid("48c09d85-2ba5-41c3-9281-fd08c31bf739"), 1L, "admin" },
+                    { new Guid("e0953a57-ff10-4d8a-9a93-6d90125e854d"), "Standard User", new DateTime(2024, 9, 11, 8, 31, 9, 518, DateTimeKind.Utc).AddTicks(6050), "$2a$11$D/HIVBm1x0RYaAJu7eHwvunpRz8PcVNfAfZmAaz9bA9wVLN90QzQm", new Guid("c687d193-cbe8-410d-9ac0-9406d8a907e3"), 1L, "user" }
                 });
 
             migrationBuilder.CreateIndex(
