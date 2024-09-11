@@ -2,6 +2,7 @@
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -10,7 +11,7 @@ namespace WPF_NhaMayCaoSu
     /// </summary>
     public partial class CustomerManagementWindow : Window
     {
-        private CustomerService _service = new();
+        private ICustomerService _service = new CustomerService();
         private MqttClientService _mqttClientService = new MqttClientService();
         public Account CurrentAccount { get; set; } = null;
 

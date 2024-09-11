@@ -3,6 +3,7 @@ using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -11,8 +12,8 @@ namespace WPF_NhaMayCaoSu
     /// </summary>
     public partial class AccountManagementWindow : Window
     {
-        private readonly AccountService _accountService = new();
-        private readonly RoleService _roleService = new();
+        private readonly IAccountService _accountService = new AccountService();
+        private readonly IRoleService _roleService = new RoleService();
         public Account CurrentAccount { get; set; } = null;
         public AccountManagementWindow()
         {

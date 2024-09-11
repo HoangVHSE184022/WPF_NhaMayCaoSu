@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu
@@ -10,7 +11,7 @@ namespace WPF_NhaMayCaoSu
     public partial class RFIDListWindow : Window
     {
         public Account CurrentAccount { get; set; } = null;
-        private RFIDService _service = new();
+        private IRFIDService _service = new RFIDService();
         private int _currentPage = 1;
         private int _pageSize = 10;
         private int _totalPages;

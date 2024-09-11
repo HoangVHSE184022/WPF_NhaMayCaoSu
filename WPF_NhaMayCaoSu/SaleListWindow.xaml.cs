@@ -17,12 +17,12 @@ namespace WPF_NhaMayCaoSu
     public partial class SaleListWindow : Window
     {
 
-        private SaleService _service = new();
-        private ImageService _imageService = new();
+        private ISaleService _service = new SaleService();
+        private IImageService _imageService = new ImageService();
         private int _currentPage = 1;
         private int _pageSize = 10;
         private int _totalPages;
-        private RFIDService _rfid = new();
+        private IRFIDService _rfid = new RFIDService();
 
         public Sale SelectedSale { get; set; } = null;
         private MqttClientService _mqttClientService = new();

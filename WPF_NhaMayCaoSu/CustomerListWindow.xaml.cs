@@ -2,6 +2,7 @@
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -11,7 +12,7 @@ namespace WPF_NhaMayCaoSu
     public partial class CustomerListWindow : Window
     {
 
-        private CustomerService _service = new();
+        private ICustomerService _service = new CustomerService();
         private int _currentPage = 1;
         private int _pageSize = 10;
         private int _totalPages;

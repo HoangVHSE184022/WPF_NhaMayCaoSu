@@ -6,12 +6,13 @@ using System.Drawing;
 using System.IO;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu
 {
     public partial class ConfigCamera : Window
     {
-        private readonly CameraService _cameraService = new();
+        private readonly ICameraService _cameraService = new CameraService();
 
         public Account CurrentAccount { get; set; }
 

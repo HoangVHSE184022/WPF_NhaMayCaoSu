@@ -3,6 +3,7 @@ using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -12,8 +13,8 @@ namespace WPF_NhaMayCaoSu
     public partial class RFIDManagementWindow : Window
     {
 
-        private RFIDService _service = new();
-        private CustomerService _customerService = new();
+        private IRFIDService _service = new RFIDService();
+        private ICustomerService _customerService = new CustomerService();
         public RFID SelectedRFID { get; set; } = null;
         private MqttClientService _mqttClientService = new MqttClientService();
         public Account CurrentAccount { get; set; } = null;

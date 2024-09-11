@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu
@@ -14,7 +15,7 @@ namespace WPF_NhaMayCaoSu
 
         public Role SelectedRole { get; set; } = null;
 
-        private RoleService _service = new();
+        private IRoleService _service = new RoleService();
 
         public RoleManagementWindow()
         {

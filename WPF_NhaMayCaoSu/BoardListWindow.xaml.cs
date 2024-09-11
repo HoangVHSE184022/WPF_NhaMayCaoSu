@@ -3,6 +3,7 @@ using System.Windows;
 using System.Diagnostics;
 using WPF_NhaMayCaoSu.Service.Services;
 using Newtonsoft.Json;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -13,7 +14,7 @@ namespace WPF_NhaMayCaoSu
     {
         private readonly MqttClientService _mqttClientService;
         private readonly MqttServerService _mqttServerService;
-        private readonly BoardService _boardService;
+        private readonly IBoardService _boardService;
         public Account CurrentAccount { get; set; } = null;
 
         public BoardListWindow()
