@@ -3,7 +3,6 @@ using System.Windows;
 using System.Diagnostics;
 using WPF_NhaMayCaoSu.Service.Services;
 using Newtonsoft.Json;
-using System.Net.Mail;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -24,18 +23,16 @@ namespace WPF_NhaMayCaoSu
             _mqttClientService = new MqttClientService();
             _boardService = new BoardService();
 
-            _mqttServerService.BoardReceived += MqttService_BoardsChanged;
+            // Subscribe to board changes
+            _mqttServerService.ClientsChanged += MqttService_BoardsChanged;
         }
 
         private void MqttService_BoardsChanged(object sender, EventArgs e)
         {
-            Dispatcher.Invoke(() =>
-            {
-                List<BoardModelView> boards = _mqttServerService.GetConnectedBoard();
-                boardDataGrid.ItemsSource = null;
-                boardDataGrid.ItemsSource = boards;
-            });
+            // Reload the DataGrid with updated boards
+            Dispatcher.Invoke(() => { LoadDataGrid(); });
         }
+
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (CurrentAccount?.Role?.RoleName != "Admin")
@@ -43,12 +40,8 @@ namespace WPF_NhaMayCaoSu
                 SaveBoardButton.Visibility = Visibility.Collapsed;
                 EditBoardButton.Visibility = Visibility.Collapsed;
             }
-        }
-
-
-        private void OnClientsChanged(object sender, EventArgs e)
-        {
-            /*            LoadDataGrid();*/
+            // Load data from database when window loads
+            LoadDataGrid();
         }
 
         private async void SaveBoardButton_Click(object sender, RoutedEventArgs e)
@@ -56,12 +49,61 @@ namespace WPF_NhaMayCaoSu
             AddConnectedBoardWindow addConnectedBoardWindow = new AddConnectedBoardWindow();
             addConnectedBoardWindow.CurrentAccount = CurrentAccount;
             addConnectedBoardWindow.ShowDialog();
-            LoadDataGrid();
+            LoadDataGrid(); // Reload the DataGrid after adding new boards
         }
 
-        private async void EditBoardButton_Click(object sender, RoutedEventArgs e)
+        private void EditBoardButton_Click(object sender, RoutedEventArgs e)
         {
-            // Check if a board is selected from the DataGrid
+            MessageBox.Show("Chức năng này đang trong quá trình phát triển", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+        //if (boardDataGrid.SelectedItem == null)
+        //{
+        //    MessageBox.Show("Vui lòng chọn một Board.", "Không có Board được chọn", MessageBoxButton.OK, MessageBoxImage.Warning);
+        //    return;
+        //}
+
+        //// Get the selected board from the DataGrid
+        //Board selectedBoard = boardDataGrid.SelectedItem as Board;
+
+        //// Ensure the board is valid and exists
+        //if (selectedBoard == null || string.IsNullOrEmpty(selectedBoard.BoardMacAddress))
+        //{
+        //    MessageBox.Show("Board được chọn không hợp lệ.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    return;
+        //}
+
+        //try
+        //{
+        //    var existingBoard = await _boardService.GetBoardByMacAddressAsync(selectedBoard.BoardMacAddress);
+        //    if (existingBoard != null)
+        //    {
+        //        MessageBox.Show("Board này đã được lưu.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+        //        return;
+        //    }
+
+        //    // Save the new board
+        //    await _boardService.CreateBoardAsync(selectedBoard);
+        //    MessageBox.Show("Lưu board thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+        //}
+        //catch (Exception ex)
+        //{
+        //    MessageBox.Show($"Lỗi khi lưu Board: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+        //}
+    }
+
+        private async void LoadDataGrid()
+        {
+            // Retrieve the boards from the database using BoardService
+            IEnumerable<Board> boards = await _boardService.GetAllBoardsAsync(1, 10);
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                boardDataGrid.ItemsSource = null; // Clear the DataGrid
+                boardDataGrid.ItemsSource = boards; // Bind the DataGrid to the retrieved boards
+            });
+        }
+
+        private async void ModeBoardButton_Click(object sender, RoutedEventArgs e)
+        {
             if (boardDataGrid.SelectedItem == null)
             {
                 MessageBox.Show("Vui lòng chọn một Board.", "Không có Board được chọn", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -69,105 +111,50 @@ namespace WPF_NhaMayCaoSu
             }
 
             // Get the selected board from the DataGrid
-            BoardModelView? selectedBoard = boardDataGrid.SelectedItem as BoardModelView;
-            Debug.WriteLine(selectedBoard.BoardMacAddress);
-            Debug.WriteLine(string.IsNullOrEmpty(selectedBoard.BoardMacAddress));
+            Board selectedBoard = boardDataGrid.SelectedItem as Board;
 
-
-            // Ensure selectedBoard is not null and has valid properties
-            if (selectedBoard == null || string.IsNullOrEmpty(selectedBoard.BoardMacAddress))
+            if (selectedBoard == null)
             {
                 MessageBox.Show("Board được chọn không hợp lệ.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            try
-            {
-                var board = new Board
-                {
-                    BoardId = selectedBoard.BoardId,
-                    BoardName = selectedBoard.BoardName,
-                    BoardIp = selectedBoard.BoardIp,
-                    BoardMacAddress = selectedBoard.BoardMacAddress,
-                    BoardMode = selectedBoard.BoardMode
-                };
-                // Check if the board exists in the database
-                var existingBoard = await _boardService.GetBoardByMacAddressAsync(board.BoardMacAddress);
-                if (existingBoard != null)
-                {
-                    MessageBox.Show("Board này đã được lưu.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
-                // Save the board to the database
-                await _boardService.CreateBoardAsync(board);
-                MessageBox.Show("Lưu board thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi khi lưu Board: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private async void LoadDataGrid()
-        {
-            IEnumerable<Board> boards = await _boardService.GetAllBoardsAsync(1, 10);
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                boardDataGrid.ItemsSource = null;
-                boardDataGrid.ItemsSource = boards;
-            });
-        }
-
-        private async void ModeBoardButton_Click(object sender, RoutedEventArgs e)
-        {
-            Board selected = boardDataGrid.SelectedItem as Board;
-
-            var existingBoard = await _boardService.GetBoardByMacAddressAsync(selected.BoardMacAddress);
+            var existingBoard = await _boardService.GetBoardByMacAddressAsync(selectedBoard.BoardMacAddress);
             if (existingBoard == null)
             {
                 MessageBox.Show("Board này chưa được lưu.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            if (selected != null)
+            // Toggle the board mode and update it
+            selectedBoard.BoardMode = selectedBoard.BoardMode == 1 ? 2 : 1;
+
+            string topic = string.Empty;
+
+            if (selectedBoard.BoardName == "ESP32_Can_ta")
             {
-                string topic = string.Empty;
-
-                // Determine the topic based on the selected board name
-                if (selected.BoardName == "ESP32_Can_ta")
-                {
-                    topic = "Canta_Mode";
-                }
-                else if (selected.BoardName == "ESP32_Can_tieu_ly")
-                {
-                    topic = "Cantieuly_Mode";
-                }
-                else
-                {
-                    MessageBox.Show("Unknown board selected.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
-                selected.BoardMode = selected.BoardMode == 1 ? 2 : 1;
-
-                var payloadObject = new { Mode = selected.BoardMode };
-                string payload = JsonConvert.SerializeObject(payloadObject);
-
-                if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
-                {
-                    await _mqttClientService.PublishAsync(topic, payload);
-                }
-
-                boardDataGrid.Items.Refresh(); 
+                topic = "Canta_Mode";
+            }
+            else if (selectedBoard.BoardName == "ESP32_Can_tieu_ly")
+            {
+                topic = "Cantieuly_Mode";
             }
             else
             {
-                MessageBox.Show("Please select a board to publish.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Unknown board selected.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-        }
 
-        
-        
+            var payloadObject = new { Mode = selectedBoard.BoardMode };
+            string payload = JsonConvert.SerializeObject(payloadObject);
+
+            // Publish the new mode to the MQTT topic
+            if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+            {
+                await _mqttClientService.PublishAsync(topic, payload);
+            }
+
+            boardDataGrid.Items.Refresh(); // Refresh the DataGrid to show updated mode
+        }
     }
 }

@@ -79,25 +79,23 @@ public class MqttServerService : IMqttServerService
         {
             string topic = e.ApplicationMessage.Topic;
             string payload = System.Text.Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
-            Debug.WriteLine($"Received message on topic: {topic}, payload: {payload}");
 
             if (topic == "Canta_info" || topic == "Cantieuly_info")
             {
-                Debug.WriteLine($"Processing message for topic: {topic}");
 
                 try
                 {
                     // Parse JSON to a dictionary
                     var message = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(payload);
 
-                    if (message == null || !message.ContainsKey("MacAddress") || !message.ContainsKey("Mode"))
+                    if (message == null || !message.ContainsKey("MacAddress") || !message.ContainsKey("CurrentMode"))
                     {
                         Debug.WriteLine("Invalid payload structure.");
                         return;
                     }
 
                     string macAddress = message["MacAddress"].GetString();
-                    int mode = message["Mode"].GetInt32();
+                    int mode = message["CurrentMode"].GetInt32();
 
                     var board = _connectedBoard.FirstOrDefault(b => b.BoardName == e.ClientId);
 
@@ -122,12 +120,6 @@ public class MqttServerService : IMqttServerService
                     }
 
                     BoardReceived?.Invoke(this, EventArgs.Empty);
-                    Debug.WriteLine($"BoardId: {board.BoardId}");
-                    Debug.WriteLine($"BoardName: {board.BoardName}");
-                    Debug.WriteLine($"BoardIp: {board.BoardIp}");
-                    Debug.WriteLine($"BoardMacAddress: {board.BoardMacAddress}");
-                    Debug.WriteLine($"BoardMode: {board.BoardMode}");
-                    Debug.WriteLine(new string('-', 50));
                 }
                 catch (JsonException ex)
                 {
