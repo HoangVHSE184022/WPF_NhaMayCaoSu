@@ -157,5 +157,53 @@ namespace WPF_NhaMayCaoSu
 
             boardDataGrid.Items.Refresh(); // Refresh the DataGrid to show updated mode
         }
+
+        private async void DeleteBoardButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Check if a board is selected from the DataGrid
+            if (boardDataGrid.SelectedItem == null)
+            {
+                MessageBox.Show("Vui lòng chọn một Board.", "Không có Board được chọn", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Get the selected board from the DataGrid
+            Board selectedBoard = boardDataGrid.SelectedItem as Board;
+
+            // Ensure the board is valid and exists
+            if (selectedBoard == null || string.IsNullOrEmpty(selectedBoard.BoardMacAddress))
+            {
+                MessageBox.Show("Board được chọn không hợp lệ.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Show a confirmation message box
+            MessageBoxResult result = MessageBox.Show(
+                "Bạn có chắc muốn xóa board này không?",
+                "Xác nhận xóa",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    // Perform the deletion using the BoardService
+                    await _boardService.DeleteBoardAsync(selectedBoard.BoardId);
+                    MessageBox.Show("Board đã được xóa thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // Reload the DataGrid after deletion
+                    LoadDataGrid();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi xóa Board: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Trở về", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
     }
 }
