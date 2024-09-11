@@ -26,7 +26,7 @@ namespace WPF_NhaMayCaoSu
         private MqttClientService _mqttClientService = new();
         private CustomerService customerService = new();
         private SaleService _saleService = new();
-        private double? oldWeightValue = null;
+        private float? oldWeightValue = null;
         private DateTime? firstMessageTime = null;
         private string lastRFID = string.Empty;
         private string oldUrl1 = string.Empty;
@@ -58,12 +58,17 @@ namespace WPF_NhaMayCaoSu
                 MessageBox.Show("RFID không tồn tại trong hệ thống. Vui lòng kiểm tra lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            if  (WeightTextBox.Text == null)
+            {
+                MessageBox.Show("Dữ liệu cân tạ đang bị trống", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             Sale x = new Sale
             {
                 CustomerName = CustomerNameTextBox.Text,
-                ProductWeight = int.Parse(WeightTextBox.Text),
-                ProductDensity = int.Parse(DensityTextBox.Text),
+                ProductWeight = float.Parse(WeightTextBox.Text),
+                ProductDensity = float.Parse(DensityTextBox.Text),
                 Status = short.Parse(StatusTextBox.Text),
                 RFIDCode = RFIDCodeTextBox.Text
             };
@@ -201,7 +206,7 @@ namespace WPF_NhaMayCaoSu
                     string messageContent = data.Substring("Can_ta:".Length);
                     string filePathUrl = CaptureImageFromCamera(newestCamera, 1);
 
-                    Application.Current.Dispatcher.Invoke(() =>
+                    Application.Current.Dispatcher.Invoke(async () =>
                     {
                         ProcessMqttMessage(messageContent, "RFID", "Weight", RFIDCodeTextBox, WeightTextBox);
                         ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLWeightTextBox);
@@ -249,59 +254,19 @@ namespace WPF_NhaMayCaoSu
 
                     if (firstKey == "RFID" && secondKey == "Weight")
                     {
-                        Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfidValue);
-                        if (sale == null || sale.ProductDensity.HasValue)
-                        {
-                            Customer customer = await customerService.GetCustomerByRFIDCodeAsync(rfidValue);
-                            Debug.WriteLine(customer);
-                            sale = new Sale
+                            if (lastRFID == rfidValue && oldWeightValue.HasValue && firstMessageTime.HasValue)
                             {
-                                SaleId = Guid.NewGuid(),
-                                RFIDCode = rfidValue,
-                                ProductWeight = currentValue,
-                                LastEditedTime = currentTime,
-                                ProductDensity = null,
-                                Status = 1,
-                                CustomerName = customer.CustomerName
-                            };
-                            Debug.WriteLine($"Sale created: {sale}");
-                            Debug.WriteLine("Successfully save new sale to db");
-                        }
-
-                        if (lastRFID == rfidValue && oldWeightValue.HasValue && firstMessageTime.HasValue)
-                        {
-                             sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfidValue);
-                            if (sale != null && !sale.ProductDensity.HasValue)
-                            {
-                                if (sale.ProductWeight.HasValue)
-                                {
-                                    currentValue += sale.ProductWeight.Value;
-                                    sale.ProductWeight = currentValue;
-                                    Debug.WriteLine("Successfully update weight");
-                                }
+                                currentValue += oldWeightValue.Value; 
                             }
-                        }
-                        // Save old Value
-                        oldWeightValue = currentValue;
-                        firstMessageTime = currentTime;
-                        lastRFID = rfidValue;
+
+                            // Save old Value
+                            oldWeightValue = currentValue;
+                            firstMessageTime = currentTime;
+                            lastRFID = rfidValue;
                     }
                     else if (firstKey == "RFID" && secondKey == "Density")
                     {
-                        // Handle the "Can_tieu_ly" topic
-                        Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfidValue);
-
-                        if (sale != null && sale.ProductWeight.HasValue && !sale.ProductDensity.HasValue)
-                        {
-                            currentValue = float.Parse(messages[1]);
-                            Debug.Write(currentValue);
-                            sale.ProductDensity = currentValue;
-                            Debug.WriteLine("Successfully save density");
-                        }
-                        else
-                        {
-                            throw new Exception("Sale with the specified RFID was not found.");
-                        }
+                        currentValue = float.Parse(messages[1]);
                     }
 
                     // Update UI
