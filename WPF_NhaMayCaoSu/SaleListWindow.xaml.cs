@@ -25,6 +25,7 @@ namespace WPF_NhaMayCaoSu
         private IRFIDService _rfid = new RFIDService();
 
         public Sale SelectedSale { get; set; } = null;
+        private MqttServerService _mqttServerService =  MqttServerService.Instance;
         private MqttClientService _mqttClientService = new();
         private CustomerService customerService = new();
         private CameraService cameraService = new();
@@ -42,7 +43,7 @@ namespace WPF_NhaMayCaoSu
             LoadDataGrid();
             try
             {
-                //LoadAwait();
+                LoadAwait();
                 _mqttClientService.MessageReceived += (s, data) =>
                 {
                     OnMqttMessageReceived(s, data);
@@ -58,6 +59,7 @@ namespace WPF_NhaMayCaoSu
 
         private async void LoadAwait()
         {
+            await _mqttServerService.StartBrokerAsync();
             await _mqttClientService.ConnectAsync();
             await _mqttClientService.SubscribeAsync("Can_ta");
             await _mqttClientService.SubscribeAsync("Can_tieu_ly");
