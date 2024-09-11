@@ -40,23 +40,23 @@ namespace WPF_NhaMayCaoSu
             InitializeComponent();
             
             LoadDataGrid();
-            try
-            {
-                LoadAwait();
-                _mqttClientService.MessageReceived += (s, data) =>
-                {
-                    OnMqttMessageReceived(s, data);
-                };
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Không thể kết nối đến máy chủ MQTT. Vui lòng kiểm tra lại kết nối. Bạn sẽ được chuyển về màn hình quản lý Broker.", "Lỗi kết nối", MessageBoxButton.OK, MessageBoxImage.Error);
+            //try
+            //{
+            //    LoadAwait();
+            //    _mqttClientService.MessageReceived += (s, data) =>
+            //    {
+            //        OnMqttMessageReceived(s, data);
+            //    };
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("Không thể kết nối đến máy chủ MQTT. Vui lòng kiểm tra lại kết nối. Bạn sẽ được chuyển về màn hình quản lý Broker.", "Lỗi kết nối", MessageBoxButton.OK, MessageBoxImage.Error);
 
-                BrokerWindow brokerWindow = new BrokerWindow();
-                brokerWindow.ShowDialog();
-                this.Close();
-                return;
-            }
+            //    BrokerWindow brokerWindow = new BrokerWindow();
+            //    brokerWindow.ShowDialog();
+            //    this.Close();
+            //    return;
+            //}
         }
 
         private async void LoadAwait()
