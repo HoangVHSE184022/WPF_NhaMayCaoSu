@@ -8,9 +8,6 @@
         Title="Board List" Height="800" Width="1200" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow" Loaded="Window_Loaded">
     <Grid>
         <Label Content="Thêm Board" HorizontalAlignment="Left" Height="57" Margin="32,50,0,0" VerticalAlignment="Top" Width="343" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
-        <Button x:Name="SaveBoardButton" HorizontalAlignment="Right" Height="40" Margin="0,146,32,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="SaveBoardButton_Click">
-            <TextBlock Text="Lưu" TextWrapping="Wrap" TextAlignment="Center"/>
-        </Button>
         <DataGrid x:Name="boardDataGrid" Margin="32,129,159,158" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding BoardId}" Width="120"/>
@@ -25,6 +22,9 @@
         <Button x:Name="PreviousPageButton" Content="Trước" Margin="474,0,0,137"  FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
         <TextBlock x:Name="PageNumberTextBlock" Margin="519,0,0,137" TextAlignment="Center" FontFamily="Montserrat" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="94" />
         <Button x:Name="NextPageButton" Content="Sau" Margin="618,0,0,137" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
+        <Button x:Name="EditBoardButton" Height="40" Margin="0,129,26,0" VerticalAlignment="Top" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA"  HorizontalAlignment="Right" Width="121" Click="EditBoardButton_Click"  >
+            <TextBlock Text="Thêm" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
 
     </Grid>
 </Window>

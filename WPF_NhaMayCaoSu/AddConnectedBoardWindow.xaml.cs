@@ -13,6 +13,7 @@ namespace WPF_NhaMayCaoSu
         private readonly MqttClientService _mqttClientService;
         private readonly MqttServerService _mqttServerService;
         private readonly BoardService _boardService;
+
         public Account CurrentAccount { get; set; } = null;
         private readonly Dictionary<string, string> _boardModes;
 
@@ -32,10 +33,6 @@ namespace WPF_NhaMayCaoSu
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (CurrentAccount?.Role?.RoleName != "Admin")
-            {
-                SaveBoardButton.Visibility = Visibility.Collapsed;
-            }
             LoadDataGrid();
             try
             {
@@ -137,34 +134,59 @@ namespace WPF_NhaMayCaoSu
             });
         }
 
-        private async void SaveBoardButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (boardDataGrid.SelectedItem is Board selectedBoard)
-            {
-                var existingBoard = await _boardService.GetBoardByNameAsync(selectedBoard.BoardName);
-                if (existingBoard != null)
-                {
-                    MessageBox.Show("Board này đã được lưu", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-                else
-                {
-                    await _boardService.CreateBoardAsync(selectedBoard);
-                    MessageBox.Show("Lưu board thành công", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Vui lòng chọn một Board từ danh sách.", "No Board Selected", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            LoadDataGrid();
-        }
-
         private void LoadDataGrid()
         {
 
         }
 
+        private async void EditBoardButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Check if a board is selected from the DataGrid
+            if (boardDataGrid.SelectedItem == null)
+            {
+                MessageBox.Show("Vui lòng chọn một Board.", "Không có Board được chọn", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Get the selected board from the DataGrid
+            BoardModelView? selectedBoard = boardDataGrid.SelectedItem as BoardModelView;
+            Debug.WriteLine(selectedBoard.BoardMacAddress);
+            Debug.WriteLine(string.IsNullOrEmpty(selectedBoard.BoardMacAddress));
 
 
+            // Ensure selectedBoard is not null and has valid properties
+            if (selectedBoard == null || string.IsNullOrEmpty(selectedBoard.BoardMacAddress))
+            {
+                MessageBox.Show("Board được chọn không hợp lệ.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            try
+            {
+                var board = new Board
+                {
+                    BoardId = selectedBoard.BoardId,
+                    BoardName = selectedBoard.BoardName,
+                    BoardIp = selectedBoard.BoardIp,
+                    BoardMacAddress = selectedBoard.BoardMacAddress,
+                    BoardMode = selectedBoard.BoardMode
+                };
+                // Check if the board exists in the database
+                var existingBoard = await _boardService.GetBoardByMacAddressAsync(board.BoardMacAddress);
+                if (existingBoard != null)
+                {
+                    MessageBox.Show("Board này đã được lưu.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                // Save the board to the database
+                await _boardService.CreateBoardAsync(board);
+                MessageBox.Show("Lưu board thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi lưu Board: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }
