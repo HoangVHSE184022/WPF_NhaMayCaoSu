@@ -62,8 +62,8 @@ namespace WPF_NhaMayCaoSu
             Sale x = new Sale
             {
                 CustomerName = CustomerNameTextBox.Text,
-                ProductWeight = int.Parse(WeightTextBox.Text),
-                ProductDensity = int.Parse(DensityTextBox.Text),
+                ProductWeight = float.Parse(WeightTextBox.Text),
+                ProductDensity = float.Parse(DensityTextBox.Text),
                 Status = short.Parse(StatusTextBox.Text),
                 RFIDCode = RFIDCodeTextBox.Text
             };
