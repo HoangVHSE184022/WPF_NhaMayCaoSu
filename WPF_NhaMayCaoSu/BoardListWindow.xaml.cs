@@ -131,11 +131,11 @@ namespace WPF_NhaMayCaoSu
 
             string topic = string.Empty;
 
-            if (selectedBoard.BoardName == "ESP32_Can_ta")
+            if (selectedBoard.BoardName == "ESP32_Canta")
             {
                 topic = "Canta_Mode";
             }
-            else if (selectedBoard.BoardName == "ESP32_Can_tieu_ly")
+            else if (selectedBoard.BoardName == "ESP32_Cantieuly")
             {
                 topic = "Cantieuly_Mode";
             }
