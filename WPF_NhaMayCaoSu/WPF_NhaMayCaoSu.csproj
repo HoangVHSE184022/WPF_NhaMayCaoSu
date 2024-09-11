@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="assets\images\rubber.ico" />
     <None Remove="assets\Montserrat\Montserrat-Italic-VariableFont_wght.ttf" />
     <None Remove="assets\Montserrat\Montserrat-VariableFont_wght.ttf" />
   </ItemGroup>
@@ -29,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="assets\images\rubber.ico" />
     <Resource Include="assets\Montserrat\Montserrat-Italic-VariableFont_wght.ttf" />
     <Resource Include="assets\Montserrat\Montserrat-VariableFont_wght.ttf" />
   </ItemGroup>
