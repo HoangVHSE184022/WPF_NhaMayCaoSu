@@ -71,6 +71,11 @@ namespace WPF_NhaMayCaoSu
             }
 
             float densityValue = string.IsNullOrWhiteSpace(DensityTextBox.Text) ? 0 : float.Parse(DensityTextBox.Text);
+            if (densityValue > 100)
+            {
+                MessageBox.Show("Tỉ trọng không thể vượt quá 100 %", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             Sale x = new Sale
             {
