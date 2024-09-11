@@ -440,7 +440,7 @@ namespace WPF_NhaMayCaoSu
             return localFilePath.ToString();
         }
 
-        private void ControlButton_Click(object sender, RoutedEventArgs e)
+        private async void ControlButton_Click(object sender, RoutedEventArgs e)
         {
             if (SaleDataGrid.SelectedItem == null)
             {
@@ -449,6 +449,7 @@ namespace WPF_NhaMayCaoSu
             }
 
             Sale sale = SaleDataGrid.SelectedItem as Sale;
+            IEnumerable<WPF_NhaMayCaoSu.Repository.Models.Image> images = await _imageService.Get2LatestImagesBySaleIdAsync(sale.SaleId);
 
             if (sale == null)
             {
@@ -456,7 +457,7 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
-            if (sale.Images == null || !sale.Images.Any())
+            if (images.Count() == 0)
             {
                 MessageBox.Show("Giao dịch này không có hình ảnh nào được liên kết để hiển thị.", "Không tìm thấy hình ảnh", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
