@@ -1,5 +1,5 @@
 {
   "ConnectionStrings": {
-    "DefaultConnectionStringDB": "server =(local); database=CaoSuWpfProject; uid=sa; pwd=12345; TrustServerCertificate=True"
+    "DefaultConnectionStringDB": "server =115.73.218.193,1433; database=CaoSuWpfProject; uid=user; pwd=12345; TrustServerCertificate=True"
   }
 }

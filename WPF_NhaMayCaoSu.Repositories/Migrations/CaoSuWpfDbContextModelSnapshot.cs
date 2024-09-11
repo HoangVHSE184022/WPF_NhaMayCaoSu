@@ -61,21 +61,21 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            AccountId = new Guid("c15ee714-a5b7-4be3-be60-f8edc4bc598d"),
+                            AccountId = new Guid("9cbe6fcc-35c7-4db0-b030-6da99b10c4a4"),
                             AccountName = "Administrator",
-                            CreatedDate = new DateTime(2024, 9, 11, 7, 21, 53, 866, DateTimeKind.Utc).AddTicks(2679),
-                            Password = "$2a$11$.HAUI.80XnxBmWkeD.lzwuq9HnNeWTBAp9.GK82ByOCYsUJTutzvG",
-                            RoleId = new Guid("11933002-3683-438c-b1b5-c13e4371d919"),
+                            CreatedDate = new DateTime(2024, 9, 11, 8, 31, 9, 314, DateTimeKind.Utc).AddTicks(2572),
+                            Password = "$2a$11$A0IIU5cXAvllv.jROeA4N.2RQoOJb4FLbQLm4a0Oq3bRPCLkOXO5a",
+                            RoleId = new Guid("48c09d85-2ba5-41c3-9281-fd08c31bf739"),
                             Status = 1L,
                             Username = "admin"
                         },
                         new
                         {
-                            AccountId = new Guid("93823480-372b-4da9-a223-213ec995b555"),
+                            AccountId = new Guid("e0953a57-ff10-4d8a-9a93-6d90125e854d"),
                             AccountName = "Standard User",
-                            CreatedDate = new DateTime(2024, 9, 11, 7, 21, 53, 983, DateTimeKind.Utc).AddTicks(7714),
-                            Password = "$2a$11$tZHwYf5DxXyvEv1EerUSVOL3DoKwO33RS0iwGHGDV3e7pNPQGUG6e",
-                            RoleId = new Guid("48a1072c-11a5-4aeb-85ac-860ee40ccd67"),
+                            CreatedDate = new DateTime(2024, 9, 11, 8, 31, 9, 518, DateTimeKind.Utc).AddTicks(6050),
+                            Password = "$2a$11$D/HIVBm1x0RYaAJu7eHwvunpRz8PcVNfAfZmAaz9bA9wVLN90QzQm",
+                            RoleId = new Guid("c687d193-cbe8-410d-9ac0-9406d8a907e3"),
                             Status = 1L,
                             Username = "user"
                         });
@@ -227,12 +227,12 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("11933002-3683-438c-b1b5-c13e4371d919"),
+                            RoleId = new Guid("48c09d85-2ba5-41c3-9281-fd08c31bf739"),
                             RoleName = "Admin"
                         },
                         new
                         {
-                            RoleId = new Guid("48a1072c-11a5-4aeb-85ac-860ee40ccd67"),
+                            RoleId = new Guid("c687d193-cbe8-410d-9ac0-9406d8a907e3"),
                             RoleName = "User"
                         });
                 });
