@@ -1,11 +1,14 @@
-﻿using System.Configuration;
+﻿using Emgu.CV.Structure;
+using Emgu.CV;
 using System.Diagnostics;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
-using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
+using System.IO;
+
 
 namespace WPF_NhaMayCaoSu
 {
@@ -16,7 +19,11 @@ namespace WPF_NhaMayCaoSu
     {
         private readonly MqttServerService _mqttServerService;
         private readonly MqttClientService _mqttClientService;
+        private ISaleService _saleService = new SaleService();
         private readonly ICameraService _cameraService = new CameraService();
+        private IImageService _imageService = new ImageService();
+        private CustomerService customerService = new();
+        private CameraService cameraService = new();
         private bool isExpanded = false;
         public Account CurrentAccount { get; set; } = null;
         private BrokerWindow broker;
@@ -40,111 +47,148 @@ namespace WPF_NhaMayCaoSu
                 SalesDataGrid.ItemsSource = updatedSales;
             });
         }
-        
 
-        private void OnMqttMessageReceived(object sender, string data)
+
+        private async void OnMqttMessageReceived(object sender, string data)
         {
             try
             {
-                Sale scannedSale = new Sale();
-                int choice = 0;
-                if (data.StartsWith("CreateRFID:"))
+                // Check if the message starts with "Can_ta" or "Can_tieu_ly"
+                string[] parts = data.Split(':');
+                if (parts.Length == 3 && float.TryParse(parts[2], out float currentValue))
                 {
-                    string rfidString = data.Substring("CreateRFID:".Length);
+                    string rfidString = parts[1];
+                    string messageType = parts[0] == "Can_ta" ? "Weight" : parts[0] == "Can_tieu_ly" ? "Density" : null;
+                    Debug.WriteLine(data);
+                    Debug.WriteLine(messageType);
 
-                    if (!string.IsNullOrEmpty(rfidString))
+                    if (messageType != null)
                     {
-                        SalesDataGrid.Dispatcher.Invoke(() =>
+                        Camera newestCamera = await cameraService.GetNewestCameraAsync();
+                        DateTime currentTime = DateTime.Now;
+                        Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfidString);
+                        Debug.WriteLine("Khach hang"+ sale);
+
+                        if (sale == null && messageType == "Weight")
                         {
-                            scannedSale = new Sale
+                            Customer customer = await customerService.GetCustomerByRFIDCodeAsync(rfidString);
+                            if (customer == null)
+                            {
+                                MessageBox.Show("Không thể tìm thấy khách hàng với rfid này", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                return;
+                            }
+                            sale = new Sale
                             {
                                 SaleId = Guid.NewGuid(),
                                 RFIDCode = rfidString,
-                                LastEditedTime = DateTime.UtcNow,
-                                Status = 1
+                                ProductWeight = currentValue,
+                                LastEditedTime = currentTime,
+                                ProductDensity = 0,
+                                Status = 1,
+                                CustomerName = customer.CustomerName
                             };
-                            _sessionSaleList.Add(scannedSale);
-                            SalesDataGrid.ItemsSource = null;
-                            SalesDataGrid.ItemsSource = _sessionSaleList;
-                            choice = 1;
-                        });
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Failed to parse RFID number.");
-                    }
-                }
-                else if (data.StartsWith("Can_ta:"))
-                {
-                    string[] parts = data.Substring("Can_ta:".Length).Split(':');
-                    if (parts.Length == 2 && float.TryParse(parts[1], out float weight))
-                    {
-                        string rfidString = parts[0];
+                            await _saleService.CreateSaleAsync(sale);
 
+                            // Capture image from the camera
+                            string imagePath = CaptureImageFromCamera(newestCamera, 1);
+                            if (!string.IsNullOrEmpty(imagePath))
+                            {
+                                Repository.Models.Image image = new Repository.Models.Image
+                                {
+                                    ImageId = Guid.NewGuid(),
+                                    ImageType = 1,
+                                    ImagePath = imagePath,
+                                    CreatedDate = currentTime,
+                                    SaleId = sale.SaleId
+                                };
+                                await _imageService.AddImageAsync(image);
+                            }
+
+                            // Add the new sale to _sessionSaleList
+                            _sessionSaleList.Add(sale);
+                        }
+                        else if (sale != null)
+                        {
+                            // Handle updates based on message type (Weight or Density)
+                            if (messageType == "Weight" && sale.ProductDensity == 0)
+                            {
+                                sale.ProductWeight += currentValue;
+                                await _saleService.UpdateSaleAsync(sale);
+
+                                // Capture image for weight update
+                                string imagePath = CaptureImageFromCamera(newestCamera, 1);
+                                if (!string.IsNullOrEmpty(imagePath))
+                                {
+                                    Repository.Models.Image image = new Repository.Models.Image
+                                    {
+                                        ImageId = Guid.NewGuid(),
+                                        ImageType = 1,
+                                        ImagePath = imagePath,
+                                        CreatedDate = currentTime,
+                                        SaleId = sale.SaleId
+                                    };
+                                    await _imageService.AddImageAsync(image);
+                                }
+
+                                // Update the sale in _sessionSaleList
+                                Sale existingSale = _sessionSaleList.FirstOrDefault(s => s.SaleId == sale.SaleId);
+                                if (existingSale != null)
+                                {
+                                    existingSale.ProductWeight = sale.ProductWeight;
+                                    existingSale.LastEditedTime = currentTime;
+                                }
+                            }
+                            else if (messageType == "Density" && sale.ProductWeight.HasValue && sale.ProductDensity == 0)
+                            {
+                                Debug.WriteLine($"Updating density for Sale: {sale.SaleId}, Weight: {sale.ProductWeight}, Current Density: {sale.ProductDensity}, New Density: {currentValue}");
+                                if (currentValue > 100)
+                                {
+                                    MessageBox.Show("Tỉ trọng không thể vượt quá 100 %", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                    return;
+                                }
+                                sale.ProductDensity = currentValue;
+                                await _saleService.UpdateSaleAsync(sale);
+
+                                // Capture image for density update
+                                string imagePath = CaptureImageFromCamera(newestCamera, 2);
+                                if (!string.IsNullOrEmpty(imagePath))
+                                {
+                                    Repository.Models.Image image = new Repository.Models.Image
+                                    {
+                                        ImageId = Guid.NewGuid(),
+                                        ImageType = 2,
+                                        ImagePath = imagePath,
+                                        CreatedDate = currentTime,
+                                        SaleId = sale.SaleId
+                                    };
+                                    await _imageService.AddImageAsync(image);
+                                }
+
+                                // Update the sale in _sessionSaleList
+                                Sale existingSale = _sessionSaleList.FirstOrDefault(s => s.SaleId == sale.SaleId);
+                                if (existingSale != null)
+                                {
+                                    existingSale.ProductDensity = sale.ProductDensity;
+                                    existingSale.LastEditedTime = currentTime;
+                                }
+                            }
+                        }
+
+                        // Refresh DataGrid
                         SalesDataGrid.Dispatcher.Invoke(() =>
                         {
-                            _sessionSaleList.Add(new Sale
-                            {
-                                SaleId = Guid.NewGuid(),
-                                RFIDCode = rfidString,
-                                ProductWeight = weight,
-                                LastEditedTime = DateTime.UtcNow,
-                                Status = 1
-                            });
-                            Debug.WriteLine("Sale:" + _sessionSaleList);
                             SalesDataGrid.ItemsSource = null;
                             SalesDataGrid.ItemsSource = _sessionSaleList;
                         });
                     }
                     else
                     {
-                        Debug.WriteLine("Failed to parse Can_ta data.");
-                    }
-                }
-                else if (data.StartsWith("Can_tieu_ly:"))
-                {
-                    string[] parts = data.Substring("Can_tieu_ly:".Length).Split(':');
-                    if (parts.Length == 2 && float.TryParse(parts[1], out float density))
-                    {
-                        string rfidString = parts[0];
-
-                        SalesDataGrid.Dispatcher.Invoke(() =>
-                        {
-                            _sessionSaleList.Add(new Sale
-                            {
-                                SaleId = Guid.NewGuid(),
-                                RFIDCode = rfidString,
-                                ProductDensity = density,
-                                LastEditedTime = DateTime.UtcNow,
-                                Status = 1
-                            });
-                            Debug.WriteLine("Sale:" + _sessionSaleList);
-                            SalesDataGrid.ItemsSource = null;
-                            SalesDataGrid.ItemsSource = _sessionSaleList;
-                        });
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Failed to parse Can_tieu_ly data.");
+                        Debug.WriteLine("Unknown message format.");
                     }
                 }
                 else
                 {
-                    Debug.WriteLine("Unknown message format.");
-                }
-                switch (choice)
-                {
-                    case 1:
-                        CreateRFID(scannedSale);
-                        break;
-                    case 2:
-                        AddWeight(scannedSale);
-                        break;
-                    case 3:
-                        AddDensity(scannedSale);
-                        break;
-                    default:
-                        break;
+                    Debug.WriteLine("Failed to parse message data.");
                 }
             }
             catch (Exception ex)
@@ -153,6 +197,53 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
+
+        private string CaptureImageFromCamera(Camera camera, int cameraIndex)
+        {
+            string localFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), $"{Guid.NewGuid()}_Camera{cameraIndex}.jpg");
+
+            try
+            {
+                string cameraUrl = cameraIndex == 1 ? camera.Camera1 : camera.Camera2;
+                if (string.IsNullOrEmpty(cameraUrl))
+                {
+                    throw new Exception($"URL của Camera {cameraIndex} không hợp lệ.");
+                }
+
+                using (var capture = new VideoCapture(cameraUrl))
+                {
+                    if (!capture.IsOpened)
+                    {
+                        throw new Exception($"Không thể mở Camera {cameraIndex}.");
+                    }
+
+                    using (var frame = new Mat())
+                    {
+                        capture.Read(frame);
+                        if (frame.IsEmpty)
+                        {
+                            throw new Exception($"Không thể chụp ảnh từ Camera {cameraIndex}.");
+                        }
+
+                        // Chuyển đổi frame sang Image<Bgr, byte>
+                        Image<Bgr, byte> image = frame.ToImage<Bgr, byte>();
+
+                        // Chuyển đổi Image<Bgr, byte> sang Bitmap
+                        Bitmap bitmap = image.ToBitmap();
+
+                        // Lưu hình ảnh vào đĩa
+                        bitmap.Save(localFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi chụp ảnh từ Camera {cameraIndex}: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return string.Empty;
+            }
+
+            return localFilePath.ToString();
+        }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
