@@ -28,7 +28,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Thời gian quét" Binding="{Binding LastEditedTime, StringFormat=G}" />
                 <DataGridTextColumn Header="RFID" Binding="{Binding RFIDCode}"/>
-                <DataGridTextColumn Header="Cân nặng" Binding="{Binding ProductWeight}" />
+                <DataGridTextColumn Header="Số kí" Binding="{Binding ProductWeight}" />
                 <DataGridTextColumn Header="Tỉ Trọng" Binding="{Binding ProductDensity}" />
                 <DataGridTextColumn Header="Tên khách hàng" Binding="{Binding CustomerName}" />
                 <DataGridTemplateColumn Header="Thao tác">
