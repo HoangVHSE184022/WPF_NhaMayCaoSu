@@ -90,13 +90,30 @@ namespace WPF_NhaMayCaoSu
             {
                 if (image.ImageType == 1)
                 {
-                    WeightImage.Source = new BitmapImage(new Uri(image.ImagePath, UriKind.RelativeOrAbsolute));
+                    // Check if the image path exists
+                    if (System.IO.File.Exists(image.ImagePath))
+                    {
+                        WeightImage.Source = new BitmapImage(new Uri(image.ImagePath, UriKind.RelativeOrAbsolute));
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Ảnh cân tạ không còn tồn tại ở {image.ImagePath}", "Lỗi ảnh", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
                 else if (image.ImageType == 2)
                 {
-                    DensityImage.Source = new BitmapImage(new Uri(image.ImagePath, UriKind.RelativeOrAbsolute));
+                    // Check if the image path exists
+                    if (System.IO.File.Exists(image.ImagePath))
+                    {
+                        DensityImage.Source = new BitmapImage(new Uri(image.ImagePath, UriKind.RelativeOrAbsolute));
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Ảnh cân tiểu ly không còn tồn tại ở {image.ImagePath}", "Lỗi ảnh", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
         }
+
     }
 }
