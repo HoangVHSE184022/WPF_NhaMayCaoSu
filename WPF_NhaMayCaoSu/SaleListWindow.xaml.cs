@@ -230,7 +230,7 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                CameraService cameraService = new();
+                
                 Camera newestCamera = await cameraService.GetNewestCameraAsync();
 
                 if (newestCamera == null)
@@ -397,7 +397,14 @@ namespace WPF_NhaMayCaoSu
 
         private string CaptureImageFromCamera(Camera camera, int cameraIndex)
         {
-            string localFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), $"{Guid.NewGuid()}_Camera{cameraIndex}.jpg");
+            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Hình ảnh cân cao su");
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            string localFilePath = Path.Combine(folderPath, $"{Guid.NewGuid()}_Camera{cameraIndex}.jpg");
 
             try
             {
