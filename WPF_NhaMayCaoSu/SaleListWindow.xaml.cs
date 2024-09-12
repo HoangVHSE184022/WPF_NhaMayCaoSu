@@ -230,7 +230,7 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                CameraService cameraService = new();
+                
                 Camera newestCamera = await cameraService.GetNewestCameraAsync();
 
                 if (newestCamera == null)
