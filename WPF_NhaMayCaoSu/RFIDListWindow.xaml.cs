@@ -166,5 +166,21 @@ namespace WPF_NhaMayCaoSu
                 RFIDDataGrid.ItemsSource = sales.Where(s => s.Customer.CustomerName.ToLower().Contains(searchTerm));
             }
         }
+
+        private async void DeleteRFIDButton_Click(object sender, RoutedEventArgs e)
+        {
+            RFID x = RFIDDataGrid.SelectedItem as RFID;
+
+            if (x == null)
+            {
+                MessageBox.Show("Vui lòng chọn RFID để xóa.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            await _service.DeleteRFIDAsync(x.RFID_Id);
+            MessageBox.Show("Xoá RFID thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+            LoadDataGrid();
+
+        }
     }
 }
