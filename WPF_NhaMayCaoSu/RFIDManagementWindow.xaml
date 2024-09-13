@@ -27,6 +27,7 @@
         <TextBox x:Name="RFIDCodeTextBox" Height="46" Margin="276,130,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="30" Background="#FFCACACA" BorderThickness="0"/>
         <Label Content="Ngày hết hạn" HorizontalAlignment="Left" Height="46" Margin="32,230,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
         <DatePicker x:Name="ExpDateDatePicker" HorizontalAlignment="Left" Height="45" Margin="276,230,0,0" VerticalAlignment="Top" Width="365" FontSize="30" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontFamily="Montserrat" TabIndex="3"/>
+        <Button x:Name="UnlimitedButton" Content="Vô thời hạn" HorizontalAlignment="Left" Height="45" Margin="656,230,0,0" VerticalAlignment="Top" Width="150" Background="#FF254098" FontFamily="Montserrat" Foreground="White" FontSize="20" Click="UnlimitedButton_Click"/>
         <Label Content="Trạng thái" HorizontalAlignment="Left" Height="46" Margin="32,330,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
         <TextBox x:Name="StatusTextBox" Text="1" Height="46" Margin="276,330,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="30" Background="#FFCACACA" BorderThickness="0"/>
         <Label Content="Chủ sở hữu" HorizontalAlignment="Left" Height="46" Margin="32,430,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>

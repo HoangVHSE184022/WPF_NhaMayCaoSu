@@ -17,6 +17,7 @@ namespace WPF_NhaMayCaoSu
         private ICustomerService _customerService = new CustomerService();
         public RFID SelectedRFID { get; set; } = null;
         private MqttClientService _mqttClientService = new MqttClientService();
+        private bool isUnlimited = false;
         public Account CurrentAccount { get; set; } = null;
 
         private Customer _customer;
@@ -128,7 +129,7 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
-            if (DateTime.Parse(ExpDateDatePicker.Text) < DateTime.Today)
+            if (!isUnlimited && (string.IsNullOrWhiteSpace(ExpDateDatePicker.Text) || DateTime.Parse(ExpDateDatePicker.Text) < DateTime.Today))
             {
                 MessageBox.Show("Ngày hết hạn không được là ngày trong quá khứ.", "Lỗi xác thực", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -145,7 +146,7 @@ namespace WPF_NhaMayCaoSu
             RFID rFID = new()
             {
                 RFIDCode = RFIDCodeTextBox.Text,
-                ExpirationDate = DateTime.Parse(ExpDateDatePicker.Text),
+                ExpirationDate = isUnlimited ? DateTime.UtcNow.AddYears(100) : DateTime.Parse(ExpDateDatePicker.Text),
                 Status = status,
                 RFID_Id = SelectedRFID?.RFID_Id ?? Guid.NewGuid(),
                 CustomerId = Guid.Parse(CustomerComboBox.SelectedValue.ToString()),
@@ -164,6 +165,26 @@ namespace WPF_NhaMayCaoSu
             }
 
             Close();
+        }
+
+        private void UnlimitedButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (isUnlimited)
+            {
+                // Nếu đang là "Vô thời hạn", hiện lại DatePicker và bỏ giá trị vô thời hạn
+                ExpDateDatePicker.Visibility = Visibility.Visible;
+                ExpDateDatePicker.SelectedDate = null;
+                UnlimitedButton.Content = "Vô thời hạn";
+                isUnlimited = false;
+            }
+            else
+            {
+                // Nếu đang chọn ngày, ẩn DatePicker và set giá trị "Vô thời hạn"
+                ExpDateDatePicker.Visibility = Visibility.Collapsed;
+                ExpDateDatePicker.SelectedDate = DateTime.UtcNow.AddYears(100);
+                UnlimitedButton.Content = "Chỉnh ngày";
+                isUnlimited = true;
+            }
         }
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
