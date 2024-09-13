@@ -23,13 +23,13 @@
 
         </DataGrid>
 
-        <DataGrid x:Name="ConnectedBoardDataGrid" Margin="639,129,10,158" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
+        <DataGrid x:Name="ConnectedBoardDataGrid" Margin="639,129,10,158" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False" SelectionChanged="ConnectedBoardDataGrid_SelectionChanged">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Width="50"/>
-                <DataGridTextColumn Header="Tên Board" Width="120" />
-                <DataGridTextColumn Header="IP" Width="150"/>
-                <DataGridTextColumn Header="MacAddress"  Width="150"/>
-                <DataGridTextColumn Header="Mode" Width="80"/>
+                <DataGridTextColumn Header="ID" Binding="{Binding BoardId}" Width="50"/>
+                <DataGridTextColumn Header="Tên Board" Binding="{Binding BoardName}" Width="120" />
+                <DataGridTextColumn Header="IP" Binding="{Binding BoardIp}" Width="150"/>
+                <DataGridTextColumn Header="MacAddress" Binding="{Binding BoardMacAddress}" Width="150"/>
+                <DataGridTextColumn Header="Mode" Binding="{Binding BoardMode}" Width="80"/>
             </DataGrid.Columns>
 
         </DataGrid>
