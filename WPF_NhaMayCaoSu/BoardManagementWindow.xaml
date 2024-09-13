@@ -1,0 +1,35 @@
+﻿<Window x:Class="WPF_NhaMayCaoSu.BoardManagementWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
+        mc:Ignorable="d"
+        Title="Board Management" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" WindowStyle="SingleBorderWindow">
+    <Grid>
+        <Menu HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Monserrat" Foreground="#FF002366" FontSize="16">
+            <MenuItem x:Name="ShowButton" Header="Hiển thị" Click="ShowButton_Click"/>
+            <MenuItem x:Name="ConfigButton" Header="Cấu hình" Click="ConfigButton_Click"/>
+            <MenuItem x:Name="BrokerManagementButton" Header="Broker" Click="BrokerManagementButton_Click"/>
+            <MenuItem Header="Quản lý">
+                <MenuItem x:Name="CustomerManagementButton" Header="Khách hàng" Click="CustomerManagementButton_Click"/>
+                <MenuItem x:Name="RFIDManagementButton" Header="RFID" Click="RFIDManagementButton_Click"/>
+                <MenuItem x:Name="SaleManagementButton" Header="Sale" Click="SaleManagementButton_Click"/>
+                <MenuItem x:Name="AccountManagementButton" Header="Tài khoản" Click="AccountManagementButton_Click"/>
+                <MenuItem x:Name="RoleManagementButton" Header="Vai trò" Click="RoleManagementButton_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <Label x:Name="ModeLabel" Content="Thêm/Chỉnh sửa Board" HorizontalAlignment="Left" Height="48" Margin="32,62,0,0" VerticalAlignment="Top" Width="400" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
+        <Label Content="Tên Board" HorizontalAlignment="Left" Height="46" Margin="32,130,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
+        <TextBox x:Name="BoardNameTextBox" Height="46" Margin="276,130,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA"  FontSize="30" BorderThickness="0"/>
+        <Label Content="Ip" HorizontalAlignment="Left" Height="46" Margin="32,200,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
+        <TextBox x:Name="IpTextBox" Height="46" Margin="276,200,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="30" Background="#FFCACACA" BorderThickness="0"/>
+        <Label Content="MacAddress" HorizontalAlignment="Left" Height="46" Margin="32,270,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
+        <TextBox x:Name="MacAddressTextBox" Height="46" Margin="276,270,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="30" Background="#FFCACACA" BorderThickness="0"/>
+        <Label Content="Mode" HorizontalAlignment="Left" Height="46" Margin="35,340,0,0" VerticalAlignment="Top" Width="236" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366" />
+        <TextBox x:Name="ModeTextBox" Height="46" Margin="276,340,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA" FontSize="30" BorderThickness="0"/>
+        <Button x:Name="SaveButton" Content="Lưu" HorizontalAlignment="Right" Height="40" Margin="0,0,71,28" VerticalAlignment="Bottom" Width="121" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" Click="SaveButton_Click"/>
+        <Button x:Name="QuitButton" Content="Thoát" HorizontalAlignment="Left" Height="40" Margin="72,0,0,35" VerticalAlignment="Bottom" Width="121"  FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="36" Background="#FFCACACA" Click="QuitButton_Click"/>
+    </Grid>
+</Window>

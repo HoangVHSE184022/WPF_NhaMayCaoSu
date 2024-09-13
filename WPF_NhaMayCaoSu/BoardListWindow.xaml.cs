@@ -38,58 +38,21 @@ namespace WPF_NhaMayCaoSu
         {
             if (CurrentAccount?.Role?.RoleName != "Admin")
             {
-                SaveBoardButton.Visibility = Visibility.Collapsed;
                 EditBoardButton.Visibility = Visibility.Collapsed;
             }
             // Load data from database when window loads
             LoadDataGrid();
         }
 
-        private async void SaveBoardButton_Click(object sender, RoutedEventArgs e)
-        {
-            AddConnectedBoardWindow addConnectedBoardWindow = new AddConnectedBoardWindow();
-            addConnectedBoardWindow.CurrentAccount = CurrentAccount;
-            addConnectedBoardWindow.ShowDialog();
-            LoadDataGrid(); // Reload the DataGrid after adding new boards
-        }
-
         private void EditBoardButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Chức năng này đang trong quá trình phát triển", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-        //if (boardDataGrid.SelectedItem == null)
-        //{
-        //    MessageBox.Show("Vui lòng chọn một Board.", "Không có Board được chọn", MessageBoxButton.OK, MessageBoxImage.Warning);
-        //    return;
-        //}
+            BoardManagementWindow boardManagementWindow = new BoardManagementWindow();
+            boardManagementWindow.CurrentAccount = CurrentAccount;
+            boardManagementWindow.SelectedBoard = boardDataGrid.SelectedItem as Board;
+            boardManagementWindow.ShowDialog();
+            LoadDataGrid();
 
-        //// Get the selected board from the DataGrid
-        //Board selectedBoard = boardDataGrid.SelectedItem as Board;
-
-        //// Ensure the board is valid and exists
-        //if (selectedBoard == null || string.IsNullOrEmpty(selectedBoard.BoardMacAddress))
-        //{
-        //    MessageBox.Show("Board được chọn không hợp lệ.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-        //    return;
-        //}
-
-        //try
-        //{
-        //    var existingBoard = await _boardService.GetBoardByMacAddressAsync(selectedBoard.BoardMacAddress);
-        //    if (existingBoard != null)
-        //    {
-        //        MessageBox.Show("Board này đã được lưu.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-        //        return;
-        //    }
-
-        //    // Save the new board
-        //    await _boardService.CreateBoardAsync(selectedBoard);
-        //    MessageBox.Show("Lưu board thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
-        //}
-        //catch (Exception ex)
-        //{
-        //    MessageBox.Show($"Lỗi khi lưu Board: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-        //}
-    }
+        }
 
         private async void LoadDataGrid()
         {
@@ -204,6 +167,12 @@ namespace WPF_NhaMayCaoSu
             {
                 MessageBox.Show("Trở về", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+        }
+
+        private void AddBoardButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Chưa làm", "Chưa làm", MessageBoxButton.OK);
+            return;
         }
     }
 }
