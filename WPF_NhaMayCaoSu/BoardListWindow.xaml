@@ -23,7 +23,7 @@
 
         </DataGrid>
 
-        <DataGrid x:Name="ConnectedBoardDataGrid" Margin="639,129,10,158" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False" SelectionChanged="ConnectedBoardDataGrid_SelectionChanged">
+        <DataGrid x:Name="ConnectedBoardDataGrid" Margin="639,129,10,158" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding BoardId}" Width="50"/>
                 <DataGridTextColumn Header="Tên Board" Binding="{Binding BoardName}" Width="120" />
