@@ -98,15 +98,17 @@ namespace WPF_NhaMayCaoSu
             });
         }
 
-        // Handle MQTT boards received and show them in the right DataGrid
         private void MqttService_BoardReceived(object sender, EventArgs e)
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(async () =>
             {
                 var mqttBoards = _mqttServerService.GetConnectedBoard();
                 _mqttBoards = mqttBoards.ToList();  // Store received boards
+                IEnumerable<Board> connectedBoardList = await _boardService.GetAllBoardsAsync(1, 10);
 
-                // Load MQTT-received boards into the right DataGrid
+                _mqttBoards.RemoveAll(mqttBoard => connectedBoardList.Any(connectedBoard =>
+                               connectedBoard.BoardMacAddress == mqttBoard.BoardMacAddress));
+
                 ConnectedBoardDataGrid.ItemsSource = null;
                 ConnectedBoardDataGrid.ItemsSource = _mqttBoards;
             });
@@ -236,10 +238,10 @@ namespace WPF_NhaMayCaoSu
 
             if (selectedBoard != null)
             {
-                var existingBoard = await _boardService.GetBoardByMacAddressAsync(selectedBoard.BoardMacAddress);
+                Board existingBoard = await _boardService.GetBoardByMacAddressAsync(selectedBoard.BoardMacAddress);
                 if (existingBoard == null)
                 {
-                    var newBoard = new Board
+                    Board newBoard = new Board
                     {
                         BoardId = selectedBoard.BoardId,
                         BoardName = selectedBoard.BoardName,
@@ -248,11 +250,9 @@ namespace WPF_NhaMayCaoSu
                         BoardMode = selectedBoard.BoardMode
                     };
 
-                    // Save the selected board to the database
                     await _boardService.CreateBoardAsync(newBoard);
                     MessageBox.Show("Board đã được thêm thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    // Reload left DataGrid after adding new board
                     await LoadDataGridFromDatabase();
                 }
                 else
