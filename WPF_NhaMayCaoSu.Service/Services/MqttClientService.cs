@@ -72,15 +72,15 @@ namespace WPF_NhaMayCaoSu.Service.Services
             string message = Encoding.UTF8.GetString(arg.ApplicationMessage.Payload);
             Console.WriteLine($"Message received on topic {arg.ApplicationMessage.Topic}: {message}");
 
-            // Phân tích tin nhắn JSON
+            // Parse the message payload as JSON
             var jsonMessage = JsonConvert.DeserializeObject<JObject>(message);
             string rfid = jsonMessage["RFID"]?.ToString();
             string density = jsonMessage["Density"]?.ToString();
             string weight = jsonMessage["Weight"]?.ToString();
             string macAddress = jsonMessage["MacAddress"]?.ToString();
-            string currentMode = jsonMessage["CurrentMode"]?.ToString();
+            string Mode = jsonMessage["Mode"]?.ToString();
 
-            // Kiểm tra topic và xử lý tin nhắn tương ứng
+            // Check topic and process corresponding message
             switch (arg.ApplicationMessage.Topic)
             {
                 case "CreateRFID":
@@ -103,24 +103,40 @@ namespace WPF_NhaMayCaoSu.Service.Services
                         MessageReceived?.Invoke(this, $"Can_ta:{rfid}:{weight}");
                     }
                     break;
+
                 case "Canta_info":
-                    if (!string.IsNullOrEmpty(macAddress) && !string.IsNullOrEmpty(currentMode))
+                    if (!string.IsNullOrEmpty(macAddress) && !string.IsNullOrEmpty(Mode))
                     {
-                        MessageReceived?.Invoke(this, $"CantaInfo:{macAddress}:{currentMode}");
+                        MessageReceived?.Invoke(this, $"CantaInfo:{macAddress}:{Mode}");
                     }
                     break;
+
                 case "Cantieuly_info":
-                    if (!string.IsNullOrEmpty(macAddress) && !string.IsNullOrEmpty(currentMode))
+                    if (!string.IsNullOrEmpty(macAddress) && !string.IsNullOrEmpty(Mode))
                     {
-                        MessageReceived?.Invoke(this, $"CantieuLyInfo:{macAddress}:{currentMode}");
+                        MessageReceived?.Invoke(this, $"CantieuLyInfo:{macAddress}:{Mode}");
+                    }
+                    break;
+
+                default:
+                    if (arg.ApplicationMessage.Topic.EndsWith("/checkmode"))
+                    {
+                        string[] topicParts = arg.ApplicationMessage.Topic.Split('/');
+                        if (topicParts.Length > 1)
+                        {
+                            string mac = topicParts[1]; 
+
+                            if (!string.IsNullOrEmpty(Mode))
+                            {
+                                MessageReceived?.Invoke(this, $"MAC:{mac}, Mode:{Mode}");
+                            }
+                        }
                     }
                     break;
             }
 
             return Task.CompletedTask;
         }
-
-
 
         public async Task ConnectAsync()
         {
