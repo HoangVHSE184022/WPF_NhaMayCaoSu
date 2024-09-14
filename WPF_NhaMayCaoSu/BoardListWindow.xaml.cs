@@ -27,7 +27,58 @@ namespace WPF_NhaMayCaoSu
             // Subscribe to board changes from MQTT
             _mqttServerService.BoardReceived += MqttService_BoardReceived;
             _mqttServerService.ClientsChanged += MqttService_BoardsChanged;
+
+            try
+            {
+                LoadAwait();
+                _mqttClientService.MessageReceived += (s, data) =>
+                {
+                    OnMqttMessageReceived(s, data);
+                };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể kết nối đến máy chủ MQTT. Vui lòng kiểm tra lại kết nối. Bạn sẽ được chuyển về màn hình quản lý Broker.", "Lỗi kết nối", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                return;
+            }
+
         }
+        private async void LoadAwait()
+        {
+            string topic = "+/checkmode";
+            await _mqttClientService.ConnectAsync();
+            await _mqttClientService.SubscribeAsync(topic);
+        }
+
+        private async void OnMqttMessageReceived(object sender, string data)
+        {
+            try
+            {
+                var messageParts = data.Split(',');
+                string macAddress = messageParts.FirstOrDefault(x => x.StartsWith("MacAddress"))?.Split(':')[1];
+                int mode = int.Parse(messageParts.FirstOrDefault(x => x.StartsWith("Mode"))?.Split(':')[1]);
+
+                if (!string.IsNullOrEmpty(macAddress))
+                {
+                    Board board = await _boardService.GetBoardByMacAddressAsync(macAddress);
+                    Debug.WriteLine($"MacAddress: {macAddress}, Mode: {mode}");
+                    if (board != null)
+                    {
+                        if(board.BoardMode != mode)
+                        {
+                            board.BoardMode = mode;
+                            await _boardService.UpdateBoardAsync(board);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error processing message: {ex.Message}");
+            }
+        }
+
 
         private void MqttService_BoardsChanged(object sender, EventArgs e)
         {
@@ -118,18 +169,18 @@ namespace WPF_NhaMayCaoSu
             // Toggle the board mode and update it
             selectedBoard.BoardMode = selectedBoard.BoardMode == 1 ? 2 : 1;
 
-            string topic = selectedBoard.BoardName == "ESP32_Canta" ? "Canta_Mode" : "Cantieuly_Mode";
+            string topic = $"/{selectedBoard.BoardMacAddress}/mode";
+
 
             var payloadObject = new { Mode = selectedBoard.BoardMode };
             string payload = JsonConvert.SerializeObject(payloadObject);
 
-            // Publish the new mode to the MQTT topic
             if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
             {
                 await _mqttClientService.PublishAsync(topic, payload);
             }
 
-            boardDataGrid.Items.Refresh(); // Refresh the left DataGrid to show updated mode
+            boardDataGrid.Items.Refresh(); 
         }
 
         private async void DeleteBoardButton_Click(object sender, RoutedEventArgs e)
