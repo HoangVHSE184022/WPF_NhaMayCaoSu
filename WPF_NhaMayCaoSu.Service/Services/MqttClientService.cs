@@ -70,7 +70,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
         private Task OnMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs arg)
         {
             string message = Encoding.UTF8.GetString(arg.ApplicationMessage.Payload);
-            Console.WriteLine($"Message received on topic {arg.ApplicationMessage.Topic}: {message}");
+            Debug.WriteLine($"Message received on topic {arg.ApplicationMessage.Topic}: {message}");
 
             // Parse the message payload as JSON
             var jsonMessage = JsonConvert.DeserializeObject<JObject>(message);
@@ -83,10 +83,15 @@ namespace WPF_NhaMayCaoSu.Service.Services
             // Check topic and process corresponding message
             switch (arg.ApplicationMessage.Topic)
             {
-                case "CreateRFID":
-                    if (!string.IsNullOrEmpty(rfid))
+                case var topic when topic.EndsWith("/sendRFID"):
+                    string[] topicParts = topic.Split('/');
+                    if (topicParts.Length > 1)
                     {
-                        MessageReceived?.Invoke(this, $"CreateRFID:{rfid}");
+                         macAddress = topicParts[0];
+                        if (!string.IsNullOrEmpty(rfid))
+                        {
+                            MessageReceived?.Invoke(this, $"sendRFID:{macAddress}:{rfid}");
+                        }
                     }
                     break;
 
@@ -121,7 +126,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
                 default:
                     if (arg.ApplicationMessage.Topic.EndsWith("/checkmode"))
                     {
-                        string[] topicParts = arg.ApplicationMessage.Topic.Split('/');
+                         topicParts = arg.ApplicationMessage.Topic.Split('/');
                         if (topicParts.Length > 1)
                         {
                             string mac = topicParts[1]; 
