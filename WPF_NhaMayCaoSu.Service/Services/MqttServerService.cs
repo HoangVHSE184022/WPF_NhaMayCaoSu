@@ -88,14 +88,14 @@ public class MqttServerService : IMqttServerService
                     // Parse JSON to a dictionary
                     var message = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(payload);
 
-                    if (message == null || !message.ContainsKey("MacAddress") || !message.ContainsKey("CurrentMode"))
+                    if (message == null || !message.ContainsKey("MacAddress") || !message.ContainsKey("Mode"))
                     {
                         Debug.WriteLine("Invalid payload structure.");
                         return;
                     }
 
                     string macAddress = message["MacAddress"].GetString();
-                    int mode = message["CurrentMode"].GetInt32();
+                    int mode = message["Mode"].GetInt32();
 
                     var board = _connectedBoard.FirstOrDefault(b => b.BoardName == e.ClientId);
 
