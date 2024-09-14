@@ -117,9 +117,8 @@ namespace WPF_NhaMayCaoSu
             {
                 await _mqttClientService.ConnectAsync();
                 await _mqttClientService.SubscribeAsync("Can_ta");
-                await _mqttClientService.SubscribeAsync("Can_tieu_ly");
-
-                _mqttClientService.MessageReceived += (s, data) => OnMqttMessageReceived(s, data);
+                await _mqttClientService.SubscribeAsync("+/info");
+                _mqttClientService.MessageReceived += OnMqttMessageReceived;
             }
             catch (Exception ex)
             {
