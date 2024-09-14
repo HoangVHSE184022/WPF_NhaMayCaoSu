@@ -26,26 +26,11 @@
                   Width="Auto" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA"
                   AutoGenerateColumns="False" Margin="10,40,10,0">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Thời gian quét" Binding="{Binding LastEditedTime, StringFormat=G}" />
-                <DataGridTextColumn Header="RFID" Binding="{Binding RFIDCode}"/>
-                <DataGridTextColumn Header="Số kí" Binding="{Binding ProductWeight}" />
-                <DataGridTextColumn Header="Tỉ Trọng" Binding="{Binding ProductDensity}" />
-                <DataGridTextColumn Header="Tên khách hàng" Binding="{Binding CustomerName}" />
-                <DataGridTemplateColumn Header="Thao tác">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Width="25" Height="25" x:Name="ControlButton" Click="ControlButton_Click" Tag="{Binding}" Content="Action" >
-                                <Button.Template>
-                                    <ControlTemplate TargetType="{x:Type Button}">
-                                        <Grid>
-                                            <TextBlock Text="⚙️" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Tên khách hàng" Width="250" Binding="{Binding CustomerName}" />
+                <DataGridTextColumn Header="RFID" Width="200" Binding="{Binding RFIDCode}"/>
+                <DataGridTextColumn Header="Số kí" Width="150" Binding="{Binding ProductWeight}" />
+                <DataGridTextColumn Header="Tỉ Trọng" Width="150" Binding="{Binding ProductDensity}" />
+                <DataGridTextColumn Header="Thời gian quét" Width="270" Binding="{Binding LastEditedTime, StringFormat=G}" />
             </DataGrid.Columns>
         </DataGrid>
 
