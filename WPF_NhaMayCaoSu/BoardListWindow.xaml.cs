@@ -30,7 +30,7 @@ namespace WPF_NhaMayCaoSu
 
             try
             {
-                LoadAwait();
+               // LoadAwait();
                 _mqttClientService.MessageReceived += (s, data) =>
                 {
                     OnMqttMessageReceived(s, data);
@@ -258,19 +258,6 @@ namespace WPF_NhaMayCaoSu
                 else
                 {
                     MessageBox.Show("Board này đã tồn tại trong hệ thống.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-            }
-        }
-
-        // Handle selection change in ConnectedBoardDataGrid (right grid for MQTT-received boards)
-        private void ConnectedBoardDataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (ConnectedBoardDataGrid.SelectedItem != null)
-            {
-                var selectedBoard = ConnectedBoardDataGrid.SelectedItem as BoardModelView;
-                if (selectedBoard != null)
-                {
-                    MessageBox.Show($"Selected Board:\nName: {selectedBoard.BoardName}\nMAC: {selectedBoard.BoardMacAddress}", "Thông tin Board", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
         }
