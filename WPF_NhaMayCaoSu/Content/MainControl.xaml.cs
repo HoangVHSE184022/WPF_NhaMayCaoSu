@@ -51,6 +51,7 @@ namespace WPF_NhaMayCaoSu.Content
 
             MainContentControl.Content = broker.Content;
             _mqttServerService = MqttServerService.Instance;
+            _mqttServerService.StartBrokerAsync();
             _mqttServerService.BrokerStatusChanged += (sender, e) => UpdateMainWindowUI();
             _mqttClientService = new MqttClientService();
             _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;

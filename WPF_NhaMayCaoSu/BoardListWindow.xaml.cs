@@ -30,7 +30,7 @@ namespace WPF_NhaMayCaoSu
 
             try
             {
-               // LoadAwait();
+                LoadAwait();
                 _mqttClientService.MessageReceived += (s, data) =>
                 {
                     OnMqttMessageReceived(s, data);

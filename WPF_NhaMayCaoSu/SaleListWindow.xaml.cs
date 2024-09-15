@@ -50,7 +50,6 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                //await _mqttServerService.StartBrokerAsync();
                 await _mqttClientService.ConnectAsync();
                 await _mqttClientService.SubscribeAsync("+/info");
                 _mqttClientService.MessageReceived += OnMqttMessageReceived;
