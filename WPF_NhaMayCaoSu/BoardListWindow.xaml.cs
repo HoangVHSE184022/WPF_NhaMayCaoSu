@@ -261,5 +261,45 @@ namespace WPF_NhaMayCaoSu
                 }
             }
         }
+
+        private async void ControlButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ConnectedBoardDataGrid.SelectedItem == null)
+            {
+                MessageBox.Show("Vui lòng chọn một Board từ danh sách Boards kết nối.", "Không có Board được chọn", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            BoardModelView selectedBoard = ConnectedBoardDataGrid.SelectedItem as BoardModelView;
+
+
+
+            if (selectedBoard != null)
+            {
+                var existingBoard = await _boardService.GetBoardByMacAddressAsync(selectedBoard.BoardMacAddress);
+                if (existingBoard == null)
+                {
+                    var newBoard = new Board
+                    {
+                        BoardId = selectedBoard.BoardId,
+                        BoardName = selectedBoard.BoardName,
+                        BoardIp = selectedBoard.BoardIp,
+                        BoardMacAddress = selectedBoard.BoardMacAddress,
+                        BoardMode = selectedBoard.BoardMode
+                    };
+
+                    // Save the selected board to the database
+                    await _boardService.CreateBoardAsync(newBoard);
+                    MessageBox.Show("Board đã được thêm thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // Reload left DataGrid after adding new board
+                    await LoadDataGridFromDatabase();
+                }
+                else
+                {
+                    MessageBox.Show("Board này đã tồn tại trong hệ thống.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
     }
 }

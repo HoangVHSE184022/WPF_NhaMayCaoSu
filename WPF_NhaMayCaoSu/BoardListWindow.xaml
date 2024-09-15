@@ -30,6 +30,21 @@
                 <DataGridTextColumn Header="IP" Binding="{Binding BoardIp}" Width="150"/>
                 <DataGridTextColumn Header="MacAddress" Binding="{Binding BoardMacAddress}" Width="150"/>
                 <DataGridTextColumn Header="Mode" Binding="{Binding BoardMode}" Width="80"/>
+                <DataGridTemplateColumn Header="Thao tác">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Width="25" Height="25" x:Name="ControlButton" Click="ControlButton_Click" Tag="{Binding}" Content="Action" >
+                                <Button.Template>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Grid>
+                                            <TextBlock Text="👁" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
 
         </DataGrid>
