@@ -144,19 +144,16 @@ namespace WPF_NhaMayCaoSu
         // Processes the MQTT message and updates the sale
         private async void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, Camera newestCamera, short cameraIndex)
         {
-            Debug.WriteLine($"Receive mess 2: {messageContent}");
             try
             {
                 string[] messages = messageContent.Split(':');
-                Debug.WriteLine($"messages bf return: {messages}");
+
                 if (messages.Length != 3) return;
-                Debug.WriteLine($"messages after return: {messages}");
+
                 string rfid = messages[0];
                 float newValue = float.Parse(messages[1]);
 
                 Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfid);
-                Debug.WriteLine($"Sale: {sale}");
-                Debug.WriteLine($"messages: {messages}");
 
                 if (sale == null)
                 {
@@ -229,7 +226,10 @@ namespace WPF_NhaMayCaoSu
             };
 
             if (valueType == "Weight")
+            {
                 sale.ProductWeight = value;
+                sale.ProductDensity = 0;
+            }
             else
                 sale.ProductDensity = value;
 
