@@ -114,6 +114,7 @@ namespace WPF_NhaMayCaoSu
                         {
                             sale.LastEditedTime = DateTime.Now;
                             sale.ProductWeight += newValue;
+
                         }
                         else
                         {
@@ -123,7 +124,7 @@ namespace WPF_NhaMayCaoSu
                     }
                     else if (secondKey == "Density")
                     {
-                        if (!sale.ProductDensity.HasValue)
+                        if (sale.ProductDensity == 0)
                         {
                             sale.LastEditedTime = DateTime.Now;
                             sale.ProductDensity = newValue;

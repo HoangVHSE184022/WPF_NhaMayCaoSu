@@ -116,7 +116,6 @@ namespace WPF_NhaMayCaoSu
             try
             {
                 await _mqttClientService.ConnectAsync();
-                await _mqttClientService.SubscribeAsync("Can_ta");
                 await _mqttClientService.SubscribeAsync("+/info");
                 _mqttClientService.MessageReceived += OnMqttMessageReceived;
             }
