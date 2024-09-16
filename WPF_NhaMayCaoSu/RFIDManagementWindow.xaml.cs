@@ -89,9 +89,9 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                if (data.StartsWith("sendRFID:"))
+                if (data.StartsWith("sendRFID-"))
                 {
-                    string[] parts = data.Split(':');
+                    string[] parts = data.Split('-');
                     string macAddress = parts[1];
                     string rfidString = parts[2];
 
