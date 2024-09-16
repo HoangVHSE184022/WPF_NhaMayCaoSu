@@ -48,14 +48,19 @@ namespace WPF_NhaMayCaoSu.Content
             rfidListWindow.CurrentAccount = CurrentAccount;
             roleListWindow.CurrentAccount = CurrentAccount;
             boardListWindow.CurrentAccount = CurrentAccount;
-
             MainContentControl.Content = broker.Content;
             _mqttServerService = MqttServerService.Instance;
-            _mqttServerService.StartBrokerAsync();
+            Start_Broker();
+
             _mqttServerService.BrokerStatusChanged += (sender, e) => UpdateMainWindowUI();
             _mqttClientService = new MqttClientService();
             _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;
 
+        }
+
+        private async void Start_Broker()
+        {
+            await _mqttServerService.StartBrokerAsync();
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
