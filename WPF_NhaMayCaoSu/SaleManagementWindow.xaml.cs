@@ -1,172 +1,366 @@
-﻿using System.Windows;
-using WPF_NhaMayCaoSu.Repository.Models;
-using WPF_NhaMayCaoSu.Service.Services;
-using WPF_NhaMayCaoSu.Core.Utils;
+﻿using System;
+using System.Windows;
 using System.Diagnostics;
 using System.IO;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Drawing;
+using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
+using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Core.Utils;
 
 namespace WPF_NhaMayCaoSu
 {
-    /// <summary>
-    /// Interaction logic for SaleManagementWindow.xaml
-    /// </summary>
     public partial class SaleManagementWindow : Window
     {
+        private readonly ISaleService _service = new SaleService();
+        private readonly IRFIDService _rfidService = new RFIDService();
+        private readonly CameraService _cameraService = new CameraService();
+        private readonly MqttClientService _mqttClientService = new MqttClientService();
+        private readonly CustomerService _customerService = new CustomerService();
+        private readonly SaleService _saleService = new SaleService();
+        private readonly ImageService _imageService = new ImageService();
 
-        private ISaleService _service = new SaleService();
-        private IRFIDService _rfid = new RFIDService();
-
-        public Account CurrentAccount { get; set; } = null;
-        CameraService cameraService = new();
-        
+        // State variables
+        private float? _oldWeightValue = null;
+        private float? _oldDensityValue = null;
+        private DateTime? _firstMessageTime = null;
+        private string _lastRFID = string.Empty;
+        private string _oldUrlWeight = string.Empty;
+        private string _oldUrlDensity = string.Empty;
 
         public Sale SelectedSale { get; set; } = null;
-        private MqttClientService _mqttClientService = new();
-        private CustomerService customerService = new();
-        private SaleService _saleService = new();
-        private float? oldWeightValue = null;
-        private DateTime? firstMessageTime = null;
-        private string lastRFID = string.Empty;
-        private string oldUrl1 = string.Empty;
-        private string oldUrl2 = string.Empty;
+        public Account CurrentAccount { get; set; } = null;
 
         public SaleManagementWindow()
         {
             InitializeComponent();
         }
 
-        private void QuitButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+        private void QuitButton_Click(object sender, RoutedEventArgs e) => Close();
 
+        // Save Button Click Handler
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            // Kiểm tra nếu RFID không hợp lệ hoặc rỗng
+            if (ValidateFormInput())
+            {
+                var sale = new Sale
+                {
+                    CustomerName = CustomerNameTextBox.Text,
+                    ProductWeight = float.Parse(WeightTextBox.Text),
+                    ProductDensity = string.IsNullOrWhiteSpace(DensityTextBox.Text) ? 0 : float.Parse(DensityTextBox.Text),
+                    Status = short.Parse(StatusTextBox.Text),
+                    RFIDCode = RFIDCodeTextBox.Text
+                };
+
+                if (SelectedSale == null)
+                {
+                    await _service.CreateSaleAsync(sale);
+                    MessageBox.Show(Constants.SuccessMessageSaleCreated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    sale.SaleId = SelectedSale.SaleId;
+                    sale.LastEditedTime = DateTime.UtcNow;
+                    await _service.UpdateSaleAsync(sale);
+                    MessageBox.Show(Constants.SuccessMessageSaleUpdated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+
+                Close();
+            }
+        }
+
+        // Validate form inputs
+        private bool ValidateFormInput()
+        {
             if (string.IsNullOrWhiteSpace(RFIDCodeTextBox.Text))
             {
                 MessageBox.Show("RFID không hợp lệ hoặc chưa được nhập. Vui lòng kiểm tra lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                return false;
             }
 
-            // Kiểm tra nếu RFID không tồn tại trong cơ sở dữ liệu
-            var existingSale = await _rfid.GetRFIDByRFIDCodeAsync(RFIDCodeTextBox.Text);
-            if (existingSale == null)
-            {
-                MessageBox.Show("RFID không tồn tại trong hệ thống. Vui lòng kiểm tra lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            if  (WeightTextBox.Text == null)
+            if (string.IsNullOrWhiteSpace(WeightTextBox.Text))
             {
                 MessageBox.Show("Dữ liệu cân tạ không hợp lệ hoặc chưa được nhập. Vui lòng kiểm tra lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                return false;
             }
 
-            if (RFIDCodeTextBox.Text == null)
-            {
-                MessageBox.Show("Dữ liệu RFID không hợp lệ hoặc chưa được nhập. Vui lòng kiểm tra lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            float densityValue = string.IsNullOrWhiteSpace(DensityTextBox.Text) ? 0 : float.Parse(DensityTextBox.Text);
-            if (densityValue > 100)
+            if (float.TryParse(DensityTextBox.Text, out float densityValue) && densityValue > 100)
             {
                 MessageBox.Show("Tỉ trọng không thể vượt quá 100 %", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                return false;
             }
 
-            Sale x = new Sale
-            {
-                CustomerName = CustomerNameTextBox.Text,
-                ProductWeight = float.Parse(WeightTextBox.Text),
-                ProductDensity = densityValue,
-                Status = short.Parse(StatusTextBox.Text),
-                RFIDCode = RFIDCodeTextBox.Text
-            };
-
-            CameraService cameraService = new CameraService();
-            Camera newestCamera = await cameraService.GetNewestCameraAsync();
-            string imageFilePath = string.Empty;
-
-            if (SelectedSale == null)
-            {
-                MessageBox.Show(Constants.SuccessMessageSaleCreated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
-                await _service.CreateSaleAsync(x);
-            }
-            else
-            {
-                x.SaleId = SelectedSale.SaleId;
-                x.LastEditedTime = DateTime.UtcNow;
-                MessageBox.Show(Constants.SuccessMessageSaleUpdated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
-                await _service.UpdateSaleAsync(x);
-            }
-
-            Close();
+            return true;
         }
 
-
+        // Window Loaded Event
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ModeLabel.Content = Constants.ModeLabelAddSale;
+            ModeLabel.Content = SelectedSale == null ? Constants.ModeLabelAddSale : Constants.ModeLabelEditSale;
 
             try
             {
                 await _mqttClientService.ConnectAsync();
-                await _mqttClientService.SubscribeAsync("Can_ta");
-                await _mqttClientService.SubscribeAsync("Can_tieu_ly");
-
-                _mqttClientService.MessageReceived += (s, data) => OnMqttMessageReceived(s, data);
+                await _mqttClientService.SubscribeAsync("+/info");
+                _mqttClientService.MessageReceived += OnMqttMessageReceived;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Không thể kết nối đến máy chủ MQTT. Vui lòng kiểm tra lại kết nối. Bạn sẽ được chuyển về màn hình quản lý Broker.", "Lỗi kết nối", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                BrokerWindow brokerWindow = new BrokerWindow();
-                brokerWindow.ShowDialog();
-                this.Close();
-                return;
+                MessageBox.Show("Không thể kết nối đến máy chủ MQTT. Vui lòng kiểm tra lại kết nối.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                Close();
             }
 
             if (SelectedSale != null)
             {
-                CustomerNameTextBox.Text = SelectedSale.CustomerName;
-                RFIDCodeTextBox.Text = SelectedSale.RFIDCode;
-                WeightTextBox.Text = SelectedSale.ProductWeight?.ToString();
-                DensityTextBox.Text = SelectedSale.ProductDensity?.ToString();
-                StatusTextBox.Text = SelectedSale.Status.ToString();
-                ModeLabel.Content = Constants.ModeLabelEditSale;
-
+                PopulateSaleDetails(SelectedSale);
                 await LoadImagePaths(SelectedSale.SaleId);
             }
         }
 
+        // Populate Sale details if editing an existing sale
+        private void PopulateSaleDetails(Sale sale)
+        {
+            CustomerNameTextBox.Text = sale.CustomerName;
+            RFIDCodeTextBox.Text = sale.RFIDCode;
+            WeightTextBox.Text = sale.ProductWeight?.ToString();
+            DensityTextBox.Text = sale.ProductDensity?.ToString();
+            StatusTextBox.Text = sale.Status.ToString();
+        }
+
+        // Load Image Paths for the Sale
         private async Task LoadImagePaths(Guid saleId)
         {
+            var images = await _imageService.GetImagesBySaleIdAsync(saleId);
+            foreach (var image in images)
+            {
+                if (image.ImageType == 1)
+                    URLWeightTextBox.Text = image.ImagePath;
+                else if (image.ImageType == 2)
+                    URLDensityTextBox.Text = image.ImagePath;
+            }
+        }
+
+        // Handles incoming MQTT messages
+        private async void OnMqttMessageReceived(object sender, string data)
+        {
+            Debug.WriteLine($"MQTT Message received: {data}");
             try
             {
-                ImageService imageService = new ImageService();
-                var images = await imageService.GetImagesBySaleIdAsync(saleId);
+                Camera newestCamera = await _cameraService.GetNewestCameraAsync();
 
-                foreach (var image in images)
+                if (newestCamera == null)
                 {
-                    if (image.ImageType == 1)
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        URLWeightTextBox.Text = image.ImagePath;
-                    }
-                    else if (image.ImageType == 2)
+                        MessageBox.Show("Không thể lấy thông tin từ camera.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    });
+                    return;
+                }
+
+                if (data.Contains("Weight"))
+                {
+                    string messageContent = data["info:".Length..];
+                    string filePathUrl = CaptureImageFromCamera(newestCamera, 1);
+
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        URLDensityTextBox.Text = image.ImagePath;
-                    }
+                        ProcessMqttMessage(messageContent, "RFID", "Weight", RFIDCodeTextBox, WeightTextBox);
+                        ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLWeightTextBox);
+                    });
+                }
+                else if (data.Contains("Density"))
+                {
+                    string messageContent = data["info:".Length..];
+                    string filePathUrl = CaptureImageFromCamera(newestCamera, 2);
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ProcessMqttMessage(messageContent, "RFID", "Density", RFIDCodeTextBox, DensityTextBox);
+                        ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLDensityTextBox);
+                    });
+                }
+                else
+                {
+                    Debug.WriteLine("Unknown MQTT topic.");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi tải ảnh: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                Debug.WriteLine($"Error processing message: {ex.Message}");
             }
+        }
+
+        // Process the received MQTT message (weight or density)
+        private async void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, System.Windows.Controls.TextBox firstTextBox, System.Windows.Controls.TextBox secondTextBox)
+        {
+            try
+            {
+                string[] messages = messageContent.Split(':');
+                if (messages.Length == 3)
+                {
+                    string rfidValue = messages[0];
+                    string currentValueString = messages[1];
+                    Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfidValue);
+                    string customerName = customer.CustomerName;
+
+                    // Validate if the value can be parsed
+                    if (!float.TryParse(currentValueString, out float currentValue))
+                    {
+                        throw new FormatException("Giá trị không hợp lệ. Không thể phân tích giá trị số từ dữ liệu nhận được.");
+                    }
+
+                    Debug.WriteLine($"Origin mes {messageContent}");
+                    Debug.WriteLine($"1 mes {firstTextBox}");
+                    Debug.WriteLine($"2 mes {rfidValue}");
+                    Debug.WriteLine($"3 mes {currentValue}");
+
+                    float existingValue = 0;
+
+                    if (!string.IsNullOrEmpty(WeightTextBox.Text) && !float.TryParse(WeightTextBox.Text, out existingValue))
+                    {
+                        MessageBox.Show("Dữ liệu cân tạ không hợp lệ. Vui lòng kiểm tra lại.", "Lỗi định dạng", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    Debug.WriteLine($"Existing value: {existingValue}");
+
+                    if (!string.IsNullOrEmpty(firstTextBox.Text))
+                    {
+                        if (secondKey == "Weight")
+                        {
+                            existingValue += currentValue; // Accumulate the weight
+                        }
+                        else if (secondKey == "Density")
+                        {
+                            existingValue = currentValue; // Set the density
+                        }
+                    }
+                    else
+                    {
+                        firstTextBox.Text = rfidValue;
+
+                        if (secondKey == "Weight")
+                        {
+                            existingValue = currentValue; // Set the weight
+                        }
+                    }
+
+                    Debug.WriteLine($"Final value: {existingValue}");
+
+                    // Update UI fields safely using Dispatcher
+                    firstTextBox.Dispatcher.Invoke(() => firstTextBox.Text = rfidValue);
+                    secondTextBox.Dispatcher.Invoke(() => secondTextBox.Text = existingValue.ToString());
+                    CustomerNameTextBox.Dispatcher.Invoke(() => CustomerNameTextBox.Text=customerName);
+                }
+                else
+                {
+                    Debug.WriteLine("Invalid message format.");
+                }
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show($"Dữ liệu không hợp lệ: {ex.Message}", "Lỗi định dạng", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Debug.WriteLine($"FormatException: {ex.Message}");
+            }
+            catch (NullReferenceException ex)
+            {
+                MessageBox.Show("Không thể xử lý dữ liệu do trường không tồn tại hoặc rỗng.", "Lỗi tham chiếu null", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Debug.WriteLine($"NullReferenceException: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Đã xảy ra lỗi trong quá trình xử lý tin nhắn MQTT: {ex.Message}", "Lỗi hệ thống", MessageBoxButton.OK, MessageBoxImage.Error);
+                Debug.WriteLine($"Error processing MQTT message: {ex.Message}");
+            }
+        }
+
+
+
+        // Processes the image URL updates for the camera
+        private void ProcessCameraUrlMessage(string cameraUrl, string rfidValue, System.Windows.Controls.TextBox urlTextBox)
+        {
+            try
+            {
+                DateTime currentTime = DateTime.UtcNow;
+                urlTextBox.Dispatcher.Invoke(() =>
+                {
+                    if (_lastRFID == rfidValue && _firstMessageTime.HasValue)
+                    {
+                        // Append new URL to the existing URL
+                        if (urlTextBox == URLWeightTextBox)
+                        {
+                            _oldUrlWeight = string.IsNullOrEmpty(_oldUrlWeight) ? cameraUrl : $"{_oldUrlWeight}\n{cameraUrl}";
+                            urlTextBox.Text = _oldUrlWeight;
+                        }
+                        else if (urlTextBox == URLDensityTextBox)
+                        {
+                            _oldUrlDensity = string.IsNullOrEmpty(_oldUrlDensity) ? cameraUrl : $"{_oldUrlDensity}\n{cameraUrl}";
+                            urlTextBox.Text = _oldUrlDensity;
+                        }
+                    }
+                    else
+                    {
+                        // If it's a new RFID or more than 5 minutes have passed, reset the URLs
+                        if (urlTextBox == URLWeightTextBox)
+                        {
+                            _oldUrlWeight = cameraUrl;
+                            urlTextBox.Text = _oldUrlWeight;
+                        }
+                        else if (urlTextBox == URLDensityTextBox)
+                        {
+                            _oldUrlDensity = cameraUrl;
+                            urlTextBox.Text = _oldUrlDensity;
+                        }
+
+                        // Update the last RFID and timestamp
+                        _lastRFID = rfidValue;
+                        _firstMessageTime = currentTime;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error processing camera URL message: {ex.Message}");
+            }
+        }
+
+        // Capture image from the camera
+        private string CaptureImageFromCamera(Camera camera, int cameraIndex)
+        {
+            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Hình ảnh cân cao su");
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            string localFilePath = Path.Combine(folderPath, $"{Guid.NewGuid()}_Camera{cameraIndex}.jpg");
+
+            try
+            {
+                string cameraUrl = cameraIndex == 1 ? camera.Camera1 : camera.Camera2;
+                if (string.IsNullOrEmpty(cameraUrl)) throw new Exception($"URL của Camera {cameraIndex} không hợp lệ.");
+
+                using var capture = new VideoCapture(cameraUrl);
+                if (!capture.IsOpened) throw new Exception($"Không thể mở Camera {cameraIndex}.");
+
+                using var frame = new Mat();
+                capture.Read(frame);
+                if (frame.IsEmpty) throw new Exception($"Không thể chụp ảnh từ Camera {cameraIndex}.");
+
+                var image = frame.ToImage<Bgr, byte>();
+                Bitmap bitmap = image.ToBitmap();
+                bitmap.Save(localFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi chụp ảnh từ Camera {cameraIndex}: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return string.Empty;
+            }
+
+            return localFilePath;
         }
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
@@ -223,263 +417,5 @@ namespace WPF_NhaMayCaoSu
             Close();
             mainWindow.Show();
         }
-
-        private async void OnMqttMessageReceived(object sender, string data)
-        {
-            Debug.WriteLine("On message received has been triggered");
-            try
-            {
-                Camera newestCamera = await cameraService.GetNewestCameraAsync();
-
-                if (newestCamera == null)
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        MessageBox.Show("Không thể lấy thông tin từ camera.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-                    });
-                    return;
-                }
-
-                if (data.StartsWith("Can_ta:"))
-                {
-                    string messageContent = data.Substring("Can_ta:".Length);
-                    string filePathUrl = CaptureImageFromCamera(newestCamera, 1);
-
-                    Application.Current.Dispatcher.Invoke(async () =>
-                    {
-                        ProcessMqttMessage(messageContent, "RFID", "Weight", RFIDCodeTextBox, WeightTextBox);
-                        ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLWeightTextBox);
-                        ProcessCustomerMessage(messageContent);
-                        StatusTextBox.Text = "1";
-                    });
-                }
-                else if (data.StartsWith("Can_tieu_ly:"))
-                {
-                    string messageContent = data.Substring("Can_tieu_ly:".Length);
-                    string filePathUrl = CaptureImageFromCamera(newestCamera, 2);
-
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        ProcessMqttMessage(messageContent, "RFID", "Density", RFIDCodeTextBox, DensityTextBox);
-                        ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLDensityTextBox);
-                        ProcessCustomerMessage(messageContent);
-                        StatusTextBox.Text = "1";
-                    });
-                }
-                else
-                {
-                    Debug.WriteLine("Unexpected message topic.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error processing message: {ex.Message}");
-            }
-        }
-
-
-        private async void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, System.Windows.Controls.TextBox firstTextBox, System.Windows.Controls.TextBox secondTextBox)
-        {
-            try
-            {
-                // Split message by :
-                string[] messages = messageContent.Split(':');
-
-                if (messages.Length == 2)
-                {
-                    string rfidValue = messages[0];
-                    float currentValue = float.Parse(messages[1]);
-                    DateTime currentTime = DateTime.Now;
-
-                    if (firstKey == "RFID" && secondKey == "Weight")
-                    {
-                            if (lastRFID == rfidValue && oldWeightValue.HasValue && firstMessageTime.HasValue)
-                            {
-                                currentValue += oldWeightValue.Value; 
-                            }
-
-                            // Save old Value
-                            oldWeightValue = currentValue;
-                            firstMessageTime = currentTime;
-                            lastRFID = rfidValue;
-                    }
-                    else if (firstKey == "RFID" && secondKey == "Density")
-                    {
-                        currentValue = float.Parse(messages[1]);
-                    }
-
-                    // Update UI
-                    firstTextBox.Dispatcher.Invoke(() =>
-                    {
-                        firstTextBox.Text = rfidValue;
-                    });
-
-                    secondTextBox.Dispatcher.Invoke(() =>
-                    {
-                        secondTextBox.Text = currentValue.ToString();
-                    });
-                }
-                else
-                {
-                    Debug.WriteLine("Định dạng tin nhắn không chính xác, không thể phân tích.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Lỗi khi xử lý nội dung tin nhắn: {ex.Message}");
-            }
-        }
-
-
-        private void RoleManagementButton_Click(object sender, RoutedEventArgs e)
-        {
-            RoleListWindow roleListWindow = new();
-            roleListWindow.CurrentAccount = CurrentAccount;
-            roleListWindow.ShowDialog();
-        }
-
-        private async Task ProcessCustomerMessage(string messageContent)
-        {
-            try
-            {
-                string[] messages = messageContent.Split(':');
-                string rfidValue = messages[0];
-
-                Customer? customer = await customerService.GetCustomerByRFIDCodeAsync(rfidValue);
-
-                if (customer != null)
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        CustomerNameTextBox.Text = customer.CustomerName;
-                    });
-                }
-                else
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        MessageBox.Show("RFID này chưa được đăng ký. Hãy đăng ký RFID trước để nhận thông tin", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error processing customer message: {ex.Message}");
-                Debug.WriteLine($"Stack Trace: {ex.StackTrace}");
-                // Log thêm các thông tin từ GetCustomerByRFIDCodeAsync nếu có thể
-            }
-        }
-
-
-
-
-        private void ProcessCameraUrlMessage(string cameraUrl, string rfidValue, System.Windows.Controls.TextBox urlTextBox)
-        {
-            try
-            {
-                DateTime currentTime = DateTime.UtcNow;
-
-                // Ensure the UI update is executed on the UI thread
-                urlTextBox.Dispatcher.Invoke(() =>
-                {
-                    // Check if the RFID is the same and the time difference is less than 5 minutes
-                    if (lastRFID == rfidValue && firstMessageTime.HasValue)
-                    {
-                        // Append the new URL to the existing URL
-                        if (urlTextBox == URLWeightTextBox)
-                        {
-                            oldUrl1 = string.IsNullOrEmpty(oldUrl1) ? cameraUrl : $"{oldUrl1}\n{cameraUrl}";
-                            urlTextBox.Text = oldUrl1;
-                        }
-                        else if (urlTextBox == URLDensityTextBox)
-                        {
-                            oldUrl2 = string.IsNullOrEmpty(oldUrl2) ? cameraUrl : $"{oldUrl2}\n{cameraUrl}";
-                            urlTextBox.Text = oldUrl2;
-                        }
-                    }
-                    else
-                    {
-                        // If it's a new RFID or more than 5 minutes have passed, reset the URLs
-                        if (urlTextBox == URLWeightTextBox)
-                        {
-                            oldUrl1 = cameraUrl;
-                            urlTextBox.Text = oldUrl1;
-                        }
-                        else if (urlTextBox == URLDensityTextBox)
-                        {
-                            oldUrl2 = cameraUrl;
-                            urlTextBox.Text = oldUrl2;
-                        }
-
-                        // Update the last RFID and timestamp
-                        lastRFID = rfidValue;
-                        firstMessageTime = currentTime;
-                    }
-                });
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error processing camera URL message: {ex.Message}");
-            }
-        }
-
-
-
-        private string CaptureImageFromCamera(Camera camera, int cameraIndex)
-        {
-            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Hình ảnh cân cao su");
-
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-
-            string localFilePath = Path.Combine(folderPath, $"{Guid.NewGuid()}_Camera{cameraIndex}.jpg");
-
-            try
-            {
-                string cameraUrl = cameraIndex == 1 ? camera.Camera1 : camera.Camera2;
-                if (string.IsNullOrEmpty(cameraUrl))
-                {
-                    throw new Exception($"URL của Camera {cameraIndex} không hợp lệ.");
-                }
-
-                using (var capture = new VideoCapture(cameraUrl))
-                {
-                    if (!capture.IsOpened)
-                    {
-                        throw new Exception($"Không thể mở Camera {cameraIndex}.");
-                    }
-
-                    using (var frame = new Mat())
-                    {
-                        capture.Read(frame);
-                        if (frame.IsEmpty)
-                        {
-                            throw new Exception($"Không thể chụp ảnh từ Camera {cameraIndex}.");
-                        }
-
-                        // Chuyển đổi frame sang Image<Bgr, byte>
-                        Image<Bgr, byte> image = frame.ToImage<Bgr, byte>();
-
-                        // Chuyển đổi Image<Bgr, byte> sang Bitmap
-                        Bitmap bitmap = image.ToBitmap();
-
-                        // Lưu hình ảnh vào đĩa
-                        bitmap.Save(localFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi khi chụp ảnh từ Camera {cameraIndex}: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-                return string.Empty;
-            }
-
-            return localFilePath.ToString();
-        }
-
-
     }
 }
-

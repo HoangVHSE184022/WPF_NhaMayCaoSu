@@ -4,6 +4,7 @@ using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Service.Interfaces;
+using Azure.Messaging;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -17,6 +18,7 @@ namespace WPF_NhaMayCaoSu
         private ICustomerService _customerService = new CustomerService();
         public RFID SelectedRFID { get; set; } = null;
         private MqttClientService _mqttClientService = new MqttClientService();
+        private IBoardService _boardService = new BoardService();
         private bool isUnlimited = false;
         public Account CurrentAccount { get; set; } = null;
 
@@ -45,7 +47,7 @@ namespace WPF_NhaMayCaoSu
             try
             {
                 await _mqttClientService.ConnectAsync();
-                await _mqttClientService.SubscribeAsync("CreateRFID");
+                await _mqttClientService.SubscribeAsync("+/sendRFID");
             }
             catch (Exception ex)
             {
@@ -83,13 +85,22 @@ namespace WPF_NhaMayCaoSu
         }
 
 
-        private void OnMqttMessageReceived(object sender, string data)
+        private async void OnMqttMessageReceived(object sender, string data)
         {
             try
             {
-                if (data.StartsWith("CreateRFID:"))
+                if (data.StartsWith("sendRFID:"))
                 {
-                    string rfidString = data.Substring("CreateRFID:".Length);
+                    string[] parts = data.Split(':');
+                    string macAddress = parts[1];
+                    string rfidString = parts[2];
+
+                    Board board = await _boardService.GetBoardByMacAddressAsync(macAddress);
+                    if (board == null)
+                    {
+                        MessageBox.Show("Dữ liệu được gửi từ board không xác định!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
 
                     if (!string.IsNullOrEmpty(rfidString))
                     {

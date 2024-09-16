@@ -51,9 +51,11 @@ namespace WPF_NhaMayCaoSu.Content
 
             MainContentControl.Content = broker.Content;
             _mqttServerService = MqttServerService.Instance;
+            _mqttServerService.StartBrokerAsync();
             _mqttServerService.BrokerStatusChanged += (sender, e) => UpdateMainWindowUI();
             _mqttClientService = new MqttClientService();
             _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;
+
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -189,6 +191,7 @@ namespace WPF_NhaMayCaoSu.Content
             mainWindow.OnWindowLoaded();
             this.Title = mainWindow.Title;
         }
+        
 
         //private void LoginButton_Click(object sender, RoutedEventArgs e)
         //{

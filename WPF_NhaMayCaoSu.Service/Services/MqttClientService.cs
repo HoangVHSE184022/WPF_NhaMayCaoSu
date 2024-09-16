@@ -70,7 +70,8 @@ namespace WPF_NhaMayCaoSu.Service.Services
         private Task OnMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs arg)
         {
             string message = Encoding.UTF8.GetString(arg.ApplicationMessage.Payload);
-            Console.WriteLine($"Message received on topic {arg.ApplicationMessage.Topic}: {message}");
+            Debug.WriteLine($"Message received on topic {arg.ApplicationMessage.Topic}: {message}");
+            Debug.WriteLine($"Length out: {message.Length}");
 
             // Parse the message payload as JSON
             var jsonMessage = JsonConvert.DeserializeObject<JObject>(message);
@@ -83,59 +84,95 @@ namespace WPF_NhaMayCaoSu.Service.Services
             // Check topic and process corresponding message
             switch (arg.ApplicationMessage.Topic)
             {
-                case "CreateRFID":
-                    if (!string.IsNullOrEmpty(rfid))
-                    {
-                        MessageReceived?.Invoke(this, $"CreateRFID:{rfid}");
-                    }
+                case var topic when topic.EndsWith("/sendRFID"):
+                    HandleSendRFID(arg.ApplicationMessage.Topic, rfid);
                     break;
 
-                case "Can_tieu_ly":
-                    if (!string.IsNullOrEmpty(rfid) && !string.IsNullOrEmpty(density))
-                    {
-                        MessageReceived?.Invoke(this, $"Can_tieu_ly:{rfid}:{density}");
-                    }
+                case var topic when topic.EndsWith("/info"):
+                    HandleInfoTopic(rfid, weight, density);
                     break;
 
-                case "Can_ta":
-                    if (!string.IsNullOrEmpty(rfid) && !string.IsNullOrEmpty(weight))
-                    {
-                        MessageReceived?.Invoke(this, $"Can_ta:{rfid}:{weight}");
-                    }
-                    break;
-
-                case "Canta_info":
-                    if (!string.IsNullOrEmpty(macAddress) && !string.IsNullOrEmpty(Mode))
-                    {
-                        MessageReceived?.Invoke(this, $"CantaInfo:{macAddress}:{Mode}");
-                    }
-                    break;
-
-                case "Cantieuly_info":
-                    if (!string.IsNullOrEmpty(macAddress) && !string.IsNullOrEmpty(Mode))
-                    {
-                        MessageReceived?.Invoke(this, $"CantieuLyInfo:{macAddress}:{Mode}");
-                    }
+                case var topic when topic.EndsWith("/checkmode"):
+                    HandleCheckMode(arg.ApplicationMessage.Topic, Mode);
                     break;
 
                 default:
-                    if (arg.ApplicationMessage.Topic.EndsWith("/checkmode"))
-                    {
-                        string[] topicParts = arg.ApplicationMessage.Topic.Split('/');
-                        if (topicParts.Length > 1)
-                        {
-                            string mac = topicParts[1]; 
-
-                            if (!string.IsNullOrEmpty(Mode))
-                            {
-                                MessageReceived?.Invoke(this, $"MAC:{mac}, Mode:{Mode}");
-                            }
-                        }
-                    }
+                    Debug.WriteLine("Unexpected topic received");
                     break;
             }
+            /*
+        case "Can_tieu_ly":
+            if (!string.IsNullOrEmpty(rfid) && !string.IsNullOrEmpty(density))
+            {
+                MessageReceived?.Invoke(this, $"Can_tieu_ly:{rfid}:{density}");
+            }
+            break;
 
+        case "Can_ta":
+            if (!string.IsNullOrEmpty(rfid) && !string.IsNullOrEmpty(weight))
+            {
+                MessageReceived?.Invoke(this, $"Can_ta:{rfid}:{weight}");
+            }
+            break;
+
+        case "Canta_info":
+            if (!string.IsNullOrEmpty(macAddress) && !string.IsNullOrEmpty(Mode))
+            {
+                MessageReceived?.Invoke(this, $"CantaInfo:{macAddress}:{Mode}");
+            }
+            break;
+
+        case "Cantieuly_info":
+            if (!string.IsNullOrEmpty(macAddress) && !string.IsNullOrEmpty(Mode))
+            {
+                MessageReceived?.Invoke(this, $"CantieuLyInfo:{macAddress}:{Mode}");
+            }
+            break;
+            */
             return Task.CompletedTask;
+        }
+
+        private void HandleSendRFID(string topic, string rfid)
+        {
+            string[] topicParts = topic.Split('/');
+            if (topicParts.Length > 1 && !string.IsNullOrEmpty(rfid))
+            {
+                string macAddress = topicParts[0];
+                MessageReceived?.Invoke(this, $"sendRFID:{macAddress}:{rfid}");
+            }
+        }
+
+        private void HandleInfoTopic(string rfid, string weight, string density)
+        {
+            if (!string.IsNullOrEmpty(rfid))
+            {
+                if (!string.IsNullOrEmpty(weight))
+                {
+                    MessageReceived?.Invoke(this, $"info:{rfid}:{weight}:Weight");
+                }
+                else if (!string.IsNullOrEmpty(density))
+                {
+                    MessageReceived?.Invoke(this, $"info:{rfid}:{density}:Density");
+                }
+                else
+                {
+                    Debug.WriteLine("Info message received but no Weight or Density found");
+                }
+            }
+            else
+            {
+                Debug.WriteLine("Info message received but RFID is missing");
+            }
+        }
+
+        private void HandleCheckMode(string topic, string mode)
+        {
+            string[] topicParts = topic.Split('/');
+            if (topicParts.Length > 1 && !string.IsNullOrEmpty(mode))
+            {
+                string mac = topicParts[0];
+                MessageReceived?.Invoke(this, $"checkmode:{mac}:{mode}");
+            }
         }
 
         public async Task ConnectAsync()
@@ -180,7 +217,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
                 catch (Exception ex)
                 {
                     Debug.WriteLine("Failed to connect to MQTT broker before publishing: " + ex.Message);
-                    throw; 
+                    throw;
                 }
             }
 

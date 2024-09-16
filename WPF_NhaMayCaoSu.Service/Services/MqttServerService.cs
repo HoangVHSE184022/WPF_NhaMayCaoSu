@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
+using WPF_NhaMayCaoSu.Service.Services;
 
 public class MqttServerService : IMqttServerService
 {
@@ -13,7 +14,7 @@ public class MqttServerService : IMqttServerService
     private readonly MQTTnet.Server.MqttServer _mqttServer;
     private readonly ConcurrentDictionary<string, string> _connectedClients;
     private readonly List<BoardModelView> _connectedBoard;
-
+    private readonly IBoardService _boardService;
     public event EventHandler ClientsChanged;
     public event EventHandler<int> DeviceCountChanged;
     public event EventHandler BrokerStatusChanged;
@@ -24,6 +25,7 @@ public class MqttServerService : IMqttServerService
     public MqttServerService()
     {
         _connectedClients = new ConcurrentDictionary<string, string>();
+        _boardService = new BoardService();
         _connectedBoard = new List<BoardModelView>();
         _deviceCount = 0;
 
@@ -97,7 +99,14 @@ public class MqttServerService : IMqttServerService
                     string macAddress = message["MacAddress"].GetString();
                     int mode = message["Mode"].GetInt32();
 
-                    var board = _connectedBoard.FirstOrDefault(b => b.BoardName == e.ClientId);
+                    var board = _connectedBoard.FirstOrDefault(b => b.BoardMacAddress == macAddress);
+                    Board boardDB = await _boardService.GetBoardByMacAddressAsync(macAddress);
+
+                    if (boardDB != null && boardDB.BoardMode != mode)
+                    {
+                        boardDB.BoardMode = mode;
+                        _boardService.UpdateBoardAsync(boardDB);
+                    }
 
                     if (board == null)
                     {
