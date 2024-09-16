@@ -11,7 +11,6 @@
         <Label Content="Thêm Board" HorizontalAlignment="Left" Height="57" Margin="32,50,0,0" VerticalAlignment="Top" Width="343" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
         <DataGrid x:Name="boardDataGrid" Margin="32,129,159,158" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding BoardId}" Width="120"/>
                 <DataGridTextColumn Header="Tên Board" Binding="{Binding BoardName}" Width="170" />
                 <DataGridTextColumn Header="IP" Binding="{Binding BoardIp}" Width="250"/>
                 <DataGridTextColumn Header="MacAddress" Binding="{Binding BoardMacAddress}" Width="250"/>

@@ -16,7 +16,6 @@
         </Button>
         <DataGrid x:Name="RFIDDataGrid" Margin="32,129,159,158" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Width="100" Binding="{Binding RFID_Id}"/>
                 <DataGridTextColumn Header="Mã RFID" Width="220" Binding="{Binding RFIDCode}"/>
                 <DataGridTextColumn Header="Ngày tạo" Width="200" Binding="{Binding CreatedDate}" />
                 <DataGridTextColumn Header="Ngày hết hạn" Width="200" Binding="{Binding ExpirationDate}"/>

@@ -17,7 +17,6 @@
         </Button>
         <DataGrid x:Name="RoleDataGrid" Margin="32,129,159,161" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Width="200" Binding="{Binding RoleId}"/>
                 <DataGridTextColumn Header="Vai trò" Width="800" Binding="{Binding RoleName}"/>
 
             </DataGrid.Columns>
