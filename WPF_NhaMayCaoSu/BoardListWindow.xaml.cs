@@ -55,9 +55,9 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                if (data.StartsWith("checkmode:"))
+                if (data.StartsWith("checkmode-"))
                 {
-                    string[] parts = data.Split(':');
+                    string[] parts = data.Split('-');
                     string macAddress = parts[1];
                     int currentMode = int.Parse(parts[2]);
 
