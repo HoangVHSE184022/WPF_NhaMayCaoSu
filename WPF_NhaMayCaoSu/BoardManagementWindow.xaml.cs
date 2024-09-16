@@ -83,6 +83,7 @@ namespace WPF_NhaMayCaoSu
                 MacAddressTextBox.Text = SelectedBoard.BoardMacAddress.ToString();
                 MacAddressTextBox.IsEnabled = false;
                 ModeTextBox.Text = SelectedBoard.BoardMode.ToString();
+                ModeTextBox.IsEnabled = false;
                 ModeLabel.Content = "Chỉnh sửa Board";
             }
         }
