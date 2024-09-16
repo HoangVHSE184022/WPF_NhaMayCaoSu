@@ -53,6 +53,7 @@ namespace WPF_NhaMayCaoSu.Content
             roleListWindow.CurrentAccount = CurrentAccount;
             boardListWindow.CurrentAccount = CurrentAccount;
             MainContentControl.Content = broker.Content;
+            UpdateMainWindowUI();
         }
 
         private async void Start_Broker()

@@ -9,18 +9,6 @@
         Icon="assets/images/rubber.ico"
         Title="View Images" Height="800" Width="1200" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow">
     <Grid>
-        <Menu HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Monserrat" Foreground="#FF002366" FontSize="16">
-            <MenuItem x:Name="ShowButton" Header="Hiển thị" Click="ShowButton_Click"/>
-            <MenuItem x:Name="ConfigButton" Header="Cấu hình" Click="ConfigButton_Click"/>
-            <MenuItem x:Name="BrokerManagementButton" Header="Broker" Click="BrokerManagementButton_Click"/>
-            <MenuItem Header="Quản lý">
-                <MenuItem x:Name="CustomerManagementButton" Header="Khách hàng" Click="CustomerManagementButton_Click"/>
-                <MenuItem x:Name="RFIDManagementButton" Header="RFID" Click="RFIDManagementButton_Click"/>
-                <MenuItem x:Name="SaleManagementButton" Header="Sale" Click="SaleManagementButton_Click"/>
-                <MenuItem x:Name="AccountManagementButton" Header="Tài khoản" Click="AccountManagementButton_Click"/>
-                <MenuItem x:Name="RoleManagementButton" Header="Vai trò" Click="RoleManagementButton_Click"/>
-            </MenuItem>
-        </Menu>
         <Label Content="Hình ảnh cân tạ" HorizontalAlignment="Left" Height="46" Margin="212,81,0,0" VerticalAlignment="Top" Width="216" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
         <Image x:Name="WeightImage" Margin="70,147,630,187"/>
 

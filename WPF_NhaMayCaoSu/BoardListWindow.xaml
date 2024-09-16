@@ -12,18 +12,33 @@
         <Button x:Name="EditBoardButton" Height="30" Margin="0,652,996,0" VerticalAlignment="Top" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="16" Background="#FFCACACA"  HorizontalAlignment="Right" Width="122" Click="EditBoardButton_Click"  >
             <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <DataGrid x:Name="boardDataGrid" Margin="10,129,639,158" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
+        <DataGrid x:Name="boardDataGrid" Margin="10,129,639,158" FontFamily="Montserrat" FontSize="20" Background="#FFCACACA" AutoGenerateColumns="False" >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding BoardId}" Width="50"/>
-                <DataGridTextColumn Header="Tên Board" Binding="{Binding BoardName}" Width="120" />
-                <DataGridTextColumn Header="IP" Binding="{Binding BoardIp}" Width="150"/>
-                <DataGridTextColumn Header="MacAddress" Binding="{Binding BoardMacAddress}" Width="150"/>
-                <DataGridTextColumn Header="Mode" Binding="{Binding BoardMode}" Width="80"/>
+                <DataGridTextColumn Header="ID" Binding="{Binding BoardId}" Width="*"/>
+                <DataGridTextColumn Header="Tên Board" Binding="{Binding BoardName}" Width="*" />
+                <DataGridTextColumn Header="IP" Binding="{Binding BoardIp}" Width="*"/>
+                <DataGridTextColumn Header="MacAddress" Binding="{Binding BoardMacAddress}" Width="*"/>
+                <DataGridTextColumn Header="Mode" Binding="{Binding BoardMode}" Width="*"/>
+                <DataGridTemplateColumn Header="Đổi Mode" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Width="25" Height="25" x:Name="SwitchButton" Click="SwitchButton_Click" Tag="{Binding}" Content="Action" >
+                                <Button.Template>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Grid>
+                                            <TextBlock Text="✎" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
 
         </DataGrid>
 
-        <DataGrid x:Name="ConnectedBoardDataGrid" Margin="639,129,10,158" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
+        <DataGrid x:Name="ConnectedBoardDataGrid" Margin="639,129,10,158" FontFamily="Montserrat" FontSize="20" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding BoardId}" Width="*"/>
                 <DataGridTextColumn Header="Tên Board" Binding="{Binding BoardName}" Width="*" />
