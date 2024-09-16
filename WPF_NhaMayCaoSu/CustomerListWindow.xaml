@@ -16,7 +16,6 @@
         </Button>
         <DataGrid x:Name="CustomerDataGrid" Margin="32,129,159,157" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Width="100" Binding="{Binding CustomerId}"/>
                 <DataGridTextColumn Header="Tên" Width="250" Binding="{Binding CustomerName}"/>
                 <DataGridTextColumn Header="Số điện thoại" Width="200" Binding="{Binding Phone}"/>
                 <DataGridTextColumn Header="Trạng thái" Width="150" Binding="{Binding Status}"/>

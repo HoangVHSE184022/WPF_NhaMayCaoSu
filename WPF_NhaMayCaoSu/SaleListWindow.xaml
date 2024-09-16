@@ -22,7 +22,6 @@
         </Button>
         <DataGrid x:Name="SaleDataGrid" Margin="27,17,161,106" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False" Grid.Row="1">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Width="50" Binding="{Binding SaleId}"/>
                 <DataGridTextColumn Header="Tên khách hàng" Width="200" Binding="{Binding CustomerName}"/>
                 <DataGridTextColumn Header="Số ký" Width="80" Binding="{Binding ProductWeight}"/>
                 <DataGridTextColumn Header="Tỉ trọng" Width="100" Binding="{Binding ProductDensity}"/>
