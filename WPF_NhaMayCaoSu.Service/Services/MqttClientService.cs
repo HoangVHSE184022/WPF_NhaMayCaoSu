@@ -170,8 +170,8 @@ namespace WPF_NhaMayCaoSu.Service.Services
             string[] topicParts = topic.Split('/');
             if (topicParts.Length > 1 && !string.IsNullOrEmpty(mode))
             {
-                string mac = topicParts[1];
-                MessageReceived?.Invoke(this, $"MAC:{mac}, Mode:{mode}");
+                string mac = topicParts[0];
+                MessageReceived?.Invoke(this, $"checkmode:{mac}:{mode}");
             }
         }
 
