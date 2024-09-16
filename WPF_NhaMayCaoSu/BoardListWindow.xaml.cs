@@ -110,15 +110,17 @@ namespace WPF_NhaMayCaoSu
             });
         }
 
-        // Handle MQTT boards received and show them in the right DataGrid
         private void MqttService_BoardReceived(object sender, EventArgs e)
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(async () =>
             {
                 var mqttBoards = _mqttServerService.GetConnectedBoard();
                 _mqttBoards = mqttBoards.ToList();  // Store received boards
+                IEnumerable<Board> connectedBoardList = await _boardService.GetAllBoardsAsync(1, 10);
 
-                // Load MQTT-received boards into the right DataGrid
+                _mqttBoards.RemoveAll(mqttBoard => connectedBoardList.Any(connectedBoard =>
+                               connectedBoard.BoardMacAddress == mqttBoard.BoardMacAddress));
+
                 ConnectedBoardDataGrid.ItemsSource = null;
                 ConnectedBoardDataGrid.ItemsSource = _mqttBoards;
             });
@@ -246,6 +248,44 @@ namespace WPF_NhaMayCaoSu
             }
 
             BoardModelView selectedBoard = ConnectedBoardDataGrid.SelectedItem as BoardModelView;
+
+            if (selectedBoard != null)
+            {
+                Board existingBoard = await _boardService.GetBoardByMacAddressAsync(selectedBoard.BoardMacAddress);
+                if (existingBoard == null)
+                {
+                    Board newBoard = new Board
+                    {
+                        BoardId = selectedBoard.BoardId,
+                        BoardName = selectedBoard.BoardName,
+                        BoardIp = selectedBoard.BoardIp,
+                        BoardMacAddress = selectedBoard.BoardMacAddress,
+                        BoardMode = selectedBoard.BoardMode
+                    };
+
+                    await _boardService.CreateBoardAsync(newBoard);
+                    MessageBox.Show("Board đã được thêm thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    await LoadDataGridFromDatabase();
+                }
+                else
+                {
+                    MessageBox.Show("Board này đã tồn tại trong hệ thống.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
+
+        private async void ControlButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ConnectedBoardDataGrid.SelectedItem == null)
+            {
+                MessageBox.Show("Vui lòng chọn một Board từ danh sách Boards kết nối.", "Không có Board được chọn", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            BoardModelView selectedBoard = ConnectedBoardDataGrid.SelectedItem as BoardModelView;
+
+
 
             if (selectedBoard != null)
             {

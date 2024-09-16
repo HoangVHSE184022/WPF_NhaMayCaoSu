@@ -29,14 +29,14 @@
                 <DataGridTextColumn Header="Lần chỉnh sửa cuối" Width="210" Binding="{Binding LastEditedTime}"/>
                 <DataGridTextColumn Header="Trạng thái" Width="120" Binding="{Binding Status}"/>
                 <DataGridTextColumn Header="Mã RFID" Width="100" Binding="{Binding RFIDCode}"/>
-                <DataGridTemplateColumn Header="Thao tác">
+                <DataGridTemplateColumn Header="Hiển thị">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Width="25" Height="25" x:Name="ControlButton" Click="ControlButton_Click" Tag="{Binding}" Content="Action" >
                                 <Button.Template>
                                     <ControlTemplate TargetType="{x:Type Button}">
                                         <Grid>
-                                            <TextBlock Text="⚙️" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+                                            <TextBlock Text="👁" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
                                         </Grid>
                                     </ControlTemplate>
                                 </Button.Template>
