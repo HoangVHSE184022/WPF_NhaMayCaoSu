@@ -30,21 +30,7 @@
                 <DataGridTextColumn Header="Số kí" Binding="{Binding ProductWeight}" Width="*"/>
                 <DataGridTextColumn Header="Tỉ Trọng" Binding="{Binding ProductDensity}" Width="*"/>
                 <DataGridTextColumn Header="Tên khách hàng" Binding="{Binding CustomerName}" Width="*"/>
-                <DataGridTemplateColumn Header="Thao tác" Width="*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Width="25" Height="25" x:Name="ControlButton" Click="ControlButton_Click" Tag="{Binding}" Content="Action" >
-                                <Button.Template>
-                                    <ControlTemplate TargetType="{x:Type Button}">
-                                        <Grid>
-                                            <TextBlock Text="⚙️" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                
             </DataGrid.Columns>
         </DataGrid>
 

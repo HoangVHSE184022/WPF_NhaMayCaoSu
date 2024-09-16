@@ -29,7 +29,11 @@ namespace WPF_NhaMayCaoSu.Content
         public MainControl()
         {
             InitializeComponent();
-
+            _mqttServerService = MqttServerService.Instance;
+            Start_Broker();
+            _mqttServerService.BrokerStatusChanged += (sender, e) => UpdateMainWindowUI();
+            _mqttClientService = new MqttClientService();
+            _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;
             broker = new BrokerWindow();
             customerListWindow = new CustomerListWindow();
             boardListWindow = new BoardListWindow();
@@ -48,14 +52,13 @@ namespace WPF_NhaMayCaoSu.Content
             rfidListWindow.CurrentAccount = CurrentAccount;
             roleListWindow.CurrentAccount = CurrentAccount;
             boardListWindow.CurrentAccount = CurrentAccount;
-
             MainContentControl.Content = broker.Content;
-            _mqttServerService = MqttServerService.Instance;
-            _mqttServerService.StartBrokerAsync();
-            _mqttServerService.BrokerStatusChanged += (sender, e) => UpdateMainWindowUI();
-            _mqttClientService = new MqttClientService();
-            _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;
+        }
 
+        private async void Start_Broker()
+        {
+            await _mqttServerService.StartBrokerAsync();
+            MqttServerService.IsBrokerRunning = true;
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

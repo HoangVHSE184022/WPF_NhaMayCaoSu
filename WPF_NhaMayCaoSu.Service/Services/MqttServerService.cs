@@ -20,7 +20,7 @@ public class MqttServerService : IMqttServerService
     public event EventHandler BrokerStatusChanged;
     public event EventHandler BoardReceived;
     private int _deviceCount;
-    public static bool IsBrokerRunning { get; private set; } = false;
+    public static bool IsBrokerRunning { get; set; } = false;
 
     public MqttServerService()
     {
