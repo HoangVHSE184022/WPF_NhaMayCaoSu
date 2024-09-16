@@ -3,6 +3,7 @@ using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Service.Interfaces;
+using System.Windows.Input;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -17,6 +18,8 @@ namespace WPF_NhaMayCaoSu
         public LoginWindow()
         {
             InitializeComponent();
+            UsernameTextBox.KeyDown += TextBox_KeyDown;
+            PasswordTextBox.KeyDown += TextBox_KeyDown;
         }
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -61,6 +64,14 @@ namespace WPF_NhaMayCaoSu
             AccountManagementWindow accountManagementWindow = new AccountManagementWindow();
             accountManagementWindow.ShowDialog();
 
+        }
+
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                LoginButton_Click(sender, new RoutedEventArgs());
+            }
         }
     }
 }
