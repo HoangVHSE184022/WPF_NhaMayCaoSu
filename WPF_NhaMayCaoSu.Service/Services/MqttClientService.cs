@@ -138,7 +138,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
             if (topicParts.Length > 1 && !string.IsNullOrEmpty(rfid))
             {
                 string macAddress = topicParts[0];
-                MessageReceived?.Invoke(this, $"sendRFID:{macAddress}:{rfid}");
+                MessageReceived?.Invoke(this, $"sendRFID-{macAddress}-{rfid}");
             }
         }
 
@@ -171,7 +171,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
             if (topicParts.Length > 1 && !string.IsNullOrEmpty(mode))
             {
                 string mac = topicParts[0];
-                MessageReceived?.Invoke(this, $"checkmode:{mac}:{mode}");
+                MessageReceived?.Invoke(this, $"checkmode-{mac}-{mode}");
             }
         }
 
