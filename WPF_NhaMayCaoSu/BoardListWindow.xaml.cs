@@ -55,22 +55,35 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                var messageParts = data.Split(',');
-                string macAddress = messageParts.FirstOrDefault(x => x.StartsWith("MacAddress"))?.Split(':')[1];
-                int mode = int.Parse(messageParts.FirstOrDefault(x => x.StartsWith("Mode"))?.Split(':')[1]);
-
-                if (!string.IsNullOrEmpty(macAddress))
+                if (data.StartsWith("checkmode:"))
                 {
+                    string[] parts = data.Split(':');
+                    string macAddress = parts[1];
+                    int currentMode = int.Parse(parts[2]);
+
                     Board board = await _boardService.GetBoardByMacAddressAsync(macAddress);
-                    Debug.WriteLine($"MacAddress: {macAddress}, Mode: {mode}");
-                    if (board != null)
+                    if (board == null)
                     {
-                        if(board.BoardMode != mode)
+                        MessageBox.Show("Board này chưa được lưu", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                    if(board != null)
+                    {
+                        if (currentMode != board.BoardMode)
                         {
-                            board.BoardMode = mode;
-                            await _boardService.UpdateBoardAsync(board);
+                            board.BoardMode = currentMode;
+                           await _boardService.UpdateBoardAsync(board);
+                            LoadDataGrid();
                         }
                     }
+                    else
+                    {
+                        Debug.WriteLine("Lỗi khi sử dụng mã RFID.");
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine("Sai kiểu dữ liệu.");
                 }
             }
             catch (Exception ex)
@@ -78,7 +91,6 @@ namespace WPF_NhaMayCaoSu
                 Debug.WriteLine($"Error processing message: {ex.Message}");
             }
         }
-
 
         private void MqttService_BoardsChanged(object sender, EventArgs e)
         {
@@ -178,6 +190,7 @@ namespace WPF_NhaMayCaoSu
             if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
             {
                 await _mqttClientService.PublishAsync(topic, payload);
+                await _boardService.UpdateBoardAsync(selectedBoard);
             }
 
             boardDataGrid.Items.Refresh(); 
