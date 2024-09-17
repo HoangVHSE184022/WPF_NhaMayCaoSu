@@ -14,7 +14,7 @@ namespace WPF_NhaMayCaoSu
 
         private ICustomerService _service = new CustomerService();
         private int _currentPage = 1;
-        private int _pageSize = 10;
+        private int _pageSize = 12;
         private int _totalPages;
         public Account CurrentAccount { get; set; } = null;
 
