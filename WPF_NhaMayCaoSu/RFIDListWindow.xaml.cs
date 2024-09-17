@@ -30,8 +30,8 @@ namespace WPF_NhaMayCaoSu
             var allRFIDs = await _service.GetAllRFIDsAsync();
 
             var sortedRFIDs = allRFIDs
-                .OrderByDescending(r => r.CreatedDate) 
-                .ThenByDescending(r => r.Status)          
+                .OrderByDescending(r => r.Status) 
+                .ThenByDescending(r => r.CreatedDate)          
                 .ToList();
 
 
