@@ -1,9 +1,9 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.Windows;
-using WPF_NhaMayCaoSu.Repository.Models;
-using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
+using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
+using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -124,13 +124,13 @@ namespace WPF_NhaMayCaoSu
                 {
                     MessageBox.Show("Lỗi khi đăng ký tài khoản!", "Lỗi!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
-                
+
                 // Redirect to login window
                 LoginWindow login = new();
                 login.Show();
             }
 
-            
+
             Close();
         }
 
@@ -211,7 +211,7 @@ namespace WPF_NhaMayCaoSu
                 UsernameTextBox.Text = CurrentAccount.Username;
                 LoginButton.Visibility = Visibility.Collapsed;
             }
-            
+
         }
         public void OnWindowLoaded()
         {

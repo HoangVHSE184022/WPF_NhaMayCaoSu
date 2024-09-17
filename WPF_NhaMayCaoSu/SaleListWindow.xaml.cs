@@ -1,14 +1,13 @@
-﻿using System;
-using System.Windows;
-using System.Diagnostics;
-using System.IO;
-using Emgu.CV;
+﻿using Emgu.CV;
 using Emgu.CV.Structure;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.Windows;
+using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
-using WPF_NhaMayCaoSu.Core.Utils;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -60,7 +59,7 @@ namespace WPF_NhaMayCaoSu
                 OpenBrokerWindow();
             }
             LoadDataGrid();
-            
+
         }
 
         public void OnWindowLoaded()
@@ -190,7 +189,7 @@ namespace WPF_NhaMayCaoSu
                             return;
                         }
                         if (sale.ProductDensity == 0)
-                            {
+                        {
                             sale.LastEditedTime = DateTime.Now;
                             sale.ProductDensity = newValue;
                         }

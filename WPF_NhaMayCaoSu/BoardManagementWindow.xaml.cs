@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
@@ -43,7 +31,7 @@ namespace WPF_NhaMayCaoSu
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-           
+
 
             Board x = new Board
             {
@@ -57,14 +45,14 @@ namespace WPF_NhaMayCaoSu
             {
                 await _service.CreateBoardAsync(x);
                 MessageBox.Show("Tạo Board thành công", Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
-                
+
             }
             else
             {
                 x.BoardId = SelectedBoard.BoardId;
                 await _service.UpdateBoardAsync(x);
                 MessageBox.Show("Chỉnh sửa Board thành công", Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
-                
+
             }
 
             Close();

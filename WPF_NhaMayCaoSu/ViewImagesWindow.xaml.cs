@@ -18,7 +18,7 @@ namespace WPF_NhaMayCaoSu
         public ViewImagesWindow(Sale sale)
         {
             InitializeComponent();
-            this.sale = sale;   
+            this.sale = sale;
         }
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
