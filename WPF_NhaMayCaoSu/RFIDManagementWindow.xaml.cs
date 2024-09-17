@@ -140,12 +140,16 @@ namespace WPF_NhaMayCaoSu
                 MessageBox.Show(Constants.ErrorMessageMissingFields, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            RFID thisRFID = await _service.GetRFIDByRFIDCodeAsync(RFIDCodeTextBox.Text);
-            if (SelectedRFID == null && thisRFID != null)
+            if (SelectedRFID == null)
             {
-                MessageBox.Show("RFID đã được khởi tạo", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                RFID thisRFID = await _service.GetRFIDByRFIDCodeAsync(RFIDCodeTextBox.Text);
+                if (SelectedRFID == null && thisRFID != null)
+                {
+                    MessageBox.Show("RFID đã được khởi tạo", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
+            
 
             if (!isUnlimited && (string.IsNullOrWhiteSpace(ExpDateDatePicker.Text) || DateTime.Parse(ExpDateDatePicker.Text) < DateTime.Today))
             {
