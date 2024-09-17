@@ -5,6 +5,7 @@ using MQTTnet.Protocol;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
+using System.Net.Mail;
 using System.Text;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
@@ -89,7 +90,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
                     break;
 
                 case var topic when topic.EndsWith("/info"):
-                    HandleInfoTopic(rfid, weight, density, arg.ApplicationMessage.Topic);
+                    HandleInfoTopic(rfid, weight, density, topic);
                     break;
 
                 case var topic when topic.EndsWith("/checkmode"):
@@ -100,35 +101,6 @@ namespace WPF_NhaMayCaoSu.Service.Services
                     Debug.WriteLine("Unexpected topic received");
                     break;
             }
-            /*
-        case "Can_tieu_ly":
-            if (!string.IsNullOrEmpty(rfid) && !string.IsNullOrEmpty(density))
-            {
-                MessageReceived?.Invoke(this, $"Can_tieu_ly:{rfid}:{density}");
-            }
-            break;
-
-        case "Can_ta":
-            if (!string.IsNullOrEmpty(rfid) && !string.IsNullOrEmpty(weight))
-            {
-                MessageReceived?.Invoke(this, $"Can_ta:{rfid}:{weight}");
-            }
-            break;
-
-        case "Canta_info":
-            if (!string.IsNullOrEmpty(macAddress) && !string.IsNullOrEmpty(Mode))
-            {
-                MessageReceived?.Invoke(this, $"CantaInfo:{macAddress}:{Mode}");
-            }
-            break;
-
-        case "Cantieuly_info":
-            if (!string.IsNullOrEmpty(macAddress) && !string.IsNullOrEmpty(Mode))
-            {
-                MessageReceived?.Invoke(this, $"CantieuLyInfo:{macAddress}:{Mode}");
-            }
-            break;
-            */
             return Task.CompletedTask;
         }
 
@@ -145,19 +117,16 @@ namespace WPF_NhaMayCaoSu.Service.Services
         private void HandleInfoTopic(string rfid, string weight, string density, string topic)
         {
             string[] topicParts = topic.Split('/');
-            if (topicParts.Length > 1)
+            if (topicParts.Length > 1 && !string.IsNullOrEmpty(rfid))
             {
-                string mac = topicParts[0];
-                if (!string.IsNullOrEmpty(rfid))
+                string macAddress = topicParts[0];
+                if (!string.IsNullOrEmpty(weight))
                 {
-                    if (!string.IsNullOrEmpty(weight))
-                    {
-                        MessageReceived?.Invoke(this, $"info-{rfid}-{weight}-{mac}");
-                    }
-                    else if (!string.IsNullOrEmpty(density))
-                    {
-                        MessageReceived?.Invoke(this, $"info-{rfid}-{density}-{mac}");
-                    }
+                    MessageReceived?.Invoke(this, $"info-{rfid}-{weight}-Weight-{macAddress}");
+                }
+                else if (!string.IsNullOrEmpty(density))
+                {
+                    MessageReceived?.Invoke(this, $"info-{rfid}-{density}-Density-{macAddress}");
                 }
                 else
                 {

@@ -23,6 +23,7 @@ namespace WPF_NhaMayCaoSu
         private readonly IImageService _imageService = new ImageService();
         private readonly CustomerService _customerService = new CustomerService();
         private readonly CameraService _localCameraService = new CameraService();
+        private readonly IBoardService _boardService = new BoardService();
 
         private bool isExpanded = false;
         private Sale SaleDB { get; set; } = new();
@@ -85,12 +86,21 @@ namespace WPF_NhaMayCaoSu
             {
                 string[] messages = messageContent.Split('-');
 
-                if (messages.Length != 3) return;
+                if (messages.Length != 4) return;
 
                 string rfid = messages[0];
                 float newValue = float.Parse(messages[1]);
+                string macaddress = messages[3];
 
                 Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfid);
+
+                Board board = await _boardService.GetBoardByMacAddressAsync(macaddress);
+                if (board == null)
+                {
+                    MessageBox.Show($"Board chứa MacAddress {macaddress} này chưa được tạo.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
 
                 if (sale == null)
                 {

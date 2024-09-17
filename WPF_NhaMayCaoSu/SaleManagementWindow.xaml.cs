@@ -206,7 +206,7 @@ namespace WPF_NhaMayCaoSu
             try
             {
                 string[] messages = messageContent.Split('-');
-                if (messages.Length == 3)
+                if (messages.Length == 4)
                 {
                     string rfidValue = messages[0];
                     string currentValueString = messages[1];
