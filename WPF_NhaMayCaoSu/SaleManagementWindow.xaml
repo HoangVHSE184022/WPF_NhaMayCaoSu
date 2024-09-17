@@ -20,7 +20,7 @@
         <Label Content="URL tỉ trọng" HorizontalAlignment="Left" Height="46" Margin="32,410,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
         <TextBox x:Name="URLDensityTextBox" Height="46" Margin="276,410,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="30" Background="#FFCACACA" BorderThickness="0"/>
         <Label Content="Trạng thái" HorizontalAlignment="Left" Height="46" Margin="32,480,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
-        <TextBox x:Name="StatusTextBox" Height="46" Margin="276,480,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA" FontSize="30" BorderThickness="0"/>
+        <TextBox x:Name="StatusTextBox" Text="1" Height="46" Margin="276,480,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA" FontSize="30" BorderThickness="0"/>
 
         <Label Content="Mã RFID" HorizontalAlignment="Left" Height="46" Margin="32,550,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
         <TextBox x:Name="RFIDCodeTextBox" Height="46" Margin="276,550,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA" FontSize="30" BorderThickness="0"/>
