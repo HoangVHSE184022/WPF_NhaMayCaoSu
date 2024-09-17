@@ -42,6 +42,7 @@ namespace WPF_NhaMayCaoSu
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModeLabel.Content = "Thêm RFID mới";
+            StatusTextBox.Text = "1";
 
             try
             {

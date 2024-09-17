@@ -25,7 +25,7 @@ namespace WPF_NhaMayCaoSu
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModeLabel.Content = "Thêm vai trò mới";
-
+            StatusTextBox.Text = "1";
             if (SelectedRole != null)
             {
                 RoleTextBox.Text = SelectedRole.RoleName.ToString();

@@ -13,7 +13,7 @@ namespace WPF_NhaMayCaoSu
         public Account CurrentAccount { get; set; } = null;
         private IRFIDService _service = new RFIDService();
         private int _currentPage = 1;
-        private int _pageSize = 10;
+        private int _pageSize = 13;
         private int _totalPages;
         public RFIDListWindow()
         {

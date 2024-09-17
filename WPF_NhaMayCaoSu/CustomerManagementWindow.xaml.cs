@@ -76,6 +76,7 @@ namespace WPF_NhaMayCaoSu
             //await _mqttClientService.SubscribeAsync("CreateRFID");
 
             //_mqttClientService.MessageReceived += OnMqttMessageReceived;
+            StatusTextBox.Text = "1";
 
             if (SelectedCustomer != null)
             {
