@@ -4,7 +4,8 @@ using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
-
+using WPF_NhaMayCaoSu.Core.Utils;
+using Serilog;
 namespace WPF_NhaMayCaoSu
 {
     /// <summary>
@@ -18,6 +19,7 @@ namespace WPF_NhaMayCaoSu
         public LoginWindow()
         {
             InitializeComponent();
+            LoggingHelper.ConfigureLogger();
             UsernameTextBox.KeyDown += TextBox_KeyDown;
             PasswordTextBox.KeyDown += TextBox_KeyDown;
         }
@@ -49,6 +51,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
+                Log.Error(ex, "Đã xảy ra lỗi");
                 return;
             }
         }
