@@ -22,6 +22,7 @@ namespace WPF_NhaMayCaoSu
         private readonly IRFIDService _rfidService = new RFIDService();
         private readonly CustomerService _customerService = new CustomerService();
         private readonly CameraService _cameraService = new CameraService();
+        private readonly IBoardService _boardService = new BoardService();
         private readonly MqttClientService _mqttClientService = new MqttClientService();
         private readonly MqttServerService _mqttServerService = MqttServerService.Instance;
 
@@ -147,6 +148,14 @@ namespace WPF_NhaMayCaoSu
                 string[] messages = messageContent.Split('-');
 
                 if (messages.Length != 3) return;
+
+                string macAddress = messages[3];
+                Board board = await _boardService.GetBoardByMacAddressAsync(macAddress);
+                if (board == null)
+                {
+                    MessageBox.Show($"Dữ liệu được gửi từ board chưa được lưu trong cơ sở dữ liệu", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
                 string rfid = messages[0];
                 float newValue = float.Parse(messages[1]);
