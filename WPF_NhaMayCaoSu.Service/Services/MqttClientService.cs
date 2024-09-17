@@ -89,7 +89,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
                     break;
 
                 case var topic when topic.EndsWith("/info"):
-                    HandleInfoTopic(rfid, weight, density);
+                    HandleInfoTopic(rfid, weight, density, arg.ApplicationMessage.Topic);
                     break;
 
                 case var topic when topic.EndsWith("/checkmode"):
@@ -142,17 +142,22 @@ namespace WPF_NhaMayCaoSu.Service.Services
             }
         }
 
-        private void HandleInfoTopic(string rfid, string weight, string density)
+        private void HandleInfoTopic(string rfid, string weight, string density, string topic)
         {
-            if (!string.IsNullOrEmpty(rfid))
+            string[] topicParts = topic.Split('/');
+            if (topicParts.Length > 1)
             {
-                if (!string.IsNullOrEmpty(weight))
+                string mac = topicParts[0];
+                if (!string.IsNullOrEmpty(rfid))
                 {
-                    MessageReceived?.Invoke(this, $"info-{rfid}-{weight}-Weight");
-                }
-                else if (!string.IsNullOrEmpty(density))
-                {
-                    MessageReceived?.Invoke(this, $"info-{rfid}-{density}-Density");
+                    if (!string.IsNullOrEmpty(weight))
+                    {
+                        MessageReceived?.Invoke(this, $"info-{rfid}-{weight}-{mac}");
+                    }
+                    else if (!string.IsNullOrEmpty(density))
+                    {
+                        MessageReceived?.Invoke(this, $"info-{rfid}-{density}-{mac}");
+                    }
                 }
                 else
                 {
