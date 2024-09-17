@@ -123,11 +123,11 @@ namespace WPF_NhaMayCaoSu
 
                 if (data.Contains("Weight"))
                 {
-                    ProcessMqttMessage(data["info:".Length..], "RFID", "Weight", newestCamera, 1);
+                    ProcessMqttMessage(data["info-".Length..], "RFID", "Weight", newestCamera, 1);
                 }
                 else if (data.Contains("Density"))
                 {
-                    ProcessMqttMessage(data["info:".Length..], "RFID", "Density", newestCamera, 2);
+                    ProcessMqttMessage(data["info-".Length..], "RFID", "Density", newestCamera, 2);
                 }
                 else
                 {
@@ -145,7 +145,7 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                string[] messages = messageContent.Split(':');
+                string[] messages = messageContent.Split('-');
 
                 if (messages.Length != 3) return;
 

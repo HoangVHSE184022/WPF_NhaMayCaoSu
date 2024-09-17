@@ -82,7 +82,7 @@ public class MqttServerService : IMqttServerService
             string topic = e.ApplicationMessage.Topic;
             string payload = System.Text.Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
 
-            if (topic == "/connect")
+            if (topic == "connect")
             {
 
                 try

@@ -161,7 +161,7 @@ namespace WPF_NhaMayCaoSu
 
                 if (data.Contains("Weight"))
                 {
-                    string messageContent = data["info:".Length..];
+                    string messageContent = data["info-".Length..];
                     string filePathUrl = CaptureImageFromCamera(newestCamera, 1);
 
                     Application.Current.Dispatcher.Invoke(() =>
@@ -172,7 +172,7 @@ namespace WPF_NhaMayCaoSu
                 }
                 else if (data.Contains("Density"))
                 {
-                    string messageContent = data["info:".Length..];
+                    string messageContent = data["info-".Length..];
                     string filePathUrl = CaptureImageFromCamera(newestCamera, 2);
 
                     Application.Current.Dispatcher.Invoke(() =>
@@ -197,7 +197,7 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                string[] messages = messageContent.Split(':');
+                string[] messages = messageContent.Split('-');
                 if (messages.Length == 3)
                 {
                     string rfidValue = messages[0];
