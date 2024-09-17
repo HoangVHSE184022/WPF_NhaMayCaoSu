@@ -26,7 +26,6 @@ namespace WPF_NhaMayCaoSu
         private readonly IBoardService _boardService = new BoardService();
         private readonly MqttClientService _mqttClientService = new MqttClientService();
         private readonly MqttServerService _mqttServerService = MqttServerService.Instance;
-        private readonly IBoardService _boardService = new BoardService();
 
         // Pagination variables
         private int _currentPage = 1;
@@ -174,17 +173,9 @@ namespace WPF_NhaMayCaoSu
                 }
 
                 string rfid = messages[0];
-                float newValue = float.Parse(messages[1]);
-                string macaddress = messages[3];
+                float newValue = float.Parse(messages[1]);;
 
                 Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfid);
-
-                Board board = await _boardService.GetBoardByMacAddressAsync(macaddress);
-                if (board == null)
-                {
-                    MessageBox.Show($"Board chứa MacAddress {macaddress} này chưa được tạo.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
 
                 if (sale == null)
                 {
