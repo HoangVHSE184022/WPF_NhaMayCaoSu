@@ -141,7 +141,7 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
             RFID thisRFID = await _service.GetRFIDByRFIDCodeAsync(RFIDCodeTextBox.Text);
-            if (thisRFID != null)
+            if (SelectedRFID == null && thisRFID != null)
             {
                 MessageBox.Show("RFID đã được khởi tạo", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
