@@ -9,6 +9,8 @@ using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Core.Utils;
+using Serilog;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -44,6 +46,7 @@ namespace WPF_NhaMayCaoSu
         {
             InitializeComponent();
             LoadDataGrid();
+            LoggingHelper.ConfigureLogger();
         }
 
         // Initializes and subscribes to the necessary MQTT topics
@@ -58,6 +61,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 ShowError("Không thể kết nối đến máy chủ MQTT. Bạn sẽ được chuyển về màn hình quản lý Broker.");
+                Log.Error(ex, "Không thể kết nối đến máy chủ MQTT");
                 OpenBrokerWindow();
             }
             LoadDataGrid();
@@ -101,6 +105,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error loading sales data: {ex.Message}");
+                Log.Error(ex, "Error loading sales data");
             }
         }
 
@@ -152,6 +157,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error processing MQTT message: {ex.Message}");
+                Log.Error(ex, "Error processing MQTT message");
             }
         }
 
@@ -236,6 +242,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error processing message: {ex.Message}");
+                Log.Error(ex, "Error processing message");
             }
         }
 
@@ -294,6 +301,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 MessageBox.Show($"Lỗi khi chụp ảnh từ Camera {cameraIndex}: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                Log.Error(ex, $"Lỗi khi chụp ảnh từ Camera {cameraIndex}");
                 return string.Empty;
             }
 

@@ -21,6 +21,7 @@ namespace WPF_NhaMayCaoSu
         public CustomerListWindow()
         {
             InitializeComponent();
+            LoggingHelper.ConfigureLogger();
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)

@@ -2,6 +2,8 @@
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Core.Utils;
+using Serilog;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -18,6 +20,7 @@ namespace WPF_NhaMayCaoSu
         public BrokerWindow()
         {
             InitializeComponent();
+            LoggingHelper.ConfigureLogger();
             _mqttServerService = MqttServerService.Instance;
             _mqttServerService.BrokerStatusChanged += (sender, e) => UpdateBrokerUI();
             UpdateBrokerUI();
@@ -99,6 +102,7 @@ namespace WPF_NhaMayCaoSu
             {
                 // Show the error in a MessageBox
                 MessageBox.Show($"{Constants.ErrorMessageBrokerStart}: {ex}", Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                Log.Error(ex, $"{Constants.ErrorMessageBrokerStart}");
 
                 // Update the ServerStatusLabel to indicate an error
                 ServerStatusLabel.Content = Constants.StatusError;
@@ -126,6 +130,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 MessageBox.Show($"{Constants.ErrorMessageBrokerStop}: {ex}", Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                Log.Error(ex, $"{Constants.ErrorMessageBrokerStop}");
 
                 ServerStatusLabel.Content = Constants.StatusError;
             }
@@ -159,7 +164,7 @@ namespace WPF_NhaMayCaoSu
             {
                 // Show the error in a MessageBox
                 MessageBox.Show($"{Constants.ErrorMessageBrokerRestart}: {ex}", Constants.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-
+                Log.Error(ex, $"{Constants.ErrorMessageBrokerRestart}");
                 // Update the ServerStatusLabel to indicate an error
                 ServerStatusLabel.Content = Constants.StatusError;
             }

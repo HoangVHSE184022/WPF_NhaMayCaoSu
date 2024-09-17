@@ -4,6 +4,8 @@ using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Core.Utils;
+using Serilog;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -20,6 +22,7 @@ namespace WPF_NhaMayCaoSu
         public BoardListWindow()
         {
             InitializeComponent();
+            LoggingHelper.ConfigureLogger();
             _mqttServerService = MqttServerService.Instance;
             _mqttClientService = new MqttClientService();
             _boardService = new BoardService();
@@ -39,7 +42,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 MessageBox.Show("Không thể kết nối đến máy chủ MQTT. Vui lòng kiểm tra lại kết nối. Bạn sẽ được chuyển về màn hình quản lý Broker.", "Lỗi kết nối", MessageBoxButton.OK, MessageBoxImage.Error);
-
+                Log.Error(ex, $"Không thể kết nối đến máy chủ MQTT");
                 return;
             }
 
@@ -90,6 +93,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error processing message: {ex.Message}");
+                Log.Error(ex, $"Error processing message");
             }
         }
 
@@ -235,6 +239,7 @@ namespace WPF_NhaMayCaoSu
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Lỗi khi xóa Board: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Log.Error(ex, $"Lỗi khi xóa Board");
                 }
             }
         }
