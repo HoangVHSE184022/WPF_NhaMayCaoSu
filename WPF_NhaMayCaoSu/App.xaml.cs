@@ -20,7 +20,6 @@ namespace WPF_NhaMayCaoSu
         public App()
         {
              LoggingHelper.ConfigureLogger();
-            // Log the application startup
             Log.Information("Application is starting up");
         }
 

@@ -7,6 +7,8 @@ using System.Windows.Media.Imaging;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Core.Utils;
+using Serilog;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -72,6 +74,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 MessageBox.Show($"Đã xảy ra lỗi: {ex.Message}");
+                Log.Error(ex, "Đã xảy ra lỗi");
             }
         }
 

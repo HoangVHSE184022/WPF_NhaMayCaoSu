@@ -8,6 +8,8 @@ using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Core.Utils;
+using Serilog;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -117,6 +119,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 MessageBox.Show("Không thể kết nối đến máy chủ MQTT. Vui lòng kiểm tra lại kết nối.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                Log.Error(ex, "Không thể kết nối đến máy chủ MQTT");
                 Close();
             }
 
@@ -197,6 +200,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error processing message: {ex.Message}");
+                Log.Error(ex, "Error processing message");
             }
         }
 
@@ -270,16 +274,19 @@ namespace WPF_NhaMayCaoSu
             catch (FormatException ex)
             {
                 MessageBox.Show($"Dữ liệu không hợp lệ: {ex.Message}", "Lỗi định dạng", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Log.Error(ex, "Dữ liệu không hợp lệ");
                 Debug.WriteLine($"FormatException: {ex.Message}");
             }
             catch (NullReferenceException ex)
             {
                 MessageBox.Show("Không thể xử lý dữ liệu do trường không tồn tại hoặc rỗng.", "Lỗi tham chiếu null", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Log.Error(ex, "Không thể xử lý dữ liệu do trường không tồn tại hoặc rỗng");
                 Debug.WriteLine($"NullReferenceException: {ex.Message}");
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Đã xảy ra lỗi trong quá trình xử lý tin nhắn MQTT: {ex.Message}", "Lỗi hệ thống", MessageBoxButton.OK, MessageBoxImage.Error);
+                Log.Error(ex, "Đã xảy ra lỗi trong quá trình xử lý tin nhắn MQTT");
                 Debug.WriteLine($"Error processing MQTT message: {ex.Message}");
             }
         }
@@ -331,6 +338,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error processing camera URL message: {ex.Message}");
+                Log.Error(ex, "Error processing camera URL messag");
             }
         }
 
@@ -365,6 +373,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 MessageBox.Show($"Lỗi khi chụp ảnh từ Camera {cameraIndex}: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                Log.Error(ex, $"Lỗi khi chụp ảnh từ Camera {cameraIndex}");
                 return string.Empty;
             }
 

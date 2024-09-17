@@ -4,6 +4,8 @@ using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Core.Utils;
+using Serilog;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -52,6 +54,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 MessageBox.Show("Không thể kết nối đến máy chủ MQTT. Vui lòng kiểm tra lại kết nối. Bạn sẽ được chuyển về màn hình quản lý Broker.", "Lỗi kết nối", MessageBoxButton.OK, MessageBoxImage.Error);
+                Log.Error(ex, "Không thể kết nối đến máy chủ MQTT");
 
                 BrokerWindow brokerWindow = new BrokerWindow();
                 brokerWindow.ShowDialog();
@@ -122,6 +125,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error processing message: {ex.Message}");
+                Log.Error(ex, "Error processing message");
             }
         }
         private async void SaveButton_Click(object sender, RoutedEventArgs e)

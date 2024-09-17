@@ -24,9 +24,6 @@ namespace WPF_NhaMayCaoSu.Core.Utils
                   outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}",
                   rollingInterval: RollingInterval.Day)
                   .CreateLogger();
-
-
-            Log.Information("Logger is configured.");
         }
     }
 }

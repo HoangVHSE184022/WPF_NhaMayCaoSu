@@ -74,7 +74,6 @@ namespace WPF_NhaMayCaoSu
                 else
                 {
                     Debug.WriteLine("Unexpected message topic.");
-                    Log.Warning("Unexpected message topic: {data}");
                 }
             }
             catch (Exception ex)
@@ -94,7 +93,6 @@ namespace WPF_NhaMayCaoSu
 
                 if (messages.Length != 4)
                 {
-                    Log.Warning($"Invalid message format: {messageContent}");
                     return;
                 }
                 string rfid = messages[0];
@@ -106,7 +104,6 @@ namespace WPF_NhaMayCaoSu
                 Board board = await _boardService.GetBoardByMacAddressAsync(macaddress);
                 if (board == null)
                 {
-                    Log.Warning($"Board with MacAddress {macaddress} does not exist.");
                     MessageBox.Show($"Board chứa MacAddress {macaddress} này chưa được tạo.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
@@ -118,7 +115,6 @@ namespace WPF_NhaMayCaoSu
 
                     if (customer == null)
                     {
-                        Log.Warning($"RFID {rfid} not associated with any customer.");
                         MessageBox.Show($"RFID {rfid} này chưa được tạo.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
