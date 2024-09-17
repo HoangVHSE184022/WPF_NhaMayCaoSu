@@ -2,9 +2,6 @@
 using WPF_NhaMayCaoSu.Repository.Context;
 using WPF_NhaMayCaoSu.Repository.IRepositories;
 using WPF_NhaMayCaoSu.Repository.Models;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace WPF_NhaMayCaoSu.Repository.Repositories
 {

@@ -102,7 +102,7 @@ namespace WPF_NhaMayCaoSu.Repository.Context
                 },
                 new Role
                 {
-                    RoleId = userRoleId, 
+                    RoleId = userRoleId,
                     RoleName = "User"
                 }
             );
@@ -113,7 +113,7 @@ namespace WPF_NhaMayCaoSu.Repository.Context
                     AccountId = Guid.NewGuid(),
                     AccountName = "Administrator",
                     Username = "admin",
-                    Password = BCrypt.Net.BCrypt.HashPassword("admin123"),  
+                    Password = BCrypt.Net.BCrypt.HashPassword("admin123"),
                     CreatedDate = DateTime.UtcNow,
                     Status = 1,
                     RoleId = adminRoleId

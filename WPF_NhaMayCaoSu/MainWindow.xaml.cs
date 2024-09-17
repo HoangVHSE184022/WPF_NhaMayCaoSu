@@ -1,13 +1,12 @@
-﻿using Emgu.CV.Structure;
-using Emgu.CV;
+﻿using Emgu.CV;
+using Emgu.CV.Structure;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
-using System.IO;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -103,11 +102,11 @@ namespace WPF_NhaMayCaoSu
                         return;
                     }
 
-                    sale = await CreateNewSale(customer, rfid, newValue, secondKey); 
+                    sale = await CreateNewSale(customer, rfid, newValue, secondKey);
                 }
                 else
                 {
-                  
+
                     if (secondKey == "Weight")
                     {
                         if (sale.ProductWeight.HasValue)

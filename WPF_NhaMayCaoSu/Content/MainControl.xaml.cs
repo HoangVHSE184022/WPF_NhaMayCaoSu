@@ -1,8 +1,6 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
-using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu.Content
@@ -77,7 +75,7 @@ namespace WPF_NhaMayCaoSu.Content
                 LoginWindow window = new();
                 window.LoginSucceeded += HandleLoginSucceeded;
                 window.ShowDialog();
-                if(CurrentAccount is null)
+                if (CurrentAccount is null)
                 {
                     return false;
                 }
@@ -195,7 +193,7 @@ namespace WPF_NhaMayCaoSu.Content
             mainWindow.OnWindowLoaded();
             this.Title = mainWindow.Title;
         }
-        
+
 
         //private void LoginButton_Click(object sender, RoutedEventArgs e)
         //{

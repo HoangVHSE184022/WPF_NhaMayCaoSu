@@ -1,17 +1,19 @@
-﻿using System;
-using System.Windows;
-using System.Diagnostics;
-using System.IO;
-using Emgu.CV;
+﻿using Emgu.CV;
 using Emgu.CV.Structure;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.Windows;
+using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
-using WPF_NhaMayCaoSu.Core.Utils;
 
 namespace WPF_NhaMayCaoSu
 {
+    /// <summary>
+    /// Interaction logic for SaleManagementWindow.xaml
+    /// </summary>
     public partial class SaleManagementWindow : Window
     {
         private readonly ISaleService _service = new SaleService();
@@ -252,7 +254,7 @@ namespace WPF_NhaMayCaoSu
                     // Update UI fields safely using Dispatcher
                     firstTextBox.Dispatcher.Invoke(() => firstTextBox.Text = rfidValue);
                     secondTextBox.Dispatcher.Invoke(() => secondTextBox.Text = existingValue.ToString());
-                    CustomerNameTextBox.Dispatcher.Invoke(() => CustomerNameTextBox.Text=customerName);
+                    CustomerNameTextBox.Dispatcher.Invoke(() => CustomerNameTextBox.Text = customerName);
                 }
                 else
                 {

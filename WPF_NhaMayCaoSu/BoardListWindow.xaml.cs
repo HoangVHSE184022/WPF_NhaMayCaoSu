@@ -1,9 +1,9 @@
-﻿using WPF_NhaMayCaoSu.Repository.Models;
-using System.Windows;
+﻿using Newtonsoft.Json;
 using System.Diagnostics;
-using WPF_NhaMayCaoSu.Service.Services;
-using Newtonsoft.Json;
+using System.Windows;
+using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
+using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -67,14 +67,14 @@ namespace WPF_NhaMayCaoSu
                         MessageBox.Show("Board này chưa được lưu", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
-                    if(board != null)
+                    if (board != null)
                     {
                         if (currentMode != board.BoardMode)
                         {
                             board.BoardMode = currentMode;
-                           await _boardService.UpdateBoardAsync(board);
+                            await _boardService.UpdateBoardAsync(board);
                             LoadDataGrid();
-                            MessageBox.Show("Mode đã được chuyển thành công","Thành công");
+                            MessageBox.Show("Mode đã được chuyển thành công", "Thành công");
                         }
                     }
                     else
@@ -196,7 +196,7 @@ namespace WPF_NhaMayCaoSu
                 await _boardService.UpdateBoardAsync(selectedBoard);
             }
 
-            boardDataGrid.Items.Refresh(); 
+            boardDataGrid.Items.Refresh();
         }
 
         private async void DeleteBoardButton_Click(object sender, RoutedEventArgs e)
@@ -355,8 +355,8 @@ namespace WPF_NhaMayCaoSu
                 await _boardService.UpdateBoardAsync(selectedBoard);
             }
 
-            
-            
+
+
 
             boardDataGrid.Items.Refresh();
         }
