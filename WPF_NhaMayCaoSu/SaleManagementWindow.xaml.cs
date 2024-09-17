@@ -94,6 +94,12 @@ namespace WPF_NhaMayCaoSu
                 return false;
             }
 
+            if (string.IsNullOrWhiteSpace(StatusTextBox.Text) || (StatusTextBox.Text != "1" && StatusTextBox.Text != "0"))
+            {
+                MessageBox.Show("Trạng thái phải được điền là 1 (khả dụng) hoặc 0 (Không khả dụng).", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
             return true;
         }
 
