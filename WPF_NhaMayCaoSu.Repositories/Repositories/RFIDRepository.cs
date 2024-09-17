@@ -22,7 +22,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
             return await _context.RFIDs
                                  .Include("Customer")
-                                 .Where(r => r.Status == 1)
+ //                                .Where(r => r.Status == 1)
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)
                                  .ToListAsync();
@@ -87,6 +87,14 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         {
             _context = new();
             return await _context.RFIDs.CountAsync();
+        }
+        public async Task<IEnumerable<RFID>> GetAllRFIDsAsync()
+        {
+            _context = new CaoSuWpfDbContext();
+
+            return await _context.RFIDs
+                                 .Include("Customer")
+                                 .ToListAsync();
         }
     }
 }

@@ -55,5 +55,9 @@ namespace WPF_NhaMayCaoSu.Service.Services
         {
             return await _repo.GetTotalRFIDsCountAsync();
         }
+        public async Task<IEnumerable<RFID>> GetAllRFIDsAsync()
+        {
+            return await _repo.GetAllRFIDsAsync();
+        }
     }
 }

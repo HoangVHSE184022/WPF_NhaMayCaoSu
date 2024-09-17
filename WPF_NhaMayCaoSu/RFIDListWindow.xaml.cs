@@ -27,20 +27,33 @@ namespace WPF_NhaMayCaoSu
 
         private async void LoadDataGrid()
         {
-            var sales = await _service.GetAllRFIDsAsync(_currentPage, _pageSize);
-            int totalRFIDsCount = await _service.GetTotalRFIDsCountAsync();
+            var allRFIDs = await _service.GetAllRFIDsAsync();
+
+            var sortedRFIDs = allRFIDs
+                .OrderByDescending(r => r.CreatedDate) 
+                .ThenByDescending(r => r.Status)          
+                .ToList();
+
+
+            int totalRFIDsCount = sortedRFIDs.Count;
             _totalPages = (int)Math.Ceiling((double)totalRFIDsCount / _pageSize);
+
+
+            var paginatedRFIDs = sortedRFIDs
+                .Skip((_currentPage - 1) * _pageSize)
+                .Take(_pageSize)
+                .ToList();
 
             RFIDDataGrid.ItemsSource = null;
             RFIDDataGrid.Items.Clear();
-            RFIDDataGrid.ItemsSource = await _service.GetAllRFIDsAsync(1, 10);
+            RFIDDataGrid.ItemsSource = paginatedRFIDs;
 
             PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
 
-            // Disable/Enable pagination buttons
             PreviousPageButton.IsEnabled = _currentPage > 1;
             NextPageButton.IsEnabled = _currentPage < _totalPages;
         }
+
 
         private void PreviousPageButton_Click(object sender, RoutedEventArgs e)
         {

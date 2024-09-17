@@ -12,5 +12,6 @@ namespace WPF_NhaMayCaoSu.Service.Interfaces
         Task<Sale> GetSaleByRfidAsync(string rfid);
         Task<Sale> GetSaleByRFIDCodeWithoutDensity(string rfid);
         Task<int> GetTotalSalesCountAsync();
+        Task<IEnumerable<Sale>> GetAllSaleAsync();
     }
 }

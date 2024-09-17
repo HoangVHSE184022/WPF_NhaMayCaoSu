@@ -45,5 +45,9 @@ namespace WPF_NhaMayCaoSu.Service.Services
         {
             return await _repo.GetTotalSalesCountAsync();
         }
+        public async Task<IEnumerable<Sale>> GetAllSaleAsync()
+        {
+            return await _repo.GetAllSaleAsync();
+        }
     }
 }

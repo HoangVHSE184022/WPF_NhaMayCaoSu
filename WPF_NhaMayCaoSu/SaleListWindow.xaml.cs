@@ -72,13 +72,25 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                var sales = await _saleService.GetAllSaleAsync(_currentPage, _pageSize);
-                int totalSalesCount = await _saleService.GetTotalSalesCountAsync();
+                var allSales = await _saleService.GetAllSaleAsync();
+
+                var sortedSales = allSales
+                    .OrderByDescending(s => s.LastEditedTime)
+                    .ThenByDescending(s => s.Status)
+                    .ThenBy(s => s.CustomerName)
+                    .ToList();
+
+                int totalSalesCount = sortedSales.Count;
                 _totalPages = (int)Math.Ceiling((double)totalSalesCount / _pageSize);
+
+                var paginatedSales = sortedSales
+                    .Skip((_currentPage - 1) * _pageSize)
+                    .Take(_pageSize)
+                    .ToList();
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    SaleDataGrid.ItemsSource = sales;
+                    SaleDataGrid.ItemsSource = paginatedSales;
                     PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
                     PreviousPageButton.IsEnabled = _currentPage > 1;
                     NextPageButton.IsEnabled = _currentPage < _totalPages;
@@ -89,6 +101,8 @@ namespace WPF_NhaMayCaoSu
                 Debug.WriteLine($"Error loading sales data: {ex.Message}");
             }
         }
+
+
 
         private void PreviousPageButton_Click(object sender, RoutedEventArgs e)
         {
