@@ -4,6 +4,8 @@ using WPF_NhaMayCaoSu.Repository.IRepositories;
 using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Core.Utils;
+using Serilog;
 
 
 namespace WPF_NhaMayCaoSu
@@ -15,10 +17,30 @@ namespace WPF_NhaMayCaoSu
     {
         private IServiceProvider _serviceProvider;
 
+        public App()
+        {
+             LoggingHelper.ConfigureLogger();
+            // Log the application startup
+            Log.Information("Application is starting up");
+        }
+
+
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            {
+                // Log the unhandled exception
+                Exception ex = (Exception)args.ExceptionObject;
+                Log.Error(ex, "An unhandled exception occurred");
+            };
 
+            this.DispatcherUnhandledException += (sender, args) =>
+            {
+                // Log UI thread exceptions
+                Log.Error(args.Exception, "An unhandled UI exception occurred");
+                args.Handled = true; 
+            };
             try
             {
                 ServiceCollection serviceCollection = new ServiceCollection();
