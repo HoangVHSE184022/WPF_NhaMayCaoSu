@@ -188,7 +188,7 @@ namespace WPF_NhaMayCaoSu
             // Toggle the board mode and update it
             selectedBoard.BoardMode = selectedBoard.BoardMode == 1 ? 2 : 1;
 
-            string topic = $"/{selectedBoard.BoardMacAddress}/mode";
+            string topic = $"{selectedBoard.BoardMacAddress}/mode";
 
 
             var payloadObject = new { Mode = selectedBoard.BoardMode };
