@@ -148,11 +148,11 @@ namespace WPF_NhaMayCaoSu.Service.Services
             {
                 if (!string.IsNullOrEmpty(weight))
                 {
-                    MessageReceived?.Invoke(this, $"info:{rfid}:{weight}:Weight");
+                    MessageReceived?.Invoke(this, $"info-{rfid}-{weight}-Weight");
                 }
                 else if (!string.IsNullOrEmpty(density))
                 {
-                    MessageReceived?.Invoke(this, $"info:{rfid}:{density}:Density");
+                    MessageReceived?.Invoke(this, $"info-{rfid}-{density}-Density");
                 }
                 else
                 {
