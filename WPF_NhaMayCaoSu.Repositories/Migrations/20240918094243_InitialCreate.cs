@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -72,7 +73,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: table => new
                 {
                     RFID_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RFIDCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RFIDCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -81,7 +82,6 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RFIDs", x => x.RFID_Id);
-                    table.UniqueConstraint("AK_RFIDs_RFIDCode", x => x.RFIDCode);
                     table.ForeignKey(
                         name: "FK_RFIDs_Customers_CustomerId",
                         column: x => x.CustomerId,
@@ -123,16 +123,17 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     ProductWeight = table.Column<float>(type: "real", nullable: true),
                     LastEditedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<short>(type: "smallint", nullable: false),
-                    RFIDCode = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    RFIDCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RFID_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sales", x => x.SaleId);
                     table.ForeignKey(
-                        name: "FK_Sales_RFIDs_RFIDCode",
-                        column: x => x.RFIDCode,
+                        name: "FK_Sales_RFIDs_RFID_Id",
+                        column: x => x.RFID_Id,
                         principalTable: "RFIDs",
-                        principalColumn: "RFIDCode",
+                        principalColumn: "RFID_Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -162,8 +163,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: new[] { "RoleId", "RoleName" },
                 values: new object[,]
                 {
-                    { new Guid("48c09d85-2ba5-41c3-9281-fd08c31bf739"), "Admin" },
-                    { new Guid("c687d193-cbe8-410d-9ac0-9406d8a907e3"), "User" }
+                    { new Guid("67341c74-6096-4b26-b74f-3e96947d0409"), "Admin" },
+                    { new Guid("95be3d2c-78aa-45ec-864c-3bb501f9ccbf"), "User" }
                 });
 
             migrationBuilder.InsertData(
@@ -171,8 +172,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: new[] { "AccountId", "AccountName", "CreatedDate", "Password", "RoleId", "Status", "Username" },
                 values: new object[,]
                 {
-                    { new Guid("9cbe6fcc-35c7-4db0-b030-6da99b10c4a4"), "Administrator", new DateTime(2024, 9, 11, 8, 31, 9, 314, DateTimeKind.Utc).AddTicks(2572), "$2a$11$A0IIU5cXAvllv.jROeA4N.2RQoOJb4FLbQLm4a0Oq3bRPCLkOXO5a", new Guid("48c09d85-2ba5-41c3-9281-fd08c31bf739"), 1L, "admin" },
-                    { new Guid("e0953a57-ff10-4d8a-9a93-6d90125e854d"), "Standard User", new DateTime(2024, 9, 11, 8, 31, 9, 518, DateTimeKind.Utc).AddTicks(6050), "$2a$11$D/HIVBm1x0RYaAJu7eHwvunpRz8PcVNfAfZmAaz9bA9wVLN90QzQm", new Guid("c687d193-cbe8-410d-9ac0-9406d8a907e3"), 1L, "user" }
+                    { new Guid("0c33edda-c3e3-4cc4-88c7-ad7f8e2035b4"), "Standard User", new DateTime(2024, 9, 18, 9, 42, 42, 554, DateTimeKind.Utc).AddTicks(5540), "$2a$11$FnxoZiL1iluBpo.ivIDTmuKK0HMKBs96RChO7Q9zGuvGr2vZEh6iK", new Guid("95be3d2c-78aa-45ec-864c-3bb501f9ccbf"), 1L, "user" },
+                    { new Guid("1eb1c086-4d34-4056-b4a5-4c45a5c1e968"), "Administrator", new DateTime(2024, 9, 18, 9, 42, 42, 383, DateTimeKind.Utc).AddTicks(1513), "$2a$11$PPvHutTmA1hxOZOIsjZIdOJn94IgziqDWeotzVWb2fmDIRKP31SDa", new Guid("67341c74-6096-4b26-b74f-3e96947d0409"), 1L, "admin" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -197,21 +198,15 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RFIDs_RFIDCode",
-                table: "RFIDs",
-                column: "RFIDCode",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Roles_RoleName",
                 table: "Roles",
                 column: "RoleName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sales_RFIDCode",
+                name: "IX_Sales_RFID_Id",
                 table: "Sales",
-                column: "RFIDCode");
+                column: "RFID_Id");
         }
 
         /// <inheritdoc />
