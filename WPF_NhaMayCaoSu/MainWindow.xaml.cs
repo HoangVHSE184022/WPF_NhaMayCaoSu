@@ -1,4 +1,4 @@
-﻿using Emgu.CV;
+using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Diagnostics;
 using System.Drawing;
@@ -28,6 +28,7 @@ namespace WPF_NhaMayCaoSu
         private readonly CustomerService _customerService = new CustomerService();
         private readonly CameraService _localCameraService = new CameraService();
         private readonly IBoardService _boardService = new BoardService();
+        private readonly IRFIDService _rfidService = new RFIDService();
 
         private bool isExpanded = false;
         private Sale SaleDB { get; set; } = new();
@@ -113,6 +114,12 @@ namespace WPF_NhaMayCaoSu
                 if (sale == null)
                 {
                     Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfid);
+                    RFID rfid_id = await _rfidService.GetRFIDByRFIDCodeAsync(rfid);
+                    if(rfid_id == null)
+                    {
+                        Debug.WriteLine("cant");
+                    }
+                    Debug.WriteLine(rfid_id.ToString());
 
                     if (customer == null)
                     {
@@ -120,7 +127,7 @@ namespace WPF_NhaMayCaoSu
                         return;
                     }
 
-                    sale = await CreateNewSale(customer, rfid, newValue, secondKey);
+                    sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfid_id);
                 }
                 else
                 {
@@ -131,7 +138,6 @@ namespace WPF_NhaMayCaoSu
                         {
                             sale.LastEditedTime = DateTime.Now;
                             sale.ProductWeight += newValue;
-
                         }
                         else
                         {
@@ -175,12 +181,13 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
-        private async Task<Sale> CreateNewSale(Customer customer, string rfid, float value, string valueType)
+        private async Task<Sale> CreateNewSale(Customer customer, string rfid, float value, string valueType, RFID rfid_id)
         {
             var sale = new Sale
             {
                 SaleId = Guid.NewGuid(),
                 RFIDCode = rfid,
+                RFID_Id = rfid_id.RFID_Id,
                 CustomerName = customer.CustomerName,
                 LastEditedTime = DateTime.Now,
                 Status = 1
