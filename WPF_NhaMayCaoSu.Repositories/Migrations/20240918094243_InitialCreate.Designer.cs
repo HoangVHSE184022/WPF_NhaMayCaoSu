@@ -12,7 +12,7 @@ using WPF_NhaMayCaoSu.Repository.Context;
 namespace WPF_NhaMayCaoSu.Repository.Migrations
 {
     [DbContext(typeof(CaoSuWpfDbContext))]
-    [Migration("20240911083110_InitialCreate")]
+    [Migration("20240918094243_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -64,21 +64,21 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            AccountId = new Guid("9cbe6fcc-35c7-4db0-b030-6da99b10c4a4"),
+                            AccountId = new Guid("1eb1c086-4d34-4056-b4a5-4c45a5c1e968"),
                             AccountName = "Administrator",
-                            CreatedDate = new DateTime(2024, 9, 11, 8, 31, 9, 314, DateTimeKind.Utc).AddTicks(2572),
-                            Password = "$2a$11$A0IIU5cXAvllv.jROeA4N.2RQoOJb4FLbQLm4a0Oq3bRPCLkOXO5a",
-                            RoleId = new Guid("48c09d85-2ba5-41c3-9281-fd08c31bf739"),
+                            CreatedDate = new DateTime(2024, 9, 18, 9, 42, 42, 383, DateTimeKind.Utc).AddTicks(1513),
+                            Password = "$2a$11$PPvHutTmA1hxOZOIsjZIdOJn94IgziqDWeotzVWb2fmDIRKP31SDa",
+                            RoleId = new Guid("67341c74-6096-4b26-b74f-3e96947d0409"),
                             Status = 1L,
                             Username = "admin"
                         },
                         new
                         {
-                            AccountId = new Guid("e0953a57-ff10-4d8a-9a93-6d90125e854d"),
+                            AccountId = new Guid("0c33edda-c3e3-4cc4-88c7-ad7f8e2035b4"),
                             AccountName = "Standard User",
-                            CreatedDate = new DateTime(2024, 9, 11, 8, 31, 9, 518, DateTimeKind.Utc).AddTicks(6050),
-                            Password = "$2a$11$D/HIVBm1x0RYaAJu7eHwvunpRz8PcVNfAfZmAaz9bA9wVLN90QzQm",
-                            RoleId = new Guid("c687d193-cbe8-410d-9ac0-9406d8a907e3"),
+                            CreatedDate = new DateTime(2024, 9, 18, 9, 42, 42, 554, DateTimeKind.Utc).AddTicks(5540),
+                            Password = "$2a$11$FnxoZiL1iluBpo.ivIDTmuKK0HMKBs96RChO7Q9zGuvGr2vZEh6iK",
+                            RoleId = new Guid("95be3d2c-78aa-45ec-864c-3bb501f9ccbf"),
                             Status = 1L,
                             Username = "user"
                         });
@@ -195,7 +195,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
 
                     b.Property<string>("RFIDCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
@@ -203,9 +203,6 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasKey("RFID_Id");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("RFIDCode")
-                        .IsUnique();
 
                     b.ToTable("RFIDs");
                 });
@@ -230,12 +227,12 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("48c09d85-2ba5-41c3-9281-fd08c31bf739"),
+                            RoleId = new Guid("67341c74-6096-4b26-b74f-3e96947d0409"),
                             RoleName = "Admin"
                         },
                         new
                         {
-                            RoleId = new Guid("c687d193-cbe8-410d-9ac0-9406d8a907e3"),
+                            RoleId = new Guid("95be3d2c-78aa-45ec-864c-3bb501f9ccbf"),
                             RoleName = "User"
                         });
                 });
@@ -261,14 +258,17 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
 
                     b.Property<string>("RFIDCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("RFID_Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
 
                     b.HasKey("SaleId");
 
-                    b.HasIndex("RFIDCode");
+                    b.HasIndex("RFID_Id");
 
                     b.ToTable("Sales");
                 });
@@ -310,8 +310,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 {
                     b.HasOne("WPF_NhaMayCaoSu.Repository.Models.RFID", "RFID")
                         .WithMany("Sales")
-                        .HasForeignKey("RFIDCode")
-                        .HasPrincipalKey("RFIDCode")
+                        .HasForeignKey("RFID_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

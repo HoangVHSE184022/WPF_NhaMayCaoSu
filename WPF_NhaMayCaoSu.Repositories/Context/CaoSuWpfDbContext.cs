@@ -48,8 +48,8 @@ namespace WPF_NhaMayCaoSu.Repository.Context
             modelBuilder.Entity<Sale>()
                 .HasOne(s => s.RFID)
                 .WithMany(r => r.Sales)
-                .HasForeignKey(s => s.RFIDCode)
-                .HasPrincipalKey(r => r.RFIDCode);
+                .HasForeignKey(s => s.RFID_Id)
+                .HasPrincipalKey(r => r.RFID_Id);
 
             modelBuilder.Entity<Account>()
                 .HasKey(a => a.AccountId);
@@ -78,10 +78,6 @@ namespace WPF_NhaMayCaoSu.Repository.Context
 
             modelBuilder.Entity<RFID>()
                 .HasKey(r => r.RFID_Id);
-
-            modelBuilder.Entity<RFID>()
-                .HasIndex(r => r.RFIDCode)
-                .IsUnique();
 
             modelBuilder.Entity<Image>()
                 .HasKey(i => i.ImageId);
