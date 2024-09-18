@@ -1,4 +1,4 @@
-﻿using Emgu.CV;
+using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Diagnostics;
 using System.Drawing;
@@ -186,6 +186,7 @@ namespace WPF_NhaMayCaoSu
                 if (sale == null)
                 {
                     Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfid);
+                    RFID rfid_id = await _rfidService.GetRFIDByRFIDCodeAsync(rfid);
 
                     if (customer == null)
                     {
@@ -193,7 +194,7 @@ namespace WPF_NhaMayCaoSu
                         return;
                     }
 
-                    sale = await CreateNewSale(customer, rfid, newValue, secondKey);
+                    sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfid_id);
                 }
                 else
                 {
@@ -248,12 +249,13 @@ namespace WPF_NhaMayCaoSu
 
 
         // Creates a new sale when an existing one is not found
-        private async Task<Sale> CreateNewSale(Customer customer, string rfid, float value, string valueType)
+        private async Task<Sale> CreateNewSale(Customer customer, string rfid, float value, string valueType, RFID rfid_id)
         {
             var sale = new Sale
             {
                 SaleId = Guid.NewGuid(),
                 RFIDCode = rfid,
+                RFID_Id = rfid_id.RFID_Id,
                 CustomerName = customer.CustomerName,
                 LastEditedTime = DateTime.Now,
                 Status = 1
