@@ -22,7 +22,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
             return await _context.RFIDs
                                  .Include("Customer")
- //                                .Where(r => r.Status == 1)
+                                 .Where(r => r.Status == 1)
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)
                                  .ToListAsync();
@@ -31,13 +31,13 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         public async Task<RFID> GetRFIDByIdAsync(Guid rfidId)
         {
             _context = new CaoSuWpfDbContext();
-            return await _context.RFIDs.FirstOrDefaultAsync(r => r.RFID_Id == rfidId);
+            return await _context.RFIDs.FirstOrDefaultAsync(r => r.RFID_Id == rfidId && r.Status == 1);
         }
 
         public async Task<RFID> GetRFIDByRFIDCodeAsync(string RFIDCode)
         {
             _context = new CaoSuWpfDbContext();
-            return await _context.RFIDs.FirstOrDefaultAsync(r => r.RFIDCode == RFIDCode);
+            return await _context.RFIDs.FirstOrDefaultAsync(r => r.RFIDCode == RFIDCode && r.Status == 1);
         }
 
         public async Task UpdateRFIDAsync(RFID rfid)
@@ -71,7 +71,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         {
             _context = new CaoSuWpfDbContext();
             return await _context.RFIDs
-                                 .Where(r => r.Status == status)
+                                 .Where(r => r.Status == status && r.Status == 1)
                                  .ToListAsync();
         }
 
@@ -94,6 +94,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
             return await _context.RFIDs
                                  .Include("Customer")
+                                 .Where(r => r.Status == 1)
                                  .ToListAsync();
         }
     }
