@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Net.Mail;
 using System.Text;
+using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
 
@@ -16,6 +17,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
     {
         private readonly IMqttClient _client;
         private readonly MqttClientOptions _options;
+        private IBoardService _service = new BoardService();
 
         public event EventHandler<string> MessageReceived;
         public bool IsConnected => _client?.IsConnected ?? false;
@@ -79,6 +81,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
             string rfid = jsonMessage["RFID"]?.ToString();
             string density = jsonMessage["Density"]?.ToString();
             string weight = jsonMessage["Weight"]?.ToString();
+            string info = jsonMessage["Info"]?.ToString();
             string macAddress = jsonMessage["MacAddress"]?.ToString();
             string Mode = jsonMessage["Mode"]?.ToString();
 
@@ -90,7 +93,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
                     break;
 
                 case var topic when topic.EndsWith("/info"):
-                    HandleInfoTopic(rfid, weight, density, topic);
+                    HandleInfoTopic(rfid, info, topic);
                     break;
 
                 case var topic when topic.EndsWith("/checkmode"):
@@ -114,19 +117,20 @@ namespace WPF_NhaMayCaoSu.Service.Services
             }
         }
 
-        private void HandleInfoTopic(string rfid, string weight, string density, string topic)
+        private async void HandleInfoTopic(string rfid, string info, string topic)
         {
             string[] topicParts = topic.Split('/');
             if (topicParts.Length > 1 && !string.IsNullOrEmpty(rfid))
             {
                 string macAddress = topicParts[0];
-                if (!string.IsNullOrEmpty(weight))
+                Board _board = await _service.GetBoardByMacAddressAsync(macAddress);
+                if (_board.)
                 {
-                    MessageReceived?.Invoke(this, $"info-{rfid}-{weight}-Weight-{macAddress}");
+                    MessageReceived?.Invoke(this, $"info-{rfid}-{info}-Weight-{macAddress}");
                 }
                 else if (!string.IsNullOrEmpty(density))
                 {
-                    MessageReceived?.Invoke(this, $"info-{rfid}-{density}-Density-{macAddress}");
+                    MessageReceived?.Invoke(this, $"info-{rfid}-{info}-Density-{macAddress}");
                 }
                 else
                 {
