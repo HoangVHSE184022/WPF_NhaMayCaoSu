@@ -257,22 +257,36 @@ namespace WPF_NhaMayCaoSu
 
             if (selectedBoard != null)
             {
+                // Check if the board already exists in the system
                 Board existingBoard = await _boardService.GetBoardByMacAddressAsync(selectedBoard.BoardMacAddress);
                 if (existingBoard == null)
                 {
-                    Board newBoard = new Board
+                    // Open the SaveBoardWindow to ask the user for the board name
+                    SaveBoardWindow saveBoardWindow = new SaveBoardWindow();
+                    bool? result = saveBoardWindow.ShowDialog();
+
+                    if (result == true && !string.IsNullOrEmpty(saveBoardWindow.SelectedBoardName))
                     {
-                        BoardId = selectedBoard.BoardId,
-                        BoardName = selectedBoard.BoardName,
-                        BoardIp = selectedBoard.BoardIp,
-                        BoardMacAddress = selectedBoard.BoardMacAddress,
-                        BoardMode = selectedBoard.BoardMode
-                    };
+                        // Create a new board and save the selected name
+                        Board newBoard = new Board
+                        {
+                            BoardId = selectedBoard.BoardId,
+                            BoardName = saveBoardWindow.SelectedBoardName, // Use the name selected by the user
+                            BoardIp = selectedBoard.BoardIp,
+                            BoardMacAddress = selectedBoard.BoardMacAddress,
+                            BoardMode = selectedBoard.BoardMode
+                        };
 
-                    await _boardService.CreateBoardAsync(newBoard);
-                    MessageBox.Show("Board đã được thêm thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                        await _boardService.CreateBoardAsync(newBoard);
+                        MessageBox.Show("Board đã được thêm thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    await LoadDataGridFromDatabase();
+                        // Reload the data grid
+                        await LoadDataGridFromDatabase();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Vui lòng chọn một tên cho board.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 }
                 else
                 {
@@ -280,6 +294,7 @@ namespace WPF_NhaMayCaoSu
                 }
             }
         }
+
 
         private async void ControlButton_Click(object sender, RoutedEventArgs e)
         {
