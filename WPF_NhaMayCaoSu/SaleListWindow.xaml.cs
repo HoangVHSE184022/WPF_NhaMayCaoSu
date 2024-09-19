@@ -165,16 +165,18 @@ namespace WPF_NhaMayCaoSu
         // Processes the MQTT message and updates the sale
         private async void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, Camera newestCamera, short cameraIndex)
         {
+            string topic = string.Empty;
+            string payload = string.Empty;
             try
             {
                 string[] messages = messageContent.Split('-');
 
-                if (messages.Length != 4 ) return;
+                if (messages.Length != 4) return;
 
                 string macAddress = messages[3];
-                string topic = $"{macAddress}/Save";
+                topic = $"{macAddress}/Save";
                 var payloadObject = new { Save = 1 };
-                string payload = JsonConvert.SerializeObject(payloadObject);
+                payload = JsonConvert.SerializeObject(payloadObject);
                 Board board = await _boardService.GetBoardByMacAddressAsync(macAddress);
                 if (board == null)
                 {
@@ -183,7 +185,7 @@ namespace WPF_NhaMayCaoSu
                 }
 
                 string rfid = messages[0];
-                float newValue = float.Parse(messages[1]);;
+                float newValue = float.Parse(messages[1]); ;
 
                 Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfid);
 
@@ -250,6 +252,18 @@ namespace WPF_NhaMayCaoSu
             {
                 Debug.WriteLine($"Error processing message: {ex.Message}");
                 Log.Error(ex, "Error processing message");
+                if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+                {
+                    try
+                    {
+                        await _mqttClientService.PublishAsync(topic, payload);
+                    }
+                    catch (Exception publishEx)
+                    {
+                        Debug.WriteLine($"Error publishing message in catch block: {publishEx.Message}");
+                        Log.Error(publishEx, "Error publishing message in catch block");
+                    }
+                }
             }
         }
 
