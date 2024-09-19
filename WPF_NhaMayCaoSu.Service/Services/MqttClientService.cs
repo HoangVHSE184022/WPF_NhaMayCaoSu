@@ -81,7 +81,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
             string rfid = jsonMessage["RFID"]?.ToString();
             string density = jsonMessage["Density"]?.ToString();
             string weight = jsonMessage["Weight"]?.ToString();
-            string info = jsonMessage["Info"]?.ToString();
+            string data = jsonMessage["Data"]?.ToString();
             string macAddress = jsonMessage["MacAddress"]?.ToString();
             string Mode = jsonMessage["Mode"]?.ToString();
 
@@ -93,7 +93,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
                     break;
 
                 case var topic when topic.EndsWith("/info"):
-                    HandleInfoTopic(rfid, info, topic);
+                    HandleInfoTopic(rfid, data, topic);
                     break;
 
                 case var topic when topic.EndsWith("/checkmode"):
@@ -117,24 +117,24 @@ namespace WPF_NhaMayCaoSu.Service.Services
             }
         }
 
-        private async void HandleInfoTopic(string rfid, string info, string topic)
+        private async void HandleInfoTopic(string rfid, string data, string topic)
         {
             string[] topicParts = topic.Split('/');
             if (topicParts.Length > 1 && !string.IsNullOrEmpty(rfid))
             {
                 string macAddress = topicParts[0];
                 Board _board = await _service.GetBoardByMacAddressAsync(macAddress);
-                if (_board.)
+                if (_board.BoardName == "Cân Tạ")
                 {
-                    MessageReceived?.Invoke(this, $"info-{rfid}-{info}-Weight-{macAddress}");
+                    MessageReceived?.Invoke(this, $"info-{rfid}-{data}-Weight-{macAddress}");
                 }
-                else if (!string.IsNullOrEmpty(density))
+                else if (_board.BoardName == "Cân Tiểu Ly")
                 {
-                    MessageReceived?.Invoke(this, $"info-{rfid}-{info}-Density-{macAddress}");
+                    MessageReceived?.Invoke(this, $"info-{rfid}-{data}-Density-{macAddress}");
                 }
                 else
                 {
-                    Debug.WriteLine("Info message received but no Weight or Density found");
+                    Debug.WriteLine("Info message received but cannot found board");
                 }
             }
             else
