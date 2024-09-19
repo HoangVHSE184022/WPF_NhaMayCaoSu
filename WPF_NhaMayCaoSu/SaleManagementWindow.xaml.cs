@@ -157,7 +157,6 @@ namespace WPF_NhaMayCaoSu
         // Handles incoming MQTT messages
         private async void OnMqttMessageReceived(object sender, string data)
         {
-            Debug.WriteLine($"MQTT Message received: {data}");
             try
             {
                 Camera newestCamera = await _cameraService.GetNewestCameraAsync();
@@ -224,11 +223,6 @@ namespace WPF_NhaMayCaoSu
                         throw new FormatException("Giá trị không hợp lệ. Không thể phân tích giá trị số từ dữ liệu nhận được.");
                     }
 
-                    Debug.WriteLine($"Origin mes {messageContent}");
-                    Debug.WriteLine($"1 mes {firstTextBox}");
-                    Debug.WriteLine($"2 mes {rfidValue}");
-                    Debug.WriteLine($"3 mes {currentValue}");
-
                     float existingValue = 0;
 
                     if (!string.IsNullOrEmpty(WeightTextBox.Text) && !float.TryParse(WeightTextBox.Text, out existingValue))
@@ -259,8 +253,6 @@ namespace WPF_NhaMayCaoSu
                             existingValue = currentValue; // Set the weight
                         }
                     }
-
-                    Debug.WriteLine($"Final value: {existingValue}");
 
                     // Update UI fields safely using Dispatcher
                     firstTextBox.Dispatcher.Invoke(() => firstTextBox.Text = rfidValue);

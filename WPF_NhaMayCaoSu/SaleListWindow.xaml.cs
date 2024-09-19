@@ -11,6 +11,7 @@ using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
 using Serilog;
+using Newtonsoft.Json;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -171,6 +172,9 @@ namespace WPF_NhaMayCaoSu
                 if (messages.Length != 4 ) return;
 
                 string macAddress = messages[3];
+                string topic = $"{macAddress}/Save";
+                var payloadObject = new { Save = 1 };
+                string payload = JsonConvert.SerializeObject(payloadObject);
                 Board board = await _boardService.GetBoardByMacAddressAsync(macAddress);
                 if (board == null)
                 {
@@ -195,6 +199,7 @@ namespace WPF_NhaMayCaoSu
                     }
 
                     sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfid_id);
+                    await _mqttClientService.PublishAsync(topic, payload);
                 }
                 else
                 {
@@ -227,6 +232,7 @@ namespace WPF_NhaMayCaoSu
                     }
 
                     await _saleService.UpdateSaleAsync(sale);
+                    await _mqttClientService.PublishAsync(topic, payload);
                 }
 
                 string imagePath = CaptureImageFromCamera(newestCamera, cameraIndex);
