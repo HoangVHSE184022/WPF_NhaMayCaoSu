@@ -10,6 +10,7 @@ using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
 using Serilog;
 using Azure.Messaging;
+using Newtonsoft.Json;
 
 
 namespace WPF_NhaMayCaoSu
@@ -88,7 +89,6 @@ namespace WPF_NhaMayCaoSu
         // Processes the MQTT message and updates the sale
         private async void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, Camera newestCamera, short cameraIndex)
         {
-            Debug.WriteLine($"Receive mess 2: {messageContent}");
             try
             {
                 string[] messages = messageContent.Split('-');
@@ -100,6 +100,9 @@ namespace WPF_NhaMayCaoSu
                 string rfid = messages[0];
                 float newValue = float.Parse(messages[1]);
                 string macaddress = messages[3];
+                string topic = $"{macaddress}/Save";
+                var payloadObject = new { Save = 1 };
+                string payload = JsonConvert.SerializeObject(payloadObject);
 
                 Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfid);
 
@@ -128,6 +131,8 @@ namespace WPF_NhaMayCaoSu
                     }
 
                     sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfid_id);
+                           await _mqttClientService.PublishAsync(topic, payload);
+                    
                 }
                 else
                 {
@@ -160,6 +165,7 @@ namespace WPF_NhaMayCaoSu
                     }
 
                     await _saleService.UpdateSaleAsync(sale);
+                    await _mqttClientService.PublishAsync(topic, payload);
                     _sessionSaleList.Add(sale);
                 }
 
