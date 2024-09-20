@@ -8,8 +8,8 @@ using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
-using WPF_NhaMayCaoSu.Core.Utils;
 using Serilog;
+using Newtonsoft.Json;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -207,13 +207,20 @@ namespace WPF_NhaMayCaoSu
         // Process the received MQTT message (weight or density)
         private async void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, System.Windows.Controls.TextBox firstTextBox, System.Windows.Controls.TextBox secondTextBox)
         {
+            string topic = string.Empty;
+            string payload = string.Empty;
             try
             {
+
                 string[] messages = messageContent.Split('-');
                 if (messages.Length == 4)
                 {
+                    string macAddress = messages[3];
+                    topic = $"{macAddress}/Save";
+                    var payloadObject = new { Save = 1 };
                     string rfidValue = messages[0];
                     string currentValueString = messages[1];
+                    payload = JsonConvert.SerializeObject(payloadObject);
                     Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfidValue);
                     string customerName = customer.CustomerName;
 
@@ -264,6 +271,7 @@ namespace WPF_NhaMayCaoSu
                     Debug.WriteLine("Invalid message format.");
                 }
             }
+
             catch (FormatException ex)
             {
                 MessageBox.Show($"Dữ liệu không hợp lệ: {ex.Message}", "Lỗi định dạng", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -282,6 +290,19 @@ namespace WPF_NhaMayCaoSu
                 Log.Error(ex, "Đã xảy ra lỗi trong quá trình xử lý tin nhắn MQTT");
                 Debug.WriteLine($"Error processing MQTT message: {ex.Message}");
             }
+            if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+            {
+                try
+                {
+                    await _mqttClientService.PublishAsync(topic, payload);
+                }
+                catch (Exception publishEx)
+                {
+                    Debug.WriteLine($"Error publishing message in catch block: {publishEx.Message}");
+                    Log.Error(publishEx, "Error publishing message in catch block");
+                }
+            }
+
         }
 
 
