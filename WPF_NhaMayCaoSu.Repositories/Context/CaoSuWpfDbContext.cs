@@ -16,7 +16,17 @@ namespace WPF_NhaMayCaoSu.Repository.Context
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Board> Boards { get; set; }
 
-        private string GetConnectionString()
+        public CaoSuWpfDbContext(DbContextOptions<CaoSuWpfDbContext> options) : base(options)
+        {
+
+        }
+
+        public CaoSuWpfDbContext()
+        {
+
+        }
+
+        public string GetConnectionString()
         {
             IConfiguration config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())

@@ -6,6 +6,8 @@ using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
 using Serilog;
+using Microsoft.EntityFrameworkCore;
+using WPF_NhaMayCaoSu.Repository.Context;
 
 
 namespace WPF_NhaMayCaoSu
@@ -48,6 +50,8 @@ namespace WPF_NhaMayCaoSu
 
                 _serviceProvider = serviceCollection.BuildServiceProvider();
 
+                InitializeDatabase();
+
                 BrokerWindow brokerWindow = _serviceProvider.GetRequiredService<BrokerWindow>();
                 //mainWindow.Show();
             }
@@ -62,6 +66,10 @@ namespace WPF_NhaMayCaoSu
 
         private void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<CaoSuWpfDbContext>(options =>
+                options.UseSqlServer(
+                    new CaoSuWpfDbContext().GetConnectionString()));
+
             // Register services here
             services.AddScoped<ISaleService, SaleService>();
             services.AddScoped<IAccountService, AccountService>();
@@ -79,6 +87,24 @@ namespace WPF_NhaMayCaoSu
             services.AddScoped<LoginWindow>();
             services.AddScoped<BrokerWindow>();
         }
-
+        private void InitializeDatabase()
+        {
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<CaoSuWpfDbContext>();
+                try
+                {
+                    // Apply any pending migrations or create the database if it doesn't exist
+                    dbContext.Database.Migrate();
+                    Log.Information("Database initialized successfully.");
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "An error occurred while initializing the database.");
+                    MessageBox.Show($"Database initialization failed: {ex.Message}");
+                    Shutdown();
+                }
+            }
+        }
     }
 }
