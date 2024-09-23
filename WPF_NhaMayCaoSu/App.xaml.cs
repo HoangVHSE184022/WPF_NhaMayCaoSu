@@ -102,7 +102,7 @@ namespace WPF_NhaMayCaoSu
                 {
                     Log.Error(ex, "An error occurred while initializing the database.");
                     MessageBox.Show($"Database initialization failed: {ex.Message}");
-                    Shutdown();
+                    //Shutdown();
                 }
             }
         }
