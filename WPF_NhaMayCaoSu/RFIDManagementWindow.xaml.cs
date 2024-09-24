@@ -1,12 +1,11 @@
-﻿using System.Diagnostics;
+﻿using Newtonsoft.Json;
+using Serilog;
+using System.Diagnostics;
 using System.Windows;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
-using WPF_NhaMayCaoSu.Core.Utils;
-using Serilog;
-using Newtonsoft.Json;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -169,7 +168,7 @@ namespace WPF_NhaMayCaoSu
                     return;
                 }
             }
-            
+
 
             if (!isUnlimited && (string.IsNullOrWhiteSpace(ExpDateDatePicker.Text) || DateTime.Parse(ExpDateDatePicker.Text) < DateTime.Today))
             {

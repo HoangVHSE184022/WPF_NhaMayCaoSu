@@ -32,7 +32,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             _context = new();
 
             return await _context.Sales
- //                                .Where(x => x.Status == 1)
+                                 //                                .Where(x => x.Status == 1)
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)
                                  .ToListAsync();
