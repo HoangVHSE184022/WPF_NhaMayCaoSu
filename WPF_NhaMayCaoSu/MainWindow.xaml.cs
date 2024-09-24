@@ -57,7 +57,12 @@ namespace WPF_NhaMayCaoSu
         // Handle incoming sales data and update the UI
         private async void OnMqttMessageReceived(object sender, string data)
         {
-            Debug.WriteLine($"data: {data}");
+            var value = new { Save = 1 };
+            var payloadObject = value;
+            string[] messages = data["info-".Length..].Split('-');
+            string macAddress = messages[3];
+            string topic = $"{macAddress}/Save";
+            string payload = JsonConvert.SerializeObject(payloadObject);
             try
             {
                 Camera newestCamera = await _cameraService.GetNewestCameraAsync();
@@ -70,28 +75,41 @@ namespace WPF_NhaMayCaoSu
                 if (data.Contains("Weight"))
                 {
                     ProcessMqttMessage(data["info-".Length..], "RFID", "Weight", newestCamera, 1);
+                    await _mqttClientService.PublishAsync(topic, payload);
                 }
                 else if (data.Contains("Density"))
                 {
                     ProcessMqttMessage(data["info-".Length..], "RFID", "Density", newestCamera, 2);
+                    await _mqttClientService.PublishAsync(topic, payload);
                 }
                 else
                 {
                     Debug.WriteLine("Unexpected message topic.");
+                    await _mqttClientService.PublishAsync(topic, payload);
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error processing MQTT message: {ex.Message}");
                 Log.Error(ex, $"Error processing MQTT message: {data}");
+                if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+                {
+                    try
+                    {
+                        await _mqttClientService.PublishAsync(topic, payload);
+                    }
+                    catch (Exception publishEx)
+                    {
+                        Debug.WriteLine($"Error publishing message in catch block: {publishEx.Message}");
+                        Log.Error(publishEx, "Error publishing message in catch block");
+                    }
+                }
             }
         }
 
         // Processes the MQTT message and updates the sale
         private async void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, Camera newestCamera, short cameraIndex)
         {
-            string topic = string.Empty;
-            string payload = string.Empty;
             try
             {
                 string[] messages = messageContent.Split('-');
@@ -103,13 +121,10 @@ namespace WPF_NhaMayCaoSu
                 string rfid = messages[0];
                 float newValue = float.Parse(messages[1]);
                 string macaddress = messages[3];
-                topic = $"{macaddress}/Save";
-                var payloadObject = new { Save = 1 };
-                payload = JsonConvert.SerializeObject(payloadObject);
 
                 Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfid);
-
                 Board board = await _boardService.GetBoardByMacAddressAsync(macaddress);
+
                 if (board == null)
                 {
                     MessageBox.Show($"Board chứa MacAddress {macaddress} này chưa được tạo.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -175,24 +190,11 @@ namespace WPF_NhaMayCaoSu
                 {
                     LoadDataGrid();
                 });
-                await _mqttClientService.PublishAsync(topic, payload);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error processing message: {ex.Message}");
                 Log.Error(ex, $"Error processing message: {messageContent}");
-                if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
-                {
-                    try
-                    {
-                        await _mqttClientService.PublishAsync(topic, payload);
-                    }
-                    catch (Exception publishEx)
-                    {
-                        Debug.WriteLine($"Error publishing message in catch block: {publishEx.Message}");
-                        Log.Error(publishEx, "Error publishing message in catch block");
-                    }
-                }
             }
         }
 

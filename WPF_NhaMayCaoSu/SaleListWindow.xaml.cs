@@ -12,6 +12,7 @@ using WPF_NhaMayCaoSu.Service.Services;
 using WPF_NhaMayCaoSu.Core.Utils;
 using Serilog;
 using Newtonsoft.Json;
+using Azure.Messaging;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -136,6 +137,12 @@ namespace WPF_NhaMayCaoSu
         // Handles receiving an MQTT message and processes it
         private async void OnMqttMessageReceived(object sender, string data)
         {
+            var value = new { Save = 1 };
+            var payloadObject = value;
+            string[] messages = data["info-".Length..].Split('-');
+            string macAddress = messages[3];
+            string topic = $"{macAddress}/Save";
+            string payload = JsonConvert.SerializeObject(payloadObject);
             try
             {
                 Camera newestCamera = await _cameraService.GetNewestCameraAsync();
@@ -148,28 +155,41 @@ namespace WPF_NhaMayCaoSu
                 if (data.Contains("Weight"))
                 {
                     ProcessMqttMessage(data["info-".Length..], "RFID", "Weight", newestCamera, 1);
+                    await _mqttClientService.PublishAsync(topic, payload);
                 }
                 else if (data.Contains("Density"))
                 {
                     ProcessMqttMessage(data["info-".Length..], "RFID", "Density", newestCamera, 2);
+                    await _mqttClientService.PublishAsync(topic, payload);
                 }
                 else
                 {
                     Debug.WriteLine("Unexpected message topic.");
+                    await _mqttClientService.PublishAsync(topic, payload);
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error processing MQTT message: {ex.Message}");
                 Log.Error(ex, "Error processing MQTT message");
+                if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+                {
+                    try
+                    {
+                        await _mqttClientService.PublishAsync(topic, payload);
+                    }
+                    catch (Exception publishEx)
+                    {
+                        Debug.WriteLine($"Error publishing message in catch block: {publishEx.Message}");
+                        Log.Error(publishEx, "Error publishing message in catch block");
+                    }
+                }
             }
         }
 
         // Processes the MQTT message and updates the sale
         private async void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, Camera newestCamera, short cameraIndex)
         {
-            string topic = string.Empty;
-            string payload = string.Empty;
             try
             {
                 string[] messages = messageContent.Split('-');
@@ -177,9 +197,6 @@ namespace WPF_NhaMayCaoSu
                 if (messages.Length != 4) return;
 
                 string macAddress = messages[3];
-                topic = $"{macAddress}/Save";
-                var payloadObject = new { Save = 1 };
-                payload = JsonConvert.SerializeObject(payloadObject);
                 Board board = await _boardService.GetBoardByMacAddressAsync(macAddress);
                 if (board == null)
                 {
@@ -247,24 +264,11 @@ namespace WPF_NhaMayCaoSu
                 {
                     LoadDataGrid();
                 });
-                await _mqttClientService.PublishAsync(topic, payload);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error processing message: {ex.Message}");
                 Log.Error(ex, "Error processing message");
-                if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
-                {
-                    try
-                    {
-                        await _mqttClientService.PublishAsync(topic, payload);
-                    }
-                    catch (Exception publishEx)
-                    {
-                        Debug.WriteLine($"Error publishing message in catch block: {publishEx.Message}");
-                        Log.Error(publishEx, "Error publishing message in catch block");
-                    }
-                }
             }
         }
 
