@@ -36,6 +36,7 @@ namespace WPF_NhaMayCaoSu
         private List<Sale> _sessionSaleList { get; set; } = new();
         public Account CurrentAccount { get; set; } = null;
         private readonly BrokerWindow broker;
+        private bool _isLoaded = false;
 
         public MainWindow()
         {
@@ -120,11 +121,6 @@ namespace WPF_NhaMayCaoSu
                 {
                     Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfid);
                     RFID rfid_id = await _rfidService.GetRFIDByRFIDCodeAsync(rfid);
-                    if (rfid_id == null)
-                    {
-                        Debug.WriteLine("cant");
-                    }
-                    Debug.WriteLine(rfid_id.ToString());
 
                     if (customer == null)
                     {
@@ -296,6 +292,7 @@ namespace WPF_NhaMayCaoSu
             {
                 SalesDataGrid.ItemsSource = null;
                 SalesDataGrid.ItemsSource = _sessionSaleList;
+                Debug.WriteLine(_sessionSaleList.Count);
             });
         }
 
@@ -319,9 +316,17 @@ namespace WPF_NhaMayCaoSu
 
             try
             {
-                await _mqttClientService.ConnectAsync();
-                await _mqttClientService.SubscribeAsync("+/info");
-                _mqttClientService.MessageReceived += OnMqttMessageReceived;
+                if (!_mqttClientService.IsConnected)
+                {
+                    await _mqttClientService.ConnectAsync();
+                    await _mqttClientService.SubscribeAsync("+/info");
+                }
+
+                if (!_isLoaded)
+                {
+                    _mqttClientService.MessageReceived += OnMqttMessageReceived;
+                    _isLoaded = true;
+                }
             }
             catch (Exception ex)
             {
@@ -329,6 +334,7 @@ namespace WPF_NhaMayCaoSu
                 Log.Error(ex, $"Không thể kết nối đến máy chủ MQTT");
                 OpenBrokerWindow();
             }
+
             LoadDataGrid();
         }
 

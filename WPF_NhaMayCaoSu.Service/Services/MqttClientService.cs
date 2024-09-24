@@ -15,7 +15,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
 {
     public class MqttClientService : IMqttClientService
     {
-        private readonly IMqttClient _client;
+        public readonly IMqttClient _client;
         private readonly MqttClientOptions _options;
         private IBoardService _service = new BoardService();
 
