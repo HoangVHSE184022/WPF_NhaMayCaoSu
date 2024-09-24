@@ -116,8 +116,11 @@ namespace WPF_NhaMayCaoSu
             StatusTextBox.Text = "1";
             try
             {
-                await _mqttClientService.ConnectAsync();
-                await _mqttClientService.SubscribeAsync("+/info");
+                if (!_mqttClientService.IsConnected)
+                {
+                    await _mqttClientService.ConnectAsync();
+                    await _mqttClientService.SubscribeAsync("+/info");
+                }
                 _mqttClientService.MessageReceived += OnMqttMessageReceived;
             }
             catch (Exception ex)
