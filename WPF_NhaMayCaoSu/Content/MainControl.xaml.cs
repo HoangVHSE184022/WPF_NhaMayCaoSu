@@ -213,7 +213,6 @@ namespace WPF_NhaMayCaoSu.Content
             roleListWindow.CurrentAccount = account;
             //LoginButton.Visibility = Visibility.Hidden;
 
-            MessageBox.Show("Đăng nhập tài khoản thành công!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
 

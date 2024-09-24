@@ -21,7 +21,7 @@ namespace WPF_NhaMayCaoSu
         private readonly ISaleService _service = new SaleService();
         private readonly IRFIDService _rfidService = new RFIDService();
         private readonly CameraService _cameraService = new CameraService();
-        private readonly MqttClientService _mqttClientService = new MqttClientService();
+        public readonly MqttClientService _mqttClientService;
         private readonly CustomerService _customerService = new CustomerService();
         private readonly SaleService _saleService = new SaleService();
         private readonly ImageService _imageService = new ImageService();
@@ -37,8 +37,9 @@ namespace WPF_NhaMayCaoSu
         public Sale SelectedSale { get; set; } = null;
         public Account CurrentAccount { get; set; } = null;
 
-        public SaleManagementWindow()
+        public SaleManagementWindow(MqttClientService mqtt)
         {
+            _mqttClientService = mqtt;
             InitializeComponent();
             LoggingHelper.ConfigureLogger();
         }
@@ -50,13 +51,15 @@ namespace WPF_NhaMayCaoSu
         {
             if (ValidateFormInput())
             {
-                var sale = new Sale
+                RFID rfid = await _rfidService.GetRFIDByRFIDCodeAsync(RFIDCodeTextBox.Text);
+                Sale sale = new Sale
                 {
                     CustomerName = CustomerNameTextBox.Text,
                     ProductWeight = float.Parse(WeightTextBox.Text),
                     ProductDensity = string.IsNullOrWhiteSpace(DensityTextBox.Text) ? 0 : float.Parse(DensityTextBox.Text),
                     Status = short.Parse(StatusTextBox.Text),
-                    RFIDCode = RFIDCodeTextBox.Text
+                    RFIDCode = RFIDCodeTextBox.Text,
+                    RFID_Id = rfid.RFID_Id,
                 };
 
                 if (SelectedSale == null)

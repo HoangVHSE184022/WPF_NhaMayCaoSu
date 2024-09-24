@@ -357,7 +357,7 @@ namespace WPF_NhaMayCaoSu
 
         private void OpenSaleManagementWindow()
         {
-            var saleManagementWindow = new SaleManagementWindow
+            var saleManagementWindow = new SaleManagementWindow(_mqttClientService)
             {
                 CurrentAccount = CurrentAccount
             };
@@ -374,7 +374,7 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
-            var saleManagementWindow = new SaleManagementWindow
+            var saleManagementWindow = new SaleManagementWindow(_mqttClientService)
             {
                 SelectedSale = selectedSale,
                 CurrentAccount = CurrentAccount
