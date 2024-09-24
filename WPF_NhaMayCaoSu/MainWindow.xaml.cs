@@ -120,11 +120,6 @@ namespace WPF_NhaMayCaoSu
                 {
                     Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfid);
                     RFID rfid_id = await _rfidService.GetRFIDByRFIDCodeAsync(rfid);
-                    if (rfid_id == null)
-                    {
-                        Debug.WriteLine("cant");
-                    }
-                    Debug.WriteLine(rfid_id.ToString());
 
                     if (customer == null)
                     {
