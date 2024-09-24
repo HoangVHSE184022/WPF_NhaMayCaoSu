@@ -204,7 +204,6 @@ namespace WPF_NhaMayCaoSu
                     }
 
                     sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfid_id);
-                    await _mqttClientService.PublishAsync(topic, payload);
                 }
                 else
                 {
@@ -235,9 +234,7 @@ namespace WPF_NhaMayCaoSu
                             sale.ProductDensity = newValue;
                         }
                     }
-
                     await _saleService.UpdateSaleAsync(sale);
-                    await _mqttClientService.PublishAsync(topic, payload);
                 }
 
                 string imagePath = CaptureImageFromCamera(newestCamera, cameraIndex);
@@ -250,6 +247,7 @@ namespace WPF_NhaMayCaoSu
                 {
                     LoadDataGrid();
                 });
+                await _mqttClientService.PublishAsync(topic, payload);
             }
             catch (Exception ex)
             {
