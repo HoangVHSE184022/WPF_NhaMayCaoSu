@@ -42,7 +42,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             _context = new();
             return await _context.Accounts
                                  .Include(a => a.Role)
-               //                  .Where(a => a.Status == 1)
+                                 //                  .Where(a => a.Status == 1)
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)
                                  .ToListAsync();

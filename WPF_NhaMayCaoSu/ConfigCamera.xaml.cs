@@ -1,14 +1,14 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
+using Serilog;
 using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
-using WPF_NhaMayCaoSu.Core.Utils;
-using Serilog;
 
 namespace WPF_NhaMayCaoSu
 {

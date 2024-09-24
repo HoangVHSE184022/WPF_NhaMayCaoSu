@@ -20,7 +20,7 @@ namespace WPF_NhaMayCaoSu
             if (BoardNameComboBox.SelectedItem is ComboBoxItem selectedItem)
             {
                 SelectedBoardName = selectedItem.Content.ToString();
-                DialogResult = true; 
+                DialogResult = true;
             }
             else
             {

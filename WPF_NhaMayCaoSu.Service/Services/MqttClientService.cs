@@ -5,7 +5,6 @@ using MQTTnet.Protocol;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
-using System.Net.Mail;
 using System.Text;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
