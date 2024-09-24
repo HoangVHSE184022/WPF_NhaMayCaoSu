@@ -36,7 +36,7 @@ namespace WPF_NhaMayCaoSu
         private List<Sale> _sessionSaleList { get; set; } = new();
         public Account CurrentAccount { get; set; } = null;
         private readonly BrokerWindow broker;
-        private bool _isLoaded = false;
+        private bool isLoaded = false;
 
         public MainWindow()
         {
@@ -129,7 +129,6 @@ namespace WPF_NhaMayCaoSu
                     }
 
                     sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfid_id);
-                    await _mqttClientService.PublishAsync(topic, payload);
 
                 }
                 else
@@ -163,7 +162,6 @@ namespace WPF_NhaMayCaoSu
                     }
 
                     await _saleService.UpdateSaleAsync(sale);
-                    await _mqttClientService.PublishAsync(topic, payload);
                     _sessionSaleList.Add(sale);
                 }
 
@@ -177,6 +175,7 @@ namespace WPF_NhaMayCaoSu
                 {
                     LoadDataGrid();
                 });
+                await _mqttClientService.PublishAsync(topic, payload);
             }
             catch (Exception ex)
             {
@@ -322,10 +321,10 @@ namespace WPF_NhaMayCaoSu
                     await _mqttClientService.SubscribeAsync("+/info");
                 }
 
-                if (!_isLoaded)
+                if (!isLoaded)
                 {
                     _mqttClientService.MessageReceived += OnMqttMessageReceived;
-                    _isLoaded = true;
+                    isLoaded = true;
                 }
             }
             catch (Exception ex)
