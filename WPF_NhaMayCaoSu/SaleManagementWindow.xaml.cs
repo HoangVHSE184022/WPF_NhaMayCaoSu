@@ -33,6 +33,7 @@ namespace WPF_NhaMayCaoSu
         private string _lastRFID = string.Empty;
         private string _oldUrlWeight = string.Empty;
         private string _oldUrlDensity = string.Empty;
+        private bool isLoaded = false;
 
         public Sale SelectedSale { get; set; } = null;
         public Account CurrentAccount { get; set; } = null;
@@ -121,7 +122,11 @@ namespace WPF_NhaMayCaoSu
                     await _mqttClientService.ConnectAsync();
                     await _mqttClientService.SubscribeAsync("+/info");
                 }
-                _mqttClientService.MessageReceived += OnMqttMessageReceived;
+                if (!isLoaded)
+                {
+                    _mqttClientService.MessageReceived += OnMqttMessageReceived;
+                    isLoaded = true;
+                }
             }
             catch (Exception ex)
             {
