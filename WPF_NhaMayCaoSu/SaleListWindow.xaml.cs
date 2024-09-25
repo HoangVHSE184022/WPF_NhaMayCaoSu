@@ -37,6 +37,7 @@ namespace WPF_NhaMayCaoSu
         private double? _oldWeightValue = null;
         private DateTime? _firstMessageTime = null;
         private string _lastRFID = string.Empty;
+        private bool isLoaded = false;
 
         // Current Account
         public Account CurrentAccount { get; set; } = null;
@@ -58,7 +59,11 @@ namespace WPF_NhaMayCaoSu
                     await _mqttClientService.ConnectAsync();
                     await _mqttClientService.SubscribeAsync("+/info");
                 }
-                _mqttClientService.MessageReceived += OnMqttMessageReceived;
+                if (!isLoaded)
+                {
+                    _mqttClientService.MessageReceived += OnMqttMessageReceived;
+                    isLoaded = true;
+                }
             }
             catch (Exception ex)
             {
