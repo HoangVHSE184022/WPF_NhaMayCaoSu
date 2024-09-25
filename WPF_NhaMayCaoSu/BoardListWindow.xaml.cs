@@ -187,6 +187,7 @@ namespace WPF_NhaMayCaoSu
 
             // Toggle the board mode and update it
             selectedBoard.BoardMode = selectedBoard.BoardMode == 1 ? 2 : 1;
+            await _boardService.UpdateBoardAsync(selectedBoard);
 
             string topic = $"{selectedBoard.BoardMacAddress}/mode";
 
