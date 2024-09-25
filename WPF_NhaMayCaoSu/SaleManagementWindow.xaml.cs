@@ -38,8 +38,6 @@ namespace WPF_NhaMayCaoSu
         public Sale SelectedSale { get; set; } = null;
         public Account CurrentAccount { get; set; } = null;
 
-        private bool isLoaded = false;
-
         public SaleManagementWindow(MqttClientService mqtt)
         {
             _mqttClientService = mqtt;
