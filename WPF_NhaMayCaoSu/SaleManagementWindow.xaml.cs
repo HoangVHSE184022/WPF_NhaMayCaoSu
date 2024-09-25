@@ -45,7 +45,27 @@ namespace WPF_NhaMayCaoSu
             LoggingHelper.ConfigureLogger();
         }
 
-        private void QuitButton_Click(object sender, RoutedEventArgs e) => Close();
+        private async void QuitButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Disable the entire window to prevent any further interaction
+                this.IsEnabled = false;
+
+                // Unsubscribe from the MQTT MessageReceived event to stop processing new messages
+                if (_mqttClientService != null && _mqttClientService.IsConnected)
+                {
+                    _mqttClientService.MessageReceived -= OnMqttMessageReceived;
+                }
+                // Close the window after everything has been stopped or unsubscribed
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while closing: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
 
         // Save Button Click Handler
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -197,7 +217,6 @@ namespace WPF_NhaMayCaoSu
                         ProcessMqttMessage(messageContent, "RFID", "Weight", RFIDCodeTextBox, WeightTextBox);
                         ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLWeightTextBox);
                     });
-                    await _mqttClientService.PublishAsync(topic, payload);
                 }
                 else if (data.Contains("Density"))
                 {
@@ -209,13 +228,13 @@ namespace WPF_NhaMayCaoSu
                         ProcessMqttMessage(messageContent, "RFID", "Density", RFIDCodeTextBox, DensityTextBox);
                         ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLDensityTextBox);
                     });
-                    await _mqttClientService.PublishAsync(topic, payload);
                 }
                 else
                 {
                     Debug.WriteLine("Unknown MQTT topic.");
                     await _mqttClientService.PublishAsync(topic, payload);
                 }
+                await _mqttClientService.PublishAsync(topic, payload);
             }
             catch (Exception ex)
             {
