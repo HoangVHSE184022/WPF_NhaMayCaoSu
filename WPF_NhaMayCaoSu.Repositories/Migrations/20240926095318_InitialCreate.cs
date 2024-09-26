@@ -21,6 +21,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     BoardName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BoardIp = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BoardMacAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BoardStatus = table.Column<int>(type: "int", nullable: false),
                     BoardMode = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -163,8 +164,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: new[] { "RoleId", "RoleName" },
                 values: new object[,]
                 {
-                    { new Guid("5bbe10c9-ed32-4ad8-98d8-520fe4090a7a"), "Admin" },
-                    { new Guid("f9e9ec17-fb99-45e4-a563-92ffbebd51bd"), "User" }
+                    { new Guid("4822dcb1-6f0e-4a6b-8b3c-00dc6b7005fb"), "Admin" },
+                    { new Guid("a011908c-2e0e-4376-93a8-9025a6889eac"), "User" }
                 });
 
             migrationBuilder.InsertData(
@@ -172,8 +173,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: new[] { "AccountId", "AccountName", "CreatedDate", "Password", "RoleId", "Status", "Username" },
                 values: new object[,]
                 {
-                    { new Guid("2af4aac3-d027-49c2-94ce-41c91d68af38"), "Administrator", new DateTime(2024, 9, 19, 5, 3, 28, 130, DateTimeKind.Utc).AddTicks(4064), "$2a$11$5fRuUx83gkEt2DtoxKZOp.y2mBT9F.HOmdNa4yg8MFD9Iu.mISTC6", new Guid("5bbe10c9-ed32-4ad8-98d8-520fe4090a7a"), 1L, "admin" },
-                    { new Guid("7c5eba65-4e1b-445b-9c1b-ad6fab320d9e"), "Standard User", new DateTime(2024, 9, 19, 5, 3, 28, 246, DateTimeKind.Utc).AddTicks(3389), "$2a$11$B19NpkjIR7ay6i0gwYPWNeIdIelnl0qi4R.n4LBYDs0CPRYlsIcSe", new Guid("f9e9ec17-fb99-45e4-a563-92ffbebd51bd"), 1L, "user" }
+                    { new Guid("87f0bb27-658b-42a5-b5b2-4cb5c4f76532"), "Administrator", new DateTime(2024, 9, 26, 9, 53, 17, 904, DateTimeKind.Utc).AddTicks(6408), "$2a$11$MLGLVrwbG4i/5Ml.R3JdQOISV0Ds7dKTS6tUmA1ublKbp1yrY49Ge", new Guid("4822dcb1-6f0e-4a6b-8b3c-00dc6b7005fb"), 1L, "admin" },
+                    { new Guid("957cd581-5bb2-41d8-b967-35a251570195"), "Standard User", new DateTime(2024, 9, 26, 9, 53, 18, 78, DateTimeKind.Utc).AddTicks(5076), "$2a$11$dTpKq2NumIFxRCW/cDNgl.IM0MMs5geBx1umOQ0chuFw2NMqGx9lW", new Guid("a011908c-2e0e-4376-93a8-9025a6889eac"), 1L, "user" }
                 });
 
             migrationBuilder.CreateIndex(

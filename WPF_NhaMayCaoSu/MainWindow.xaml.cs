@@ -120,19 +120,11 @@ namespace WPF_NhaMayCaoSu
                 {
                     Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfid);
                     RFID rfid_id = await _rfidService.GetRFIDByRFIDCodeAsync(rfid);
-<<<<<<< Updated upstream
                     if (rfid_id == null)
                     {
                         Debug.WriteLine("cant");
                     }
                     Debug.WriteLine(rfid_id.ToString());
-=======
-                    if (rfid_id.Status == 0)
-                    {
-                        MessageBox.Show("RFID đã hết hạn hoặc bị xóa, vui lòng sử dụng RFID khác", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
->>>>>>> Stashed changes
 
                     if (customer == null)
                     {
