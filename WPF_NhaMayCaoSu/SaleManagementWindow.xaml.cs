@@ -50,7 +50,7 @@ namespace WPF_NhaMayCaoSu
             try
             {
                 // Disable the entire window to prevent any further interaction
-                this.IsEnabled = false;
+                IsEnabled = false;
 
                 // Unsubscribe from the MQTT MessageReceived event to stop processing new messages
                 if (_mqttClientService != null && _mqttClientService.IsConnected)
@@ -58,7 +58,7 @@ namespace WPF_NhaMayCaoSu
                     _mqttClientService.MessageReceived -= OnMqttMessageReceived;
                 }
                 // Close the window after everything has been stopped or unsubscribed
-                this.Close();
+                Close();
             }
             catch (Exception ex)
             {

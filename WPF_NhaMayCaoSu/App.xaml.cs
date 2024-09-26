@@ -37,7 +37,7 @@ namespace WPF_NhaMayCaoSu
                 Log.Error(ex, "An unhandled exception occurred");
             };
 
-            this.DispatcherUnhandledException += (sender, args) =>
+            DispatcherUnhandledException += (sender, args) =>
             {
                 // Log UI thread exceptions
                 Log.Error(args.Exception, "An unhandled UI exception occurred");

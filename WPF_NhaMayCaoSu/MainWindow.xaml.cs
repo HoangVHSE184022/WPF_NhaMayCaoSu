@@ -342,7 +342,7 @@ namespace WPF_NhaMayCaoSu
         {
             var brokerWindow = new BrokerWindow();
             brokerWindow.ShowDialog();
-            this.Close();
+            Close();
         }
 
         // Event handlers for buttons
@@ -399,8 +399,8 @@ namespace WPF_NhaMayCaoSu
         {
             MainWindow viewWindow = new MainWindow
             {
-                _sessionSaleList = this._sessionSaleList,
-                CurrentAccount = this.CurrentAccount,
+                _sessionSaleList = _sessionSaleList,
+                CurrentAccount = CurrentAccount,
                 WindowState = WindowState.Maximized,
                 WindowStyle = WindowStyle.None,
                 ResizeMode = ResizeMode.NoResize,
@@ -416,7 +416,7 @@ namespace WPF_NhaMayCaoSu
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

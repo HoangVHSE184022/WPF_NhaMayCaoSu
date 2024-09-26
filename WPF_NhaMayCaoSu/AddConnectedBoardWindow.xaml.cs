@@ -55,7 +55,7 @@ namespace WPF_NhaMayCaoSu
                 Log.Error(ex, $"Không thể kết nối đến máy chủ MQTT");
                 BrokerWindow brokerWindow = new BrokerWindow();
                 brokerWindow.ShowDialog();
-                this.Close();
+                Close();
                 return;
             }
         }

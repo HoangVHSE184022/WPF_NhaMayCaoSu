@@ -105,7 +105,7 @@ public class MqttServerService : IMqttServerService
                     if (boardDB != null && boardDB.BoardMode != mode)
                     {
                         boardDB.BoardMode = mode;
-                       await _boardService.UpdateBoardAsync(boardDB);
+                        await _boardService.UpdateBoardAsync(boardDB);
                     }
 
                     if (board == null)
