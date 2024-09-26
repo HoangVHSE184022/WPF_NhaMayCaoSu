@@ -11,6 +11,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
 
         public async Task CreateBoardAsync(Board board)
         {
+            board.BoardStatus = 1;
             await _boardRepository.CreateBoardAsync(board);
         }
 
@@ -47,6 +48,11 @@ namespace WPF_NhaMayCaoSu.Service.Services
         public async Task<Board> GetBoardByMacAddressAsync(String BoardMacAddress)
         {
             return await _boardRepository.GetBoardByMacAddressAsync(BoardMacAddress);
+        }
+
+        public async Task<Board> GetExistingBoardByName(string boardName)
+        {
+            return await _boardRepository.GetBoardByNameAsync(boardName);
         }
     }
 }

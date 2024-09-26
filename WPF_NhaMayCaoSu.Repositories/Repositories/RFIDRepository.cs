@@ -86,7 +86,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         public async Task<int> GetTotalRFIDsCountAsync()
         {
             _context = new();
-            return await _context.RFIDs.CountAsync();
+            return await _context.RFIDs.CountAsync(x => x.Status == 1);
         }
         public async Task<IEnumerable<RFID>> GetAllRFIDsAsync()
         {
