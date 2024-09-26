@@ -34,15 +34,17 @@ namespace WPF_NhaMayCaoSu
         private string _oldUrlWeight = string.Empty;
         private string _oldUrlDensity = string.Empty;
         private bool isLoaded = false;
+        private MainWindow _mainWindow;
 
         public Sale SelectedSale { get; set; } = null;
         public Account CurrentAccount { get; set; } = null;
 
-        public SaleManagementWindow(MqttClientService mqtt)
+        public SaleManagementWindow(MqttClientService mqtt, MainWindow mainWindow)
         {
             _mqttClientService = mqtt;
             InitializeComponent();
             LoggingHelper.ConfigureLogger();
+            _mainWindow = mainWindow;
         }
 
         private async void QuitButton_Click(object sender, RoutedEventArgs e)
@@ -93,6 +95,8 @@ namespace WPF_NhaMayCaoSu
                     sale.SaleId = SelectedSale.SaleId;
                     sale.LastEditedTime = DateTime.UtcNow;
                     await _service.UpdateSaleAsync(sale);
+                    _mainWindow._sessionSaleList.Add(sale);
+                    _mainWindow.LoadDataGrid();
                     MessageBox.Show(Constants.SuccessMessageSaleUpdated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                 }
 

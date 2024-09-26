@@ -38,6 +38,7 @@ namespace WPF_NhaMayCaoSu
         private DateTime? _firstMessageTime = null;
         private string _lastRFID = string.Empty;
         private bool isLoaded = false;
+        private MainWindow _mainWindow;
 
         // Current Account
         public Account CurrentAccount { get; set; } = null;
@@ -49,6 +50,13 @@ namespace WPF_NhaMayCaoSu
             LoggingHelper.ConfigureLogger();
         }
 
+        public SaleListWindow(MainWindow mainWindow)
+        {
+            InitializeComponent();
+            LoadDataGrid();
+            LoggingHelper.ConfigureLogger();
+            _mainWindow = mainWindow;
+        }
         // Initializes and subscribes to the necessary MQTT topics
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -364,11 +372,11 @@ namespace WPF_NhaMayCaoSu
 
         private void OpenSaleManagementWindow()
         {
-            var saleManagementWindow = new SaleManagementWindow(_mqttClientService)
+            var saleManagementWindow = new SaleManagementWindow(_mqttClientService, _mainWindow)
             {
                 CurrentAccount = CurrentAccount
             };
-            saleManagementWindow.ShowDialog();
+            saleManagementWindow.ShowDialog(); 
             LoadDataGrid();
         }
 
@@ -381,7 +389,7 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
-            var saleManagementWindow = new SaleManagementWindow(_mqttClientService)
+            var saleManagementWindow = new SaleManagementWindow(_mqttClientService, _mainWindow)
             {
                 SelectedSale = selectedSale,
                 CurrentAccount = CurrentAccount

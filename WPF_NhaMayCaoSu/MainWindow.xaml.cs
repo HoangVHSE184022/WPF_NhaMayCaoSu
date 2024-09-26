@@ -32,7 +32,7 @@ namespace WPF_NhaMayCaoSu
 
         private bool isExpanded = false;
         private Sale SaleDB { get; set; } = new();
-        private List<Sale> _sessionSaleList { get; set; } = new();
+        public List<Sale> _sessionSaleList { get; set; } = new();
         public Account CurrentAccount { get; set; } = null;
         private readonly BrokerWindow broker;
         private bool isLoaded = false;
@@ -286,7 +286,7 @@ namespace WPF_NhaMayCaoSu
         }
 
         // Update the SalesDataGrid with the latest session sales
-        private void LoadDataGrid()
+        public void LoadDataGrid()
         {
             SalesDataGrid.Dispatcher.Invoke(() =>
             {
