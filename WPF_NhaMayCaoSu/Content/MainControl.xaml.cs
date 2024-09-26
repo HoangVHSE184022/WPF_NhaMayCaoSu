@@ -35,11 +35,11 @@ namespace WPF_NhaMayCaoSu.Content
             broker = new BrokerWindow();
             customerListWindow = new CustomerListWindow();
             boardListWindow = new BoardListWindow();
-            saleListWindow = new SaleListWindow();
             accountManagementWindow = new AccountManagementWindow();
             rfidListWindow = new RFIDListWindow();
             roleListWindow = new RoleListWindow();
             mainWindow = new();
+            saleListWindow = new SaleListWindow(mainWindow);
             configCamera = new();
 
             mainWindow.CurrentAccount = CurrentAccount;
