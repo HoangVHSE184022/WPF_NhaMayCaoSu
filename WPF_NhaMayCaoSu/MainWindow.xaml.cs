@@ -233,32 +233,29 @@ namespace WPF_NhaMayCaoSu
         // Capture image from the camera and return the file path
         private string CaptureImageFromCamera(Camera camera, int cameraIndex)
         {
-            string localFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), $"{Guid.NewGuid()}_Camera{cameraIndex}.jpg");
+            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Hình ảnh cân cao su");
+            Directory.CreateDirectory(folderPath);
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            string localFilePath = Path.Combine(folderPath, $"{Guid.NewGuid()}_Camera{cameraIndex}.jpg");
 
             try
             {
                 string cameraUrl = cameraIndex == 1 ? camera.Camera1 : camera.Camera2;
-                if (string.IsNullOrEmpty(cameraUrl))
-                {
-                    throw new Exception($"URL của Camera {cameraIndex} không hợp lệ.");
-                }
+                if (string.IsNullOrEmpty(cameraUrl)) throw new Exception($"URL của Camera {cameraIndex} không hợp lệ.");
 
                 using (var capture = new VideoCapture(cameraUrl))
                 {
-                    if (!capture.IsOpened)
-                    {
-                        throw new Exception($"Không thể mở Camera {cameraIndex}.");
-                    }
-
+                    if (!capture.IsOpened) throw new Exception($"Không thể mở Camera {cameraIndex}.");
                     using (var frame = new Mat())
                     {
                         capture.Read(frame);
-                        if (frame.IsEmpty)
-                        {
-                            throw new Exception($"Không thể chụp ảnh từ Camera {cameraIndex}.");
-                        }
+                        if (frame.IsEmpty) throw new Exception($"Không thể chụp ảnh từ Camera {cameraIndex}.");
 
-                        // Convert frame to image and save
                         Image<Bgr, byte> image = frame.ToImage<Bgr, byte>();
                         Bitmap bitmap = image.ToBitmap();
                         bitmap.Save(localFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
@@ -268,7 +265,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 MessageBox.Show($"Lỗi khi chụp ảnh từ Camera {cameraIndex}: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-                Log.Error(ex, $"Error taking picture from Camera: {cameraIndex}");
+                Log.Error(ex, $"Lỗi khi chụp ảnh từ Camera {cameraIndex}");
                 return string.Empty;
             }
 
