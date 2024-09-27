@@ -1,13 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using System.Windows;
+using WPF_NhaMayCaoSu.Core.Utils;
+using WPF_NhaMayCaoSu.Repository.Context;
 using WPF_NhaMayCaoSu.Repository.IRepositories;
 using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
-using WPF_NhaMayCaoSu.Core.Utils;
-using Serilog;
-using Microsoft.EntityFrameworkCore;
-using WPF_NhaMayCaoSu.Repository.Context;
 
 
 namespace WPF_NhaMayCaoSu
@@ -21,7 +21,7 @@ namespace WPF_NhaMayCaoSu
 
         public App()
         {
-             LoggingHelper.ConfigureLogger();
+            LoggingHelper.ConfigureLogger();
             // Log the application startup
             Log.Information("Application is starting up");
         }
@@ -37,11 +37,11 @@ namespace WPF_NhaMayCaoSu
                 Log.Error(ex, "An unhandled exception occurred");
             };
 
-            this.DispatcherUnhandledException += (sender, args) =>
+            DispatcherUnhandledException += (sender, args) =>
             {
                 // Log UI thread exceptions
                 Log.Error(args.Exception, "An unhandled UI exception occurred");
-                args.Handled = true; 
+                args.Handled = true;
             };
             try
             {
@@ -102,7 +102,7 @@ namespace WPF_NhaMayCaoSu
                 {
                     Log.Error(ex, "An error occurred while initializing the database.");
                     MessageBox.Show($"Database initialization failed: {ex.Message}");
-                    Shutdown();
+                    //Shutdown();
                 }
             }
         }

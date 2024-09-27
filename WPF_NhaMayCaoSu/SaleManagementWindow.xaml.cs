@@ -1,5 +1,7 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
+using Newtonsoft.Json;
+using Serilog;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -8,8 +10,6 @@ using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
-using Serilog;
-using Newtonsoft.Json;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -21,7 +21,7 @@ namespace WPF_NhaMayCaoSu
         private readonly ISaleService _service = new SaleService();
         private readonly IRFIDService _rfidService = new RFIDService();
         private readonly CameraService _cameraService = new CameraService();
-        private readonly MqttClientService _mqttClientService = new MqttClientService();
+        public readonly MqttClientService _mqttClientService;
         private readonly CustomerService _customerService = new CustomerService();
         private readonly SaleService _saleService = new SaleService();
         private readonly ImageService _imageService = new ImageService();
@@ -33,17 +33,41 @@ namespace WPF_NhaMayCaoSu
         private string _lastRFID = string.Empty;
         private string _oldUrlWeight = string.Empty;
         private string _oldUrlDensity = string.Empty;
+        private bool isLoaded = false;
+        private MainWindow _mainWindow;
 
         public Sale SelectedSale { get; set; } = null;
         public Account CurrentAccount { get; set; } = null;
 
-        public SaleManagementWindow()
+        public SaleManagementWindow(MqttClientService mqtt, MainWindow mainWindow)
         {
+            _mqttClientService = mqtt;
             InitializeComponent();
             LoggingHelper.ConfigureLogger();
+            _mainWindow = mainWindow;
         }
 
-        private void QuitButton_Click(object sender, RoutedEventArgs e) => Close();
+        private async void QuitButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Disable the entire window to prevent any further interaction
+                IsEnabled = false;
+
+                // Unsubscribe from the MQTT MessageReceived event to stop processing new messages
+                if (_mqttClientService != null && _mqttClientService.IsConnected)
+                {
+                    _mqttClientService.MessageReceived -= OnMqttMessageReceived;
+                }
+                // Close the window after everything has been stopped or unsubscribed
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while closing: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
 
         // Save Button Click Handler
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -62,7 +86,8 @@ namespace WPF_NhaMayCaoSu
                     ProductWeight = float.Parse(WeightTextBox.Text),
                     ProductDensity = string.IsNullOrWhiteSpace(DensityTextBox.Text) ? 0 : float.Parse(DensityTextBox.Text),
                     Status = short.Parse(StatusTextBox.Text),
-                    RFIDCode = RFIDCodeTextBox.Text
+                    RFIDCode = RFIDCodeTextBox.Text,
+                    RFID_Id = rfid.RFID_Id,
                 };
 
                 if (SelectedSale == null)
@@ -75,6 +100,8 @@ namespace WPF_NhaMayCaoSu
                     sale.SaleId = SelectedSale.SaleId;
                     sale.LastEditedTime = DateTime.UtcNow;
                     await _service.UpdateSaleAsync(sale);
+                    _mainWindow._sessionSaleList.Add(sale);
+                    _mainWindow.LoadDataGrid();
                     MessageBox.Show(Constants.SuccessMessageSaleUpdated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                 }
 
@@ -119,9 +146,16 @@ namespace WPF_NhaMayCaoSu
             StatusTextBox.Text = "1";
             try
             {
-                await _mqttClientService.ConnectAsync();
-                await _mqttClientService.SubscribeAsync("+/info");
-                _mqttClientService.MessageReceived += OnMqttMessageReceived;
+                if (!_mqttClientService.IsConnected)
+                {
+                    await _mqttClientService.ConnectAsync();
+                    await _mqttClientService.SubscribeAsync("+/info");
+                }
+                if (!isLoaded)
+                {
+                    _mqttClientService.MessageReceived += OnMqttMessageReceived;
+                    isLoaded = true;
+                }
             }
             catch (Exception ex)
             {
@@ -163,6 +197,12 @@ namespace WPF_NhaMayCaoSu
         // Handles incoming MQTT messages
         private async void OnMqttMessageReceived(object sender, string data)
         {
+            var value = new { Save = 1 };
+            var payloadObject = value;
+            string[] messages = data["info-".Length..].Split('-');
+            string macAddress = messages[3];
+            string topic = $"{macAddress}/Save";
+            string payload = JsonConvert.SerializeObject(payloadObject);
             try
             {
                 Camera newestCamera = await _cameraService.GetNewestCameraAsync();
@@ -201,20 +241,32 @@ namespace WPF_NhaMayCaoSu
                 else
                 {
                     Debug.WriteLine("Unknown MQTT topic.");
+                    await _mqttClientService.PublishAsync(topic, payload);
                 }
+                await _mqttClientService.PublishAsync(topic, payload);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error processing message: {ex.Message}");
                 Log.Error(ex, "Error processing message");
+                if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+                {
+                    try
+                    {
+                        await _mqttClientService.PublishAsync(topic, payload);
+                    }
+                    catch (Exception publishEx)
+                    {
+                        Debug.WriteLine($"Error publishing message in catch block: {publishEx.Message}");
+                        Log.Error(publishEx, "Error publishing message in catch block");
+                    }
+                }
             }
         }
 
         // Process the received MQTT message (weight or density)
         private async void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, System.Windows.Controls.TextBox firstTextBox, System.Windows.Controls.TextBox secondTextBox)
         {
-            string topic = string.Empty;
-            string payload = string.Empty;
             try
             {
 
@@ -222,11 +274,8 @@ namespace WPF_NhaMayCaoSu
                 if (messages.Length == 4)
                 {
                     string macAddress = messages[3];
-                    topic = $"{macAddress}/Save";
-                    var payloadObject = new { Save = 1 };
                     string rfidValue = messages[0];
                     string currentValueString = messages[1];
-                    payload = JsonConvert.SerializeObject(payloadObject);
                     Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfidValue);
                     string customerName = customer.CustomerName;
 
@@ -295,18 +344,6 @@ namespace WPF_NhaMayCaoSu
                 MessageBox.Show($"Đã xảy ra lỗi trong quá trình xử lý tin nhắn MQTT: {ex.Message}", "Lỗi hệ thống", MessageBoxButton.OK, MessageBoxImage.Error);
                 Log.Error(ex, "Đã xảy ra lỗi trong quá trình xử lý tin nhắn MQTT");
                 Debug.WriteLine($"Error processing MQTT message: {ex.Message}");
-            }
-            if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
-            {
-                try
-                {
-                    await _mqttClientService.PublishAsync(topic, payload);
-                }
-                catch (Exception publishEx)
-                {
-                    Debug.WriteLine($"Error publishing message in catch block: {publishEx.Message}");
-                    Log.Error(publishEx, "Error publishing message in catch block");
-                }
             }
 
         }

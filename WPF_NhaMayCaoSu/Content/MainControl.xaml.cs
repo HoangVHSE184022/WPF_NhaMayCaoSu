@@ -35,11 +35,11 @@ namespace WPF_NhaMayCaoSu.Content
             broker = new BrokerWindow();
             customerListWindow = new CustomerListWindow();
             boardListWindow = new BoardListWindow();
-            saleListWindow = new SaleListWindow();
             accountManagementWindow = new AccountManagementWindow();
             rfidListWindow = new RFIDListWindow();
             roleListWindow = new RoleListWindow();
             mainWindow = new();
+            saleListWindow = new SaleListWindow(mainWindow);
             configCamera = new();
 
             mainWindow.CurrentAccount = CurrentAccount;
@@ -94,7 +94,7 @@ namespace WPF_NhaMayCaoSu.Content
 
             MainContentControl.Content = broker.Content;
             broker.OnWindowLoaded();
-            this.Title = broker.Title;
+            Title = broker.Title;
 
         }
 
@@ -107,7 +107,7 @@ namespace WPF_NhaMayCaoSu.Content
 
             MainContentControl.Content = customerListWindow.Content;
             customerListWindow.OnWindowLoaded();
-            this.Title = customerListWindow.Title;
+            Title = customerListWindow.Title;
         }
 
         private void BoardManagementButton_Click(object sender, RoutedEventArgs e)
@@ -119,7 +119,7 @@ namespace WPF_NhaMayCaoSu.Content
 
             MainContentControl.Content = boardListWindow.Content;
             //boardListWindow.OnWindowLoaded();
-            this.Title = boardListWindow.Title;
+            Title = boardListWindow.Title;
         }
 
         private void SaleManagementButton_Click(object sender, RoutedEventArgs e)
@@ -131,7 +131,7 @@ namespace WPF_NhaMayCaoSu.Content
 
             MainContentControl.Content = saleListWindow.Content;
             saleListWindow.OnWindowLoaded();
-            this.Title = saleListWindow.Title;
+            Title = saleListWindow.Title;
         }
 
         private void AccountManagementButton_Click(object sender, RoutedEventArgs e)
@@ -143,7 +143,7 @@ namespace WPF_NhaMayCaoSu.Content
 
             MainContentControl.Content = accountManagementWindow.Content;
             accountManagementWindow.OnWindowLoaded();
-            this.Title = accountManagementWindow.Title;
+            Title = accountManagementWindow.Title;
         }
 
         private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
@@ -155,7 +155,7 @@ namespace WPF_NhaMayCaoSu.Content
 
             MainContentControl.Content = rfidListWindow.Content;
             rfidListWindow.OnWindowLoaded();
-            this.Title = rfidListWindow.Title;
+            Title = rfidListWindow.Title;
         }
 
         private void RoleManagementButton_Click(object sender, RoutedEventArgs e)
@@ -167,7 +167,7 @@ namespace WPF_NhaMayCaoSu.Content
 
             MainContentControl.Content = roleListWindow.Content;
             roleListWindow.OnWindowLoaded();
-            this.Title = roleListWindow.Title;
+            Title = roleListWindow.Title;
         }
 
         private void ConfigButton_Click(object sender, RoutedEventArgs e)
@@ -179,7 +179,7 @@ namespace WPF_NhaMayCaoSu.Content
 
             MainContentControl.Content = configCamera.Content;
             configCamera.OnWindowLoaded();
-            this.Title = configCamera.Title;
+            Title = configCamera.Title;
         }
 
         private void ShowButton_Click(object sender, RoutedEventArgs e)
@@ -191,7 +191,7 @@ namespace WPF_NhaMayCaoSu.Content
 
             MainContentControl.Content = mainWindow.Content;
             mainWindow.OnWindowLoaded();
-            this.Title = mainWindow.Title;
+            Title = mainWindow.Title;
         }
 
 
@@ -213,7 +213,6 @@ namespace WPF_NhaMayCaoSu.Content
             roleListWindow.CurrentAccount = account;
             //LoginButton.Visibility = Visibility.Hidden;
 
-            MessageBox.Show("Đăng nhập tài khoản thành công!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
 

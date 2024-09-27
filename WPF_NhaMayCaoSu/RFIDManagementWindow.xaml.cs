@@ -1,11 +1,11 @@
-﻿using System.Diagnostics;
+﻿using Newtonsoft.Json;
+using Serilog;
+using System.Diagnostics;
 using System.Windows;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
-using WPF_NhaMayCaoSu.Core.Utils;
-using Serilog;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -93,18 +93,22 @@ namespace WPF_NhaMayCaoSu
 
         private async void OnMqttMessageReceived(object sender, string data)
         {
+            string[] parts = data.Split('-');
+            string macAddress = parts[1];
+            string rfidString = parts[2];
+            var value = new { Save = 1 };
+            var payloadObject = value;
+            string topic = $"{macAddress}/Save";
+            string payload = JsonConvert.SerializeObject(payloadObject);
             try
             {
                 if (data.StartsWith("sendRFID-"))
                 {
-                    string[] parts = data.Split('-');
-                    string macAddress = parts[1];
-                    string rfidString = parts[2];
-
                     Board board = await _boardService.GetBoardByMacAddressAsync(macAddress);
                     if (board == null)
                     {
                         MessageBox.Show("Dữ liệu được gửi từ board không xác định!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                        await _mqttClientService.PublishAsync(topic, payload);
                         return;
                     }
 
@@ -114,21 +118,36 @@ namespace WPF_NhaMayCaoSu
                         {
                             RFIDCodeTextBox.Text = rfidString;
                         });
+                        await _mqttClientService.PublishAsync(topic, payload);
                     }
                     else
                     {
                         Debug.WriteLine("Lỗi khi sử dụng mã RFID.");
+                        await _mqttClientService.PublishAsync(topic, payload);
                     }
                 }
                 else
                 {
                     Debug.WriteLine("Sai kiểu dữ liệu.");
+                    await _mqttClientService.PublishAsync(topic, payload);
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error processing message: {ex.Message}");
                 Log.Error(ex, "Error processing message");
+                if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+                {
+                    try
+                    {
+                        await _mqttClientService.PublishAsync(topic, payload);
+                    }
+                    catch (Exception publishEx)
+                    {
+                        Debug.WriteLine($"Error publishing message in catch block: {publishEx.Message}");
+                        Log.Error(publishEx, "Error publishing message in catch block");
+                    }
+                }
             }
         }
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -149,7 +168,7 @@ namespace WPF_NhaMayCaoSu
                     return;
                 }
             }
-            
+
 
             if (!isUnlimited && (string.IsNullOrWhiteSpace(ExpDateDatePicker.Text) || DateTime.Parse(ExpDateDatePicker.Text) < DateTime.Today))
             {

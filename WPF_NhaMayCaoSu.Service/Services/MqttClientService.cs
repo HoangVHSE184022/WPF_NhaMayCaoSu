@@ -5,7 +5,6 @@ using MQTTnet.Protocol;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
-using System.Net.Mail;
 using System.Text;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
@@ -15,7 +14,7 @@ namespace WPF_NhaMayCaoSu.Service.Services
 {
     public class MqttClientService : IMqttClientService
     {
-        private readonly IMqttClient _client;
+        public readonly IMqttClient _client;
         private readonly MqttClientOptions _options;
         private IBoardService _service = new BoardService();
 

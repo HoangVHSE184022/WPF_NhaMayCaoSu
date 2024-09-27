@@ -1,17 +1,15 @@
 using Emgu.CV;
 using Emgu.CV.Structure;
+using Newtonsoft.Json;
+using Serilog;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Net.Mail;
 using System.Windows;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
-using WPF_NhaMayCaoSu.Core.Utils;
-using Serilog;
-using Newtonsoft.Json;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -39,6 +37,8 @@ namespace WPF_NhaMayCaoSu
         private double? _oldWeightValue = null;
         private DateTime? _firstMessageTime = null;
         private string _lastRFID = string.Empty;
+        private bool isLoaded = false;
+        private MainWindow _mainWindow;
 
         // Current Account
         public Account CurrentAccount { get; set; } = null;
@@ -50,14 +50,28 @@ namespace WPF_NhaMayCaoSu
             LoggingHelper.ConfigureLogger();
         }
 
+        public SaleListWindow(MainWindow mainWindow)
+        {
+            InitializeComponent();
+            LoadDataGrid();
+            LoggingHelper.ConfigureLogger();
+            _mainWindow = mainWindow;
+        }
         // Initializes and subscribes to the necessary MQTT topics
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
-                await _mqttClientService.ConnectAsync();
-                await _mqttClientService.SubscribeAsync("+/info");
-                _mqttClientService.MessageReceived += OnMqttMessageReceived;
+                if (!_mqttClientService.IsConnected)
+                {
+                    await _mqttClientService.ConnectAsync();
+                    await _mqttClientService.SubscribeAsync("+/info");
+                }
+                if (!isLoaded)
+                {
+                    _mqttClientService.MessageReceived += OnMqttMessageReceived;
+                    isLoaded = true;
+                }
             }
             catch (Exception ex)
             {
@@ -133,6 +147,12 @@ namespace WPF_NhaMayCaoSu
         // Handles receiving an MQTT message and processes it
         private async void OnMqttMessageReceived(object sender, string data)
         {
+            var value = new { Save = 1 };
+            var payloadObject = value;
+            string[] messages = data["info-".Length..].Split('-');
+            string macAddress = messages[3];
+            string topic = $"{macAddress}/Save";
+            string payload = JsonConvert.SerializeObject(payloadObject);
             try
             {
                 Camera newestCamera = await _cameraService.GetNewestCameraAsync();
@@ -145,28 +165,41 @@ namespace WPF_NhaMayCaoSu
                 if (data.Contains("Weight"))
                 {
                     ProcessMqttMessage(data["info-".Length..], "RFID", "Weight", newestCamera, 1);
+                    await _mqttClientService.PublishAsync(topic, payload);
                 }
                 else if (data.Contains("Density"))
                 {
                     ProcessMqttMessage(data["info-".Length..], "RFID", "Density", newestCamera, 2);
+                    await _mqttClientService.PublishAsync(topic, payload);
                 }
                 else
                 {
                     Debug.WriteLine("Unexpected message topic.");
+                    await _mqttClientService.PublishAsync(topic, payload);
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error processing MQTT message: {ex.Message}");
                 Log.Error(ex, "Error processing MQTT message");
+                if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+                {
+                    try
+                    {
+                        await _mqttClientService.PublishAsync(topic, payload);
+                    }
+                    catch (Exception publishEx)
+                    {
+                        Debug.WriteLine($"Error publishing message in catch block: {publishEx.Message}");
+                        Log.Error(publishEx, "Error publishing message in catch block");
+                    }
+                }
             }
         }
 
         // Processes the MQTT message and updates the sale
         private async void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, Camera newestCamera, short cameraIndex)
         {
-            string topic = string.Empty;
-            string payload = string.Empty;
             try
             {
                 string[] messages = messageContent.Split('-');
@@ -174,9 +207,6 @@ namespace WPF_NhaMayCaoSu
                 if (messages.Length != 4) return;
 
                 string macAddress = messages[3];
-                topic = $"{macAddress}/Save";
-                var payloadObject = new { Save = 1 };
-                payload = JsonConvert.SerializeObject(payloadObject);
                 Board board = await _boardService.GetBoardByMacAddressAsync(macAddress);
                 if (board == null)
                 {
@@ -206,7 +236,6 @@ namespace WPF_NhaMayCaoSu
                     }
 
                     sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfid_id);
-                    await _mqttClientService.PublishAsync(topic, payload);
                 }
                 else
                 {
@@ -237,9 +266,7 @@ namespace WPF_NhaMayCaoSu
                             sale.ProductDensity = newValue;
                         }
                     }
-
                     await _saleService.UpdateSaleAsync(sale);
-                    await _mqttClientService.PublishAsync(topic, payload);
                 }
 
                 string imagePath = CaptureImageFromCamera(newestCamera, cameraIndex);
@@ -257,18 +284,6 @@ namespace WPF_NhaMayCaoSu
             {
                 Debug.WriteLine($"Error processing message: {ex.Message}");
                 Log.Error(ex, "Error processing message");
-                if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
-                {
-                    try
-                    {
-                        await _mqttClientService.PublishAsync(topic, payload);
-                    }
-                    catch (Exception publishEx)
-                    {
-                        Debug.WriteLine($"Error publishing message in catch block: {publishEx.Message}");
-                        Log.Error(publishEx, "Error publishing message in catch block");
-                    }
-                }
             }
         }
 
@@ -362,11 +377,11 @@ namespace WPF_NhaMayCaoSu
 
         private void OpenSaleManagementWindow()
         {
-            var saleManagementWindow = new SaleManagementWindow
+            var saleManagementWindow = new SaleManagementWindow(_mqttClientService, _mainWindow)
             {
                 CurrentAccount = CurrentAccount
             };
-            saleManagementWindow.ShowDialog();
+            saleManagementWindow.ShowDialog(); 
             LoadDataGrid();
         }
 
@@ -379,7 +394,7 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
-            var saleManagementWindow = new SaleManagementWindow
+            var saleManagementWindow = new SaleManagementWindow(_mqttClientService, _mainWindow)
             {
                 SelectedSale = selectedSale,
                 CurrentAccount = CurrentAccount
