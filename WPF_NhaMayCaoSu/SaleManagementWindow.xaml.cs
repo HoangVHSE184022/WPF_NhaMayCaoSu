@@ -411,7 +411,7 @@ namespace WPF_NhaMayCaoSu
         // Capture image from the camera
         private string CaptureImageFromCamera(Camera camera, int cameraIndex)
         {
-            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Hình ảnh cân cao su");
+            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CaoSuPictures");
 
             if (!Directory.Exists(folderPath))
             {
