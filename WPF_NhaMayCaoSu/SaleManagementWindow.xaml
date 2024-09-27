@@ -8,7 +8,7 @@
         Icon="assets/images/rubber.ico"
         Title="Sale Management" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" WindowStyle="SingleBorderWindow">
     <Grid>
-        <Label x:Name="ModeLabel" Content="Thêm/Chỉnh sửa Sale" HorizontalAlignment="Left" Height="48" Margin="32,62,0,0" VerticalAlignment="Top" Width="374" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
+        <Label x:Name="ModeLabel" Content="Thêm/Chỉnh sửa Sale" HorizontalAlignment="Left" Height="48" Margin="32,40,0,0" VerticalAlignment="Top" Width="374" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
         <Label Content="Tên khách hàng" HorizontalAlignment="Left" Height="46" Margin="32,130,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
         <TextBox x:Name="CustomerNameTextBox" Height="46" Margin="276,130,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA"  FontSize="30" BorderThickness="0"/>
         <Label Content="Số ký" HorizontalAlignment="Left" Height="46" Margin="32,200,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>

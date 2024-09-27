@@ -8,7 +8,7 @@
         Title="Role List" Height="800" Width="1200" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow" Loaded="Window_Loaded">
     <Grid>
         
-        <Label Content="Quản lý vai trò" HorizontalAlignment="Left" Height="57" Margin="32,50,0,0" VerticalAlignment="Top" Width="343" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
+        <Label Content="Quản lý vai trò" HorizontalAlignment="Left" Height="57" Margin="32,40,0,0" VerticalAlignment="Top" Width="343" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
         <Button x:Name="AddRoleButton" HorizontalAlignment="Right" Height="40" Margin="0,146,32,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="AddRoleButton_Click" >
             <TextBlock Text="Thêm mới" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>

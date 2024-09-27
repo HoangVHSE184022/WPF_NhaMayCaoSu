@@ -7,20 +7,9 @@
         mc:Ignorable="d"
         Title="Board Management" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" WindowStyle="SingleBorderWindow">
     <Grid>
-        <Menu HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Monserrat" Foreground="#FF002366" FontSize="16">
-            <MenuItem x:Name="ShowButton" Header="Hiển thị" Click="ShowButton_Click"/>
-            <MenuItem x:Name="ConfigButton" Header="Cấu hình" Click="ConfigButton_Click"/>
-            <MenuItem x:Name="BrokerManagementButton" Header="Broker" Click="BrokerManagementButton_Click"/>
-            <MenuItem Header="Quản lý">
-                <MenuItem x:Name="CustomerManagementButton" Header="Khách hàng" Click="CustomerManagementButton_Click"/>
-                <MenuItem x:Name="RFIDManagementButton" Header="RFID" Click="RFIDManagementButton_Click"/>
-                <MenuItem x:Name="SaleManagementButton" Header="Sale" Click="SaleManagementButton_Click"/>
-                <MenuItem x:Name="AccountManagementButton" Header="Tài khoản" Click="AccountManagementButton_Click"/>
-                <MenuItem x:Name="RoleManagementButton" Header="Vai trò" Click="RoleManagementButton_Click"/>
-            </MenuItem>
-        </Menu>
+        
 
-        <Label x:Name="ModeLabel" Content="Thêm/Chỉnh sửa Board" HorizontalAlignment="Left" Height="48" Margin="32,62,0,0" VerticalAlignment="Top" Width="400" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
+        <Label x:Name="ModeLabel" Content="Thêm/Chỉnh sửa Board" HorizontalAlignment="Left" Height="48" Margin="32,40,0,0" VerticalAlignment="Top" Width="400" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
         <Label Content="Tên Board" HorizontalAlignment="Left" Height="46" Margin="32,130,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
         <TextBox x:Name="BoardNameTextBox" Height="46" Margin="276,130,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA"  FontSize="30" BorderThickness="0"/>
         <Label Content="Ip" HorizontalAlignment="Left" Height="46" Margin="32,200,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
