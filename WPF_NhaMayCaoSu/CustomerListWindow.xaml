@@ -14,6 +14,7 @@
         <Button x:Name="EditCustomerButton1" Margin="0,221,32,0" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="EditCustomerButton1_Click" HorizontalAlignment="Right" Width="121" Height="40" VerticalAlignment="Top" >
             <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
+        
         <DataGrid x:Name="CustomerDataGrid" Margin="32,129,159,157" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Tên" Width="250" Binding="{Binding CustomerName}"/>
@@ -38,5 +39,8 @@
         <Button x:Name="PreviousPageButton" Content="Trước" Margin="474,0,0,136" Click="PreviousPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
         <TextBlock x:Name="PageNumberTextBlock" Margin="519,0,0,137" TextAlignment="Center" FontFamily="Montserrat" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="94" />
         <Button x:Name="NextPageButton" Content="Sau" Margin="618,0,0,137" Click="NextPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
+        <Button x:Name="DeleteBtn" Margin="0,291,32,0" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="DeleteBtn_Click" HorizontalAlignment="Right" Width="121" Height="40" VerticalAlignment="Top" >
+            <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
     </Grid>
 </Window>

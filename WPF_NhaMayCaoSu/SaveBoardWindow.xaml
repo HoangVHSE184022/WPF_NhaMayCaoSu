@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Lưu Board" Height="200" Width="300" WindowStartupLocation="CenterOwner">
+        Title="Lưu Board" Height="200" Width="300" WindowStartupLocation="CenterScreen">
     <Grid>
         <Label Content="Bạn muốn lưu tên của board này là gì?" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16" Margin="0,20,0,0"/>
         <ComboBox x:Name="BoardNameComboBox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200">

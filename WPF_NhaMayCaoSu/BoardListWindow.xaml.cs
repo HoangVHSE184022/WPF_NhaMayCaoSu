@@ -268,6 +268,22 @@ namespace WPF_NhaMayCaoSu
 
                     if (result == true && !string.IsNullOrEmpty(saveBoardWindow.SelectedBoardName))
                     {
+
+                        //Check dublicate boardname
+                        Board board = await _boardService.GetBoardByNameAsync(saveBoardWindow.SelectedBoardName);
+                        if (board != null)
+                        {
+                            MessageBoxResult re = MessageBox.Show("Bạn có muốn thay thế cho board cũ không?","Xác nhận",MessageBoxButton.YesNo, MessageBoxImage.Question);
+                            if (re == MessageBoxResult.Yes)
+                            {
+                                board.BoardMacAddress = selectedBoard.BoardMacAddress;
+                                await _boardService.UpdateBoardAsync(board);
+                                
+                            }
+                            return;
+                        }
+                        
+
                         // Create a new board and save the selected name
                         Board newBoard = new Board
                         {

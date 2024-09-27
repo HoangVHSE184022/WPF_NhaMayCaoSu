@@ -75,6 +75,11 @@ namespace WPF_NhaMayCaoSu
             if (ValidateFormInput())
             {
                 RFID rfid = await _rfidService.GetRFIDByRFIDCodeAsync(RFIDCodeTextBox.Text);
+                if(rfid.Status == 0)
+                {
+                    MessageBox.Show("RFID đã hết hạn hoặc bị xóa, vui lòng sử dụng RFID khác", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
                 Sale sale = new Sale
                 {
                     CustomerName = CustomerNameTextBox.Text,
