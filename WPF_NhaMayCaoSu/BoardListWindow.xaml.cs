@@ -300,6 +300,8 @@ namespace WPF_NhaMayCaoSu
 
                         // Reload the data grid
                         await LoadDataGridFromDatabase();
+                        _mqttBoards.Clear();
+                        ConnectedBoardDataGrid.Items.Refresh();
                     }
                     else
                     {
