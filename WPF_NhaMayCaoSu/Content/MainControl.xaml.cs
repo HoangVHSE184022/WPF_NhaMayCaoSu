@@ -50,6 +50,7 @@ namespace WPF_NhaMayCaoSu.Content
             rfidListWindow.CurrentAccount = CurrentAccount;
             roleListWindow.CurrentAccount = CurrentAccount;
             boardListWindow.CurrentAccount = CurrentAccount;
+            ValidCheck();
             MainContentControl.Content = broker.Content;
             UpdateMainWindowUI();
         }
