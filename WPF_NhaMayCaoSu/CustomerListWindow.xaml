@@ -17,14 +17,14 @@
         
         <DataGrid x:Name="CustomerDataGrid" Margin="32,129,159,88" FontFamily="Montserrat" FontSize="30" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Tên" Width="250" Binding="{Binding CustomerName}"/>
-                <DataGridTextColumn Header="Số điện thoại" Width="250" Binding="{Binding Phone}"/>
-                <DataGridTextColumn Header="Trạng thái" Width="140" Binding="{Binding Status}"/>
-                <DataGridTextColumn Header="Số lượng RFID" Width="200" Binding="{Binding RFIDCount}"/>
-                <DataGridTemplateColumn Header="Thêm RFID" Width="170">
+                <DataGridTextColumn Header="Tên" Width="0.8*" Binding="{Binding CustomerName}"/>
+                <DataGridTextColumn Header="Số điện thoại" Width="0.6*" Binding="{Binding Phone}"/>
+                <DataGridTextColumn Header="Trạng thái" Width="0.5*" Binding="{Binding Status}"/>
+                <DataGridTextColumn Header="Số lượng RFID" Width="0.6*" Binding="{Binding RFIDCount}"/>
+                <DataGridTemplateColumn Header="Thêm RFID" Width="0.5*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Thêm" Width="100" Height="30" Click="AddRFIDButton_Click"/>
+                            <Button Content="Thêm" Width="100" Height="31" Background="#FFFFFF" BorderThickness="0" Click="AddRFIDButton_Click"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
