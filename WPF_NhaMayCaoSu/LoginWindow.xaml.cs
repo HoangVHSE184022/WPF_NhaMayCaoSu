@@ -58,7 +58,11 @@ namespace WPF_NhaMayCaoSu
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            MessageBoxResult result = MessageBox.Show("Hành động này sẽ đóng ứng dụng, bạn chắc chứ?", "Thoát", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                App.Current.Shutdown();
+            }
         }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
@@ -75,5 +79,6 @@ namespace WPF_NhaMayCaoSu
                 LoginButton_Click(sender, new RoutedEventArgs());
             }
         }
+        
     }
 }

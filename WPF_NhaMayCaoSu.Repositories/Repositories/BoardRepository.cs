@@ -54,7 +54,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         public async Task<Board> GetBoardByNameAsync(string boardName)
         {
             _context = new();
-            return await _context.Boards.FirstOrDefaultAsync(x => x.BoardName == boardName);
+            return await _context.Boards.FirstOrDefaultAsync(x => x.BoardName.ToLower() == boardName.ToLower());
         }
 
         public async Task<int> GetTotalBoardsCountAsync()

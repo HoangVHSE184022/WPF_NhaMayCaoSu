@@ -47,6 +47,13 @@ namespace WPF_NhaMayCaoSu
             }
 
         }
+
+        public void OnWindowLoaded()
+        {
+            Window_Loaded(this, null);
+            
+        }
+
         private async void LoadAwait()
         {
             string topic = "+/checkmode";

@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
+using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
 
 namespace WPF_NhaMayCaoSu.Content
@@ -14,6 +15,7 @@ namespace WPF_NhaMayCaoSu.Content
 
         private readonly MqttServerService _mqttServerService;
         private readonly MqttClientService _mqttClientService;
+        private readonly IBoardService _boardService;
         private readonly BrokerWindow broker;
         private CustomerListWindow customerListWindow;
         private SaleListWindow saleListWindow;
@@ -66,7 +68,10 @@ namespace WPF_NhaMayCaoSu.Content
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Application.Current.Shutdown();
+
+
+            App.Current.Shutdown();
+
         }
 
         private bool ValidCheck()
@@ -119,7 +124,7 @@ namespace WPF_NhaMayCaoSu.Content
             }
 
             MainContentControl.Content = boardListWindow.Content;
-            //boardListWindow.OnWindowLoaded();
+            boardListWindow.OnWindowLoaded();
             Title = boardListWindow.Title;
         }
 
@@ -295,6 +300,9 @@ namespace WPF_NhaMayCaoSu.Content
             }
 
         }
-    }
 
+
+    }
 }
+
+
