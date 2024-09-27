@@ -14,13 +14,13 @@
         <Button x:Name="EditRFIDButton" Height="40" Margin="0,228,32,0" VerticalAlignment="Top" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="EditRFIDButton_Click" HorizontalAlignment="Right" Width="121"  >
             <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <DataGrid x:Name="RFIDDataGrid" Margin="32,129,159,158" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
+        <DataGrid x:Name="RFIDDataGrid" Margin="32,129,159,90" FontFamily="Montserrat" FontSize="34" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Mã RFID" Width="220" Binding="{Binding RFIDCode}"/>
-                <DataGridTextColumn Header="Ngày tạo" Width="200" Binding="{Binding CreatedDate}" />
+                <DataGridTextColumn Header="Mã RFID" Width="250" Binding="{Binding RFIDCode}"/>
+                <DataGridTextColumn Header="Ngày tạo" Width="190" Binding="{Binding CreatedDate}" />
                 <DataGridTextColumn Header="Ngày hết hạn" Width="200" Binding="{Binding ExpirationDate}"/>
-                <DataGridTextColumn Header="Trạng thái" Width="130" Binding="{Binding Status}"/>
-                <DataGridTextColumn Header="Chủ sở hữu" Width="170" Binding="{Binding Customer.CustomerName}"/>
+                <DataGridTextColumn Header="Trạng thái" Width="160" Binding="{Binding Status}"/>
+                <DataGridTextColumn Header="Chủ sở hữu" Width="190" Binding="{Binding Customer.CustomerName}"/>
 
             </DataGrid.Columns>
 
@@ -29,9 +29,9 @@
         <TextBox x:Name="SearchTextBox" Height="30" VerticalAlignment="Top" Margin="0,94,159,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="309"/>
         <Button x:Name="SearchButton" Content="Tìm kiếm" Height="30" VerticalAlignment="Top" Margin="0,94,32,0" FontFamily="Montserrat" FontSize="18" Click="SearchButton_Click" HorizontalAlignment="Right" Width="121"/>
 
-        <Button x:Name="PreviousPageButton" Content="Trước" Margin="474,0,0,137" Click="PreviousPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
-        <TextBlock x:Name="PageNumberTextBlock" Margin="519,0,0,137" TextAlignment="Center" FontFamily="Montserrat" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="94" />
-        <Button x:Name="NextPageButton" Content="Sau" Margin="618,0,0,137" Click="NextPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
+        <Button x:Name="PreviousPageButton" Content="Trước" Margin="474,0,0,50" Click="PreviousPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
+        <TextBlock x:Name="PageNumberTextBlock" Margin="519,0,0,50" TextAlignment="Center" FontFamily="Montserrat" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="94" />
+        <Button x:Name="NextPageButton" Content="Sau" Margin="618,0,0,50" Click="NextPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
         <Button x:Name="DeleteRFIDButton" HorizontalAlignment="Right" Height="40" Margin="0,308,32,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="DeleteRFIDButton_Click" >
             <TextBlock Text="Xóa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>

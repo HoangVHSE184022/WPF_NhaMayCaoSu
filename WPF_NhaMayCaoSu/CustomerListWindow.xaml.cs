@@ -64,7 +64,7 @@ namespace WPF_NhaMayCaoSu
 
             CustomerDataGrid.ItemsSource = null;
             CustomerDataGrid.Items.Clear();
-            CustomerDataGrid.ItemsSource = await _service.GetAllCustomers(1, 10);
+            CustomerDataGrid.ItemsSource = await _service.GetAllCustomers(_currentPage, _pageSize);
 
             PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
 
