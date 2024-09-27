@@ -51,6 +51,7 @@ namespace WPF_NhaMayCaoSu
         public void OnWindowLoaded()
         {
             Window_Loaded(this, null);
+            CheckBoardMode();
         }
 
         // Handle incoming sales data and update the UI
@@ -440,6 +441,32 @@ namespace WPF_NhaMayCaoSu
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private async void CheckBoardMode()
+        {
+            Board boardTa = await _boardService.GetBoardByNameAsync("Cân Tạ");
+
+            Board boardTieuLy = await _boardService.GetBoardByNameAsync("Cân Tiểu Ly");
+
+            if (boardTa != null && boardTieuLy != null)
+            {
+                if (boardTa.BoardMode == 2)
+                {
+                    MessageBox.Show("Board Cân tạ đang ở Mode 2 sẽ được chuyển sang Mode 1", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    boardTa.BoardMode = 1;
+                    await _boardService.UpdateBoardAsync(boardTa);
+                }
+                if (boardTieuLy.BoardMode == 2)
+                {
+                    MessageBox.Show("Board Cân tiểu ly đang ở Mode 2 sẽ được chuyển sang Mode 1", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    boardTieuLy.BoardMode = 1;
+                    await _boardService.UpdateBoardAsync(boardTieuLy);
+                }
+            }
+
+
+
         }
     }
 }
