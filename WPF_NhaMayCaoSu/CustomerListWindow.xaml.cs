@@ -213,8 +213,8 @@ namespace WPF_NhaMayCaoSu
             }
 
             CustomerService service = new();
-            MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn xóa khách hàng này không", "Xác nhận", MessageBoxButton.YesNo,MessageBoxImage.Information);
-            if(result == MessageBoxResult.Yes)
+            MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn xóa khách hàng này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
+            if (result == MessageBoxResult.Yes)
             {
                 service.DeleteCustomer(selected.CustomerId);
                 MessageBox.Show("Đã xóa khách hàng thành công", "Thành công", MessageBoxButton.OK);

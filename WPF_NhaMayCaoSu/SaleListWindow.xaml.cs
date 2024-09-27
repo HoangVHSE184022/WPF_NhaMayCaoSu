@@ -412,7 +412,7 @@ namespace WPF_NhaMayCaoSu
             {
                 CurrentAccount = CurrentAccount
             };
-            saleManagementWindow.ShowDialog(); 
+            saleManagementWindow.ShowDialog();
             LoadDataGrid();
         }
 
@@ -488,7 +488,7 @@ namespace WPF_NhaMayCaoSu
             {
                 MessageBox.Show("Vui là chọn một Sale để xóa.", "Chọn Sale", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
-            }    
+            }
             MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn xóa Sale này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
             if (result == MessageBoxResult.Yes)
             {

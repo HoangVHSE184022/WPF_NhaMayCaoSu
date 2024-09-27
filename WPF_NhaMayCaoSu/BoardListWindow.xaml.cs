@@ -51,7 +51,7 @@ namespace WPF_NhaMayCaoSu
         public void OnWindowLoaded()
         {
             Window_Loaded(this, null);
-            
+
         }
 
         private async void LoadAwait()
@@ -280,7 +280,7 @@ namespace WPF_NhaMayCaoSu
                         Board board = await _boardService.GetBoardByNameAsync(saveBoardWindow.SelectedBoardName);
                         if (board != null)
                         {
-                            MessageBoxResult re = MessageBox.Show("Bạn có muốn thay thế cho board cũ không?","Xác nhận",MessageBoxButton.YesNo, MessageBoxImage.Question);
+                            MessageBoxResult re = MessageBox.Show("Bạn có muốn thay thế cho board cũ không?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Question);
                             if (re == MessageBoxResult.Yes)
                             {
                                 board.BoardMacAddress = selectedBoard.BoardMacAddress;
@@ -290,7 +290,7 @@ namespace WPF_NhaMayCaoSu
                             }
                             return;
                         }
-                        
+
 
                         // Create a new board and save the selected name
                         Board newBoard = new Board
