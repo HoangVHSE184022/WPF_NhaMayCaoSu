@@ -75,31 +75,45 @@ namespace WPF_NhaMayCaoSu
             if (ValidateFormInput())
             {
                 RFID rfid = await _rfidService.GetRFIDByRFIDCodeAsync(RFIDCodeTextBox.Text);
-                Sale sale = new Sale
-                {
-                    CustomerName = CustomerNameTextBox.Text,
-                    ProductWeight = float.Parse(WeightTextBox.Text),
-                    ProductDensity = string.IsNullOrWhiteSpace(DensityTextBox.Text) ? 0 : float.Parse(DensityTextBox.Text),
-                    Status = short.Parse(StatusTextBox.Text),
-                    RFIDCode = RFIDCodeTextBox.Text,
-                    RFID_Id = rfid.RFID_Id,
-                };
+                Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(RFIDCodeTextBox.Text);
 
-                if (SelectedSale == null)
+                if (customer == null)
                 {
-                    await _service.CreateSaleAsync(sale);
-                    MessageBox.Show(Constants.SuccessMessageSaleCreated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show($"RFID {rfid} này chưa được tạo.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                else if (rfid.Status == 0)
+                {
+                    MessageBox.Show($"RFID {rfid} này không khả dụng", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
                 }
                 else
                 {
-                    sale.SaleId = SelectedSale.SaleId;
-                    sale.LastEditedTime = DateTime.UtcNow;
-                    await _service.UpdateSaleAsync(sale);
-                    _mainWindow._sessionSaleList.Add(sale);
-                    _mainWindow.LoadDataGrid();
-                    MessageBox.Show(Constants.SuccessMessageSaleUpdated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
-                }
+                    Sale sale = new Sale
+                    {
+                        CustomerName = CustomerNameTextBox.Text,
+                        ProductWeight = float.Parse(WeightTextBox.Text),
+                        ProductDensity = string.IsNullOrWhiteSpace(DensityTextBox.Text) ? 0 : float.Parse(DensityTextBox.Text),
+                        Status = short.Parse(StatusTextBox.Text),
+                        RFIDCode = RFIDCodeTextBox.Text,
+                        RFID_Id = rfid.RFID_Id,
+                    };
 
+                    if (SelectedSale == null)
+                    {
+                        await _service.CreateSaleAsync(sale);
+                        MessageBox.Show(Constants.SuccessMessageSaleCreated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        sale.SaleId = SelectedSale.SaleId;
+                        sale.LastEditedTime = DateTime.UtcNow;
+                        await _service.UpdateSaleAsync(sale);
+                        _mainWindow._sessionSaleList.Add(sale);
+                        _mainWindow.LoadDataGrid();
+                        MessageBox.Show(Constants.SuccessMessageSaleUpdated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
                 Close();
             }
         }
