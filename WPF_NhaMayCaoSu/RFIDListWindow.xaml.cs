@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Newtonsoft.Json;
+using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
@@ -12,12 +13,15 @@ namespace WPF_NhaMayCaoSu
     {
         public Account CurrentAccount { get; set; } = null;
         private IRFIDService _service = new RFIDService();
+        private IBoardService _boardService = new BoardService();
+        private readonly MqttClientService _mqttClientService;
         private int _currentPage = 1;
         private int _pageSize = 10;
         private int _totalPages;
         public RFIDListWindow()
         {
             InitializeComponent();
+            _mqttClientService = new();
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
@@ -80,6 +84,7 @@ namespace WPF_NhaMayCaoSu
                 EditRFIDButton.Visibility = Visibility.Collapsed;
             }
             LoadDataGrid();
+            LoadCurrentBoardModeAsync();
         }
         public void OnWindowLoaded()
         {
@@ -199,6 +204,79 @@ namespace WPF_NhaMayCaoSu
             MessageBox.Show("Xoá RFID thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
             LoadDataGrid();
 
+        }
+
+        private async Task LoadCurrentBoardModeAsync()
+        {
+            // Assuming that Board has a Mode property and we are fetching the newest one
+            Board newestBoard = await _boardService.GetBoardByNameAsync("Cân Tạ");
+            Board newestBoard2 = await _boardService.GetBoardByNameAsync("Cân Tiểu Ly");
+            if (newestBoard != null)
+            {
+                // Set the mode labels based on the newest board's current mode
+                CantaMode.Content = $"Mode Cân \nTạ: {newestBoard.BoardMode}";
+            } else
+            {
+                CantaMode.Content = "Chưa có \nCân Tạ";
+            }
+
+            if (newestBoard2 != null)
+            {
+                // Set the mode labels based on the newest board's current mode
+                CantieulyMode.Content = $"Mode Cân \nTiểu Ly: {newestBoard2.BoardMode}";
+            }
+            else
+            {
+                CantieulyMode.Content = "Chưa có \nCân Tiểu Ly";
+            }
+        }
+
+        // Change Cân Tạ mode
+        private async void ChangeCanTaMode_Click(object sender, RoutedEventArgs e)
+        {
+            Board newestBoard = await _boardService.GetBoardByNameAsync("Cân Tạ");
+            if (newestBoard != null)
+            {
+                newestBoard.BoardMode = newestBoard.BoardMode == 1 ? 2 : 1;
+
+                string topic = $"/{newestBoard.BoardMacAddress}/mode";
+
+
+                var payloadObject = new { Mode = newestBoard.BoardMode };
+                string payload = JsonConvert.SerializeObject(payloadObject);
+
+                if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+                {
+                    await _mqttClientService.PublishAsync(topic, payload);
+                    await _boardService.UpdateBoardAsync(newestBoard);
+                }
+
+                await LoadCurrentBoardModeAsync();
+            }
+        }
+
+        // Change Cân Tiểu Ly mode
+        private async void ChangeCanTieuLyMode_Click(object sender, RoutedEventArgs e)
+        {
+            Board newestBoard = await _boardService.GetBoardByNameAsync("Cân Tiểu Ly");
+            if (newestBoard != null)
+            {
+                newestBoard.BoardMode = newestBoard.BoardMode == 1 ? 2 : 1;
+
+                string topic = $"/{newestBoard.BoardMacAddress}/mode";
+
+
+                var payloadObject = new { Mode = newestBoard.BoardMode };
+                string payload = JsonConvert.SerializeObject(payloadObject);
+
+                if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+                {
+                    await _mqttClientService.PublishAsync(topic, payload);
+                    await _boardService.UpdateBoardAsync(newestBoard);
+                }
+
+                await LoadCurrentBoardModeAsync();
+            }
         }
     }
 }
