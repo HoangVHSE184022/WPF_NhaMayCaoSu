@@ -35,5 +35,13 @@
         <Button x:Name="DeleteRFIDButton" HorizontalAlignment="Right" Height="40" Margin="0,308,32,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="DeleteRFIDButton_Click" >
             <TextBlock Text="Xóa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
+        <Label x:Name="CantaMode" Content="Mode Cân &#xD;&#xA;Tạ:" Height="55" VerticalAlignment="Top" Margin="0,371,32,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="121" />
+        <Label x:Name="CantieulyMode" Content="Mode Cân &#xD;&#xA;tiểu ly:" Height="55" VerticalAlignment="Top" Margin="0,472,32,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="121" />
+        <Button x:Name="ChangeCanTaMode" HorizontalAlignment="Right" Height="40" Margin="0,426,32,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="18" Click="ChangeCanTaMode_Click" >
+            <TextBlock Text="Chuyển Mode" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
+        <Button x:Name="ChangeCanTieuLyMode" HorizontalAlignment="Right" Height="40" Margin="0,527,32,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="18" Click="ChangeCanTieuLyMode_Click" >
+            <TextBlock Text="Chuyển Mode" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
     </Grid>
 </Window>
