@@ -9,7 +9,7 @@
         Title="RFID Management" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" WindowStyle="SingleBorderWindow">
     <Grid>
         
-        <Label x:Name="ModeLabel" Content="Thêm/Chỉnh sửa RFID" HorizontalAlignment="Left" Height="60" Margin="32,51,0,0" VerticalAlignment="Top" Width="497" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
+        <Label x:Name="ModeLabel" Content="Thêm/Chỉnh sửa RFID" HorizontalAlignment="Left" Height="60" Margin="32,40,0,0" VerticalAlignment="Top" Width="497" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
         <Label Content="Mã RFID" HorizontalAlignment="Left" Height="46" Margin="32,130,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
         <TextBox x:Name="RFIDCodeTextBox" Height="46" Margin="276,130,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="30" Background="#FFCACACA" BorderThickness="0"/>
         <Label Content="Ngày hết hạn" HorizontalAlignment="Left" Height="46" Margin="32,230,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>

@@ -13,7 +13,7 @@
             <RowDefinition Height="51*"/>
         </Grid.RowDefinitions>
 
-        <Label x:Name="ModeLabel" Content="Đăng ký/Chỉnh sửa thông tin cá nhân" HorizontalAlignment="Left" Height="65" Margin="32,60,0,0" VerticalAlignment="Top" Width="644" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
+        <Label x:Name="ModeLabel" Content="Đăng ký/Chỉnh sửa thông tin cá nhân" HorizontalAlignment="Left" Height="65" Margin="32,40,0,0" VerticalAlignment="Top" Width="644" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
         <Label Content="Tên hiển thị" HorizontalAlignment="Left" Height="46" Margin="32,130,0,0" VerticalAlignment="Top" Width="285" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
         <TextBox x:Name="AccountNameTextBox" Height="46" Margin="322,130,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA" FontSize="30" BorderThickness="0"/>
         <Label Content="Tên đăng nhập" HorizontalAlignment="Left" Height="46" Margin="32,230,0,0" VerticalAlignment="Top" Width="285" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>

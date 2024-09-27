@@ -12,15 +12,13 @@
         <Menu HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Monserrat" Foreground="#FF002366" FontSize="16">
             <MenuItem x:Name="ShowButton" Header="Hiển thị" Click="ShowButton_Click"/>
             <MenuItem x:Name="BrokerManagementButton" Header="Broker" Click="BrokerManagementButton_Click"/>
-            <MenuItem Header="Quản lý">
-                <MenuItem x:Name="CustomerManagementButton" Header="Khách hàng" Click="CustomerManagementButton_Click"/>
-                <MenuItem x:Name="BoardManagementButton" Header="Board" Click="BoardManagementButton_Click"/>
-                <MenuItem x:Name="RFIDManagementButton" Header="RFID" Click="RFIDManagementButton_Click"/>
-                <MenuItem x:Name="SaleManagementButton" Header="Sale" Click="SaleManagementButton_Click"/>
-                <MenuItem x:Name="AccountManagementButton" Header="Tài khoản" Click="AccountManagementButton_Click"/>
-                <MenuItem x:Name="RoleManagementButton" Header="Vai trò" Click="RoleManagementButton_Click"/>
-                <MenuItem x:Name="ConfigButton" Header="Camera" Click="ConfigButton_Click"/>
-            </MenuItem>
+            <MenuItem x:Name="CustomerManagementButton" Header="Khách hàng" Click="CustomerManagementButton_Click"/>
+            <MenuItem x:Name="BoardManagementButton" Header="Board" Click="BoardManagementButton_Click"/>
+            <MenuItem x:Name="RFIDManagementButton" Header="RFID" Click="RFIDManagementButton_Click"/>
+            <MenuItem x:Name="SaleManagementButton" Header="Sale" Click="SaleManagementButton_Click"/>
+            <MenuItem x:Name="AccountManagementButton" Header="Tài khoản" Click="AccountManagementButton_Click"/>
+            <MenuItem x:Name="RoleManagementButton" Header="Vai trò" Click="RoleManagementButton_Click"/>
+            <MenuItem x:Name="ConfigButton" Header="Camera" Click="ConfigButton_Click"/>
         </Menu>
 
         <ContentControl x:Name="MainContentControl" Grid.Row="1" />
