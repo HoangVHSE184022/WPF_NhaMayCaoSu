@@ -127,5 +127,28 @@ namespace WPF_NhaMayCaoSu
         {
             Close();
         }
+
+        private async void DeleteRoleButton_Click(object sender, RoutedEventArgs e)
+        {
+            Role x = RoleDataGrid.SelectedItem as Role;
+            if (x == null)
+            {
+                MessageBox.Show("Vui lòng chọn 1 Vai trò để xóa!", "Chọn Vai trò", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            MessageBoxResult result = MessageBox.Show("Bạn có muốn xoá Vai trò này?", "Xoá Vai trò", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
+
+            await _service.DeleteRoleAsync(x.RoleId);
+            MessageBox.Show("Xoá Vai trò thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+            LoadDataGrid();
+
+
+        }
     }
 }

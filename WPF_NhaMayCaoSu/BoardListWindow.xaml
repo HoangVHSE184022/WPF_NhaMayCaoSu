@@ -12,7 +12,7 @@
         <Button x:Name="EditBoardButton" Height="30" Margin="0,652,996,0" VerticalAlignment="Top" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="16" Background="#FFCACACA"  HorizontalAlignment="Right" Width="122" Click="EditBoardButton_Click"  >
             <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <DataGrid x:Name="boardDataGrid" Margin="10,129,639,158" FontFamily="Montserrat" FontSize="20" Background="#FFCACACA" AutoGenerateColumns="False" >
+        <DataGrid x:Name="boardDataGrid" Margin="10,82,639,158" FontFamily="Montserrat" FontSize="20" Background="#FFCACACA" AutoGenerateColumns="False" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Tên Board" Binding="{Binding BoardName}" Width="*" />
                 <DataGridTextColumn Header="IP" Binding="{Binding BoardIp}" Width="*"/>
@@ -37,7 +37,7 @@
 
         </DataGrid>
 
-        <DataGrid x:Name="ConnectedBoardDataGrid" Margin="639,129,10,158" FontFamily="Montserrat" FontSize="20" Background="#FFCACACA" AutoGenerateColumns="False">
+        <DataGrid x:Name="ConnectedBoardDataGrid" Margin="639,82,10,158" FontFamily="Montserrat" FontSize="20" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Tên Board" Binding="{Binding BoardName}" Width="*" />
                 <DataGridTextColumn Header="IP" Binding="{Binding BoardIp}" Width="*"/>

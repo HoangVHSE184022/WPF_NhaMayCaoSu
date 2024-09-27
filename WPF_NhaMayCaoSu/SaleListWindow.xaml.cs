@@ -459,6 +459,12 @@ namespace WPF_NhaMayCaoSu
         private void DeleteBtn_Click(object sender, RoutedEventArgs e)
         {
             Sale selectedSale = SaleDataGrid.SelectedItem as Sale;
+
+            if (selectedSale == null)
+            {
+                MessageBox.Show("Vui là chọn một Sale để xóa.", "Chọn Sale",.ServiceModel.OK, MessageBoxImage.Warning);
+                return;
+            }    
             MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn xóa Sale này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
             if (result == MessageBoxResult.Yes)
             {
