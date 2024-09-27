@@ -130,7 +130,6 @@ namespace WPF_NhaMayCaoSu
                     return;
                 }
 
-
                 if (sale == null)
                 {
                     Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfid);
@@ -150,21 +149,39 @@ namespace WPF_NhaMayCaoSu
                     {
                         sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfid_id);
                     }
-
                 }
                 else
                 {
-
                     if (secondKey == "Weight")
                     {
+                        // Get sales created within the last 5 minutes
+                        DateTime now = DateTime.Now;
+                        var recentSales = await _saleService.GetSalesCreatedWithinTimeRangeAsync(now.AddMinutes(-5), now);
+
+                        // Check if any recent sale has a different RFID
+                        bool otherRfidSaleExists = recentSales.Any(s => s.RFIDCode != rfid);
+
                         if (sale.ProductWeight.HasValue)
                         {
-                            sale.LastEditedTime = DateTime.Now;
-                            sale.ProductWeight += newValue;
+                            DateTime lastEditedTime = sale.LastEditedTime ?? DateTime.MinValue;
+                            TimeSpan timeSinceLastEdit = DateTime.Now - lastEditedTime;
+                            if (otherRfidSaleExists || timeSinceLastEdit.TotalMinutes > 5)
+                            {
+                                Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfid);
+                                RFID rfid_id = await _rfidService.GetRFIDByRFIDCodeAsync(rfid);
+                                sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfid_id);
+                            }
+                            else
+                            {
+                                // If within 5 minutes and no other RFID sale, add the new weight
+                                sale.LastEditedTime = now;
+                                sale.ProductWeight += newValue;
+                            }
                         }
                         else
                         {
-                            sale.LastEditedTime = DateTime.Now;
+                            // First time getting the weight, just assign the value
+                            sale.LastEditedTime = now;
                             sale.ProductWeight = newValue;
                         }
                     }
@@ -192,6 +209,7 @@ namespace WPF_NhaMayCaoSu
                     await SaveImageToDb(imagePath, sale.SaleId, cameraIndex);
                 }
 
+                // Update the UI
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     LoadDataGrid();
@@ -203,6 +221,7 @@ namespace WPF_NhaMayCaoSu
                 Log.Error(ex, $"Error processing message: {messageContent}");
             }
         }
+
 
         private async Task<Sale> CreateNewSale(Customer customer, string rfid, float value, string valueType, RFID rfid_id)
         {

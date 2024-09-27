@@ -300,7 +300,6 @@ namespace WPF_NhaMayCaoSu
                     await SaveImageToDb(imagePath, sale.SaleId, cameraIndex);
                 }
 
-                // Update the UI
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     LoadDataGrid();
