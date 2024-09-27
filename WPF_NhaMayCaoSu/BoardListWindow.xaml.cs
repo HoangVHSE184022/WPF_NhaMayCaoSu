@@ -278,7 +278,8 @@ namespace WPF_NhaMayCaoSu
                             {
                                 board.BoardMacAddress = selectedBoard.BoardMacAddress;
                                 await _boardService.UpdateBoardAsync(board);
-                                
+                                await LoadDataGridFromDatabase();
+
                             }
                             return;
                         }
