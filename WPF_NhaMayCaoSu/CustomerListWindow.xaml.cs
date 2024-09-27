@@ -206,6 +206,12 @@ namespace WPF_NhaMayCaoSu
         private void DeleteBtn_Click(object sender, RoutedEventArgs e)
         {
             Customer selected = CustomerDataGrid.SelectedItem as Customer;
+            if (selected != null)
+            {
+                MessageBox.Show("Vui lòng chọn 1 Khách hàng để xóa!", "Chọn khách hàng", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             CustomerService service = new();
             MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn xóa khách hàng này không", "Xác nhận", MessageBoxButton.YesNo,MessageBoxImage.Information);
             if(result == MessageBoxResult.Yes)

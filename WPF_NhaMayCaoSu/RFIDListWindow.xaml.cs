@@ -188,6 +188,12 @@ namespace WPF_NhaMayCaoSu
                 MessageBox.Show("Vui lòng chọn RFID để xóa.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            MessageBoxResult result = MessageBox.Show("Bạn có muốn xoá RFID này?", "Xoá RFID", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
 
             await _service.DeleteRFIDAsync(x.RFID_Id);
             MessageBox.Show("Xoá RFID thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);

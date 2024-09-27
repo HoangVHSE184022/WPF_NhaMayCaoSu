@@ -22,5 +22,8 @@
             </DataGrid.Columns>
 
         </DataGrid>
+        <Button x:Name="DeleteRoleButton" HorizontalAlignment="Right" Height="40" Margin="0,316,32,0" VerticalAlignment="Top" Width="121" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="DeleteRoleButton_Click"  >
+            <TextBlock Text="Xóa" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
     </Grid>
 </Window>

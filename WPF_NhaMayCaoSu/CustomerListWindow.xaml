@@ -15,13 +15,13 @@
             <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
         
-        <DataGrid x:Name="CustomerDataGrid" Margin="32,129,159,157" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
+        <DataGrid x:Name="CustomerDataGrid" Margin="32,129,159,88" FontFamily="Montserrat" FontSize="30" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Tên" Width="250" Binding="{Binding CustomerName}"/>
-                <DataGridTextColumn Header="Số điện thoại" Width="200" Binding="{Binding Phone}"/>
-                <DataGridTextColumn Header="Trạng thái" Width="150" Binding="{Binding Status}"/>
-                <DataGridTextColumn Header="Số lượng RFID" Width="170" Binding="{Binding RFIDCount}"/>
-                <DataGridTemplateColumn Header="Thêm RFID" Width="150">
+                <DataGridTextColumn Header="Số điện thoại" Width="250" Binding="{Binding Phone}"/>
+                <DataGridTextColumn Header="Trạng thái" Width="140" Binding="{Binding Status}"/>
+                <DataGridTextColumn Header="Số lượng RFID" Width="200" Binding="{Binding RFIDCount}"/>
+                <DataGridTemplateColumn Header="Thêm RFID" Width="170">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Content="Thêm" Width="100" Height="30" Click="AddRFIDButton_Click"/>
@@ -36,11 +36,11 @@
         <TextBox x:Name="SearchTextBox" Height="30" VerticalAlignment="Top" Margin="0,94,159,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="309"/>
         <Button x:Name="SearchButton" Content="Tìm kiếm" VerticalAlignment="Top" Margin="0,94,32,0" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" FontSize="24" Click="SearchButton_Click" HorizontalAlignment="Right" Width="121" Height="40"/>
 
-        <Button x:Name="PreviousPageButton" Content="Trước" Margin="474,0,0,136" Click="PreviousPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
-        <TextBlock x:Name="PageNumberTextBlock" Margin="519,0,0,137" TextAlignment="Center" FontFamily="Montserrat" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="94" />
-        <Button x:Name="NextPageButton" Content="Sau" Margin="618,0,0,137" Click="NextPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
+        <Button x:Name="PreviousPageButton" Content="Trước" Margin="474,0,0,50" Click="PreviousPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
+        <TextBlock x:Name="PageNumberTextBlock" Margin="519,0,0,50" TextAlignment="Center" FontFamily="Montserrat" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="94" />
+        <Button x:Name="NextPageButton" Content="Sau" Margin="618,0,0,50" Click="NextPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
         <Button x:Name="DeleteBtn" Margin="0,291,32,0" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="DeleteBtn_Click" HorizontalAlignment="Right" Width="121" Height="40" VerticalAlignment="Top" >
-            <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
+            <TextBlock Text="Xóa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
     </Grid>
 </Window>
