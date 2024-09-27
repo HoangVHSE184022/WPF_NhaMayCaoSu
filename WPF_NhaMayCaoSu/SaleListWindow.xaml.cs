@@ -204,34 +204,36 @@ namespace WPF_NhaMayCaoSu
             {
                 string[] messages = messageContent.Split('-');
 
-                if (messages.Length != 4) return;
-
-                string macAddress = messages[3];
-                Board board = await _boardService.GetBoardByMacAddressAsync(macAddress);
-                if (board == null)
+                if (messages.Length != 4)
                 {
-                    MessageBox.Show($"Dữ liệu được gửi từ board chưa được lưu trong cơ sở dữ liệu", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
-
                 string rfid = messages[0];
-                float newValue = float.Parse(messages[1]); ;
+                float newValue = float.Parse(messages[1]);
+                string macaddress = messages[3];
 
                 Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfid);
+                Board board = await _boardService.GetBoardByMacAddressAsync(macaddress);
+
+                if (board == null)
+                {
+                    MessageBox.Show($"Board chứa MacAddress {macaddress} này chưa được tạo.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
                 if (sale == null)
                 {
                     Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfid);
                     RFID rfid_id = await _rfidService.GetRFIDByRFIDCodeAsync(rfid);
-                    if (rfid_id.Status == 0)
-                    {
-                        MessageBox.Show("RFID đã hết hạn hoặc bị xóa, vui lòng sử dụng RFID khác", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
 
                     if (customer == null)
                     {
                         MessageBox.Show($"RFID {rfid} này chưa được tạo.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                    else if (rfid_id.Status == 0)
+                    {
+                        MessageBox.Show($"RFID {rfid} này không khả dụng", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
                     else
@@ -241,17 +243,36 @@ namespace WPF_NhaMayCaoSu
                 }
                 else
                 {
-
                     if (secondKey == "Weight")
                     {
+                        // Get sales created within the last 5 minutes
+                        DateTime now = DateTime.Now;
+                        var recentSales = await _saleService.GetSalesCreatedWithinTimeRangeAsync(now.AddMinutes(-5), now);
+
+                        // Check if any recent sale has a different RFID
+                        bool otherRfidSaleExists = recentSales.Any(s => s.RFIDCode != rfid);
+
                         if (sale.ProductWeight.HasValue)
                         {
-                            sale.LastEditedTime = DateTime.Now;
-                            sale.ProductWeight += newValue;
+                            DateTime lastEditedTime = sale.LastEditedTime ?? DateTime.MinValue;
+                            TimeSpan timeSinceLastEdit = DateTime.Now - lastEditedTime;
+                            if (otherRfidSaleExists || timeSinceLastEdit.TotalMinutes > 5)
+                            {
+                                Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfid);
+                                RFID rfid_id = await _rfidService.GetRFIDByRFIDCodeAsync(rfid);
+                                sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfid_id);
+                            }
+                            else
+                            {
+                                // If within 5 minutes and no other RFID sale, add the new weight
+                                sale.LastEditedTime = now;
+                                sale.ProductWeight += newValue;
+                            }
                         }
                         else
                         {
-                            sale.LastEditedTime = DateTime.Now;
+                            // First time getting the weight, just assign the value
+                            sale.LastEditedTime = now;
                             sale.ProductWeight = newValue;
                         }
                     }
@@ -268,9 +289,11 @@ namespace WPF_NhaMayCaoSu
                             sale.ProductDensity = newValue;
                         }
                     }
+
                     await _saleService.UpdateSaleAsync(sale);
                 }
 
+                // Capture and save image if path is valid
                 string imagePath = CaptureImageFromCamera(newestCamera, cameraIndex);
                 if (!string.IsNullOrEmpty(imagePath))
                 {
@@ -285,7 +308,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error processing message: {ex.Message}");
-                Log.Error(ex, "Error processing message");
+                Log.Error(ex, $"Error processing message: {messageContent}");
             }
         }
 

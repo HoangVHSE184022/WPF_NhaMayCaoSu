@@ -1,4 +1,5 @@
-﻿using WPF_NhaMayCaoSu.Repository.Models;
+﻿using WPF_NhaMayCaoSu.Repository.IRepositories;
+using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
@@ -49,5 +50,11 @@ namespace WPF_NhaMayCaoSu.Service.Services
         {
             return await _repo.GetAllSaleAsync();
         }
+
+        public async Task<IEnumerable<Sale>> GetSalesCreatedWithinTimeRangeAsync(DateTime startTime, DateTime endTime)
+        {
+            return await _repo.GetSalesCreatedWithinTimeRangeAsync(startTime, endTime);
+        }
+
     }
 }

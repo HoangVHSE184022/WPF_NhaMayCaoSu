@@ -82,5 +82,13 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             return await _context.Sales
                                  .ToListAsync();
         }
+
+        public async Task<IEnumerable<Sale>> GetSalesCreatedWithinTimeRangeAsync(DateTime startTime, DateTime endTime)
+        {
+            _context = new();
+            return await _context.Sales
+                                 .Where(s => s.LastEditedTime >= startTime && s.LastEditedTime <= endTime)
+                                 .ToListAsync();
+        }
     }
 }
