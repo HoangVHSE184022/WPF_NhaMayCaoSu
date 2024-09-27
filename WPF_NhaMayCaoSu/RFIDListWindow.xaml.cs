@@ -215,7 +215,8 @@ namespace WPF_NhaMayCaoSu
             {
                 // Set the mode labels based on the newest board's current mode
                 CantaMode.Content = $"Mode Cân \nTạ: {newestBoard.BoardMode}";
-            } else
+            }
+            else
             {
                 CantaMode.Content = "Chưa có \nCân Tạ";
             }

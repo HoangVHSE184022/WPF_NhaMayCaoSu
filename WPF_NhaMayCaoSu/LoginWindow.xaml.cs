@@ -79,6 +79,6 @@ namespace WPF_NhaMayCaoSu
                 LoginButton_Click(sender, new RoutedEventArgs());
             }
         }
-        
+
     }
 }
