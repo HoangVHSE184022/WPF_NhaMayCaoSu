@@ -462,7 +462,7 @@ namespace WPF_NhaMayCaoSu
 
             if (selectedSale == null)
             {
-                MessageBox.Show("Vui là chọn một Sale để xóa.", "Chọn Sale",.ServiceModel.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Vui là chọn một Sale để xóa.", "Chọn Sale", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }    
             MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn xóa Sale này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
