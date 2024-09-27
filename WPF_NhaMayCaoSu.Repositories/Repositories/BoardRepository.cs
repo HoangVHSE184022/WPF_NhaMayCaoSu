@@ -16,12 +16,14 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             await _context.SaveChangesAsync();
         }
 
+
         public async Task<IEnumerable<Board>> GetAllBoardsAsync(int pageNumber, int pageSize)
         {
             _context = new();
             return await _context.Boards
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)
+                                 .Where(b => b.BoardStatus == 1)
                                  .ToListAsync();
         }
 
@@ -65,6 +67,12 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         {
             _context = new();
             return await _context.Boards.FirstOrDefaultAsync(x => x.BoardMacAddress == BoardMacAddress);
+        }
+
+        public async Task<Board> GetExistingBoardByName(string name)
+        {
+            _context = new();
+            return await _context.Boards.FirstOrDefaultAsync(x => x.BoardName == name && x.BoardStatus == 1);
         }
     }
 }

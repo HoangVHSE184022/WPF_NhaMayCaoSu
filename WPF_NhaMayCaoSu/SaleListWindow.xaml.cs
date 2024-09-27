@@ -223,6 +223,11 @@ namespace WPF_NhaMayCaoSu
                 {
                     Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfid);
                     RFID rfid_id = await _rfidService.GetRFIDByRFIDCodeAsync(rfid);
+                    if (rfid_id.Status == 0)
+                    {
+                        MessageBox.Show("RFID đã hết hạn hoặc bị xóa, vui lòng sử dụng RFID khác", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
 
                     if (customer == null)
                     {
@@ -384,7 +389,7 @@ namespace WPF_NhaMayCaoSu
 
         private void OpenEditSaleWindow()
         {
-            var selectedSale = SaleDataGrid.SelectedItem as Sale;
+            Sale selectedSale = SaleDataGrid.SelectedItem as Sale;
             if (selectedSale == null)
             {
                 MessageBox.Show(Constants.ErrorMessageSelectSale, Constants.ErrorTitleSelectSale, MessageBoxButton.OK, MessageBoxImage.Stop);
@@ -444,6 +449,17 @@ namespace WPF_NhaMayCaoSu
 
             var viewImagesWindow = new ViewImagesWindow(selectedSale);
             viewImagesWindow.ShowDialog();
+        }
+
+        private void DeleteBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Sale selectedSale = SaleDataGrid.SelectedItem as Sale;
+            MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn xóa Sale này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
+            if (result == MessageBoxResult.Yes)
+            {
+                _saleService.DeleteSaleAsync(selectedSale.SaleId);
+                MessageBox.Show("Đã xóa Sale thành công", "Thành công", MessageBoxButton.OK);
+            }
         }
     }
 }

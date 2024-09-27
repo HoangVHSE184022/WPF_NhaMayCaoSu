@@ -36,6 +36,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
                                  .Include(c => c.RFIDs)
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)
+                                 .Where(c => c.Status == 1)
                                  .ToListAsync();
         }
 

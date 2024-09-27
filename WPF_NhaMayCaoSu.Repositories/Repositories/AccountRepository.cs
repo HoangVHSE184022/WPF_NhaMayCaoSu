@@ -45,6 +45,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
                                  //                  .Where(a => a.Status == 1)
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)
+                                 .Where(a => a.Status == 1)
                                  .ToListAsync();
         }
 

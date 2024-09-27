@@ -61,21 +61,21 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            AccountId = new Guid("2af4aac3-d027-49c2-94ce-41c91d68af38"),
+                            AccountId = new Guid("87f0bb27-658b-42a5-b5b2-4cb5c4f76532"),
                             AccountName = "Administrator",
-                            CreatedDate = new DateTime(2024, 9, 19, 5, 3, 28, 130, DateTimeKind.Utc).AddTicks(4064),
-                            Password = "$2a$11$5fRuUx83gkEt2DtoxKZOp.y2mBT9F.HOmdNa4yg8MFD9Iu.mISTC6",
-                            RoleId = new Guid("5bbe10c9-ed32-4ad8-98d8-520fe4090a7a"),
+                            CreatedDate = new DateTime(2024, 9, 26, 9, 53, 17, 904, DateTimeKind.Utc).AddTicks(6408),
+                            Password = "$2a$11$MLGLVrwbG4i/5Ml.R3JdQOISV0Ds7dKTS6tUmA1ublKbp1yrY49Ge",
+                            RoleId = new Guid("4822dcb1-6f0e-4a6b-8b3c-00dc6b7005fb"),
                             Status = 1L,
                             Username = "admin"
                         },
                         new
                         {
-                            AccountId = new Guid("7c5eba65-4e1b-445b-9c1b-ad6fab320d9e"),
+                            AccountId = new Guid("957cd581-5bb2-41d8-b967-35a251570195"),
                             AccountName = "Standard User",
-                            CreatedDate = new DateTime(2024, 9, 19, 5, 3, 28, 246, DateTimeKind.Utc).AddTicks(3389),
-                            Password = "$2a$11$B19NpkjIR7ay6i0gwYPWNeIdIelnl0qi4R.n4LBYDs0CPRYlsIcSe",
-                            RoleId = new Guid("f9e9ec17-fb99-45e4-a563-92ffbebd51bd"),
+                            CreatedDate = new DateTime(2024, 9, 26, 9, 53, 18, 78, DateTimeKind.Utc).AddTicks(5076),
+                            Password = "$2a$11$dTpKq2NumIFxRCW/cDNgl.IM0MMs5geBx1umOQ0chuFw2NMqGx9lW",
+                            RoleId = new Guid("a011908c-2e0e-4376-93a8-9025a6889eac"),
                             Status = 1L,
                             Username = "user"
                         });
@@ -101,6 +101,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<string>("BoardName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BoardStatus")
+                        .HasColumnType("int");
 
                     b.HasKey("BoardId");
 
@@ -224,12 +227,12 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("5bbe10c9-ed32-4ad8-98d8-520fe4090a7a"),
+                            RoleId = new Guid("4822dcb1-6f0e-4a6b-8b3c-00dc6b7005fb"),
                             RoleName = "Admin"
                         },
                         new
                         {
-                            RoleId = new Guid("f9e9ec17-fb99-45e4-a563-92ffbebd51bd"),
+                            RoleId = new Guid("a011908c-2e0e-4376-93a8-9025a6889eac"),
                             RoleName = "User"
                         });
                 });

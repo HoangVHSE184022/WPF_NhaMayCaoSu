@@ -12,5 +12,7 @@ namespace WPF_NhaMayCaoSu.Service.Interfaces
         Task<Board> GetBoardByNameAsync(string boardName);
         Task<int> GetTotalBoardsCountAsync();
         Task<Board> GetBoardByMacAddressAsync(String BoardMacAddress);
+
+        Task<Board> GetExistingBoardByName(string boardName);
     }
 }
