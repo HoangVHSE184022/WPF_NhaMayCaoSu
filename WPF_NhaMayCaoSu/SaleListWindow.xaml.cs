@@ -234,8 +234,10 @@ namespace WPF_NhaMayCaoSu
                         MessageBox.Show($"RFID {rfid} này chưa được tạo.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
-
-                    sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfid_id);
+                    else
+                    {
+                        sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfid_id);
+                    }
                 }
                 else
                 {
