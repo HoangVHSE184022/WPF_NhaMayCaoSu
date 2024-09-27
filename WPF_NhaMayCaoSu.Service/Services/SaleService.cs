@@ -51,9 +51,9 @@ namespace WPF_NhaMayCaoSu.Service.Services
             return await _repo.GetAllSaleAsync();
         }
 
-        public async Task<IEnumerable<Sale>> GetSalesCreatedWithinTimeRangeAsync(DateTime startTime, DateTime endTime)
+        public async Task<Sale> GetLatestSaleWithinTimeRangeAsync(DateTime startTime, DateTime endTime)
         {
-            return await _repo.GetSalesCreatedWithinTimeRangeAsync(startTime, endTime);
+            return await _repo.GetLatestSaleWithinTimeRangeAsync(startTime, endTime);
         }
 
     }
