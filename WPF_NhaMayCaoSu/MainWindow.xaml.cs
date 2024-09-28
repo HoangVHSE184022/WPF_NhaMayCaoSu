@@ -197,6 +197,7 @@ namespace WPF_NhaMayCaoSu
                     }
 
                     await _saleService.UpdateSaleAsync(sale);
+                    _sessionSaleList.Add(sale);
                 }
 
                 string imagePath = CaptureImageFromCamera(newestCamera, cameraIndex);
