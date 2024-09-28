@@ -3,6 +3,7 @@ using Emgu.CV.Structure;
 using Newtonsoft.Json;
 using Serilog;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.IO;
 using System.Windows;
@@ -213,72 +214,68 @@ namespace WPF_NhaMayCaoSu
                 float newValue = float.Parse(messages[1]);
                 string macaddress = messages[3];
 
-                Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfid);
                 Board board = await _boardService.GetBoardByMacAddressAsync(macaddress);
-
                 if (board == null)
                 {
                     MessageBox.Show($"Board chứa MacAddress {macaddress} này chưa được tạo.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
-                if (sale == null)
+                Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfid);
+                DateTime currentTime = DateTime.Now;
+
+                var latestSale = await _saleService.GetLatestSaleWithinTimeRangeAsync(currentTime.AddMinutes(-5), currentTime);
+                bool otherRfidSaleExists = latestSale != null && !string.Equals(latestSale.RFIDCode, rfid, StringComparison.OrdinalIgnoreCase);
+
+                if (sale == null || otherRfidSaleExists)
                 {
                     Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfid);
-                    RFID rfid_id = await _rfidService.GetRFIDByRFIDCodeAsync(rfid);
+                    RFID rfidEntity = await _rfidService.GetRFIDByRFIDCodeAsync(rfid);
 
                     if (customer == null)
                     {
                         MessageBox.Show($"RFID {rfid} này chưa được tạo.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
-                    else if (rfid_id.Status == 0)
+                    else if (rfidEntity.Status == 0)
                     {
                         MessageBox.Show($"RFID {rfid} này không khả dụng", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
                     else
                     {
-                        sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfid_id);
+                        sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfidEntity);
                     }
                 }
                 else
                 {
                     if (secondKey == "Weight")
                     {
-                        // Get sales created within the last 5 minutes
-                        DateTime now = DateTime.Now;
-                        var recentSales = await _saleService.GetSalesCreatedWithinTimeRangeAsync(now.AddMinutes(-5), now);
-
-                        // Check if any recent sale has a different RFID
-                        bool otherRfidSaleExists = recentSales.Any(s => s.RFIDCode != rfid);
-
+                        // Update the weight if sale already has a weight value
                         if (sale.ProductWeight.HasValue)
                         {
-                            DateTime lastEditedTime = sale.LastEditedTime ?? DateTime.MinValue;
-                            TimeSpan timeSinceLastEdit = DateTime.Now - lastEditedTime;
-                            if (otherRfidSaleExists || timeSinceLastEdit.TotalMinutes > 5)
+                            sale.LastEditedTime = DateTime.Now;
+
+                            // If the last update is within 5 minutes, update weight
+                            if ((currentTime - sale.LastEditedTime.Value).TotalMinutes <= 5)
                             {
-                                Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfid);
-                                RFID rfid_id = await _rfidService.GetRFIDByRFIDCodeAsync(rfid);
-                                sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfid_id);
+                                sale.ProductWeight += newValue;
                             }
                             else
                             {
-                                // If within 5 minutes and no other RFID sale, add the new weight
-                                sale.LastEditedTime = now;
-                                sale.ProductWeight += newValue;
+                                Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfid);
+                                sale = await CreateNewSale(customer, rfid, newValue, secondKey, sale.RFID);
                             }
                         }
                         else
                         {
-                            // First time getting the weight, just assign the value
-                            sale.LastEditedTime = now;
+                            sale.LastEditedTime = DateTime.Now;
                             sale.ProductWeight = newValue;
                         }
                     }
                     else if (secondKey == "Density")
                     {
+                        // Update the density only if it's within valid range and hasn't been set before
                         if (newValue > 100)
                         {
                             MessageBox.Show("Tỉ trọng không thể vượt quá 100 %", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -294,7 +291,6 @@ namespace WPF_NhaMayCaoSu
                     await _saleService.UpdateSaleAsync(sale);
                 }
 
-                // Capture and save image if path is valid
                 string imagePath = CaptureImageFromCamera(newestCamera, cameraIndex);
                 if (!string.IsNullOrEmpty(imagePath))
                 {
@@ -312,6 +308,7 @@ namespace WPF_NhaMayCaoSu
                 Log.Error(ex, $"Error processing message: {messageContent}");
             }
         }
+
 
 
         // Creates a new sale when an existing one is not found

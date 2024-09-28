@@ -13,6 +13,6 @@ namespace WPF_NhaMayCaoSu.Repository.IRepositories
         Task<int> GetTotalSalesCountAsync();
         Task<IEnumerable<Sale>> GetAllSaleAsync();
 
-        Task<IEnumerable<Sale>> GetSalesCreatedWithinTimeRangeAsync(DateTime startTime, DateTime endTime);
+        Task<Sale> GetLatestSaleWithinTimeRangeAsync(DateTime startTime, DateTime endTime);
     }
 }
