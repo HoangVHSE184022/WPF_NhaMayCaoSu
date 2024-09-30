@@ -127,7 +127,15 @@ namespace WPF_NhaMayCaoSu
                 {
                     MessageBox.Show($"Board chứa MacAddress {macaddress} này chưa được tạo.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
+                }   
+
+                RFID rfidEntity = await _rfidService.GetRFIDByRFIDCodeAsync(rfid);
+                  if (rfidEntity == null)
+                {
+                    MessageBox.Show($"RFID {rfid} này không khả dụng", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
                 }
+
 
                 Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfid);
                 DateTime currentTime = DateTime.Now;
@@ -138,16 +146,10 @@ namespace WPF_NhaMayCaoSu
                 if (sale == null || otherRfidSaleExists)
                 {
                     Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfid);
-                    RFID rfidEntity = await _rfidService.GetRFIDByRFIDCodeAsync(rfid);
 
                     if (customer == null)
                     {
                         MessageBox.Show($"RFID {rfid} này chưa được tạo.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-                    else if (rfidEntity.Status == 0)
-                    {
-                        MessageBox.Show($"RFID {rfid} này không khả dụng", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
                     else
