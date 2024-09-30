@@ -240,7 +240,7 @@ namespace WPF_NhaMayCaoSu
             {
                 newestBoard.BoardMode = newestBoard.BoardMode == 1 ? 2 : 1;
 
-                string topic = $"/{newestBoard.BoardMacAddress}/mode";
+                string topic = $"{newestBoard.BoardMacAddress}/mode";
 
 
                 var payloadObject = new { Mode = newestBoard.BoardMode };
@@ -264,7 +264,7 @@ namespace WPF_NhaMayCaoSu
             {
                 newestBoard.BoardMode = newestBoard.BoardMode == 1 ? 2 : 1;
 
-                string topic = $"/{newestBoard.BoardMacAddress}/mode";
+                string topic = $"{newestBoard.BoardMacAddress}/mode";
 
 
                 var payloadObject = new { Mode = newestBoard.BoardMode };
