@@ -73,7 +73,6 @@ namespace WPF_NhaMayCaoSu.Service.Services
         {
             string message = Encoding.UTF8.GetString(arg.ApplicationMessage.Payload);
             Debug.WriteLine($"Message received on topic {arg.ApplicationMessage.Topic}: {message}");
-            Debug.WriteLine($"Length out: {message.Length}");
 
             // Parse the message payload as JSON
             var jsonMessage = JsonConvert.DeserializeObject<JObject>(message);
