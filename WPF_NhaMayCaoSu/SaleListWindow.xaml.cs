@@ -223,6 +223,13 @@ namespace WPF_NhaMayCaoSu
 
                 Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfid);
                 DateTime currentTime = DateTime.Now;
+                RFID rfidEntity = await _rfidService.GetRFIDByRFIDCodeAsync(rfid);
+               if (rfidEntity == null)
+                {
+                    MessageBox.Show($"RFID {rfid} này không khả dụng", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
 
                 var latestSale = await _saleService.GetLatestSaleWithinTimeRangeAsync(currentTime.AddMinutes(-5), currentTime);
                 bool otherRfidSaleExists = latestSale != null && !string.Equals(latestSale.RFIDCode, rfid, StringComparison.OrdinalIgnoreCase);
@@ -230,16 +237,10 @@ namespace WPF_NhaMayCaoSu
                 if (sale == null || otherRfidSaleExists)
                 {
                     Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfid);
-                    RFID rfidEntity = await _rfidService.GetRFIDByRFIDCodeAsync(rfid);
 
                     if (customer == null)
                     {
                         MessageBox.Show($"RFID {rfid} này chưa được tạo.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-                    else if (rfidEntity.Status == 0)
-                    {
-                        MessageBox.Show($"RFID {rfid} này không khả dụng", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
                     else
