@@ -82,7 +82,7 @@ namespace WPF_NhaMayCaoSu
                     MessageBox.Show($"RFID {rfid} này chưa được tạo.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
-                else if (rfid.Status == 0)
+                else if (rfid == null)
                 {
                     MessageBox.Show($"RFID {rfid} này không khả dụng", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
