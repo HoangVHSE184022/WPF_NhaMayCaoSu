@@ -224,7 +224,7 @@ namespace WPF_NhaMayCaoSu
                 Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfid);
                 DateTime currentTime = DateTime.Now;
                 RFID rfidEntity = await _rfidService.GetRFIDByRFIDCodeAsync(rfid);
-               if (rfidEntity == null)
+                if (rfidEntity == null)
                 {
                     MessageBox.Show($"RFID {rfid} này không khả dụng", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
@@ -501,7 +501,7 @@ namespace WPF_NhaMayCaoSu
 
             Board boardTieuLy = await _boardService.GetBoardByNameAsync("Cân Tiểu Ly");
 
-            if (boardTa != null && boardTieuLy != null)
+            if (boardTa != null)
             {
                 if (boardTa.BoardMode == 2)
                 {
@@ -521,6 +521,9 @@ namespace WPF_NhaMayCaoSu
                         await _boardService.UpdateBoardAsync(boardTa);
                     }
                 }
+            }
+            if (boardTieuLy != null)
+            {
                 if (boardTieuLy.BoardMode == 2)
                 {
                     MessageBox.Show("Board Cân tiểu ly đang ở Mode 2 sẽ được chuyển sang Mode 1", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -540,10 +543,6 @@ namespace WPF_NhaMayCaoSu
                     }
                 }
             }
-
-
-
-
 
         }
     }

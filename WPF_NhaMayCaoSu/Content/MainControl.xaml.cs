@@ -188,12 +188,13 @@ namespace WPF_NhaMayCaoSu.Content
             Title = configCamera.Title;
         }
 
-        private void ShowButton_Click(object sender, RoutedEventArgs e)
+        private async void ShowButton_Click(object sender, RoutedEventArgs e)
         {
             if (!ValidCheck())
             {
                 return;
             }
+
 
             MainContentControl.Content = mainWindow.Content;
             mainWindow.OnWindowLoaded();
