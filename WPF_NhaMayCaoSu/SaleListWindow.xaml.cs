@@ -507,14 +507,40 @@ namespace WPF_NhaMayCaoSu
                     MessageBox.Show("Board Cân tạ đang ở Mode 2 sẽ được chuyển sang Mode 1", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     boardTa.BoardMode = 1;
                     await _boardService.UpdateBoardAsync(boardTa);
+
+                    string topic = $"{boardTa.BoardMacAddress}/mode";
+
+
+                    var payloadObject = new { Mode = boardTa.BoardMode };
+                    string payload = JsonConvert.SerializeObject(payloadObject);
+
+                    if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+                    {
+                        await _mqttClientService.PublishAsync(topic, payload);
+                        await _boardService.UpdateBoardAsync(boardTa);
+                    }
                 }
                 if (boardTieuLy.BoardMode == 2)
                 {
                     MessageBox.Show("Board Cân tiểu ly đang ở Mode 2 sẽ được chuyển sang Mode 1", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     boardTieuLy.BoardMode = 1;
                     await _boardService.UpdateBoardAsync(boardTieuLy);
+
+                    string topic = $"{boardTieuLy.BoardMacAddress}/mode";
+
+
+                    var payloadObject = new { Mode = boardTieuLy.BoardMode };
+                    string payload = JsonConvert.SerializeObject(payloadObject);
+
+                    if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+                    {
+                        await _mqttClientService.PublishAsync(topic, payload);
+                        await _boardService.UpdateBoardAsync(boardTieuLy);
+                    }
                 }
             }
+
+
 
 
 
