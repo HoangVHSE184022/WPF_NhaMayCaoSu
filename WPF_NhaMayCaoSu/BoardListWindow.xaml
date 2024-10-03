@@ -73,6 +73,9 @@
         <Button x:Name="AddBoardButton" Height="30" Margin="0,652,226,0" VerticalAlignment="Top" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="16" Background="#FFCACACA"  HorizontalAlignment="Right" Width="120" Click="AddBoardButton_Click"  >
             <TextBlock Text="Thêm" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
+        <Button x:Name="UnlockBoardButton" Height="30" Margin="0,652,560,0" VerticalAlignment="Top" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="16" Background="#FFCACACA"  HorizontalAlignment="Right" Width="121" Click="UnlockBoardButton_Click"  >
+            <TextBlock Text="Unlock" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
 
     </Grid>
 </Window>
