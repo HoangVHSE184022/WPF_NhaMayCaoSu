@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Serilog;
 using System.Diagnostics;
+using System.Net.Mail;
 using System.Windows;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
@@ -168,7 +169,41 @@ namespace WPF_NhaMayCaoSu
             LoadDataGridFromDatabase();
         }
 
-        private async void ModeBoardButton_Click(object sender, RoutedEventArgs e)
+        private async void UnlockBoardButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (boardDataGrid.SelectedItem == null)
+            {
+                MessageBox.Show("Vui lòng chọn một Board.", "Không có Board được chọn", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Get the selected board from the left DataGrid (from database)
+            Board selectedBoard = boardDataGrid.SelectedItem as Board;
+
+            if (selectedBoard == null)
+            {
+                MessageBox.Show("Board được chọn không hợp lệ.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            string topic = $"{selectedBoard.BoardMacAddress}/Save";
+            var payloadObject = new { Save = 1 };
+            string payload = JsonConvert.SerializeObject(payloadObject);
+            if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+            {
+                try
+                {
+                    await _mqttClientService.PublishAsync(topic, payload);
+                }
+                catch (Exception publishEx)
+                {
+                    Debug.WriteLine($"Error publishing message in catch block: {publishEx.Message}");
+                    Log.Error(publishEx, "Error publishing message in catch block");
+                }
+            }
+            }
+
+            private async void ModeBoardButton_Click(object sender, RoutedEventArgs e)
         {
             if (boardDataGrid.SelectedItem == null)
             {
