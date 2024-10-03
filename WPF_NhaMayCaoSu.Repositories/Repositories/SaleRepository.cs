@@ -79,7 +79,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         public async Task<IEnumerable<Sale>> GetAllSaleAsync()
         {
             _context = new();
-            return await _context.Sales
+            return await _context.Sales.Where(s => s.Status == 1)
                                  .ToListAsync();
         }
 

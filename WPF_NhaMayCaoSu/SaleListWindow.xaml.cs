@@ -491,6 +491,7 @@ namespace WPF_NhaMayCaoSu
             if (result == MessageBoxResult.Yes)
             {
                 _saleService.DeleteSaleAsync(selectedSale.SaleId);
+                LoadDataGrid();
                 MessageBox.Show("Đã xóa Sale thành công", "Thành công", MessageBoxButton.OK);
             }
         }
