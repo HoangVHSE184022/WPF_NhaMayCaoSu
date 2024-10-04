@@ -145,6 +145,10 @@ namespace WPF_NhaMayCaoSu
             {
                 EditBoardButton.Visibility = Visibility.Collapsed;
             }
+            else
+            {
+                EditBoardButton.Visibility = Visibility.Visible;
+            }
             // Load boards from database into the left DataGrid
             await LoadDataGridFromDatabase();
         }
