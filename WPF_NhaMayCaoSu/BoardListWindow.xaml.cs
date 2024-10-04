@@ -141,14 +141,10 @@ namespace WPF_NhaMayCaoSu
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (CurrentAccount?.Role?.RoleName != "Admin")
-            {
-                EditBoardButton.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                EditBoardButton.Visibility = Visibility.Visible;
-            }
+            //if (CurrentAccount?.Role?.RoleName != "Admin")
+            //{
+            //    EditBoardButton.Visibility = Visibility.Collapsed;
+            //}
             // Load boards from database into the left DataGrid
             await LoadDataGridFromDatabase();
         }
