@@ -94,7 +94,7 @@ namespace WPF_NhaMayCaoSu
                         CustomerName = CustomerNameTextBox.Text,
                         ProductWeight = float.Parse(WeightTextBox.Text),
                         ProductDensity = string.IsNullOrWhiteSpace(DensityTextBox.Text) ? 0 : float.Parse(DensityTextBox.Text),
-                        Status = short.Parse(StatusTextBox.Text),
+                        Status = 1,
                         RFIDCode = RFIDCodeTextBox.Text,
                         RFID_Id = rfid.RFID_Id,
                     };
@@ -139,12 +139,6 @@ namespace WPF_NhaMayCaoSu
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(StatusTextBox.Text) || (StatusTextBox.Text != "1" && StatusTextBox.Text != "0"))
-            {
-                MessageBox.Show("Trạng thái phải được điền là 1 (khả dụng) hoặc 0 (Không khả dụng).", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
-
             return true;
         }
 
@@ -152,7 +146,6 @@ namespace WPF_NhaMayCaoSu
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModeLabel.Content = SelectedSale == null ? Constants.ModeLabelAddSale : Constants.ModeLabelEditSale;
-            StatusTextBox.Text = "1";
             try
             {
                 if (!_mqttClientService.IsConnected)
@@ -187,7 +180,6 @@ namespace WPF_NhaMayCaoSu
             RFIDCodeTextBox.Text = sale.RFIDCode;
             WeightTextBox.Text = sale.ProductWeight?.ToString();
             DensityTextBox.Text = sale.ProductDensity?.ToString();
-            StatusTextBox.Text = sale.Status.ToString();
         }
 
         // Load Image Paths for the Sale

@@ -47,7 +47,6 @@ namespace WPF_NhaMayCaoSu
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModeLabel.Content = "Thêm RFID mới";
-            StatusTextBox.Text = "1";
 
             try
             {
@@ -75,7 +74,6 @@ namespace WPF_NhaMayCaoSu
             {
                 RFIDCodeTextBox.Text = SelectedRFID.RFIDCode.ToString();
                 ExpDateDatePicker.Text = SelectedRFID.ExpirationDate.ToString();
-                StatusTextBox.Text = SelectedRFID.Status.ToString();
                 CustomerComboBox.SelectedValue = SelectedRFID.CustomerId.ToString();
                 ModeLabel.Content = "Chỉnh sửa RFID";
             }
@@ -83,7 +81,6 @@ namespace WPF_NhaMayCaoSu
             if (_customer != null)
             {
                 ExpDateDatePicker.Text = DateTime.UtcNow.AddDays(30).ToString();
-                StatusTextBox.Text = "1";
                 CustomerComboBox.SelectedValue = _customer.CustomerId.ToString();
             }
 
@@ -153,8 +150,7 @@ namespace WPF_NhaMayCaoSu
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(RFIDCodeTextBox.Text) ||
-                string.IsNullOrWhiteSpace(ExpDateDatePicker.Text) ||
-                string.IsNullOrWhiteSpace(StatusTextBox.Text))
+                string.IsNullOrWhiteSpace(ExpDateDatePicker.Text))
             {
                 MessageBox.Show(Constants.ErrorMessageMissingFields, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -176,19 +172,12 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
-            // Validate Status (ensure it's either 0 or 1)
-            if (!short.TryParse(StatusTextBox.Text, out short status) || (status != 0 && status != 1))
-            {
-                MessageBox.Show(Constants.ErrorMessageInvalidStatus, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
             // Proceed to create or update the customer
             RFID rFID = new()
             {
                 RFIDCode = RFIDCodeTextBox.Text,
                 ExpirationDate = isUnlimited ? DateTime.UtcNow.AddYears(100) : DateTime.Parse(ExpDateDatePicker.Text),
-                Status = status,
+                Status = 1,
                 RFID_Id = SelectedRFID?.RFID_Id ?? Guid.NewGuid(),
                 CustomerId = Guid.Parse(CustomerComboBox.SelectedValue.ToString()),
             };

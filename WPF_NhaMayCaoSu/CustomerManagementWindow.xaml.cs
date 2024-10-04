@@ -31,26 +31,19 @@ namespace WPF_NhaMayCaoSu
         {
             // Validate required fields
             if (string.IsNullOrWhiteSpace(AccountNameTextBox.Text) ||
-                string.IsNullOrWhiteSpace(PhoneTextBox.Text) ||
-                string.IsNullOrWhiteSpace(StatusTextBox.Text))
+                string.IsNullOrWhiteSpace(PhoneTextBox.Text))
             {
                 MessageBox.Show(Constants.ErrorMessageMissingFields, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
 
-            // Validate Status (ensure it's either 0 or 1)
-            if (!short.TryParse(StatusTextBox.Text, out short status) || (status != 0 && status != 1))
-            {
-                MessageBox.Show(Constants.ErrorMessageInvalidStatus, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
 
             // Proceed to create or update the customer
             Customer customer = new()
             {
                 CustomerName = AccountNameTextBox.Text,
-                Status = status,
+                Status = 1,
                 CustomerId = SelectedCustomer?.CustomerId ?? Guid.NewGuid(),
                 Phone = PhoneTextBox.Text
             };
@@ -76,12 +69,10 @@ namespace WPF_NhaMayCaoSu
             //await _mqttClientService.SubscribeAsync("CreateRFID");
 
             //_mqttClientService.MessageReceived += OnMqttMessageReceived;
-            StatusTextBox.Text = "1";
 
             if (SelectedCustomer != null)
             {
                 AccountNameTextBox.Text = SelectedCustomer.CustomerName;
-                StatusTextBox.Text = SelectedCustomer.Status.ToString();
                 PhoneTextBox.Text = SelectedCustomer.Phone.ToString();
                 ModeLabel.Content = Constants.ModeLabelEditCustomer;
             }
