@@ -11,6 +11,9 @@ using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
+using OfficeOpenXml.Style;
+using Microsoft.Win32;
+using OfficeOpenXml;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -548,5 +551,78 @@ namespace WPF_NhaMayCaoSu
             }
 
         }
+
+        private async void Export_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var sales = await _saleService.GetAllSaleAsync();
+                var filteredSales = sales.ToList();
+
+                if (filteredSales.Count == 0)
+                {
+                    MessageBox.Show("Không có dữ liệu để xuất.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (var package = new ExcelPackage())
+                {
+                    var worksheet = package.Workbook.Worksheets.Add("Sales Data");
+
+                    var header = new List<string> { "Số thứ tự", "SaleId", "Tên khách hàng", "Tỉ trọng", "Cân nặng", "Thời gian chỉnh sửa cuối", "Mã RFID", "Hình ảnh (Tỉ trọng)", "Hình ảnh (Cân nặng)" };
+
+                    for (int i = 0; i < header.Count; i++)
+                    {
+                        worksheet.Cells[1, i + 1].Value = header[i];
+                        worksheet.Cells[1, i + 1].Style.Font.Bold = true;
+                        worksheet.Cells[1, i + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[1, i + 1].AutoFitColumns();
+                    }
+
+                    for (int i = 0; i < filteredSales.Count; i++)
+                    {
+                        var sale = filteredSales[i];
+
+                        var images = await _imageService.GetImagesBySaleIdAsync(sale.SaleId);
+                        string densityImageUrl = images.FirstOrDefault(img => img.ImageType == 2)?.ImagePath ?? "N/A";
+                        string weightImageUrl = images.FirstOrDefault(img => img.ImageType == 1)?.ImagePath ?? "N/A";
+
+                        worksheet.Cells[i + 2, 1].Value = i + 1;
+                        worksheet.Cells[i + 2, 2].Value = sale.SaleId;
+                        worksheet.Cells[i + 2, 3].Value = sale.CustomerName;
+                        worksheet.Cells[i + 2, 4].Value = sale.ProductDensity;
+                        worksheet.Cells[i + 2, 5].Value = sale.ProductWeight;
+                        worksheet.Cells[i + 2, 6].Value = sale.LastEditedTime.HasValue ? sale.LastEditedTime.Value.ToString("g") : "N/A";
+                        worksheet.Cells[i + 2, 7].Value = sale.RFIDCode;
+                        worksheet.Cells[i + 2, 8].Value = densityImageUrl;
+                        worksheet.Cells[i + 2, 9].Value = weightImageUrl;
+                    }
+
+                    for (int col = 1; col <= 9; col++)
+                    {
+                        worksheet.Column(col).AutoFit();
+                    }
+
+                    string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CaoSuData");
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+
+                    string filePath = Path.Combine(folderPath, $"SalesData_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx");
+
+                    File.WriteAllBytes(filePath, package.GetAsByteArray());
+
+                    MessageBox.Show($"Xuất file Excel thành công tại: {filePath}", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi trong quá trình xuất file Excel: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                Log.Error(ex, "Error exporting Sales to Excel");
+            }
+        }
+
     }
 }
