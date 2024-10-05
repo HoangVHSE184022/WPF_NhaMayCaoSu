@@ -1,4 +1,8 @@
 ﻿using Newtonsoft.Json;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using Serilog;
+using System.IO;
 using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
@@ -279,5 +283,72 @@ namespace WPF_NhaMayCaoSu
                 await LoadCurrentBoardModeAsync();
             }
         }
+
+        private async void Export_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var rfids = await _service.GetAllRFIDsAsync();
+                var filteredRFIDs = rfids.Where(r => r.Status == 1).ToList();
+
+                if (filteredRFIDs.Count == 0)
+                {
+                    MessageBox.Show("Không có dữ liệu để xuất.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (var package = new ExcelPackage())
+                {
+                    var worksheet = package.Workbook.Worksheets.Add("RFID Data");
+
+                    var header = new List<string> { "Số thứ tự", "RFID_Id", "Mã RFID", "Ngày tạo", "Ngày hết hạn", "Tên khách hàng" };
+
+                    for (int i = 0; i < header.Count; i++)
+                    {
+                        worksheet.Cells[1, i + 1].Value = header[i];
+                        worksheet.Cells[1, i + 1].Style.Font.Bold = true;
+                        worksheet.Cells[1, i + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[1, i + 1].AutoFitColumns();
+                    }
+
+
+                    for (int i = 0; i < filteredRFIDs.Count; i++)
+                    {
+                        var rfid = filteredRFIDs[i];
+
+                        worksheet.Cells[i + 2, 1].Value = i + 1;
+                        worksheet.Cells[i + 2, 2].Value = rfid.RFID_Id;
+                        worksheet.Cells[i + 2, 3].Value = rfid.RFIDCode;
+                        worksheet.Cells[i + 2, 4].Value = rfid.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss");
+                        worksheet.Cells[i + 2, 5].Value = rfid.ExpirationDate.ToString("yyyy-MM-dd HH:mm:ss");
+                        worksheet.Cells[i + 2, 6].Value = rfid.Customer?.CustomerName ?? "Không có khách hàng";
+                    }
+
+                    for (int col = 1; col <= header.Count; col++)
+                    {
+                        worksheet.Column(col).AutoFit();
+                    }
+
+                    string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CaoSuData");
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+
+                    string filePath = Path.Combine(folderPath, $"RFIDData_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx");
+
+                    File.WriteAllBytes(filePath, package.GetAsByteArray());
+
+                    MessageBox.Show($"Xuất file Excel thành công tại: {filePath}", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi trong quá trình xuất file Excel: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                Log.Error(ex, "Error exporting RFIDs to Excel");
+            }
+        }
+
     }
 }

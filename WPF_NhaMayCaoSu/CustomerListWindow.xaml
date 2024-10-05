@@ -42,5 +42,8 @@
         <Button x:Name="DeleteBtn" Margin="0,291,32,0" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="DeleteBtn_Click" HorizontalAlignment="Right" Width="121" Height="40" VerticalAlignment="Top" >
             <TextBlock Text="Xóa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
+        <Button x:Name="Export" Margin="0,365,32,0" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="Export_Click" HorizontalAlignment="Right" Width="121" Height="40" VerticalAlignment="Top" >
+            <TextBlock Text="Xuất file" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
     </Grid>
 </Window>

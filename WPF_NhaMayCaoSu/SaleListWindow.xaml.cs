@@ -1,9 +1,10 @@
 using Emgu.CV;
 using Emgu.CV.Structure;
 using Newtonsoft.Json;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using Serilog;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.IO;
 using System.Windows;
@@ -11,9 +12,6 @@ using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
-using OfficeOpenXml.Style;
-using Microsoft.Win32;
-using OfficeOpenXml;
 
 namespace WPF_NhaMayCaoSu
 {

@@ -88,8 +88,8 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             _context = new();
             return await _context.Sales
                                  .Where(s => s.LastEditedTime >= startTime && s.LastEditedTime <= endTime)
-                                 .OrderByDescending(s => s.LastEditedTime)  
-                                 .FirstOrDefaultAsync(); 
+                                 .OrderByDescending(s => s.LastEditedTime)
+                                 .FirstOrDefaultAsync();
         }
 
     }

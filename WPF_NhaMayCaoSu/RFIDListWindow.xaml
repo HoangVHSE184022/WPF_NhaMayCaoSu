@@ -43,5 +43,8 @@
         <Button x:Name="ChangeCanTieuLyMode" HorizontalAlignment="Right" Height="40" Margin="0,527,32,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="18" Click="ChangeCanTieuLyMode_Click" >
             <TextBlock Text="Chuyển Mode" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
+        <Button x:Name="Export" HorizontalAlignment="Right" Height="40" Margin="0,590,32,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="Export_Click" >
+            <TextBlock Text="Xuất file" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
     </Grid>
 </Window>

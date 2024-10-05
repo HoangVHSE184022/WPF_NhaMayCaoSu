@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using Serilog;
+using System.IO;
+using System.Windows;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
@@ -220,5 +224,69 @@ namespace WPF_NhaMayCaoSu
                 MessageBox.Show("Đã xóa khách hàng thành công", "Thành công", MessageBoxButton.OK);
             }
         }
+
+        private async void Export_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var customers = await _service.GetAllCustomers(_currentPage, _pageSize);
+                var filteredCustomers = customers.Where(c => c.Status == 1).ToList();
+
+                if (filteredCustomers.Count == 0)
+                {
+                    MessageBox.Show("Không có dữ liệu để xuất.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (var package = new ExcelPackage())
+                {
+                    var worksheet = package.Workbook.Worksheets.Add("Customers Data");
+
+                    var header = new List<string> { "Số thứ tự", "Tên khách hàng", "Số điện thoại", "Số lượng RFID" };
+
+                    for (int i = 0; i < header.Count; i++)
+                    {
+                        worksheet.Cells[1, i + 1].Value = header[i];
+                        worksheet.Cells[1, i + 1].Style.Font.Bold = true;
+                        worksheet.Cells[1, i + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[1, i + 1].AutoFitColumns();
+                    }
+
+                    for (int i = 0; i < filteredCustomers.Count; i++)
+                    {
+                        var customer = filteredCustomers[i];
+
+                        worksheet.Cells[i + 2, 1].Value = i + 1;
+                        worksheet.Cells[i + 2, 2].Value = customer.CustomerName;
+                        worksheet.Cells[i + 2, 3].Value = customer.Phone;
+                        worksheet.Cells[i + 2, 4].Value = customer.RFIDCount;
+                    }
+
+                    for (int col = 1; col <= 4; col++)
+                    {
+                        worksheet.Column(col).AutoFit();
+                    }
+
+                    string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CaoSuData");
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+
+                    string filePath = Path.Combine(folderPath, $"CustomersData_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx");
+
+                    File.WriteAllBytes(filePath, package.GetAsByteArray());
+
+                    MessageBox.Show($"Xuất file Excel thành công tại: {filePath}", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi trong quá trình xuất file Excel: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                Log.Error(ex, "Error exporting Customers to Excel");
+            }
+        }
+
     }
 }
