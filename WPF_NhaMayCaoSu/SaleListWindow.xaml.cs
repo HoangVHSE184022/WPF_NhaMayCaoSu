@@ -492,6 +492,8 @@ namespace WPF_NhaMayCaoSu
             {
                 _saleService.DeleteSaleAsync(selectedSale.SaleId);
                 LoadDataGrid();
+                _mainWindow._sessionSaleList.Remove(selectedSale);
+                _mainWindow.LoadDataGrid();
                 MessageBox.Show("Đã xóa Sale thành công", "Thành công", MessageBoxButton.OK);
             }
         }
