@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Serilog;
 using System.Diagnostics;
-using System.Net.Mail;
 using System.Windows;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
@@ -201,9 +200,9 @@ namespace WPF_NhaMayCaoSu
                     Log.Error(publishEx, "Error publishing message in catch block");
                 }
             }
-            }
+        }
 
-            private async void ModeBoardButton_Click(object sender, RoutedEventArgs e)
+        private async void ModeBoardButton_Click(object sender, RoutedEventArgs e)
         {
             if (boardDataGrid.SelectedItem == null)
             {
