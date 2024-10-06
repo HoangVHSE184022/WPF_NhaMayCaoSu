@@ -91,34 +91,20 @@ namespace WPF_NhaMayCaoSu
             Window_Loaded(this, null);
         }
 
-        // Initializes the data grid and loads sales data
         private async void LoadDataGrid()
         {
             try
             {
-                var allSales = await _saleService.GetAllSaleAsync();
+                IEnumerable<Sale> allSales = await _saleService.GetAllSaleAsync(_currentPage, _pageSize);
 
-                var sortedSales = allSales
-                    .OrderByDescending(s => s.LastEditedTime)
-                    .ThenByDescending(s => s.Status)
-                    .ThenBy(s => s.CustomerName)
-                    .ToList();
+                List<Sale> salesList = allSales.ToList();
 
-                int totalSalesCount = sortedSales.Count;
+                int totalSalesCount = salesList.Count;
                 _totalPages = (int)Math.Ceiling((double)totalSalesCount / _pageSize);
-
-                var paginatedSales = sortedSales
-                    .Skip((_currentPage - 1) * _pageSize)
-                    .Take(_pageSize)
-                    .ToList();
-
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    SaleDataGrid.ItemsSource = paginatedSales;
-                    PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
-                    PreviousPageButton.IsEnabled = _currentPage > 1;
-                    NextPageButton.IsEnabled = _currentPage < _totalPages;
-                });
+                SaleDataGrid.ItemsSource = salesList;
+                PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
+                PreviousPageButton.IsEnabled = _currentPage > 1;
+                NextPageButton.IsEnabled = _currentPage < _totalPages;
             }
             catch (Exception ex)
             {
@@ -126,6 +112,7 @@ namespace WPF_NhaMayCaoSu
                 Log.Error(ex, "Error loading sales data");
             }
         }
+
 
 
 

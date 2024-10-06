@@ -2,6 +2,7 @@
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using Serilog;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using WPF_NhaMayCaoSu.Repository.Models;
@@ -35,30 +36,28 @@ namespace WPF_NhaMayCaoSu
 
         private async void LoadDataGrid()
         {
-            var allRFIDs = await _service.GetAllRFIDsAsync();
+            try
+            {
+                IEnumerable<RFID> paginatedRFIDs = await _service.GetAllRFIDsAsync(_currentPage, _pageSize);
 
-            var sortedRFIDs = allRFIDs
-                .OrderByDescending(r => r.CreatedDate)
-                .ToList();
+                List<RFID> rfid = paginatedRFIDs.ToList();
 
+                int totalRFIDsCount = rfid.Count;
+                _totalPages = (int)Math.Ceiling((double)totalRFIDsCount / _pageSize);
 
-            int totalRFIDsCount = sortedRFIDs.Count;
-            _totalPages = (int)Math.Ceiling((double)totalRFIDsCount / _pageSize);
-
-
-            var paginatedRFIDs = sortedRFIDs
-                .Skip((_currentPage - 1) * _pageSize)
-                .Take(_pageSize)
-                .ToList();
-
-            RFIDDataGrid.ItemsSource = null;
-            RFIDDataGrid.Items.Clear();
-            RFIDDataGrid.ItemsSource = paginatedRFIDs;
-
-            PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
-
-            PreviousPageButton.IsEnabled = _currentPage > 1;
-            NextPageButton.IsEnabled = _currentPage < _totalPages;
+                RFIDDataGrid.ItemsSource = null;
+                RFIDDataGrid.Items.Clear();
+                RFIDDataGrid.ItemsSource = rfid;
+                PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
+                PreviousPageButton.IsEnabled = _currentPage > 1;
+                NextPageButton.IsEnabled = _currentPage < _totalPages;
+            }
+            catch (Exception ex)
+            {
+                // Handle errors (consider logging)
+                Debug.WriteLine($"Error loading RFIDs: {ex.Message}");
+                Log.Error(ex, "Error loading RFIDs");
+            }
         }
 
 

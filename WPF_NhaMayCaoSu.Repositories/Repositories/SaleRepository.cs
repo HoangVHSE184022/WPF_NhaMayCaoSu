@@ -32,7 +32,8 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             _context = new();
 
             return await _context.Sales
-                                 //                                .Where(x => x.Status == 1)
+                                 .OrderByDescending(s => s.LastEditedTime)
+                                 .ThenBy(s => s.CustomerName)
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)
                                  .Where(c => c.Status == 1)

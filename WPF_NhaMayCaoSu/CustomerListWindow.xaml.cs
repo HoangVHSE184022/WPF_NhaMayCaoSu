@@ -62,7 +62,6 @@ namespace WPF_NhaMayCaoSu
 
         private async void LoadDataGrid()
         {
-            var sales = await _service.GetAllCustomers(_currentPage, _pageSize);
             int totalCustomerCount = await _service.GetTotalCustomersCountAsync();
             _totalPages = (int)Math.Ceiling((double)totalCustomerCount / _pageSize);
 
