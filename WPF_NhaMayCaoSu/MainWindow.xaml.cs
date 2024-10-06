@@ -223,7 +223,7 @@ namespace WPF_NhaMayCaoSu
 
         private async Task<Sale> CreateNewSale(Customer customer, string rfid, float value, string valueType, RFID rfid_id)
         {
-            var sale = new Sale
+            Sale sale = new Sale
             {
                 SaleId = Guid.NewGuid(),
                 RFIDCode = rfid,
