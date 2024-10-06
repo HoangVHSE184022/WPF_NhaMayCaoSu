@@ -219,7 +219,7 @@ namespace WPF_NhaMayCaoSu
                 }
 
 
-                var latestSale = await _saleService.GetLatestSaleWithinTimeRangeAsync(currentTime.AddMinutes(-5), currentTime);
+                Sale latestSale = await _saleService.GetLatestSaleWithinTimeRangeAsync(currentTime.AddMinutes(-5), currentTime);
                 bool otherRfidSaleExists = latestSale != null && !string.Equals(latestSale.RFIDCode, rfid, StringComparison.OrdinalIgnoreCase);
 
                 if (sale == null || otherRfidSaleExists)
@@ -303,7 +303,7 @@ namespace WPF_NhaMayCaoSu
         // Creates a new sale when an existing one is not found
         private async Task<Sale> CreateNewSale(Customer customer, string rfid, float value, string valueType, RFID rfid_id)
         {
-            var sale = new Sale
+            Sale sale = new Sale
             {
                 SaleId = Guid.NewGuid(),
                 RFIDCode = rfid,
@@ -441,7 +441,7 @@ namespace WPF_NhaMayCaoSu
             }
             else
             {
-                var sales = await _saleService.GetAllSaleAsync(1, 10);
+                IEnumerable<Sale> sales = await _saleService.GetAllSaleAsync(1, 10);
                 SaleDataGrid.ItemsSource = sales.Where(s => s.CustomerName.ToLower().Contains(searchTerm));
             }
         }
@@ -466,10 +466,9 @@ namespace WPF_NhaMayCaoSu
             viewImagesWindow.ShowDialog();
         }
 
-        private void DeleteBtn_Click(object sender, RoutedEventArgs e)
+        private async void DeleteBtn_Click(object sender, RoutedEventArgs e)
         {
             Sale selectedSale = SaleDataGrid.SelectedItem as Sale;
-
             if (selectedSale == null)
             {
                 MessageBox.Show("Vui là chọn một Sale để xóa.", "Chọn Sale", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -478,7 +477,7 @@ namespace WPF_NhaMayCaoSu
             MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn xóa Sale này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
             if (result == MessageBoxResult.Yes)
             {
-                _saleService.DeleteSaleAsync(selectedSale.SaleId);
+                await _saleService.DeleteSaleAsync(selectedSale.SaleId);
                 LoadDataGrid();
                 _mainWindow._sessionSaleList.Remove(selectedSale);
                 _mainWindow.LoadDataGrid();

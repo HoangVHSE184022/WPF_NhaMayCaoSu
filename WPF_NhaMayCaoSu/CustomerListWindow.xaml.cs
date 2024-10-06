@@ -17,6 +17,7 @@ namespace WPF_NhaMayCaoSu
     {
 
         private ICustomerService _service = new CustomerService();
+        private IRFIDService _rfidService = new RFIDService();
         private int _currentPage = 1;
         private int _pageSize = 12;
         private int _totalPages;
@@ -206,10 +207,10 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
-        private void DeleteBtn_Click(object sender, RoutedEventArgs e)
+        private async void DeleteBtn_Click(object sender, RoutedEventArgs e)
         {
             Customer selected = CustomerDataGrid.SelectedItem as Customer;
-            if (selected != null)
+            if (selected == null)
             {
                 MessageBox.Show("Vui lòng chọn 1 Khách hàng để xóa!", "Chọn khách hàng", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -219,8 +220,26 @@ namespace WPF_NhaMayCaoSu
             MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn xóa khách hàng này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
             if (result == MessageBoxResult.Yes)
             {
-                service.DeleteCustomer(selected.CustomerId);
-                MessageBox.Show("Đã xóa khách hàng thành công", "Thành công", MessageBoxButton.OK);
+                try
+                {
+                    IEnumerable<RFID> rfidList = await _rfidService.GetRFIDsByCustomerIdAsync(selected.CustomerId);
+                    foreach (RFID rfid in rfidList)
+                    {
+                        await _rfidService.DeleteRFIDAsync(rfid.RFID_Id);
+                    }
+
+                    await _service.DeleteCustomer(selected.CustomerId);
+
+                    LoadDataGrid();
+                    MessageBox.Show("Đã xóa khách hàng và các RFID liên quan thành công", "Thành công", MessageBoxButton.OK);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Đã xảy ra lỗi khi xóa khách hàng hoặc RFID: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                //await service.DeleteCustomer(selected.CustomerId);
+                //LoadDataGrid();
+                //MessageBox.Show("Đã xóa khách hàng thành công", "Thành công", MessageBoxButton.OK);
             }
         }
 

@@ -59,6 +59,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         {
             _context = new();
             return await _context.Sales
+                                 .Where(c => c.Status == 1)
                                  .Include(s => s.RFID)
                                  .FirstOrDefaultAsync(x => x.RFIDCode == RFIDCode && x.ProductDensity == 0);
         }
