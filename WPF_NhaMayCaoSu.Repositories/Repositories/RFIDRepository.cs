@@ -22,6 +22,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
             return await _context.RFIDs
                                  .Include("Customer")
+                                 .OrderByDescending(r => r.CreatedDate)
                                  .Where(r => r.Status == 1)
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)

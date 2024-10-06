@@ -112,14 +112,9 @@ namespace WPF_NhaMayCaoSu
 
         private async void LoadDataGrid()
         {
-            // Retrieve the boards from the database using BoardService
             IEnumerable<Board> boards = await _boardService.GetAllBoardsAsync(1, 10);
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                boardDataGrid.ItemsSource = null; // Clear the DataGrid
-                boardDataGrid.ItemsSource = boards; // Bind the DataGrid to the retrieved boards
-            });
+            boardDataGrid.ItemsSource = null;
+            boardDataGrid.ItemsSource = boards;
         }
 
         private void MqttService_BoardReceived(object sender, EventArgs e)
