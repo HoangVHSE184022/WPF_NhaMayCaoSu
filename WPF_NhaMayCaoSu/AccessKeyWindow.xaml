@@ -9,10 +9,10 @@
     <Grid>
         <Label Name="StatusLabel" Content="Trạng thái: ... " Width="571" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="18" Margin="10,67,0,0"/>
 
-        <Button Name="ContinueButton" Content="Tiếp tục" Width="100" Height="30" VerticalAlignment="Top" Margin="481,345,0,0" HorizontalAlignment="Left" FontSize="18" />
-        <Button x:Name="ExitButton" Content="Thoát" Width="68" Height="30" VerticalAlignment="Top" Margin="10,345,0,0" HorizontalAlignment="Left" FontSize="18" />
+        <Button Name="ContinueButton" Content="Tiếp tục" Width="100" Height="30" VerticalAlignment="Top" Margin="481,345,0,0" HorizontalAlignment="Left" FontSize="18" Click="ContinueButton_Click" />
+        <Button x:Name="ExitButton" Content="Thoát" Width="68" Height="30" VerticalAlignment="Top" Margin="10,345,0,0" HorizontalAlignment="Left" FontSize="18" Click="ExitButton_Click" />
         <TextBox Name="KeyTextBox" Width="363" Height="30" VerticalAlignment="Top" Margin="113,142,0,0" HorizontalAlignment="Left" FontFamily="Montserrat" FontSize="18"/>
-        <Button x:Name="ConfirmButton" Content="Xác nhận" Width="88" Height="30" VerticalAlignment="Top" Margin="487,142,0,0" HorizontalAlignment="Left" FontSize="18" />
+        <Button x:Name="ConfirmButton" Content="Xác nhận" Width="88" Height="30" VerticalAlignment="Top" Margin="487,142,0,0" HorizontalAlignment="Left" FontSize="18" Click="ConfirmButton_Click" />
         <Label Content="License key: " Width="103" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="18" Margin="10,142,0,0"/>
         <Label x:Name="ExpLabel" Content="Thời hạn dùng thử: " Width="571" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="18" Margin="10,219,0,0"/>
         <Label x:Name="LicenseKeyLabel" Width="462" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="18" Margin="113,142,0,0"/>

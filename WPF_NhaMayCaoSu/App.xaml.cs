@@ -8,6 +8,7 @@ using WPF_NhaMayCaoSu.Repository.IRepositories;
 using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Service.Trial;
 
 
 namespace WPF_NhaMayCaoSu
@@ -30,6 +31,7 @@ namespace WPF_NhaMayCaoSu
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
                 // Log the unhandled exception
@@ -43,8 +45,10 @@ namespace WPF_NhaMayCaoSu
                 Log.Error(args.Exception, "An unhandled UI exception occurred");
                 args.Handled = true;
             };
+
             try
             {
+                TrialManager _trialManager = new();
                 ServiceCollection serviceCollection = new ServiceCollection();
                 ConfigureServices(serviceCollection);
 
@@ -52,8 +56,24 @@ namespace WPF_NhaMayCaoSu
 
                 InitializeDatabase();
 
-                BrokerWindow brokerWindow = _serviceProvider.GetRequiredService<BrokerWindow>();
-                //mainWindow.Show();
+                // Always show AccessKeyWindow to notify user about activation
+                if (!_trialManager.HasTrialStarted())
+                {
+                    _trialManager.StartTrial();
+                }
+
+                var accessKeyWindow = _serviceProvider.GetRequiredService<AccessKeyWindow>();
+                var result = accessKeyWindow.ShowDialog();
+
+                if (result != true && _trialManager.IsTrialExpired())
+                {
+                    // If the trial is expired and the user didn't continue, close the app
+                    Application.Current.Shutdown();
+                }
+
+                // If the trial is not expired or already activated, proceed to show the main window
+                var brokerWindow = _serviceProvider.GetRequiredService<BrokerWindow>();
+                brokerWindow.Show();
             }
             catch (Exception ex)
             {
@@ -61,6 +81,7 @@ namespace WPF_NhaMayCaoSu
                 Shutdown();
             }
         }
+
 
 
 
