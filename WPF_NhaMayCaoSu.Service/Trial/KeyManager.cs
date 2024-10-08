@@ -1,26 +1,18 @@
 ﻿using Microsoft.Win32;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace WPF_NhaMayCaoSu.Service.Trial
 {
     public class KeyManager
     {
-        private const string ValidHash = "AmazingTechCaoSuHash";
-        private const string RegistryKeyPath = @"Software\YourAppName";
+        private const string ValidKey = "AmazingTechCaosuActivate";  // Define the valid plain key
+        private const string RegistryKeyPath = @"Software\CaoSuApp";
         private const string ActivationKey = "ActivationKey";
         private const string IsActivatedKey = "IsActivated";
 
-        // Validate the entered key using SHA256 hash
+        // Validate the entered key by comparing it with the plain key
         public bool ValidateKey(string input)
         {
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                var hashBytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
-                var hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
-
-                return hash == ValidHash;
-            }
+            return input == ValidKey;  // Compare input key with the valid plain key
         }
 
         // Save the activation key and activation status
