@@ -23,5 +23,10 @@ namespace WPF_NhaMayCaoSu
         {
             InitializeComponent();
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            LicenseKeyLabel.Visibility = Visibility.Collapsed;
+        }
     }
 }
