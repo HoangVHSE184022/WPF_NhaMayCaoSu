@@ -62,7 +62,7 @@ namespace WPF_NhaMayCaoSu
                     _trialManager.StartTrial();
                 }
 
-                var accessKeyWindow = _serviceProvider.GetRequiredService<AccessKeyWindow>();
+                AccessKeyWindow accessKeyWindow = new();
                 var result = accessKeyWindow.ShowDialog();
 
                 if (result != true && _trialManager.IsTrialExpired())
