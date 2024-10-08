@@ -1,11 +1,12 @@
 ﻿using Microsoft.Win32;
+using Serilog;
 using System;
 
 namespace WPF_NhaMayCaoSu.Service.Trial
 {
     public class TrialManager
     {
-        private const string RegistryKeyPath = @"Software\YourAppName";  // Update with actual app name
+        private const string RegistryKeyPath = @"Software\CaoSuApp";  // Update with actual app name
         private const string StartDateKey = "StartDate";
         private const int TrialDays = 30;
 
@@ -31,12 +32,15 @@ namespace WPF_NhaMayCaoSu.Service.Trial
                     var startDateString = key.GetValue(StartDateKey) as string;
                     if (DateTime.TryParse(startDateString, out DateTime startDate))
                     {
-                        return (DateTime.Now - startDate).TotalDays > TrialDays;
+                        double totalDays = (DateTime.Now - startDate).TotalDays;
+                        Log.Information($"Trial Start Date: {startDate}, Days Passed: {totalDays}, Trial Days: {TrialDays}");
+                        return totalDays > TrialDays;
                     }
                 }
             }
             return false;
         }
+
 
         // Get the number of remaining trial days
         public int GetRemainingTrialDays()
