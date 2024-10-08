@@ -46,7 +46,6 @@ namespace WPF_NhaMayCaoSu
                 LicenseKeyLabel.Visibility = Visibility.Visible;
                 LicenseKeyLabel.Content = enteredKey; // Display the entered key
                 this.DialogResult = true;
-                Close();
             }
             else
             {
