@@ -1,0 +1,17 @@
+﻿<Window x:Class="WPF_NhaMayCaoSu.AccessKeyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
+        mc:Ignorable="d"
+        Title="AccessKeyWindow" Height="200" Width="400" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TextBlock Text="Enter your key:" VerticalAlignment="Top" Margin="10,27,0,0" HorizontalAlignment="Left" Width="136" FontSize="20" FontFamily="Montserrat"/>
+
+        <TextBox Name="KeyTextBox" Width="380" Height="51" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Montserrat" FontSize="20"/>
+
+        <Button Name="SubmitButton" Content="Xác Nhận" Width="100" Height="30" VerticalAlignment="Top" Margin="290,127,0,0" HorizontalAlignment="Left" FontSize="20" />
+
+    </Grid>
+</Window>
