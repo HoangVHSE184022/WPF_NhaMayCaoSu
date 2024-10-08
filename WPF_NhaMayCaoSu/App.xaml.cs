@@ -77,7 +77,6 @@ namespace WPF_NhaMayCaoSu
 
                 // If the app is activated or the trial is valid, show the main window
                 var brokerWindow = _serviceProvider.GetRequiredService<BrokerWindow>();
-                brokerWindow.Show();
             }
             catch (Exception ex)
             {
