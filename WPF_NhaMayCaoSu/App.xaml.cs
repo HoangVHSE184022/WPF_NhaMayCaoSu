@@ -47,7 +47,8 @@ namespace WPF_NhaMayCaoSu
             try
             {
                 TrialManager _trialManager = new();
-                KeyManager _keyManager = new();  // Add this to check activation status
+                KeyManager _keyManager = new(); // Add KeyManager to check activation status
+
                 ServiceCollection serviceCollection = new ServiceCollection();
                 ConfigureServices(serviceCollection);
 
@@ -55,25 +56,22 @@ namespace WPF_NhaMayCaoSu
 
                 InitializeDatabase();
 
-                // Always show AccessKeyWindow to notify user about activation only if the app is not activated
+                // Check if the app is already activated before showing AccessKeyWindow
                 if (!_keyManager.IsActivated())
                 {
-                    if (!_trialManager.HasTrialStarted())
-                    {
-                        _trialManager.StartTrial();
-                    }
-
+                    // If not activated, show AccessKeyWindow for key input
                     AccessKeyWindow accessKeyWindow = new();
                     var result = accessKeyWindow.ShowDialog();
 
                     if (result != true && _trialManager.IsTrialExpired())
                     {
-                        // If the trial is expired and the user didn't continue, close the app
+                        // If the trial is expired and the user didn't activate, close the app
                         Application.Current.Shutdown();
+                        return;
                     }
                 }
 
-                // If activated or trial is not expired, proceed to show the main window
+                // If the app is activated or trial is valid, proceed to show the main window
                 var brokerWindow = _serviceProvider.GetRequiredService<BrokerWindow>();
                 brokerWindow.Show();
             }
@@ -83,6 +81,7 @@ namespace WPF_NhaMayCaoSu
                 Shutdown();
             }
         }
+
 
 
 
