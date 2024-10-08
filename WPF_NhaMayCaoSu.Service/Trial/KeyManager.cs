@@ -20,8 +20,8 @@ namespace WPF_NhaMayCaoSu.Service.Trial
         {
             using (var regKey = Registry.CurrentUser.CreateSubKey(RegistryKeyPath))
             {
-                regKey.SetValue(IsActivatedKey, true);  // Save activation status
-                regKey.SetValue(ActivationKey, key);    // Save activation key
+                regKey.SetValue(IsActivatedKey, 1);  // Store activation status as 1 (true)
+                regKey.SetValue(ActivationKey, key);  // Save the activation key
             }
         }
 
@@ -32,10 +32,20 @@ namespace WPF_NhaMayCaoSu.Service.Trial
             {
                 if (regKey != null)
                 {
-                    return regKey.GetValue(IsActivatedKey) as bool? ?? false;
+                    var isActivatedValue = regKey.GetValue(IsActivatedKey);
+
+                    // Handle case where the value is stored as an int (DWORD) or string
+                    if (isActivatedValue is int)  // If it's stored as an int (1 = activated)
+                    {
+                        return (int)isActivatedValue == 1;
+                    }
+                    else if (isActivatedValue is string)  // If it's stored as a string
+                    {
+                        return bool.TryParse(isActivatedValue as string, out bool isActivated) && isActivated;
+                    }
                 }
             }
-            return false;
+            return false;  // Default to false if the key is not found or invalid
         }
 
         // Retrieve the stored license key
