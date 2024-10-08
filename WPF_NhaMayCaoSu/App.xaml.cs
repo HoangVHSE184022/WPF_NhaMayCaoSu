@@ -56,7 +56,7 @@ namespace WPF_NhaMayCaoSu
                 InitializeDatabase();
 
                 // Check if the app is activated before showing AccessKeyWindow
-                if (!_keyManager.IsActivated())   // Check if the app is NOT activated
+                if (!_keyManager.IsActivated())
                 {
                     // If the trial hasn't started, start it
                     if (!_trialManager.HasTrialStarted())
@@ -64,16 +64,19 @@ namespace WPF_NhaMayCaoSu
                         _trialManager.StartTrial();
                     }
 
-                    // Show the AccessKeyWindow
+                    // Show the AccessKeyWindow and await the result
                     AccessKeyWindow accessKeyWindow = new();
-                    var result = accessKeyWindow.ShowDialog();
+                    bool? result = accessKeyWindow.ShowDialog();
 
+                    // Only shutdown if the trial is expired and the user chooses not to continue
                     if (result != true && _trialManager.IsTrialExpired())
                     {
-                        // If the trial is expired and the user didn't continue, close the app
+                        MessageBox.Show("Thời gian dùng thử đã hết. Ứng dụng sẽ đóng.");
+                        // Trial expired and user didn't continue, so close the app
                         Application.Current.Shutdown();
                     }
                 }
+
 
                 // If the app is activated or the trial is valid, show the main window
                 var brokerWindow = _serviceProvider.GetRequiredService<BrokerWindow>();

@@ -61,8 +61,8 @@ namespace WPF_NhaMayCaoSu
             }
             else
             {
-                this.DialogResult = true;
-                Close();
+                this.DialogResult = true; // This will close the window but not the app
+                Close();  // Just close the current AccessKeyWindow
             }
         }
 
