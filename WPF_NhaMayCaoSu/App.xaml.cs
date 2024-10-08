@@ -34,14 +34,12 @@ namespace WPF_NhaMayCaoSu
 
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
-                // Log the unhandled exception
                 Exception ex = (Exception)args.ExceptionObject;
                 Log.Error(ex, "An unhandled exception occurred");
             };
 
             DispatcherUnhandledException += (sender, args) =>
             {
-                // Log UI thread exceptions
                 Log.Error(args.Exception, "An unhandled UI exception occurred");
                 args.Handled = true;
             };
@@ -49,6 +47,7 @@ namespace WPF_NhaMayCaoSu
             try
             {
                 TrialManager _trialManager = new();
+                KeyManager _keyManager = new();  // Add this to check activation status
                 ServiceCollection serviceCollection = new ServiceCollection();
                 ConfigureServices(serviceCollection);
 
@@ -56,22 +55,25 @@ namespace WPF_NhaMayCaoSu
 
                 InitializeDatabase();
 
-                // Always show AccessKeyWindow to notify user about activation
-                if (!_trialManager.HasTrialStarted())
+                // Always show AccessKeyWindow to notify user about activation only if the app is not activated
+                if (!_keyManager.IsActivated())
                 {
-                    _trialManager.StartTrial();
+                    if (!_trialManager.HasTrialStarted())
+                    {
+                        _trialManager.StartTrial();
+                    }
+
+                    AccessKeyWindow accessKeyWindow = new();
+                    var result = accessKeyWindow.ShowDialog();
+
+                    if (result != true && _trialManager.IsTrialExpired())
+                    {
+                        // If the trial is expired and the user didn't continue, close the app
+                        Application.Current.Shutdown();
+                    }
                 }
 
-                AccessKeyWindow accessKeyWindow = new();
-                var result = accessKeyWindow.ShowDialog();
-
-                if (result != true && _trialManager.IsTrialExpired())
-                {
-                    // If the trial is expired and the user didn't continue, close the app
-                    Application.Current.Shutdown();
-                }
-
-                // If the trial is not expired or already activated, proceed to show the main window
+                // If activated or trial is not expired, proceed to show the main window
                 var brokerWindow = _serviceProvider.GetRequiredService<BrokerWindow>();
                 brokerWindow.Show();
             }
@@ -81,6 +83,7 @@ namespace WPF_NhaMayCaoSu
                 Shutdown();
             }
         }
+
 
 
 
