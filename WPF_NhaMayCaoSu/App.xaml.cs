@@ -47,8 +47,7 @@ namespace WPF_NhaMayCaoSu
             try
             {
                 TrialManager _trialManager = new();
-                KeyManager _keyManager = new(); // Add KeyManager to check activation status
-
+                KeyManager _keyManager = new();  // Create instance of KeyManager
                 ServiceCollection serviceCollection = new ServiceCollection();
                 ConfigureServices(serviceCollection);
 
@@ -56,22 +55,27 @@ namespace WPF_NhaMayCaoSu
 
                 InitializeDatabase();
 
-                // Check if the app is already activated before showing AccessKeyWindow
-                if (!_keyManager.IsActivated())
+                // Check if the app is activated before showing AccessKeyWindow
+                if (!_keyManager.IsActivated())   // Check if the app is NOT activated
                 {
-                    // If not activated, show AccessKeyWindow for key input
+                    // If the trial hasn't started, start it
+                    if (!_trialManager.HasTrialStarted())
+                    {
+                        _trialManager.StartTrial();
+                    }
+
+                    // Show the AccessKeyWindow
                     AccessKeyWindow accessKeyWindow = new();
                     var result = accessKeyWindow.ShowDialog();
 
                     if (result != true && _trialManager.IsTrialExpired())
                     {
-                        // If the trial is expired and the user didn't activate, close the app
+                        // If the trial is expired and the user didn't continue, close the app
                         Application.Current.Shutdown();
-                        return;
                     }
                 }
 
-                // If the app is activated or trial is valid, proceed to show the main window
+                // If the app is activated or the trial is valid, show the main window
                 var brokerWindow = _serviceProvider.GetRequiredService<BrokerWindow>();
                 brokerWindow.Show();
             }
@@ -81,6 +85,7 @@ namespace WPF_NhaMayCaoSu
                 Shutdown();
             }
         }
+
 
 
 
