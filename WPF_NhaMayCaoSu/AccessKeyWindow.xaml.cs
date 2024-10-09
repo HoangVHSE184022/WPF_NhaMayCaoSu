@@ -68,7 +68,13 @@ namespace WPF_NhaMayCaoSu
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown(); // Close the application
+            Close();
+            App.Current.Shutdown(); // Close the application
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            App.Current.Shutdown();
         }
     }
 }
