@@ -46,8 +46,6 @@ namespace WPF_NhaMayCaoSu
 
             try
             {
-                TrialManager _trialManager = new();
-                KeyManager _keyManager = new();  // Create instance of KeyManager
                 ServiceCollection serviceCollection = new ServiceCollection();
                 ConfigureServices(serviceCollection);
 
@@ -55,30 +53,7 @@ namespace WPF_NhaMayCaoSu
 
                 InitializeDatabase();
 
-                // Check if the app is activated before showing AccessKeyWindow
-                if (!_keyManager.IsActivated())
-                {
-                    // If the trial hasn't started, start it
-                    if (!_trialManager.HasTrialStarted())
-                    {
-                        _trialManager.StartTrial();
-                    }
-
-                    // Show the AccessKeyWindow and await the result
-                    AccessKeyWindow accessKeyWindow = new();
-                    bool? result = accessKeyWindow.ShowDialog();
-
-                    // Only shutdown if the trial is expired and the user chooses not to continue
-                    if (result != true && _trialManager.IsTrialExpired())
-                    {
-                        MessageBox.Show("Thời gian dùng thử đã hết. Ứng dụng sẽ đóng.");
-                        // Trial expired and user didn't continue, so close the app
-                        Application.Current.Shutdown();
-                    }
-                }
-
-
-                // If the app is activated or the trial is valid, show the main window
+                
                 var brokerWindow = _serviceProvider.GetRequiredService<BrokerWindow>();
             }
             catch (Exception ex)

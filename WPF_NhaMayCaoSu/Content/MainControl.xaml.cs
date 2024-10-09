@@ -3,6 +3,7 @@ using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
+using WPF_NhaMayCaoSu.Service.Trial;
 
 namespace WPF_NhaMayCaoSu.Content
 {
@@ -52,11 +53,25 @@ namespace WPF_NhaMayCaoSu.Content
             rfidListWindow.CurrentAccount = CurrentAccount;
             roleListWindow.CurrentAccount = CurrentAccount;
             boardListWindow.CurrentAccount = CurrentAccount;
+            keyCheck();
             ValidCheck();
             MainContentControl.Content = broker.Content;
             UpdateMainWindowUI();
         }
-
+        private void keyCheck()
+        {
+            TrialManager _trial = new();
+            KeyManager _key = new();
+            if (!_key.IsActivated())
+            {
+                if (!_trial.HasTrialStarted())
+                {
+                    _trial.StartTrial();
+                }
+                AccessKeyWindow accessKeyWindow = new AccessKeyWindow();
+                accessKeyWindow.ShowDialog();
+            }
+        }
         private async void Start_Broker()
         {
             await _mqttServerService.StartBrokerAsync();
@@ -76,6 +91,7 @@ namespace WPF_NhaMayCaoSu.Content
 
         private bool ValidCheck()
         {
+
             if (CurrentAccount is null)
             {
                 LoginWindow window = new();

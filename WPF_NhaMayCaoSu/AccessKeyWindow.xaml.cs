@@ -22,7 +22,7 @@ namespace WPF_NhaMayCaoSu
             {
                 StatusLabel.Content = "Trạng thái: Đã kích hoạt";
                 LicenseKeyLabel.Visibility = Visibility.Visible;
-                LicenseKeyLabel.Content = _keyManager.GetStoredKey(); // Display stored key
+                LicenseKeyLabel.Content = _keyManager.GetStoredKey();
             }
             else
             {
