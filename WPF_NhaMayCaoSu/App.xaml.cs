@@ -8,7 +8,6 @@ using WPF_NhaMayCaoSu.Repository.IRepositories;
 using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
-using WPF_NhaMayCaoSu.Service.Trial;
 
 
 namespace WPF_NhaMayCaoSu
@@ -53,7 +52,7 @@ namespace WPF_NhaMayCaoSu
 
                 InitializeDatabase();
 
-                
+
                 var brokerWindow = _serviceProvider.GetRequiredService<BrokerWindow>();
             }
             catch (Exception ex)
