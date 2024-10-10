@@ -46,7 +46,7 @@ namespace WPF_NhaMayCaoSu
                 StatusLabel.Content = "Trạng thái: Đã kích hoạt";
                 LicenseKeyLabel.Visibility = Visibility.Visible;
                 LicenseKeyLabel.Content = enteredKey; // Display the entered key
-                this.DialogResult = true;
+                Hide();
             }
             else
             {
@@ -62,7 +62,7 @@ namespace WPF_NhaMayCaoSu
             }
             else
             {
-                _closeWithoutExit = true;
+                Hide();
             }
         }
 
@@ -75,16 +75,7 @@ namespace WPF_NhaMayCaoSu
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (_closeWithoutExit)
-            {
-                e.Cancel = true; 
-                _closeWithoutExit = false; 
-                Close(); 
-            }
-            else
-            {
-                App.Current.Shutdown();
-            }
+            App.Current.Shutdown();
         }
 
     }
