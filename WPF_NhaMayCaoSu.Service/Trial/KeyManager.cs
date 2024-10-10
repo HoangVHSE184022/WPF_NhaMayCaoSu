@@ -53,7 +53,7 @@ namespace WPF_NhaMayCaoSu.Service.Trial
                 if (regKey != null)
                 {
                     string encryptedKey = regKey.GetValue(ActivationKey) as string;
-                    return encryptedKey != null ? EncryptionHelper.Decrypt(encryptedKey, EncryptionHelper.Key, EncryptionHelper.IV) : null;  
+                    return encryptedKey != null ? EncryptionHelper.Decrypt(encryptedKey, EncryptionHelper.Key, EncryptionHelper.IV) : null;
                 }
             }
             return null;

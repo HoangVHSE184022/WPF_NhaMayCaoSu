@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using Serilog;
-using System;
 
 namespace WPF_NhaMayCaoSu.Service.Trial
 {
