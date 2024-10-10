@@ -62,8 +62,7 @@ namespace WPF_NhaMayCaoSu
             }
             else
             {
-                _closeWithoutExit = true; // Set the flag to true
-                Close(); // Close the AccessKeyWindow
+                _closeWithoutExit = true;
             }
         }
 
