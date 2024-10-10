@@ -7,6 +7,7 @@ namespace WPF_NhaMayCaoSu
     {
         private readonly TrialManager _trialManager;
         private readonly KeyManager _keyManager;
+        private bool _closeWithoutExit = false;
 
         public AccessKeyWindow()
         {
@@ -61,10 +62,11 @@ namespace WPF_NhaMayCaoSu
             }
             else
             {
-                this.DialogResult = true; // This will close the window but not the app
-                Close();  // Just close the current AccessKeyWindow
+                _closeWithoutExit = true; // Set the flag to true
+                Close(); // Close the AccessKeyWindow
             }
         }
+
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
@@ -74,7 +76,17 @@ namespace WPF_NhaMayCaoSu
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            App.Current.Shutdown();
+            if (_closeWithoutExit)
+            {
+                e.Cancel = true; 
+                _closeWithoutExit = false; 
+                Close(); 
+            }
+            else
+            {
+                App.Current.Shutdown();
+            }
         }
+
     }
 }
