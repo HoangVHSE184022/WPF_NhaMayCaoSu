@@ -7,10 +7,9 @@ namespace WPF_NhaMayCaoSu.Service.Trial
 {
     public static class EncryptionHelper
     {
-        public static readonly byte[] Key = Encoding.UTF8.GetBytes("AmazingTechEncryption");
-        public static readonly byte[] IV = Encoding.UTF8.GetBytes("AmazingTechEncryption");
+        public static readonly byte[] Key = Encoding.UTF8.GetBytes("AmazingTech12345"); // 16 characters = 16 bytes
+        public static readonly byte[] IV = Encoding.UTF8.GetBytes("AmazingTech12345"); // 16 characters = 16 bytes
 
-        // Encrypts a string
         public static string Encrypt(string plainText)
         {
             using (var aes = Aes.Create())
@@ -33,7 +32,6 @@ namespace WPF_NhaMayCaoSu.Service.Trial
             }
         }
 
-        // Decrypts a string with provided key and IV
         public static string Decrypt(string cipherText, byte[] key, byte[] iv)
         {
             using (var aes = Aes.Create())
