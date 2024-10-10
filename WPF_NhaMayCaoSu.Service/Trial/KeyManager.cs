@@ -4,10 +4,10 @@ namespace WPF_NhaMayCaoSu.Service.Trial
 {
     public class KeyManager
     {
-        private const string ValidKey = "AmazingTechCaosuActivate";  // Define the valid plain key
+        private const string ValidKey = "AmazingTechCaosuActivate";
         private const string RegistryKeyPath = @"Software\CaoSuApp";
         private const string ActivationKey = "ActivationKey";
-        private const string IsActivatedKey = "IsActivated";
+        private const string ActivationHashKey = "ActivationHash";
 
         // Validate the entered key by comparing it with the plain key
         public bool ValidateKey(string input)
@@ -15,13 +15,18 @@ namespace WPF_NhaMayCaoSu.Service.Trial
             return input == ValidKey;  // Compare input key with the valid plain key
         }
 
-        // Save the activation key and activation status
+        // Save the activation key and a hashed activation status
         public void SaveActivation(string key)
         {
             using (var regKey = Registry.CurrentUser.CreateSubKey(RegistryKeyPath))
             {
-                regKey.SetValue(IsActivatedKey, 1);  // Store activation status as 1 (true)
-                regKey.SetValue(ActivationKey, key);  // Save the activation key
+                // Encrypt the activation key
+                string encryptedKey = EncryptionHelper.Encrypt(key);
+                regKey.SetValue(ActivationKey, encryptedKey);  // Save the encrypted activation key
+
+                // Save a hash indicating that the app is activated
+                string hashValue = HashHelper.ComputeHash("Activated");
+                regKey.SetValue(ActivationHashKey, hashValue);
             }
         }
 
@@ -32,17 +37,9 @@ namespace WPF_NhaMayCaoSu.Service.Trial
             {
                 if (regKey != null)
                 {
-                    var isActivatedValue = regKey.GetValue(IsActivatedKey);
-
-                    // Handle case where the value is stored as an int (DWORD) or string
-                    if (isActivatedValue is int)  // If it's stored as an int (1 = activated)
-                    {
-                        return (int)isActivatedValue == 1;
-                    }
-                    else if (isActivatedValue is string)  // If it's stored as a string
-                    {
-                        return bool.TryParse(isActivatedValue as string, out bool isActivated) && isActivated;
-                    }
+                    var storedHash = regKey.GetValue(ActivationHashKey) as string;
+                    var currentHash = HashHelper.ComputeHash("Activated");
+                    return storedHash == currentHash;  // Compare hashes
                 }
             }
             return false;  // Default to false if the key is not found or invalid
@@ -55,7 +52,8 @@ namespace WPF_NhaMayCaoSu.Service.Trial
             {
                 if (regKey != null)
                 {
-                    return regKey.GetValue(ActivationKey) as string;
+                    string encryptedKey = regKey.GetValue(ActivationKey) as string;
+                    return encryptedKey != null ? EncryptionHelper.Decrypt(encryptedKey, EncryptionHelper.Key, EncryptionHelper.IV) : null;  
                 }
             }
             return null;
