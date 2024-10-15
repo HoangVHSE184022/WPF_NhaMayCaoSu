@@ -365,4 +365,3 @@ FodyWeavers.xsd
 /WPF_NhaMayCaoSu/appsettings.json
 WPF_NhaMayCaoSu.Repositories/dbsettings.json
 WPF_NhaMayCaoSu.Controller/nhamaycaosu.json
-/WPF_NhaMayCaoSu.Service/Dependencies/MongoDbConfiguration.cs
