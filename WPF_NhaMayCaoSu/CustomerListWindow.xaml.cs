@@ -236,6 +236,7 @@ namespace WPF_NhaMayCaoSu
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Đã xảy ra lỗi khi xóa khách hàng hoặc RFID: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Log.Error(ex, $"Đã xảy ra lỗi khi xóa khách hàng hoặc RFID: {ex.Message}");
                 }
                 //await service.DeleteCustomer(selected.CustomerId);
                 //LoadDataGrid();

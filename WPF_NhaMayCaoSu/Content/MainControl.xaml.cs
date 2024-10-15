@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Serilog;
+using System.Windows;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
@@ -301,10 +302,12 @@ namespace WPF_NhaMayCaoSu.Content
                 if (OpenServerButton.Content.ToString() == Constants.OpenServerText)
                 {
                     MessageBox.Show(Constants.BrokerStartErrorMessage + "\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Log.Error(ex, $"{Constants.BrokerStartErrorMessage}");
                 }
                 else
                 {
                     MessageBox.Show(Constants.BrokerStopErrorMessage + "\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Log.Error(ex, $"{Constants.BrokerStopErrorMessage}");
                 }
             }
         }

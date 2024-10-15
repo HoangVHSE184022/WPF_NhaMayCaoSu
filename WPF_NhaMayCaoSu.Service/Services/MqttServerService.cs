@@ -1,5 +1,6 @@
 ﻿using MQTTnet;
 using MQTTnet.Server;
+using Serilog;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Text.Json;
@@ -133,6 +134,7 @@ public class MqttServerService : IMqttServerService
                 catch (JsonException ex)
                 {
                     Debug.WriteLine($"Error parsing JSON payload: {ex.Message}");
+                    Log.Error(ex, $"Error parsing JSON payload: {ex.Message}");
                 }
             }
 
@@ -152,6 +154,7 @@ public class MqttServerService : IMqttServerService
         catch (Exception ex)
         {
             Debug.WriteLine($"Error starting MQTT broker: {ex.Message}");
+            Log.Error(ex, $"Error starting MQTT broker: {ex.Message}");
         }
     }
 
@@ -167,6 +170,7 @@ public class MqttServerService : IMqttServerService
         catch (Exception ex)
         {
             Debug.WriteLine($"Error stopping MQTT broker: {ex.Message}");
+            Log.Error(ex, $"Error stopping MQTT broker: {ex.Message}");
         }
     }
 
@@ -188,6 +192,7 @@ public class MqttServerService : IMqttServerService
         catch (Exception ex)
         {
             Debug.WriteLine($"Error restarting MQTT broker: {ex.Message}");
+            Log.Error(ex, $"Error restarting MQTT broker: {ex.Message}");
         }
     }
 

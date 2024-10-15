@@ -58,6 +58,7 @@ namespace WPF_NhaMayCaoSu
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occurred: {ex.Message}");
+                Log.Error(ex, $"An error occurred: {ex.Message}");
                 Shutdown();
             }
         }
