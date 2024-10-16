@@ -1,5 +1,7 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
+using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using WPF_NhaMayCaoSu.OTPService;
@@ -16,10 +18,48 @@ namespace WPF_NhaMayCaoSu
         public AccessKeyWindow()
         {
             InitializeComponent();
-            _otpService = new OTPServices("CaoSuApp", "quanghuy01062004@gmail.com");
+            string macAddress = GetMacAddress();
+            _otpService = new OTPServices("CaoSuApp", macAddress);
             _registryHelper = new RegistryHelper();
 
+            LoadOrGenerateSecretKey();
             CheckDemoStatus();
+        }
+
+        private string GetMacAddress()
+        {
+            var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
+            foreach (var nic in networkInterfaces)
+            {
+                if (nic.OperationalStatus == OperationalStatus.Up)
+                {
+                    return string.Join(":", nic.GetPhysicalAddress().GetAddressBytes().Select(b => b.ToString("X2")));
+                }
+            }
+            return null; // Return null if no active NIC found
+        }
+
+        private void LoadOrGenerateSecretKey()
+        {
+            // Load the secret key from the registry
+            _secretKey = _registryHelper.GetSecretKey();
+
+            if (string.IsNullOrEmpty(_secretKey))
+            {
+                // Generate a new secret key if it doesn't exist
+                _secretKey = _otpService.GenerateSecretKey();
+                _registryHelper.SetSecretKey(_secretKey);
+            }
+
+            // Generate the QR code using the secret key
+            GenerateQRCode();
+        }
+
+        private void GenerateQRCode()
+        {
+            string googleAuthUri = _otpService.GenerateGoogleAuthUri(_secretKey);
+            Bitmap qrCodeBitmap = _otpService.GenerateQRCode(googleAuthUri);
+            QR.Source = ConvertBitmapToImageSource(qrCodeBitmap);
         }
 
         private void CheckDemoStatus()
@@ -44,9 +84,9 @@ namespace WPF_NhaMayCaoSu
 
             if (demoStartDate == null)
             {
-                _registryHelper.SetDemoStartDate(DateTime.Now); // Set the current date
-                ExpLabel.Content = "Thời hạn dùng thử: 30 ngày còn lại"; // Initial message for new users
-                ConfirmButton.IsEnabled = true; // Allow user to input key
+                _registryHelper.SetDemoStartDate(DateTime.Now);
+                ExpLabel.Content = "Thời hạn dùng thử: 30 ngày còn lại";
+                ConfirmButton.IsEnabled = true;
                 KeyTextBox.IsEnabled = true;
                 return;
             }
@@ -61,27 +101,29 @@ namespace WPF_NhaMayCaoSu
                 if (remainingDays <= 0)
                 {
                     StatusLabel.Content = "Thời hạn dùng thử đã hết!";
-                    ExpLabel.Content = string.Empty; // No expiration message
-                    ContinueButton.IsEnabled = false; // Disable button if expired
+                    ExpLabel.Content = string.Empty;
+                    ContinueButton.IsEnabled = false;
                     Console.WriteLine("Trial period has expired.");
                 }
                 else
                 {
-                    ExpLabel.Content = $"Thời hạn dùng thử: {remainingDays} ngày còn lại"; // Update the label with remaining days
-                    ConfirmButton.IsEnabled = true; // Allow input if not expired
-                    KeyTextBox.IsEnabled = true; // Allow input if not expired
+                    ExpLabel.Content = $"Thời hạn dùng thử: {remainingDays} ngày còn lại";
+                    ConfirmButton.IsEnabled = true;
+                    KeyTextBox.IsEnabled = true;
                     Console.WriteLine("Trial period active. Inputs enabled.");
                 }
             }
         }
 
-
-
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            string userInputCode = KeyTextBox.Text;
+            string userInputCode = KeyTextBox.Text.Trim();
 
-            _secretKey = "CaoSuAmazingTechActivationKey";
+            if (string.IsNullOrEmpty(_secretKey))
+            {
+                MessageBox.Show("Secret key is not initialized. Please restart the application.");
+                return;
+            }
 
             bool isValid = _otpService.VerifyTotp(_secretKey, userInputCode);
 
@@ -100,11 +142,10 @@ namespace WPF_NhaMayCaoSu
 
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
-            // Allow the user to continue using the trial if the trial period has not expired
             DateTime? demoStartDate = _registryHelper.GetDemoStartDate();
             if (demoStartDate == null || DateTime.Now - demoStartDate.Value <= TimeSpan.FromDays(30))
             {
-                this.Close(); // Allow the app to continue
+                this.Close();
             }
             else
             {
@@ -117,33 +158,24 @@ namespace WPF_NhaMayCaoSu
             Application.Current.Shutdown();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            _secretKey = _otpService.GenerateSecretKey();
-            string googleAuthUri = _otpService.GenerateGoogleAuthUri(_secretKey);
-
-            Bitmap qrCodeBitmap = _otpService.GenerateQRCode(googleAuthUri);
-
-            QR.Source = ConvertBitmapToImageSource(qrCodeBitmap);
-        }
         private BitmapImage ConvertBitmapToImageSource(Bitmap bitmap)
         {
             using (MemoryStream memory = new MemoryStream())
             {
-                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp); // Save bitmap to memory stream
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
                 memory.Position = 0;
                 BitmapImage bitmapImage = new BitmapImage();
                 bitmapImage.BeginInit();
-                bitmapImage.StreamSource = memory; // Load stream to BitmapImage
+                bitmapImage.StreamSource = memory;
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                 bitmapImage.EndInit();
                 return bitmapImage;
             }
         }
+
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
+            // Handle any cleanup here if necessary
         }
     }
-
 }

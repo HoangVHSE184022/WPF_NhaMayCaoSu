@@ -72,6 +72,7 @@ namespace WPF_NhaMayCaoSu.OTPService
             return isValid;
         }
 
+
         /// <summary>
         /// Saves the generated QR code image to a file.
         /// </summary>

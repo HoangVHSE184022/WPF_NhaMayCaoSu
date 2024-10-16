@@ -8,10 +8,10 @@ namespace WPF_NhaMayCaoSu.OTPService
 {
     public class RegistryHelper
     {
-        // Specify base key
-        private const string RegistryPath = @"HKEY_CURRENT_USER\SOFTWARE\CaoSuApp"; // Use HKEY_CURRENT_USER for user-level access
+        private const string RegistryPath = @"HKEY_CURRENT_USER\SOFTWARE\CaoSuApp";
         private const string DemoStartDateKey = "DemoStartDate";
         private const string IsUnlockedKey = "IsUnlocked";
+        private const string SecretKey = "SecretKey"; // Key for the secret
 
         private string Encrypt(string plainText)
         {
@@ -76,7 +76,6 @@ namespace WPF_NhaMayCaoSu.OTPService
             Registry.SetValue(RegistryPath, DemoStartDateKey, encryptedDate);
         }
 
-
         public DateTime? GetDemoStartDate()
         {
             object value = Registry.GetValue(RegistryPath, DemoStartDateKey, null);
@@ -87,7 +86,6 @@ namespace WPF_NhaMayCaoSu.OTPService
             }
             return null;
         }
-
 
         public void SetUnlocked()
         {
@@ -104,6 +102,22 @@ namespace WPF_NhaMayCaoSu.OTPService
                 return decryptedValue == "True";
             }
             return false;
+        }
+
+        public void SetSecretKey(string secretKey)
+        {
+            string encryptedKey = Encrypt(secretKey);
+            Registry.SetValue(RegistryPath, SecretKey, encryptedKey);
+        }
+
+        public string GetSecretKey()
+        {
+            object value = Registry.GetValue(RegistryPath, SecretKey, null);
+            if (value != null)
+            {
+                return Decrypt(value.ToString());
+            }
+            return null;
         }
     }
 }
