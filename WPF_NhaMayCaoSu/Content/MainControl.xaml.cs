@@ -1,6 +1,7 @@
 ﻿using Serilog;
 using System.Windows;
 using WPF_NhaMayCaoSu.Core.Utils;
+using WPF_NhaMayCaoSu.OTPService;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
@@ -61,18 +62,31 @@ namespace WPF_NhaMayCaoSu.Content
         }
         private void keyCheck()
         {
-            TrialManager _trial = new();
-            KeyManager _key = new();
-            if (!_key.IsActivated())
+            try
             {
-                if (!_trial.HasTrialStarted())
+                RegistryHelper _registryHelper = new();
+
+                if (!_registryHelper.IsUnlocked())
                 {
-                    _trial.StartTrial();
+                    DateTime? demoStartDate = _registryHelper.GetDemoStartDate();
+                    if (demoStartDate == null)
+                    {
+                        _registryHelper.SetDemoStartDate(DateTime.Now);
+                    }
+
+                    AccessKeyWindow accessKeyWindow = new AccessKeyWindow();
+                    accessKeyWindow.ShowDialog();
                 }
-                AccessKeyWindow accessKeyWindow = new AccessKeyWindow();
-                accessKeyWindow.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception
+                Log.Error(ex, "Error occurred in keyCheck method.");
+                MessageBox.Show("An error occurred while checking the registry: " + ex.Message);
             }
         }
+
+
         private async void Start_Broker()
         {
             await _mqttServerService.StartBrokerAsync();
