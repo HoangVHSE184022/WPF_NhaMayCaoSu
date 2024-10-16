@@ -14,7 +14,8 @@ namespace WPF_NhaMayCaoSu
         private OTPServices _otpService;
         private RegistryHelper _registryHelper;
         private string _secretKey;
-
+        private bool _closeWithoutExit = false;
+    
         public AccessKeyWindow()
         {
             InitializeComponent();
@@ -132,6 +133,7 @@ namespace WPF_NhaMayCaoSu
                 _registryHelper.SetUnlocked();
                 MessageBox.Show("Ứng dụng đã được mở khóa vĩnh viễn!");
                 StatusLabel.Content = "Ứng dụng đã được mở khóa!";
+                _closeWithoutExit = true; // Set the flag to true
                 Close();
             }
             else
@@ -145,6 +147,7 @@ namespace WPF_NhaMayCaoSu
             DateTime? demoStartDate = _registryHelper.GetDemoStartDate();
             if (demoStartDate == null || DateTime.Now - demoStartDate.Value <= TimeSpan.FromDays(30))
             {
+                _closeWithoutExit = true;
                 this.Close();
             }
             else
@@ -175,7 +178,16 @@ namespace WPF_NhaMayCaoSu
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // Handle any cleanup here if necessary
+            if (_closeWithoutExit)
+            {
+                e.Cancel = true;
+                _closeWithoutExit = false;
+                Close();
+            }
+            else
+            {
+                App.Current.Shutdown();
+            }
         }
     }
 }
