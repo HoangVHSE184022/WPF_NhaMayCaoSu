@@ -159,7 +159,6 @@ namespace WPF_NhaMayCaoSu
             {
                 e.Cancel = true;
                 _closeWithoutExit = false;
-                Close();
             }
             else
             {
