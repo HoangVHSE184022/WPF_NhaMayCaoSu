@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
+        Closing="Window_Closing"
         Title="Login" Height="800" Width="1200" 
         WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow" Icon="assets/images/rubber.ico">
 

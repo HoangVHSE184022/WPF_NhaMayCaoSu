@@ -12,6 +12,7 @@ namespace WPF_NhaMayCaoSu
     /// </summary>
     public partial class LoginWindow : Window
     {
+        private bool isForcedShut = true;
         private readonly IAccountService _accountService = new AccountService();
         public event Action<Account> LoginSucceeded;
 
@@ -43,6 +44,7 @@ namespace WPF_NhaMayCaoSu
                     //MainControl control = new();
                     //control.CurrentAccount = account;
                     //control.Show();
+                    isForcedShut = false;
                     Close();
                 }
 
@@ -80,5 +82,13 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if(isForcedShut)
+            {
+                App.Current.Shutdown();
+            }
+
+        }
     }
 }
