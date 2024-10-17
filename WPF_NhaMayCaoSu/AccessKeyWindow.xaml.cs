@@ -5,7 +5,6 @@ using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using WPF_NhaMayCaoSu.OTPService;
-using WPF_NhaMayCaoSu.Service.Trial;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -19,40 +18,18 @@ namespace WPF_NhaMayCaoSu
         public AccessKeyWindow()
         {
             InitializeComponent();
-            string macAddress = GetMacAddress();
-            _otpService = new OTPServices("CaoSuApp", macAddress);
+            _otpService = new OTPServices("CaoSuApp", "ActivateKey");
             _registryHelper = new RegistryHelper();
 
             LoadOrGenerateSecretKey();
             CheckDemoStatus();
         }
 
-        private string GetMacAddress()
-        {
-            var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (var nic in networkInterfaces)
-            {
-                if (nic.OperationalStatus == OperationalStatus.Up)
-                {
-                    return string.Join(":", nic.GetPhysicalAddress().GetAddressBytes().Select(b => b.ToString("X2")));
-                }
-            }
-            return null; // Return null if no active NIC found
-        }
 
         private void LoadOrGenerateSecretKey()
         {
-            // Load the secret key from the registry
-            _secretKey = _registryHelper.GetSecretKey();
+            _secretKey = _otpService.GenerateSecretKey();
 
-            if (string.IsNullOrEmpty(_secretKey))
-            {
-                // Generate a new secret key if it doesn't exist
-                _secretKey = _otpService.GenerateSecretKey();
-                _registryHelper.SetSecretKey(_secretKey);
-            }
-
-            // Generate the QR code using the secret key
             GenerateQRCode();
         }
 

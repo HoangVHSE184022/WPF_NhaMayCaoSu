@@ -1,12 +1,8 @@
-﻿using QRCoder;
-using System;
-using OtpNet;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OtpNet;
+using QRCoder;
 
 namespace WPF_NhaMayCaoSu.OTPService
 {
@@ -15,6 +11,9 @@ namespace WPF_NhaMayCaoSu.OTPService
         private readonly string _issuer;
         private readonly string _user;
 
+        // Shared secret key for all instances of the app (Base32 encoded)
+        private const string SharedSecretKey = "JBSWY3DPEHPK3PXP"; 
+
         public OTPServices(string issuer, string user)
         {
             _issuer = issuer;
@@ -22,13 +21,13 @@ namespace WPF_NhaMayCaoSu.OTPService
         }
 
         /// <summary>
-        /// Generate a secret key for the user.
+        /// Use the predefined shared secret key instead of generating a new one.
         /// </summary>
-        /// <returns>Base32 encoded secret key</returns>
+        /// <returns>The shared Base32 encoded secret key</returns>
         public string GenerateSecretKey()
         {
-            var secretKey = KeyGeneration.GenerateRandomKey(20);
-            return Base32Encoding.ToString(secretKey); // Return Base32 encoded secret key
+            // Always return the shared secret key
+            return SharedSecretKey;
         }
 
         /// <summary>
@@ -70,31 +69,6 @@ namespace WPF_NhaMayCaoSu.OTPService
 
             bool isValid = totp.VerifyTotp(userInputCode, out long timeStepMatched, VerificationWindow.RfcSpecifiedNetworkDelay);
             return isValid;
-        }
-
-
-        /// <summary>
-        /// Saves the generated QR code image to a file.
-        /// </summary>
-        /// <param name="qrCodeImage">The QR code bitmap image</param>
-        /// <param name="filePath">The file path where the image will be saved</param>
-        public void SaveQrCodeImage(Bitmap qrCodeImage, string filePath)
-        {
-            qrCodeImage.Save(filePath, System.Drawing.Imaging.ImageFormat.Png); // Save as PNG
-        }
-
-        /// <summary>
-        /// Converts the QR code to a byte array.
-        /// </summary>
-        /// <param name="qrCodeImage">The QR code bitmap image</param>
-        /// <returns>A byte array of the QR code</returns>
-        public byte[] ConvertQrCodeToBytes(Bitmap qrCodeImage)
-        {
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                qrCodeImage.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
-                return memoryStream.ToArray();
-            }
         }
     }
 }
