@@ -405,28 +405,57 @@ namespace WPF_NhaMayCaoSu
 
             BoardModelView selectedBoard = ConnectedBoardDataGrid.SelectedItem as BoardModelView;
 
-
-
             if (selectedBoard != null)
             {
-                var existingBoard = await _boardService.GetBoardByMacAddressAsync(selectedBoard.BoardMacAddress);
+                // Check if the board already exists in the system
+                Board existingBoard = await _boardService.GetBoardByMacAddressAsync(selectedBoard.BoardMacAddress);
                 if (existingBoard == null)
                 {
-                    var newBoard = new Board
+                    // Open the SaveBoardWindow to ask the user for the board name
+                    SaveBoardWindow saveBoardWindow = new SaveBoardWindow();
+                    bool? result = saveBoardWindow.ShowDialog();
+
+                    if (result == true && !string.IsNullOrEmpty(saveBoardWindow.SelectedBoardName))
                     {
-                        BoardId = selectedBoard.BoardId,
-                        BoardName = selectedBoard.BoardName,
-                        BoardIp = selectedBoard.BoardIp,
-                        BoardMacAddress = selectedBoard.BoardMacAddress,
-                        BoardMode = selectedBoard.BoardMode
-                    };
 
-                    // Save the selected board to the database
-                    await _boardService.CreateBoardAsync(newBoard);
-                    MessageBox.Show("Board đã được thêm thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                        //Check dublicate boardname
+                        Board board = await _boardService.GetBoardByNameAsync(saveBoardWindow.SelectedBoardName);
+                        if (board != null)
+                        {
+                            MessageBoxResult re = MessageBox.Show("Bạn có muốn thay thế cho board cũ không?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                            if (re == MessageBoxResult.Yes)
+                            {
+                                board.BoardMacAddress = selectedBoard.BoardMacAddress;
+                                await _boardService.UpdateBoardAsync(board);
+                                await LoadDataGridFromDatabase();
 
-                    // Reload left DataGrid after adding new board
-                    await LoadDataGridFromDatabase();
+                            }
+                            return;
+                        }
+
+
+                        // Create a new board and save the selected name
+                        Board newBoard = new Board
+                        {
+                            BoardId = selectedBoard.BoardId,
+                            BoardName = saveBoardWindow.SelectedBoardName, // Use the name selected by the user
+                            BoardIp = selectedBoard.BoardIp,
+                            BoardMacAddress = selectedBoard.BoardMacAddress,
+                            BoardMode = selectedBoard.BoardMode
+                        };
+
+                        await _boardService.CreateBoardAsync(newBoard);
+                        MessageBox.Show("Board đã được thêm thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        // Reload the data grid
+                        await LoadDataGridFromDatabase();
+                        _mqttBoards.Clear();
+                        ConnectedBoardDataGrid.Items.Refresh();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Vui lòng chọn một tên cho board.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 }
                 else
                 {
