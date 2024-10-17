@@ -76,6 +76,9 @@
         <Button x:Name="UnlockBoardButton" Height="30" Margin="0,652,560,0" VerticalAlignment="Top" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="16" Background="#FFCACACA"  HorizontalAlignment="Right" Width="121" Click="UnlockBoardButton_Click"  >
             <TextBlock Text="Unlock" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
+        <Button x:Name="ResetWifiButton" Height="30" Margin="0,652,398,0" VerticalAlignment="Top" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="16" Background="#FFCACACA"  HorizontalAlignment="Right" Width="122" Click="ResetWifiButton_Click"  >
+            <TextBlock Text="Reset Wifi" TextWrapping="Wrap" TextAlignment="Center"/>
+        </Button>
 
     </Grid>
 </Window>

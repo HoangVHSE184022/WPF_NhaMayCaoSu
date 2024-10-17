@@ -240,6 +240,49 @@ namespace WPF_NhaMayCaoSu
             boardDataGrid.Items.Refresh();
         }
 
+        private async void ResetWifiButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (boardDataGrid.SelectedItem == null)
+            {
+                MessageBox.Show("Vui lòng chọn một Board.", "Không có Board được chọn", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Get the selected board from the left DataGrid (from database)
+            Board selectedBoard = boardDataGrid.SelectedItem as Board;
+
+            if (selectedBoard == null)
+            {
+                MessageBox.Show("Board được chọn không hợp lệ.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var existingBoard = await _boardService.GetBoardByMacAddressAsync(selectedBoard.BoardMacAddress);
+            if (existingBoard == null)
+            {
+                MessageBox.Show("Board này chưa được lưu.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Toggle the board mode and update it
+            selectedBoard.BoardMode = 3;
+            await _boardService.UpdateBoardAsync(selectedBoard);
+
+            string topic = $"{selectedBoard.BoardMacAddress}/mode";
+
+
+            var payloadObject = new { Mode = selectedBoard.BoardMode };
+            string payload = JsonConvert.SerializeObject(payloadObject);
+
+            if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+            {
+                await _mqttClientService.PublishAsync(topic, payload);
+                await _boardService.UpdateBoardAsync(selectedBoard);
+            }
+
+            boardDataGrid.Items.Refresh();
+        }
+
         private async void DeleteBoardButton_Click(object sender, RoutedEventArgs e)
         {
             // Get the selected board from the left DataGrid
