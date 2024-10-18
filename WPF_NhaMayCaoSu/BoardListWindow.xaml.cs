@@ -265,13 +265,13 @@ namespace WPF_NhaMayCaoSu
             }
 
             // Toggle the board mode and update it
-            selectedBoard.BoardMode = 3;
+            selectedBoard.BoardMode = 1;
             await _boardService.UpdateBoardAsync(selectedBoard);
 
             string topic = $"{selectedBoard.BoardMacAddress}/mode";
 
 
-            var payloadObject = new { Mode = selectedBoard.BoardMode };
+            var payloadObject = new { Mode = 3 };
             string payload = JsonConvert.SerializeObject(payloadObject);
 
             if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
