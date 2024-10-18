@@ -493,5 +493,15 @@ namespace WPF_NhaMayCaoSu
             Close();
             mainWindow.Show();
         }
+
+        private void View1_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void View2_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

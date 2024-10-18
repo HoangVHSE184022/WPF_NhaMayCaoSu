@@ -1,60 +1,90 @@
 ﻿using MQTTnet;
-using MQTTnet.Adapter;
 using MQTTnet.Client;
 using MQTTnet.Protocol;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 using System.Text;
+using System.Threading.Tasks;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
-
 
 namespace WPF_NhaMayCaoSu.Service.Services
 {
     public class MqttClientService : IMqttClientService
     {
         public readonly IMqttClient _client;
-        private readonly MqttClientOptions _options;
+        private MqttClientOptionsBuilder _optionsBuilder;
+        private MqttClientOptions _options;
+        private string _currentIp;
         private IBoardService _service = new BoardService();
 
         public event EventHandler<string> MessageReceived;
         public bool IsConnected => _client?.IsConnected ?? false;
-
 
         public MqttClientService()
         {
             MqttFactory factory = new MqttFactory();
             _client = factory.CreateMqttClient();
 
-            MqttClientOptionsBuilder optionsBuilder = new MqttClientOptionsBuilder();
-            string ipLocal = GetLocalIpAddress();
-            optionsBuilder.WithClientId("this_computer")
-                           .WithTcpServer($"{ipLocal}", 1883)
-                           .WithCredentials("admin", "admin")
-                           .WithCleanSession();
+            _optionsBuilder = new MqttClientOptionsBuilder();
+            _currentIp = GetLocalIpAddress();
+            SetMqttOptions(_currentIp);
 
-            _options = optionsBuilder.Build();
-
-            // Register event handlers
+            // Register event handlers for MQTT
             _client.ConnectedAsync += OnConnectedAsync;
             _client.DisconnectedAsync += OnDisconnectedAsync;
             _client.ApplicationMessageReceivedAsync += OnMessageReceivedAsync;
+
+            // Listen to network address changes
+            NetworkChange.NetworkAddressChanged += OnNetworkAddressChanged;
         }
 
         private string GetLocalIpAddress()
         {
             System.Net.IPAddress[] ipAddresses = System.Net.Dns.GetHostAddresses(System.Net.Dns.GetHostName());
-
             foreach (System.Net.IPAddress ip in ipAddresses)
             {
-                // Check for IPv4 addresses
                 if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                 {
                     return ip.ToString();
                 }
             }
             return "N/A";
+        }
+
+        private void SetMqttOptions(string ipAddress)
+        {
+            _options = _optionsBuilder.WithClientId("this_computer")
+                                      .WithTcpServer(ipAddress, 1883)
+                                      .WithCredentials("admin", "admin")
+                                      .WithCleanSession()
+                                      .Build();
+        }
+
+        private async void OnNetworkAddressChanged(object sender, EventArgs e)
+        {
+            string newIp = GetLocalIpAddress();
+            if (_currentIp != newIp)
+            {
+                _currentIp = newIp;
+                Debug.WriteLine($"Network address changed. New IP: {_currentIp}");
+
+                // Disconnect from the current MQTT session
+                if (_client.IsConnected)
+                {
+                    await _client.DisconnectAsync();
+                    Debug.WriteLine("Disconnected from MQTT due to network change.");
+                }
+
+                // Update MQTT options with the new IP address
+                SetMqttOptions(_currentIp);
+
+                // Reconnect to the MQTT broker with the new IP
+                await ReconnectAsync();
+            }
         }
 
         private Task OnConnectedAsync(MqttClientConnectedEventArgs arg)
@@ -74,7 +104,6 @@ namespace WPF_NhaMayCaoSu.Service.Services
             string message = Encoding.UTF8.GetString(arg.ApplicationMessage.Payload);
             Debug.WriteLine($"Message received on topic {arg.ApplicationMessage.Topic}: {message}");
 
-            // Parse the message payload as JSON
             var jsonMessage = JsonConvert.DeserializeObject<JObject>(message);
             string rfid = jsonMessage["RFID"]?.ToString();
             string density = jsonMessage["Density"]?.ToString();
@@ -83,7 +112,6 @@ namespace WPF_NhaMayCaoSu.Service.Services
             string macAddress = jsonMessage["MacAddress"]?.ToString();
             string Mode = jsonMessage["Mode"]?.ToString();
 
-            // Check topic and process corresponding message
             switch (arg.ApplicationMessage.Topic)
             {
                 case var topic when topic.EndsWith("/sendRFID"):
@@ -159,27 +187,18 @@ namespace WPF_NhaMayCaoSu.Service.Services
                 {
                     await _client.ConnectAsync(_options);
                 }
-                catch (MqttConnectingFailedException ex)
-                {
-                    Debug.WriteLine("Kết nối đến máy chủ MQTT thất bại: " + ex.Message);
-                    throw new Exception("Kết nối đến máy chủ MQTT thất bại. Vui lòng đảm bảo rằng máy chủ đã được bật.", ex);
-                }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("Đã xảy ra lỗi khi kết nối đến máy chủ MQTT: " + ex.Message);
-                    throw new Exception("Đã xảy ra lỗi khi kết nối đến máy chủ MQTT. Vui lòng đảm bảo rằng máy chủ đã được bật.", ex);
+                    Debug.WriteLine($"Failed to connect to MQTT broker: {ex.Message}");
+                    throw;
                 }
             }
         }
 
-
-
         public async Task SubscribeAsync(string topic)
         {
-            MqttTopicFilterBuilder topicFilterBuilder = new MqttTopicFilterBuilder();
-            topicFilterBuilder.WithTopic(topic);
-
-            await _client.SubscribeAsync(topicFilterBuilder.Build());
+            var topicFilter = new MqttTopicFilterBuilder().WithTopic(topic).Build();
+            await _client.SubscribeAsync(topicFilter);
         }
 
         public async Task PublishAsync(string topic, string payload)
@@ -213,6 +232,19 @@ namespace WPF_NhaMayCaoSu.Service.Services
             {
                 await _client.DisconnectAsync();
                 Console.WriteLine("Disconnected from MQTT broker.");
+            }
+        }
+
+        private async Task ReconnectAsync()
+        {
+            try
+            {
+                await _client.ConnectAsync(_options);
+                Debug.WriteLine($"Reconnected to MQTT with new IP: {_currentIp}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Failed to reconnect to MQTT: {ex.Message}");
             }
         }
     }

@@ -3,6 +3,7 @@ using MQTTnet.Server;
 using Serilog;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 using System.Text.Json;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
@@ -21,6 +22,7 @@ public class MqttServerService : IMqttServerService
     public event EventHandler BrokerStatusChanged;
     public event EventHandler BoardReceived;
     private int _deviceCount;
+    private string _lastIpAddress;
     public static bool IsBrokerRunning { get; set; } = false;
 
     public MqttServerService()

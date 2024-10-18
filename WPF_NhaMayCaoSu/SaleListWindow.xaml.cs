@@ -450,7 +450,7 @@ namespace WPF_NhaMayCaoSu
 
         private async void ControlButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedSale = SaleDataGrid.SelectedItem as Sale;
+            Sale selectedSale = SaleDataGrid.SelectedItem as Sale;
             if (selectedSale == null)
             {
                 MessageBox.Show("Vui lòng chọn một giao dịch từ danh sách.", "Không có giao dịch được chọn", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -464,7 +464,7 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
-            var viewImagesWindow = new ViewImagesWindow(selectedSale);
+            ViewImagesWindow viewImagesWindow = new ViewImagesWindow(selectedSale);
             viewImagesWindow.ShowDialog();
         }
 
