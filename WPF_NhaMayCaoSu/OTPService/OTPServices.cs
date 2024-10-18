@@ -1,8 +1,6 @@
-﻿using System;
-using System.Drawing;
-using System.IO;
-using OtpNet;
+﻿using OtpNet;
 using QRCoder;
+using System.Drawing;
 
 namespace WPF_NhaMayCaoSu.OTPService
 {
@@ -12,7 +10,7 @@ namespace WPF_NhaMayCaoSu.OTPService
         private readonly string _user;
 
         // Shared secret key for all instances of the app (Base32 encoded)
-        private const string SharedSecretKey = "JBSWY3DPEHPK3PXP"; 
+        private const string SharedSecretKey = "JBSWY3DPEHPK3PXP";
 
         public OTPServices(string issuer, string user)
         {

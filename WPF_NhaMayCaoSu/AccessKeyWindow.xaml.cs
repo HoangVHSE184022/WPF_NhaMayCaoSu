@@ -1,7 +1,5 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
-using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using WPF_NhaMayCaoSu.OTPService;
@@ -13,8 +11,7 @@ namespace WPF_NhaMayCaoSu
         private OTPServices _otpService;
         private RegistryHelper _registryHelper;
         private string _secretKey;
-        private bool _closeWithoutExit = false;
-    
+
         public AccessKeyWindow()
         {
             InitializeComponent();
@@ -110,8 +107,7 @@ namespace WPF_NhaMayCaoSu
                 _registryHelper.SetUnlocked();
                 MessageBox.Show("Ứng dụng đã được mở khóa vĩnh viễn!");
                 StatusLabel.Content = "Ứng dụng đã được mở khóa!";
-                _closeWithoutExit = true; // Set the flag to true
-                Close();
+                Hide();
             }
             else
             {
@@ -124,8 +120,7 @@ namespace WPF_NhaMayCaoSu
             DateTime? demoStartDate = _registryHelper.GetDemoStartDate();
             if (demoStartDate == null || DateTime.Now - demoStartDate.Value <= TimeSpan.FromDays(30))
             {
-                _closeWithoutExit = true;
-                this.Close();
+                Hide();
             }
             else
             {
@@ -135,7 +130,7 @@ namespace WPF_NhaMayCaoSu
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            Close();
         }
 
         private BitmapImage ConvertBitmapToImageSource(Bitmap bitmap)
@@ -155,15 +150,7 @@ namespace WPF_NhaMayCaoSu
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (_closeWithoutExit)
-            {
-                e.Cancel = true;
-                _closeWithoutExit = false;
-            }
-            else
-            {
-                App.Current.Shutdown();
-            }
+            App.Current.Shutdown();
         }
     }
 }

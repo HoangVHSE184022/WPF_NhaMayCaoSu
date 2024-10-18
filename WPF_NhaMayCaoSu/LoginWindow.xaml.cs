@@ -84,7 +84,7 @@ namespace WPF_NhaMayCaoSu
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if(isForcedShut)
+            if (isForcedShut)
             {
                 App.Current.Shutdown();
             }
