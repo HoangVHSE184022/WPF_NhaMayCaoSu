@@ -61,21 +61,21 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            AccountId = new Guid("77ef4e5c-d580-4804-851e-ab95a20d6573"),
+                            AccountId = new Guid("cc2a137c-769b-4ab1-aa47-c7e624a4cc35"),
                             AccountName = "Administrator",
-                            CreatedDate = new DateTime(2024, 10, 21, 3, 27, 55, 658, DateTimeKind.Utc).AddTicks(5003),
-                            Password = "$2a$11$u385ZpNrFZCGKxwk5Ly74.QcAOEM4deY.tneIqxJufN6cCumop3JO",
-                            RoleId = new Guid("34716aac-aa0a-47e5-9015-f17baeeaa4dd"),
+                            CreatedDate = new DateTime(2024, 10, 21, 9, 26, 40, 402, DateTimeKind.Utc).AddTicks(8957),
+                            Password = "$2a$11$y.j8lmKXWGx.UekTVlArhOMmeh7sgMK0RfWoKGvUQvKiULgYOgt6O",
+                            RoleId = new Guid("9dc797da-12c7-40d8-9162-c1e780318764"),
                             Status = 1L,
                             Username = "admin"
                         },
                         new
                         {
-                            AccountId = new Guid("01f0f077-e808-44a9-afd8-972f6b91f509"),
+                            AccountId = new Guid("d60d8ebe-ee4f-4ef7-bf5b-493f85e735b6"),
                             AccountName = "Standard User",
-                            CreatedDate = new DateTime(2024, 10, 21, 3, 27, 55, 779, DateTimeKind.Utc).AddTicks(3280),
-                            Password = "$2a$11$s5XzdVj//6Hbe9wh2bR2SOdtaK2kTIEUWTT/wXI0/ykeD1HqPw2FO",
-                            RoleId = new Guid("1fc50149-85bc-4aa6-b3ad-4115bb95d965"),
+                            CreatedDate = new DateTime(2024, 10, 21, 9, 26, 40, 562, DateTimeKind.Utc).AddTicks(1390),
+                            Password = "$2a$11$imIKBCIYksHl1QA7DWVJ7u5BQMOUFIJXWCuTCzsVZ8DDi.Exiy1zG",
+                            RoleId = new Guid("eae62f99-d9d1-4c4b-a64d-f5ad3a144890"),
                             Status = 1L,
                             Username = "user"
                         });
@@ -135,7 +135,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            CameraId = new Guid("a593c223-8bfd-4073-9026-70acca9f7d77"),
+                            CameraId = new Guid("616d0250-7683-4dae-aec3-bf396ade72de"),
                             Camera1 = "N/A",
                             Camera2 = "N/A",
                             Status = (short)1,
@@ -240,12 +240,12 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("34716aac-aa0a-47e5-9015-f17baeeaa4dd"),
+                            RoleId = new Guid("9dc797da-12c7-40d8-9162-c1e780318764"),
                             RoleName = "Admin"
                         },
                         new
                         {
-                            RoleId = new Guid("1fc50149-85bc-4aa6-b3ad-4115bb95d965"),
+                            RoleId = new Guid("eae62f99-d9d1-4c4b-a64d-f5ad3a144890"),
                             RoleName = "User"
                         });
                 });
@@ -263,6 +263,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<DateTime?>("LastEditedTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<float?>("ProductDensity")
                         .HasColumnType("real");
 
@@ -278,6 +281,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
 
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
+
+                    b.Property<float?>("TareWeight")
+                        .HasColumnType("real");
 
                     b.HasKey("SaleId");
 
