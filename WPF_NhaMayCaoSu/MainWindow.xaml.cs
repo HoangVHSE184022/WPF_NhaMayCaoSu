@@ -552,10 +552,6 @@ namespace WPF_NhaMayCaoSu
         }
 
 
-
-
-
-
     }
 }
 
