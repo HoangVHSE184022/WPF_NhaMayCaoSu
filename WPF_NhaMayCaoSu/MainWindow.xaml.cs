@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
@@ -73,14 +74,22 @@ namespace WPF_NhaMayCaoSu
                     return;
                 }
 
+                if (SharedTimerService.Instance.IsCountingDown)
+                {
+                    MessageBox.Show("Đang trong thời gian không thể nhận tin nhắn từ MQTT. Vui lòng thử lại sau.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 if (data.Contains("Weight"))
                 {
                     ProcessMqttMessage(data["info-".Length..], "RFID", "Weight", newestCamera, 1);
+                    SharedTimerService.Instance.StartCountdown(newestCamera.Time);
                     await _mqttClientService.PublishAsync(topic, payload);
                 }
                 else if (data.Contains("Density"))
                 {
                     ProcessMqttMessage(data["info-".Length..], "RFID", "Density", newestCamera, 2);
+                    SharedTimerService.Instance.StartCountdown(newestCamera.Time);
                     await _mqttClientService.PublishAsync(topic, payload);
                 }
                 else
@@ -139,7 +148,7 @@ namespace WPF_NhaMayCaoSu
 
                 Sale sale = _sessionSaleList
                                 .Where(s => s.RFIDCode == rfid)
-                                .OrderByDescending(s => s.LastEditedTime)  
+                                .OrderByDescending(s => s.LastEditedTime)
                                 .FirstOrDefault();
 
                 if (sale == null)
@@ -206,12 +215,12 @@ namespace WPF_NhaMayCaoSu
 
                     await _saleService.UpdateSaleAsync(sale);
 
-                    var saleInSession = _sessionSaleList.FirstOrDefault(s => s.SaleId == sale.SaleId);  
+                    var saleInSession = _sessionSaleList.FirstOrDefault(s => s.SaleId == sale.SaleId);
                     if (saleInSession != null)
                     {
                         _sessionSaleList.Remove(saleInSession);
                     }
-                    _sessionSaleList.Add(sale); 
+                    _sessionSaleList.Add(sale);
                 }
 
                 string imagePath = CaptureImageFromCamera(newestCamera, cameraIndex);
@@ -346,7 +355,8 @@ namespace WPF_NhaMayCaoSu
                 ExpandButton.Visibility = Visibility.Hidden;
                 CloseButton.Visibility = Visibility.Visible;
             }
-
+            SharedTimerService.Instance.TimerTicked += OnTimerTicked;
+            SharedTimerService.Instance.TimerEnded += OnTimerEnded;
             try
             {
                 if (!_mqttClientService.IsConnected)
@@ -369,6 +379,26 @@ namespace WPF_NhaMayCaoSu
             }
 
             LoadDataGrid();
+        }
+        private void OnTimerTicked(object sender, int remainingSeconds)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (remainingSeconds > 0)
+                {
+                    AbleScanLabel.Content = $"Hiện tại không thể quét. Thử lại sau {remainingSeconds} giây.";
+                    AbleScanLabel.Foreground = new SolidColorBrush(Colors.Red);
+                }
+            });
+        }
+
+        private void OnTimerEnded(object sender, EventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                AbleScanLabel.Content = "Có thể quét lại.";
+                AbleScanLabel.Foreground = new SolidColorBrush(Colors.Green);
+            });
         }
 
         private void OpenBrokerWindow()
@@ -532,7 +562,7 @@ namespace WPF_NhaMayCaoSu
                             }
                             break;
                         default:
-                            return; 
+                            return;
                     }
 
                     editedSale.LastEditedTime = DateTime.Now;

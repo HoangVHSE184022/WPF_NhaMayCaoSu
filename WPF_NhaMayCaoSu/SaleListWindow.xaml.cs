@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Controls;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
@@ -65,6 +66,8 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
+                SharedTimerService.Instance.TimerTicked += OnTimerTicked;
+                SharedTimerService.Instance.TimerEnded += OnTimerEnded;
                 if (!_mqttClientService.IsConnected)
                 {
                     await _mqttClientService.ConnectAsync();
@@ -115,7 +118,26 @@ namespace WPF_NhaMayCaoSu
         }
 
 
+        private void OnTimerTicked(object sender, int remainingSeconds)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (remainingSeconds > 0)
+                {
+                    AbleScanLabel.Content = $"Hiện tại không thể quét. Thử lại sau {remainingSeconds} giây.";
+                    AbleScanLabel.Foreground = new SolidColorBrush(Colors.Red);
+                }
+            });
+        }
 
+        private void OnTimerEnded(object sender, EventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                AbleScanLabel.Content = "Có thể quét lại.";
+                AbleScanLabel.Foreground = new SolidColorBrush(Colors.Green);
+            });
+        }
 
         private void PreviousPageButton_Click(object sender, RoutedEventArgs e)
         {
@@ -152,15 +174,22 @@ namespace WPF_NhaMayCaoSu
                     ShowError("Không thể lấy thông tin từ Camera.");
                     return;
                 }
+                if (SharedTimerService.Instance.IsCountingDown)
+                {
+                    MessageBox.Show("Đang trong thời gian không thể nhận tin nhắn từ MQTT. Vui lòng thử lại sau.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
                 if (data.Contains("Weight"))
                 {
                     ProcessMqttMessage(data["info-".Length..], "RFID", "Weight", newestCamera, 1);
+                    SharedTimerService.Instance.StartCountdown(newestCamera.Time);
                     await _mqttClientService.PublishAsync(topic, payload);
                 }
                 else if (data.Contains("Density"))
                 {
                     ProcessMqttMessage(data["info-".Length..], "RFID", "Density", newestCamera, 2);
+                    SharedTimerService.Instance.StartCountdown(newestCamera.Time);
                     await _mqttClientService.PublishAsync(topic, payload);
                 }
                 else

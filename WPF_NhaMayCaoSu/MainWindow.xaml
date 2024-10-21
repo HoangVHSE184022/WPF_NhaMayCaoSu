@@ -42,5 +42,6 @@
         <!-- Close button that stays on top-right -->
         <Button Content="✖" HorizontalAlignment="Right" VerticalAlignment="Top" Width="30" Height="30" 
                 Name="CloseButton" Click="CloseButton_Click" Visibility="Hidden" Margin="0,10,10,0"/>
+        <Label x:Name="AbleScanLabel" Content="Có thể quét." HorizontalAlignment="Right" Height="25" Margin="0,7,10,0" VerticalAlignment="Top" Width="325" FontFamily="Montserrat" FontSize="14" Foreground="#FF002366" />
     </Grid>
 </Window>
