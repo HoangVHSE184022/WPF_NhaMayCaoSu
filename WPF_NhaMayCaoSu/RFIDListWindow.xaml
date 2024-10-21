@@ -7,14 +7,14 @@
         mc:Ignorable="d"
         Title="RFID List" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" WindowStyle="SingleBorderWindow">
     <Grid>
-        <Label Content="Quản lý RFID" HorizontalAlignment="Left" Height="57" Margin="32,40,0,0" VerticalAlignment="Top" Width="343" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
+        <Label Content="Quản lý RFID" HorizontalAlignment="Left" Height="57" Margin="32,40,0,0" VerticalAlignment="Top" Width="343" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366" FontWeight="Bold"/>
         <Button x:Name="AddRFIDButton" HorizontalAlignment="Right" Height="40" Margin="0,146,32,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="AddRFIDButton_Click" >
             <TextBlock Text="Thêm mới" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
         <Button x:Name="EditRFIDButton" Height="40" Margin="0,228,32,0" VerticalAlignment="Top" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="EditRFIDButton_Click" HorizontalAlignment="Right" Width="121"  >
             <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <DataGrid x:Name="RFIDDataGrid" Margin="32,129,159,90" FontFamily="Montserrat" FontSize="34" Background="#FFCACACA" AutoGenerateColumns="False">
+        <DataGrid x:Name="RFIDDataGrid" Margin="32,129,159,90" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Mã RFID" Width="250" Binding="{Binding RFIDCode}"/>
                 <DataGridTextColumn Header="Ngày tạo" Width="190" Binding="{Binding CreatedDate}" />

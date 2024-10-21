@@ -9,16 +9,16 @@
     <Grid>
         
 
-        <Label x:Name="ModeLabel" Content="Thêm/Chỉnh sửa Board" HorizontalAlignment="Left" Height="48" Margin="32,40,0,0" VerticalAlignment="Top" Width="400" FontFamily="Montserrat" FontSize="36" Foreground="#FF002366" FontWeight="Bold"/>
-        <Label Content="Tên Board" HorizontalAlignment="Left" Height="46" Margin="32,130,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
-        <TextBox x:Name="BoardNameTextBox" Height="46" Margin="276,130,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA"  FontSize="30" BorderThickness="0"/>
-        <Label Content="Ip" HorizontalAlignment="Left" Height="46" Margin="32,200,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
-        <TextBox x:Name="IpTextBox" Height="46" Margin="276,200,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="30" Background="#FFCACACA" BorderThickness="0"/>
-        <Label Content="MacAddress" HorizontalAlignment="Left" Height="46" Margin="32,270,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366"/>
-        <TextBox x:Name="MacAddressTextBox" Height="46" Margin="276,270,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="30" Background="#FFCACACA" BorderThickness="0"/>
-        <Label Content="Mode" HorizontalAlignment="Left" Height="46" Margin="35,340,0,0" VerticalAlignment="Top" Width="236" FontFamily="Montserrat" FontSize="30" Foreground="#FF002366" />
-        <TextBox x:Name="ModeTextBox" Height="46" Margin="276,340,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA" FontSize="30" BorderThickness="0"/>
-        <Button x:Name="SaveButton" Content="Lưu" HorizontalAlignment="Right" Height="40" Margin="0,0,71,28" VerticalAlignment="Bottom" Width="121" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="36" Click="SaveButton_Click"/>
-        <Button x:Name="QuitButton" Content="Thoát" HorizontalAlignment="Left" Height="40" Margin="72,0,0,35" VerticalAlignment="Bottom" Width="121"  FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="36" Background="#FFCACACA" Click="QuitButton_Click"/>
+        <Label x:Name="ModeLabel" Content="Thêm/Chỉnh sửa Board" HorizontalAlignment="Left" Height="48" Margin="32,40,0,0" VerticalAlignment="Top" Width="400" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366" FontWeight="Bold"/>
+        <Label Content="Tên Board" HorizontalAlignment="Left" Height="40" Margin="32,130,0,0" VerticalAlignment="Top" Width="161" FontFamily="Montserrat" FontSize="20" Foreground="#FF002366"/>
+        <TextBox x:Name="BoardNameTextBox" Height="40" Margin="193,130,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA"  FontSize="20" BorderThickness="0"/>
+        <Label Content="Ip" HorizontalAlignment="Left" Height="40" Margin="32,200,0,0" VerticalAlignment="Top" Width="161" FontFamily="Montserrat" FontSize="20" Foreground="#FF002366"/>
+        <TextBox x:Name="IpTextBox" Height="40" Margin="193,200,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="20" Background="#FFCACACA" BorderThickness="0"/>
+        <Label Content="MacAddress" HorizontalAlignment="Left" Height="40" Margin="32,270,0,0" VerticalAlignment="Top" Width="161" FontFamily="Montserrat" FontSize="20" Foreground="#FF002366"/>
+        <TextBox x:Name="MacAddressTextBox" Height="40" Margin="193,270,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="20" Background="#FFCACACA" BorderThickness="0"/>
+        <Label Content="Mode" HorizontalAlignment="Left" Height="40" Margin="35,340,0,0" VerticalAlignment="Top" Width="158" FontFamily="Montserrat" FontSize="20" Foreground="#FF002366" />
+        <TextBox x:Name="ModeTextBox" Height="40" Margin="193,340,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA" FontSize="20" BorderThickness="0"/>
+        <Button x:Name="SaveButton" Content="Lưu" HorizontalAlignment="Right" Height="40" Margin="0,0,71,28" VerticalAlignment="Bottom" Width="121" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="26" Click="SaveButton_Click"/>
+        <Button x:Name="QuitButton" Content="Thoát" HorizontalAlignment="Left" Height="40" Margin="72,0,0,35" VerticalAlignment="Bottom" Width="121"  FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="26" Background="#FFCACACA" Click="QuitButton_Click"/>
     </Grid>
 </Window>
