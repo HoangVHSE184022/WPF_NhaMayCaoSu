@@ -9,6 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Controls;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
@@ -638,6 +639,63 @@ namespace WPF_NhaMayCaoSu
                 Log.Error(ex, "Error exporting Sales to Excel");
             }
         }
+
+        private async void SaleDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            // Get the edited sale
+            var editedSale = e.Row.Item as Sale;
+            if (editedSale == null) return;
+
+            // Get the edited element and value
+            var editedElement = e.EditingElement as TextBox;
+            string editedValue = editedElement?.Text;
+
+            // Get the edited column header
+            var editedColumn = e.Column.Header.ToString();
+
+            // Show confirmation dialog
+            MessageBoxResult result = MessageBox.Show($"Bạn có chắc muốn thay đổi {editedColumn} thành {editedValue}?",
+                                                      "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    switch (editedColumn)
+                    {
+                        case "Số ký":
+                            editedSale.ProductWeight = float.Parse(editedValue);
+                            break;
+                        case "Tỉ trọng":
+                            editedSale.ProductDensity = float.Parse(editedValue);
+                            if (editedSale.ProductDensity > 100)
+                            {
+                                MessageBox.Show("Tỉ trọng không thể vượt quá 100%", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                return;
+                            }
+                            break;
+                        default:
+                            return; 
+                    }
+
+                    // Update the LastEditedTime to now
+                    editedSale.LastEditedTime = DateTime.Now;
+
+                    // Update the sale in the database
+                    await _saleService.UpdateSaleAsync(editedSale);
+
+                    LoadDataGrid();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi cập nhật đơn hàng: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
+
 
     }
 }
