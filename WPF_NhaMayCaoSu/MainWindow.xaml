@@ -23,16 +23,17 @@
 
         <DataGrid x:Name="SalesDataGrid" Grid.Row="0"
           Width="Auto" FontFamily="Montserrat" FontSize="34" Background="#FFCACACA"
-          AutoGenerateColumns="False" Margin="10,40,10,0">
+          AutoGenerateColumns="False" Margin="10,40,10,0"
+          IsReadOnly="False" CellEditEnding="SalesDataGrid_CellEditEnding">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Thời gian quét" Binding="{Binding LastEditedTime, StringFormat=G}" Width="1.5*"/>
-                <DataGridTextColumn Header="RFID" Binding="{Binding RFIDCode}" Width="1.2*"/>
-                <DataGridTextColumn Header="Số kí" Binding="{Binding ProductWeight}" Width="0.5*"/>
-                <DataGridTextColumn Header="Tỉ Trọng" Binding="{Binding ProductDensity}" Width="0.6*"/>
-                <DataGridTextColumn Header="Tên khách hàng" Binding="{Binding CustomerName}" Width="*"/>
-                
+                <DataGridTextColumn Header="Thời gian quét" Binding="{Binding LastEditedTime, StringFormat=G}" Width="1.5*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="RFID" Binding="{Binding RFIDCode}" Width="1.2*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Số kí" Binding="{Binding ProductWeight}" Width="0.5*" />
+                <DataGridTextColumn Header="Tỉ Trọng" Binding="{Binding ProductDensity}" Width="0.6*" />
+                <DataGridTextColumn Header="Tên khách hàng" Binding="{Binding CustomerName}" Width="*" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
+
 
         <!-- Button to expand that stays at the bottom -->
         <Button Content="⛶" Name="ExpandButton" Grid.Row="1" Click="ExpandButton_Click"
