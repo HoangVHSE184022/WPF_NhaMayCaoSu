@@ -24,11 +24,12 @@
           Background="#FFCACACA" AutoGenerateColumns="False" Grid.Row="1"
           IsReadOnly="False" CellEditEnding="SaleDataGrid_CellEditEnding">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Tên khách hàng" Width="220" Binding="{Binding CustomerName}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Số ký" Width="100" Binding="{Binding ProductWeight}"/>
-                <DataGridTextColumn Header="Tỉ trọng" Width="120" Binding="{Binding ProductDensity}"/>
-                <DataGridTextColumn Header="Chỉnh sửa cuối" Width="210" Binding="{Binding LastEditedTime}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="RFID" Width="210" Binding="{Binding RFIDCode}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Tên khách hàng" Width="1.5*" Binding="{Binding CustomerName}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Số ký" Width="0.7*" Binding="{Binding ProductWeight}"/>
+                <DataGridTextColumn Header="Tỉ trọng" Width="0.7*" Binding="{Binding ProductDensity}"/>
+                <DataGridTextColumn Header="Số bì" Width="0.7*" Binding="{Binding ProductDensity}"/>
+                <DataGridTextColumn Header="Chỉnh sửa cuối" Width="1.4*" Binding="{Binding LastEditedTime}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="RFID" Width="1.2*" Binding="{Binding RFIDCode}" IsReadOnly="True"/>
                 <DataGridTemplateColumn Header="Hiển thị">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -44,7 +45,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Trạng thái" Width="150" Binding="{Binding Status}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Trạng thái" Width="0*" Binding="{Binding Status}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
         <Label x:Name="SearchLabel" Content="Nhập tên khách hàng:" Height="30" VerticalAlignment="Top" Margin="0,69,506,0" FontFamily="Montserrat" FontSize="18" Grid.RowSpan="2" HorizontalAlignment="Right" Width="188" />
