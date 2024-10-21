@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
@@ -136,10 +137,17 @@ namespace WPF_NhaMayCaoSu
                     return;
                 }
 
+                Sale sale = _sessionSaleList
+                                .Where(s => s.RFIDCode == rfid)
+                                .OrderByDescending(s => s.LastEditedTime)  
+                                .FirstOrDefault();
 
-                Sale sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfid);
+                if (sale == null)
+                {
+                    sale = await _saleService.GetSaleByRFIDCodeWithoutDensity(rfid);
+                }
+
                 DateTime currentTime = DateTime.Now;
-
                 var latestSale = await _saleService.GetLatestSaleWithinTimeRangeAsync(currentTime.AddMinutes(-5), currentTime);
                 bool otherRfidSaleExists = latestSale != null && !string.Equals(latestSale.RFIDCode, rfid, StringComparison.OrdinalIgnoreCase);
 
@@ -159,14 +167,13 @@ namespace WPF_NhaMayCaoSu
                 }
                 else
                 {
+                    // Update existing sale if found
                     if (secondKey == "Weight")
                     {
-                        // Update the weight if sale already has a weight value
                         if (sale.ProductWeight.HasValue)
                         {
                             sale.LastEditedTime = DateTime.Now;
 
-                            // If the last update is within 5 minutes, update weight
                             if ((currentTime - sale.LastEditedTime.Value).TotalMinutes <= 5)
                             {
                                 sale.ProductWeight += newValue;
@@ -185,7 +192,6 @@ namespace WPF_NhaMayCaoSu
                     }
                     else if (secondKey == "Density")
                     {
-                        // Update the density only if it's within valid range and hasn't been set before
                         if (newValue > 100)
                         {
                             MessageBox.Show("Tỉ trọng không thể vượt quá 100 %", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -199,7 +205,13 @@ namespace WPF_NhaMayCaoSu
                     }
 
                     await _saleService.UpdateSaleAsync(sale);
-                    _sessionSaleList.Add(sale);
+
+                    var saleInSession = _sessionSaleList.FirstOrDefault(s => s.SaleId == sale.SaleId);  
+                    if (saleInSession != null)
+                    {
+                        _sessionSaleList.Remove(saleInSession);
+                    }
+                    _sessionSaleList.Add(sale); 
                 }
 
                 string imagePath = CaptureImageFromCamera(newestCamera, cameraIndex);
@@ -219,6 +231,8 @@ namespace WPF_NhaMayCaoSu
                 Log.Error(ex, $"Error processing message: {messageContent}");
             }
         }
+
+
 
 
         private async Task<Sale> CreateNewSale(Customer customer, string rfid, float value, string valueType, RFID rfid_id)
@@ -306,14 +320,12 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
-        // Update the SalesDataGrid with the latest session sales
         public void LoadDataGrid()
         {
             SalesDataGrid.Dispatcher.Invoke(() =>
             {
                 SalesDataGrid.ItemsSource = null;
                 SalesDataGrid.ItemsSource = _sessionSaleList;
-                Debug.WriteLine(_sessionSaleList.Count);
             });
         }
 
@@ -490,6 +502,55 @@ namespace WPF_NhaMayCaoSu
             }
 
         }
+
+        private async void SalesDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            var editedSale = e.Row.Item as Sale;
+            if (editedSale == null) return;
+
+            var editedElement = e.EditingElement as TextBox;
+            string editedValue = editedElement?.Text;
+
+            var editedColumn = e.Column.Header.ToString();
+
+            MessageBoxResult result = MessageBox.Show($"Bạn có chắc muốn thay đổi {editedColumn} thành {editedValue}?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    switch (editedColumn)
+                    {
+                        case "Số kí":
+                            editedSale.ProductWeight = float.Parse(editedValue);
+                            break;
+                        case "Tỉ Trọng":
+                            editedSale.ProductDensity = float.Parse(editedValue);
+                            if (editedSale.ProductDensity > 100)
+                            {
+                                MessageBox.Show("Tỉ trọng không thể vượt quá 100%", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                return;
+                            }
+                            break;
+                        default:
+                            return; 
+                    }
+
+                    editedSale.LastEditedTime = DateTime.Now;
+
+                    await _saleService.UpdateSaleAsync(editedSale);
+                    LoadDataGrid();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi cập nhật đơn hàng: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
+
 
 
 
