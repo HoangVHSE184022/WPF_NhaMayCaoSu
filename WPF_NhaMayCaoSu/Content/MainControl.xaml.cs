@@ -334,6 +334,32 @@ namespace WPF_NhaMayCaoSu.Content
 
         }
 
+        // Sự kiện để mở popup
+        private void OpenPopup(object sender, RoutedEventArgs e)
+        {
+            TimePopup.IsOpen = true;
+        }
+
+        // Sự kiện để lưu thời gian vào cơ sở dữ liệu
+        private void SaveTime(object sender, RoutedEventArgs e)
+        {
+            // Lấy giá trị từ TextBox
+            string selectedTime = TimeTextBox.Text;
+
+            // Kiểm tra xem thời gian có hợp lệ không
+            if (DateTime.TryParse(selectedTime, out DateTime result))
+            {
+                // Lưu vào cơ sở dữ liệu
+                //SaveToDatabase(result);
+                MessageBox.Show("Thời gian đã được lưu.");
+                TimePopup.IsOpen = false; // Đóng popup
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng nhập thời gian hợp lệ.");
+            }
+        }
+
 
     }
 }
