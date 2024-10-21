@@ -135,6 +135,17 @@ namespace WPF_NhaMayCaoSu.Repository.Context
                     RoleId = userRoleId
                 }
             );
+
+            modelBuilder.Entity<Camera>().HasData(
+                new Camera
+                {
+                    CameraId = Guid.NewGuid(),
+                    Camera1 = "N/A",
+                    Camera2 = "N/A",
+                    Time = 30,
+                    Status = 1
+                }
+            );
         }
 
     }

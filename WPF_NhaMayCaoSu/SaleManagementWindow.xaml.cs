@@ -508,7 +508,7 @@ namespace WPF_NhaMayCaoSu
 
         private void View2_Click(object sender, RoutedEventArgs e)
         {
-            if(URLDensityTextBox.Text is null)
+            if (URLDensityTextBox.Text is null)
             {
                 MessageBox.Show("Chưa có hình ảnh để kiểm tra", "Lỗi", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
                 return;

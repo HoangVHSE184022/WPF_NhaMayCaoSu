@@ -26,7 +26,7 @@
                 <DataGridTextColumn Header="Số ký" Width="100" Binding="{Binding ProductWeight}"/>
                 <DataGridTextColumn Header="Tỉ trọng" Width="120" Binding="{Binding ProductDensity}"/>
                 <DataGridTextColumn Header="Chỉnh sửa cuối" Width="210" Binding="{Binding LastEditedTime}"/>
-                
+
                 <DataGridTextColumn Header="RFID" Width="210" Binding="{Binding RFIDCode}"/>
                 <DataGridTemplateColumn Header="Hiển thị">
                     <DataGridTemplateColumn.CellTemplate>
@@ -59,5 +59,6 @@
         <Button x:Name="Export" Height="40" Margin="0,246,35,0" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="Export_Click" Grid.Row="1" HorizontalAlignment="Right" Width="121" >
             <TextBlock  Text="Xuất file" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
+        <Label x:Name="AbleScanLabel" Content="Có thể quét." HorizontalAlignment="Right" Height="25" Margin="0,40,35,0" VerticalAlignment="Top" Width="325" FontFamily="Montserrat" FontSize="14" Foreground="#FF002366" />
     </Grid>
 </Window>
