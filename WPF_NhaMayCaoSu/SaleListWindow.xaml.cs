@@ -8,8 +8,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Controls;
+using System.Windows.Media;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
@@ -674,7 +674,7 @@ namespace WPF_NhaMayCaoSu
                             }
                             break;
                         default:
-                            return; 
+                            return;
                     }
 
                     // Update the LastEditedTime to now

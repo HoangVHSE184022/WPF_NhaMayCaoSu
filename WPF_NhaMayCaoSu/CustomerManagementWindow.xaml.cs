@@ -32,7 +32,7 @@ namespace WPF_NhaMayCaoSu
             // Validate required fields
             if (string.IsNullOrWhiteSpace(AccountNameTextBox.Text) ||
                 string.IsNullOrWhiteSpace(PhoneTextBox.Text) ||
-                string.IsNullOrWhiteSpace(BonusPriceTextBox.Text)) 
+                string.IsNullOrWhiteSpace(BonusPriceTextBox.Text))
             {
                 MessageBox.Show(Constants.ErrorMessageMissingFields, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;

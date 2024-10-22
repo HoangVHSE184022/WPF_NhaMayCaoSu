@@ -15,6 +15,7 @@ namespace WPF_NhaMayCaoSu.Repository.Context
         public DbSet<Image> Images { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Board> Boards { get; set; }
+        public DbSet<Pricing> Pricings { get; set; }
 
         public CaoSuWpfDbContext(DbContextOptions<CaoSuWpfDbContext> options) : base(options)
         {
