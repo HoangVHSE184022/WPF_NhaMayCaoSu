@@ -61,21 +61,21 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            AccountId = new Guid("cc2a137c-769b-4ab1-aa47-c7e624a4cc35"),
+                            AccountId = new Guid("58de2995-3f93-47ed-8fb5-70e9c7ab1d4c"),
                             AccountName = "Administrator",
-                            CreatedDate = new DateTime(2024, 10, 21, 9, 26, 40, 402, DateTimeKind.Utc).AddTicks(8957),
-                            Password = "$2a$11$y.j8lmKXWGx.UekTVlArhOMmeh7sgMK0RfWoKGvUQvKiULgYOgt6O",
-                            RoleId = new Guid("9dc797da-12c7-40d8-9162-c1e780318764"),
+                            CreatedDate = new DateTime(2024, 10, 22, 4, 15, 58, 59, DateTimeKind.Utc).AddTicks(9042),
+                            Password = "$2a$11$98a24ioRl.BPhPGJym/XLumWLxWPuevs03mXed3gdkW9aMHLM9Eie",
+                            RoleId = new Guid("d4e32771-178f-4344-8252-72c5483c2014"),
                             Status = 1L,
                             Username = "admin"
                         },
                         new
                         {
-                            AccountId = new Guid("d60d8ebe-ee4f-4ef7-bf5b-493f85e735b6"),
+                            AccountId = new Guid("3d276f66-3d60-44d8-b052-2b2ca7ce4451"),
                             AccountName = "Standard User",
-                            CreatedDate = new DateTime(2024, 10, 21, 9, 26, 40, 562, DateTimeKind.Utc).AddTicks(1390),
-                            Password = "$2a$11$imIKBCIYksHl1QA7DWVJ7u5BQMOUFIJXWCuTCzsVZ8DDi.Exiy1zG",
-                            RoleId = new Guid("eae62f99-d9d1-4c4b-a64d-f5ad3a144890"),
+                            CreatedDate = new DateTime(2024, 10, 22, 4, 15, 58, 285, DateTimeKind.Utc).AddTicks(569),
+                            Password = "$2a$11$yytt8ZRg7JF60PAvDUz11.jF.zeGsE0xucAtLlf4l4qAmWrqUvoVW",
+                            RoleId = new Guid("b159b13c-b886-4dc2-957d-0f307625dff2"),
                             Status = 1L,
                             Username = "user"
                         });
@@ -135,7 +135,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            CameraId = new Guid("616d0250-7683-4dae-aec3-bf396ade72de"),
+                            CameraId = new Guid("d70aff7e-46a3-429f-b9c1-3a69b88472cd"),
                             Camera1 = "N/A",
                             Camera2 = "N/A",
                             Status = (short)1,
@@ -159,6 +159,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
 
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
+
+                    b.Property<float?>("bonusPrice")
+                        .HasColumnType("real");
 
                     b.HasKey("CustomerId");
 
@@ -189,6 +192,20 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasIndex("SaleId");
 
                     b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.Pricing", b =>
+                {
+                    b.Property<Guid>("PricingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float?>("Price")
+                        .HasColumnType("real");
+
+                    b.HasKey("PricingId");
+
+                    b.ToTable("Pricing");
                 });
 
             modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.RFID", b =>
@@ -240,12 +257,12 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("9dc797da-12c7-40d8-9162-c1e780318764"),
+                            RoleId = new Guid("d4e32771-178f-4344-8252-72c5483c2014"),
                             RoleName = "Admin"
                         },
                         new
                         {
-                            RoleId = new Guid("eae62f99-d9d1-4c4b-a64d-f5ad3a144890"),
+                            RoleId = new Guid("b159b13c-b886-4dc2-957d-0f307625dff2"),
                             RoleName = "User"
                         });
                 });
@@ -255,6 +272,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<Guid>("SaleId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<float?>("BonusPrice")
+                        .HasColumnType("real");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
@@ -279,10 +299,16 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<Guid>("RFID_Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<float?>("SalePrice")
+                        .HasColumnType("real");
+
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
 
                     b.Property<float?>("TareWeight")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("TotalPrice")
                         .HasColumnType("real");
 
                     b.HasKey("SaleId");
