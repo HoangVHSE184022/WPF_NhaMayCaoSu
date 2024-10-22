@@ -45,7 +45,8 @@ namespace WPF_NhaMayCaoSu
                 CustomerName = AccountNameTextBox.Text,
                 Status = 1,
                 CustomerId = SelectedCustomer?.CustomerId ?? Guid.NewGuid(),
-                Phone = PhoneTextBox.Text
+                Phone = PhoneTextBox.Text,
+                bonusPrice = float.Parse(BonusPriceTextBox.Text)
             };
 
             if (SelectedCustomer == null)
@@ -65,10 +66,6 @@ namespace WPF_NhaMayCaoSu
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModeLabel.Content = Constants.ModeLabelAddCustomer;
-            //await _mqttClientService.ConnectAsync();
-            //await _mqttClientService.SubscribeAsync("CreateRFID");
-
-            //_mqttClientService.MessageReceived += OnMqttMessageReceived;
 
             if (SelectedCustomer != null)
             {
@@ -78,38 +75,6 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
-
-        //private void OnMqttMessageReceived(object sender, string data)
-        //{
-        //    try
-        //    {
-        //        if (data.StartsWith("CreateRFID:"))
-        //        {
-        //            string rfidString = data.Substring("CreateRFID:".Length);
-
-        //            if (!rfidString.IsNullOrEmpty())
-        //            {
-        //                RFIDCodeTextBox.Dispatcher.Invoke(() =>
-        //                {
-        //                    RFIDCodeTextBox.Text = rfidString;
-        //                });
-        //            }
-        //            else
-        //            {
-        //                Debug.WriteLine("Failed to parse RFID number.");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            Debug.WriteLine("Unexpected message format.");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Handle any general errors
-        //        Debug.WriteLine($"Error processing message: {ex.Message}");
-        //    }
-        //}
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
