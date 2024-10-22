@@ -21,7 +21,7 @@ namespace WPF_NhaMayCaoSu.Content
         private readonly BrokerWindow broker;
         private CustomerListWindow customerListWindow;
         private SaleListWindow saleListWindow;
-        private AccountManagementWindow accountManagementWindow;
+        private AccountListWindow accountListWindow;
         private RFIDListWindow rfidListWindow;
         private BoardListWindow boardListWindow;
         private RoleListWindow roleListWindow;
@@ -39,7 +39,7 @@ namespace WPF_NhaMayCaoSu.Content
             broker = new BrokerWindow();
             customerListWindow = new CustomerListWindow();
             boardListWindow = new BoardListWindow();
-            accountManagementWindow = new AccountManagementWindow();
+            accountListWindow = new AccountListWindow();
             rfidListWindow = new RFIDListWindow();
             roleListWindow = new RoleListWindow();
             mainWindow = new();
@@ -50,7 +50,7 @@ namespace WPF_NhaMayCaoSu.Content
             broker.CurrentAccount = CurrentAccount;
             customerListWindow.CurrentAccount = CurrentAccount;
             saleListWindow.CurrentAccount = CurrentAccount;
-            accountManagementWindow.CurrentAccount = CurrentAccount;
+            accountListWindow.CurrentAccount = CurrentAccount;
             rfidListWindow.CurrentAccount = CurrentAccount;
             roleListWindow.CurrentAccount = CurrentAccount;
             boardListWindow.CurrentAccount = CurrentAccount;
@@ -177,9 +177,9 @@ namespace WPF_NhaMayCaoSu.Content
                 return;
             }
 
-            MainContentControl.Content = accountManagementWindow.Content;
-            accountManagementWindow.OnWindowLoaded();
-            Title = accountManagementWindow.Title;
+            MainContentControl.Content = accountListWindow.Content;
+            accountListWindow.OnWindowLoaded();
+            Title = accountListWindow.Title;
         }
 
         private void RFIDManagementButton_Click(object sender, RoutedEventArgs e)
@@ -245,7 +245,7 @@ namespace WPF_NhaMayCaoSu.Content
             broker.CurrentAccount = account;
             customerListWindow.CurrentAccount = account;
             saleListWindow.CurrentAccount = account;
-            accountManagementWindow.CurrentAccount = account;
+            accountListWindow.CurrentAccount = account;
             rfidListWindow.CurrentAccount = account;
             roleListWindow.CurrentAccount = account;
             //LoginButton.Visibility = Visibility.Hidden;

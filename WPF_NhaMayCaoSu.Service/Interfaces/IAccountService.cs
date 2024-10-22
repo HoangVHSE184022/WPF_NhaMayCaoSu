@@ -12,5 +12,6 @@ namespace WPF_NhaMayCaoSu.Service.Interfaces
         Task<Account> LoginAsync(string username, string password);
         Task RegisterAsync(Account account);
         Task<Account> GetAccountByUsernameAsync(string username);
+        Task<int> GetTotalAccountsCountAsync();
     }
 }

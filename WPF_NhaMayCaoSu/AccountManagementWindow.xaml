@@ -34,7 +34,7 @@
         <ComboBox x:Name="RoleComboBox" HorizontalAlignment="Left" Height="45" FontFamily="Montserrat" FontSize="20" Margin="226,525,0,0" VerticalAlignment="Top" Width="239"/>
         <Label x:Name="Role" Content="Vai trò" HorizontalAlignment="Left" Height="40" Margin="32,530,0,0" VerticalAlignment="Top" Width="189" FontFamily="Montserrat" FontSize="20" Foreground="#FF002366"/>
         <Button x:Name="SaveButton" Content="Lưu" Height="40" Margin="0,95,74,0" VerticalAlignment="Top" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="20" Click="SaveButton_Click" Grid.Row="1" HorizontalAlignment="Right" Width="95"/>
-        <Button x:Name="LoginButton" Content="Về trang Đăng Nhập" Margin="800,95,0,0" FontSize="20" Background="#FF002366" FontFamily="Montserrat" Foreground="#FFFFFF"  BorderThickness="0" Click="LoginButton_Click" Grid.Row="1" HorizontalAlignment="Left" Width="204" Height="40" VerticalAlignment="Top"/>
+        <Button x:Name="LoginButton" Content="Quay lại" Margin="32,95,0,0" FontSize="20" Background="#FF002366" FontFamily="Montserrat" Foreground="#FFFFFF"  BorderThickness="0" Click="LoginButton_Click" Grid.Row="1" HorizontalAlignment="Left" Width="115" Height="40" VerticalAlignment="Top"/>
 
 
 

@@ -13,5 +13,6 @@ namespace WPF_NhaMayCaoSu.Repository.IRepositories
         Task Register(Account account);
         Task<Account> GetAccountByUsernameAsync(string username);
 
+        Task<int> GetTotalAccountsCountAsync();
     }
 }

@@ -97,5 +97,11 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
                                  .Include(a => a.Role)
                                  .FirstOrDefaultAsync(a => a.Username.ToLower() == username.ToLower());
         }
+
+        public async Task<int> GetTotalAccountsCountAsync()
+        {
+            _context = new();
+            return await _context.Accounts.CountAsync();
+        }
     }
 }

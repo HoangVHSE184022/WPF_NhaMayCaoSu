@@ -15,6 +15,7 @@ namespace WPF_NhaMayCaoSu
         private readonly IAccountService _accountService = new AccountService();
         private readonly IRoleService _roleService = new RoleService();
         public Account CurrentAccount { get; set; } = null;
+        public Account SelectedAccount { get; set; } = null;
         public AccountManagementWindow()
         {
             LoggingHelper.ConfigureLogger();
@@ -205,13 +206,13 @@ namespace WPF_NhaMayCaoSu
             //    Role.Visibility = Visibility.Collapsed;
             //}
 
-            if (CurrentAccount != null)
+            if (SelectedAccount != null)
             {
                 SaveButton.Content = "Cập nhật";
                 ModeLabel.Content = "Cập nhật tài khoản";
-                AccountNameTextBox.Text = CurrentAccount.AccountName;
-                UsernameTextBox.Text = CurrentAccount.Username;
-                LoginButton.Visibility = Visibility.Collapsed;
+                AccountNameTextBox.Text = SelectedAccount.AccountName;
+                UsernameTextBox.Text = SelectedAccount.Username;
+                RoleComboBox.SelectedValue = SelectedAccount.RoleId;
             }
 
         }
