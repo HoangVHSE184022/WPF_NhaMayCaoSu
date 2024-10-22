@@ -49,6 +49,9 @@ namespace WPF_NhaMayCaoSu.Repository.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Pricing>()
+                .HasKey(p => p.PricingId);
+
             modelBuilder.Entity<Board>()
                 .HasKey(b => b.BoardId);
 

@@ -51,11 +51,24 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<short>(type: "smallint", nullable: false)
+                    Status = table.Column<short>(type: "smallint", nullable: false),
+                    bonusPrice = table.Column<float>(type: "real", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.CustomerId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Pricing",
+                columns: table => new
+                {
+                    PricingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pricing", x => x.PricingId);
                 });
 
             migrationBuilder.CreateTable(
@@ -127,6 +140,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     LastEditedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<short>(type: "smallint", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SalePrice = table.Column<float>(type: "real", nullable: true),
                     RFIDCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RFID_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -165,15 +179,15 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
             migrationBuilder.InsertData(
                 table: "Cameras",
                 columns: new[] { "CameraId", "Camera1", "Camera2", "Status", "Time" },
-                values: new object[] { new Guid("616d0250-7683-4dae-aec3-bf396ade72de"), "N/A", "N/A", (short)1, 30 });
+                values: new object[] { new Guid("fe4b0cdc-7509-4d69-b97c-8e03f208b93f"), "N/A", "N/A", (short)1, 30 });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "RoleId", "RoleName" },
                 values: new object[,]
                 {
-                    { new Guid("9dc797da-12c7-40d8-9162-c1e780318764"), "Admin" },
-                    { new Guid("eae62f99-d9d1-4c4b-a64d-f5ad3a144890"), "User" }
+                    { new Guid("142ae08f-e98b-44fc-8841-d9d77392cee0"), "User" },
+                    { new Guid("6aad335d-acc9-406e-b233-98b07aeacb9c"), "Admin" }
                 });
 
             migrationBuilder.InsertData(
@@ -181,8 +195,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: new[] { "AccountId", "AccountName", "CreatedDate", "Password", "RoleId", "Status", "Username" },
                 values: new object[,]
                 {
-                    { new Guid("cc2a137c-769b-4ab1-aa47-c7e624a4cc35"), "Administrator", new DateTime(2024, 10, 21, 9, 26, 40, 402, DateTimeKind.Utc).AddTicks(8957), "$2a$11$y.j8lmKXWGx.UekTVlArhOMmeh7sgMK0RfWoKGvUQvKiULgYOgt6O", new Guid("9dc797da-12c7-40d8-9162-c1e780318764"), 1L, "admin" },
-                    { new Guid("d60d8ebe-ee4f-4ef7-bf5b-493f85e735b6"), "Standard User", new DateTime(2024, 10, 21, 9, 26, 40, 562, DateTimeKind.Utc).AddTicks(1390), "$2a$11$imIKBCIYksHl1QA7DWVJ7u5BQMOUFIJXWCuTCzsVZ8DDi.Exiy1zG", new Guid("eae62f99-d9d1-4c4b-a64d-f5ad3a144890"), 1L, "user" }
+                    { new Guid("a143589e-38d4-4c4e-bef4-fda3d47e29bf"), "Administrator", new DateTime(2024, 10, 22, 2, 20, 45, 663, DateTimeKind.Utc).AddTicks(9006), "$2a$11$H5qupbmHCF0Acr/lpAvFg.DiYQdZOQjajJKx2WpAXH/EaZ7J.HF3y", new Guid("6aad335d-acc9-406e-b233-98b07aeacb9c"), 1L, "admin" },
+                    { new Guid("cb6a0145-16c6-4252-9967-2dcaf64cbc33"), "Standard User", new DateTime(2024, 10, 22, 2, 20, 45, 828, DateTimeKind.Utc).AddTicks(9821), "$2a$11$2p.TQVbn5WMLIA0CvIp4eOqkiscRw9fTTzvwixo2NoWKLnbCoDvEy", new Guid("142ae08f-e98b-44fc-8841-d9d77392cee0"), 1L, "user" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -232,6 +246,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
 
             migrationBuilder.DropTable(
                 name: "Images");
+
+            migrationBuilder.DropTable(
+                name: "Pricing");
 
             migrationBuilder.DropTable(
                 name: "Roles");

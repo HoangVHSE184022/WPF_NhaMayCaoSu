@@ -10,6 +10,7 @@
         public DateTime? LastEditedTime { get; set; }
         public short Status { get; set; }
         public string? Note { get; set; }
+        public float? SalePrice { get; set; }
         public string RFIDCode { get; set; }
         public Guid RFID_Id { get; set; }
         public ICollection<Image> Images { get; set; }
