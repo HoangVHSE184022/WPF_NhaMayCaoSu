@@ -61,21 +61,21 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            AccountId = new Guid("a143589e-38d4-4c4e-bef4-fda3d47e29bf"),
+                            AccountId = new Guid("c2a605c8-ebe5-4c69-9880-02a2254e337e"),
                             AccountName = "Administrator",
-                            CreatedDate = new DateTime(2024, 10, 22, 2, 20, 45, 663, DateTimeKind.Utc).AddTicks(9006),
-                            Password = "$2a$11$H5qupbmHCF0Acr/lpAvFg.DiYQdZOQjajJKx2WpAXH/EaZ7J.HF3y",
-                            RoleId = new Guid("6aad335d-acc9-406e-b233-98b07aeacb9c"),
+                            CreatedDate = new DateTime(2024, 10, 22, 4, 5, 42, 807, DateTimeKind.Utc).AddTicks(1943),
+                            Password = "$2a$11$PX6DxX8IAyzTeSN7si07GuJDxWJGQ6qW2l1VufAxwtemCb9WoKBdm",
+                            RoleId = new Guid("16a7b17f-686f-459c-8cf4-0ee60abcbb44"),
                             Status = 1L,
                             Username = "admin"
                         },
                         new
                         {
-                            AccountId = new Guid("cb6a0145-16c6-4252-9967-2dcaf64cbc33"),
+                            AccountId = new Guid("de9379ce-8a37-4226-aa80-529d0ffa37f1"),
                             AccountName = "Standard User",
-                            CreatedDate = new DateTime(2024, 10, 22, 2, 20, 45, 828, DateTimeKind.Utc).AddTicks(9821),
-                            Password = "$2a$11$2p.TQVbn5WMLIA0CvIp4eOqkiscRw9fTTzvwixo2NoWKLnbCoDvEy",
-                            RoleId = new Guid("142ae08f-e98b-44fc-8841-d9d77392cee0"),
+                            CreatedDate = new DateTime(2024, 10, 22, 4, 5, 42, 983, DateTimeKind.Utc).AddTicks(7325),
+                            Password = "$2a$11$hgHBgF7yI.Yutcc4gATImujtiKGpfz4jqf8FpuZxXSJ4UdeOXURlC",
+                            RoleId = new Guid("2301de26-2ea3-45e4-889d-2e300d992618"),
                             Status = 1L,
                             Username = "user"
                         });
@@ -135,7 +135,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            CameraId = new Guid("fe4b0cdc-7509-4d69-b97c-8e03f208b93f"),
+                            CameraId = new Guid("6dcabfda-ab7c-411c-b491-08a53877d5e0"),
                             Camera1 = "N/A",
                             Camera2 = "N/A",
                             Status = (short)1,
@@ -257,12 +257,12 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("6aad335d-acc9-406e-b233-98b07aeacb9c"),
+                            RoleId = new Guid("16a7b17f-686f-459c-8cf4-0ee60abcbb44"),
                             RoleName = "Admin"
                         },
                         new
                         {
-                            RoleId = new Guid("142ae08f-e98b-44fc-8841-d9d77392cee0"),
+                            RoleId = new Guid("2301de26-2ea3-45e4-889d-2e300d992618"),
                             RoleName = "User"
                         });
                 });
@@ -272,6 +272,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<Guid>("SaleId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<float?>("BonusPrice")
+                        .HasColumnType("real");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
@@ -296,13 +299,13 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<Guid>("RFID_Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<float?>("SalePrice")
-                        .HasColumnType("real");
-
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
 
                     b.Property<float?>("TareWeight")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("TotalPrice")
                         .HasColumnType("real");
 
                     b.HasKey("SaleId");

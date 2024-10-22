@@ -140,7 +140,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     LastEditedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<short>(type: "smallint", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SalePrice = table.Column<float>(type: "real", nullable: true),
+                    TotalPrice = table.Column<float>(type: "real", nullable: true),
+                    BonusPrice = table.Column<float>(type: "real", nullable: true),
                     RFIDCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RFID_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -179,15 +180,15 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
             migrationBuilder.InsertData(
                 table: "Cameras",
                 columns: new[] { "CameraId", "Camera1", "Camera2", "Status", "Time" },
-                values: new object[] { new Guid("fe4b0cdc-7509-4d69-b97c-8e03f208b93f"), "N/A", "N/A", (short)1, 30 });
+                values: new object[] { new Guid("6dcabfda-ab7c-411c-b491-08a53877d5e0"), "N/A", "N/A", (short)1, 30 });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "RoleId", "RoleName" },
                 values: new object[,]
                 {
-                    { new Guid("142ae08f-e98b-44fc-8841-d9d77392cee0"), "User" },
-                    { new Guid("6aad335d-acc9-406e-b233-98b07aeacb9c"), "Admin" }
+                    { new Guid("16a7b17f-686f-459c-8cf4-0ee60abcbb44"), "Admin" },
+                    { new Guid("2301de26-2ea3-45e4-889d-2e300d992618"), "User" }
                 });
 
             migrationBuilder.InsertData(
@@ -195,8 +196,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: new[] { "AccountId", "AccountName", "CreatedDate", "Password", "RoleId", "Status", "Username" },
                 values: new object[,]
                 {
-                    { new Guid("a143589e-38d4-4c4e-bef4-fda3d47e29bf"), "Administrator", new DateTime(2024, 10, 22, 2, 20, 45, 663, DateTimeKind.Utc).AddTicks(9006), "$2a$11$H5qupbmHCF0Acr/lpAvFg.DiYQdZOQjajJKx2WpAXH/EaZ7J.HF3y", new Guid("6aad335d-acc9-406e-b233-98b07aeacb9c"), 1L, "admin" },
-                    { new Guid("cb6a0145-16c6-4252-9967-2dcaf64cbc33"), "Standard User", new DateTime(2024, 10, 22, 2, 20, 45, 828, DateTimeKind.Utc).AddTicks(9821), "$2a$11$2p.TQVbn5WMLIA0CvIp4eOqkiscRw9fTTzvwixo2NoWKLnbCoDvEy", new Guid("142ae08f-e98b-44fc-8841-d9d77392cee0"), 1L, "user" }
+                    { new Guid("c2a605c8-ebe5-4c69-9880-02a2254e337e"), "Administrator", new DateTime(2024, 10, 22, 4, 5, 42, 807, DateTimeKind.Utc).AddTicks(1943), "$2a$11$PX6DxX8IAyzTeSN7si07GuJDxWJGQ6qW2l1VufAxwtemCb9WoKBdm", new Guid("16a7b17f-686f-459c-8cf4-0ee60abcbb44"), 1L, "admin" },
+                    { new Guid("de9379ce-8a37-4226-aa80-529d0ffa37f1"), "Standard User", new DateTime(2024, 10, 22, 4, 5, 42, 983, DateTimeKind.Utc).AddTicks(7325), "$2a$11$hgHBgF7yI.Yutcc4gATImujtiKGpfz4jqf8FpuZxXSJ4UdeOXURlC", new Guid("2301de26-2ea3-45e4-889d-2e300d992618"), 1L, "user" }
                 });
 
             migrationBuilder.CreateIndex(
