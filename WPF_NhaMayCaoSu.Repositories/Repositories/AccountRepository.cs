@@ -23,7 +23,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             Account account = await _context.Accounts.FindAsync(accountId);
             if (account != null)
             {
-                account.Status = 0; 
+                account.Status = 0;
                 _context.Accounts.Update(account);
                 await _context.SaveChangesAsync();
             }
