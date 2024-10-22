@@ -95,6 +95,7 @@ namespace WPF_NhaMayCaoSu
                         CustomerName = CustomerNameTextBox.Text,
                         ProductWeight = float.Parse(WeightTextBox.Text),
                         ProductDensity = string.IsNullOrWhiteSpace(DensityTextBox.Text) ? 0 : float.Parse(DensityTextBox.Text),
+                        TareWeight = float.Parse(WeightTextBox.Text),
                         Status = 1,
                         RFIDCode = RFIDCodeTextBox.Text,
                         RFID_Id = rfid.RFID_Id,
