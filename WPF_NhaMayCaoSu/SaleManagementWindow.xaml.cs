@@ -129,6 +129,9 @@ namespace WPF_NhaMayCaoSu
                 return false;
             }
 
+            if (string.IsNullOrWhiteSpace(TareWeightTextBox.Text)) { MessageBox.Show("Dữ liệu số bì không hợp lệ hoặc chưa được nhập. Vui lòng kiểm tra lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning); 
+                return false; }
+
             if (string.IsNullOrWhiteSpace(WeightTextBox.Text))
             {
                 MessageBox.Show("Dữ liệu cân tạ không hợp lệ hoặc chưa được nhập. Vui lòng kiểm tra lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);

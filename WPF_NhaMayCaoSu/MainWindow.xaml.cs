@@ -252,6 +252,7 @@ namespace WPF_NhaMayCaoSu
                 RFIDCode = rfid,
                 RFID_Id = rfid_id.RFID_Id,
                 CustomerName = customer.CustomerName,
+                BonusPrice = customer.bonusPrice,
                 LastEditedTime = DateTime.Now,
                 Status = 1
             };
@@ -561,6 +562,9 @@ namespace WPF_NhaMayCaoSu
                                 return;
                             }
                             break;
+                        case "Số bì":
+                            editedSale.TareWeight = float.Parse(editedValue);
+                            return;
                         default:
                             return;
                     }
