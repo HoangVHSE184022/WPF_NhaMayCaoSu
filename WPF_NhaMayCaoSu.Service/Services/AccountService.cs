@@ -50,5 +50,10 @@ namespace WPF_NhaMayCaoSu.Service.Services
         {
             return await _accountRepository.GetAccountByUsernameAsync(username);
         }
+
+        public async Task<int> GetTotalAccountsCountAsync()
+        {
+            return await _accountRepository.GetTotalAccountsCountAsync();
+        }
     }
 }
