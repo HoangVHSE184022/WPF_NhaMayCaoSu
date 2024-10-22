@@ -23,7 +23,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             Account account = await _context.Accounts.FindAsync(accountId);
             if (account != null)
             {
-                account.Status = 0; //0 is unavailable 
+                account.Status = 0; 
                 _context.Accounts.Update(account);
                 await _context.SaveChangesAsync();
             }
@@ -54,7 +54,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         {
             _context = new();
             Account account = await _context.Accounts.Include("Role")
-                                        .FirstOrDefaultAsync(a => a.Username.ToLower().Equals(username.ToLower()));
+                                        .FirstOrDefaultAsync(a => a.Username.ToLower().Equals(username.ToLower()) && a.Status == 1);
 
             if (account != null && BCrypt.Net.BCrypt.Verify(password, account.Password))
             {
