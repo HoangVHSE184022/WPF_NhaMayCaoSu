@@ -31,6 +31,7 @@ namespace WPF_NhaMayCaoSu
         private readonly ConfigService _localCameraService = new ConfigService();
         private readonly IBoardService _boardService = new BoardService();
         private readonly IRFIDService _rfidService = new RFIDService();
+        private readonly IConfigService _configService = new ConfigService();
 
         private bool isExpanded = false;
         private Sale SaleDB { get; set; } = new();
@@ -131,6 +132,8 @@ namespace WPF_NhaMayCaoSu
                 string rfid = messages[0];
                 float newValue = float.Parse(messages[1]);
                 string macaddress = messages[3];
+                Config config = await _configService.GetNewestCameraAsync();
+                float generalSalePrice = config.GeneralPrice;
 
                 Board board = await _boardService.GetBoardByMacAddressAsync(macaddress);
                 if (board == null)
@@ -171,7 +174,7 @@ namespace WPF_NhaMayCaoSu
                     }
                     else
                     {
-                        sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfidEntity);
+                        sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfidEntity, generalSalePrice);
                     }
                 }
                 else
@@ -190,7 +193,7 @@ namespace WPF_NhaMayCaoSu
                             else
                             {
                                 Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfid);
-                                sale = await CreateNewSale(customer, rfid, newValue, secondKey, sale.RFID);
+                                sale = await CreateNewSale(customer, rfid, newValue, secondKey, sale.RFID, generalSalePrice);
                             }
                         }
                         else
@@ -244,7 +247,7 @@ namespace WPF_NhaMayCaoSu
 
 
 
-        private async Task<Sale> CreateNewSale(Customer customer, string rfid, float value, string valueType, RFID rfid_id)
+        private async Task<Sale> CreateNewSale(Customer customer, string rfid, float value, string valueType, RFID rfid_id, float generalSalePrice)
         {
             Sale sale = new Sale
             {
@@ -253,6 +256,7 @@ namespace WPF_NhaMayCaoSu
                 RFID_Id = rfid_id.RFID_Id,
                 CustomerName = customer.CustomerName,
                 BonusPrice = customer.bonusPrice,
+                SalePrice = generalSalePrice,
                 LastEditedTime = DateTime.Now,
                 Status = 1
             };
@@ -564,7 +568,7 @@ namespace WPF_NhaMayCaoSu
                             break;
                         case "Số bì":
                             editedSale.TareWeight = float.Parse(editedValue);
-                            return;
+                            break;
                         default:
                             return;
                     }
@@ -576,7 +580,7 @@ namespace WPF_NhaMayCaoSu
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Lỗi khi cập nhật đơn hàng: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Lỗi khi cập nhật giá: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else
