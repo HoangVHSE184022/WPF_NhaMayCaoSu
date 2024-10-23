@@ -254,7 +254,7 @@ namespace WPF_NhaMayCaoSu
 
                 Sale latestSale = await _saleService.GetLatestSaleWithinTimeRangeAsync(currentTime.AddMinutes(-5), currentTime);
                 bool otherRfidSaleExists = latestSale != null && !string.Equals(latestSale.RFIDCode, rfid, StringComparison.OrdinalIgnoreCase);
-                bool isSaleCompleted = sale != null && sale.ProductWeight.HasValue && sale.ProductDensity.HasValue;
+                bool isSaleCompleted = sale != null && sale.ProductWeight.HasValue && sale.ProductDensity.HasValue && sale.TareWeight.HasValue;
 
                 if (sale == null || isSaleCompleted || otherRfidSaleExists)
                 {
