@@ -21,7 +21,7 @@
             <TextBox Name="txtUrl1" Width="360" Height="25" Grid.Row="0" Margin="0,0,20,10" Text="rtsp://enter_url_for_camera_1"/>
             <Button Name="btnCapture1" Content="Chụp ảnh camera 1" Width="150" Height="30" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnCapture1_Click"/>
             <Image Name="imgCamera1" Stretch="Uniform" Grid.Row="2" Height="300" Margin="0,102,0,205"/>
-            <Button x:Name="SaveUrlCamera1" Content="Lưu url camera 1" Height="30" Grid.Row="1" VerticalAlignment="Center" Click="SaveUrlCamera1_Click" Margin="0,0,40,0" HorizontalAlignment="Right" Width="150"/>
+            <Button x:Name="SaveUrlCamera1" Content="Lưu url camera 1" Height="30" Grid.Row="1" VerticalAlignment="Bottom" Click="SaveUrlCamera1_Click" Margin="390,0,0,0" HorizontalAlignment="Left" Width="150"/>
         </Grid>
         <Grid Grid.Column="1" Margin="10,68,10,34">
             <Grid.RowDefinitions>

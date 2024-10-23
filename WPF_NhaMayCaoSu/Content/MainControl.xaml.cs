@@ -19,6 +19,7 @@ namespace WPF_NhaMayCaoSu.Content
         private readonly MqttClientService _mqttClientService;
         private readonly IBoardService _boardService;
         private readonly BrokerWindow broker;
+        private readonly IConfigService _configService;
         private CustomerListWindow customerListWindow;
         private SaleListWindow saleListWindow;
         private AccountListWindow accountListWindow;
@@ -36,6 +37,7 @@ namespace WPF_NhaMayCaoSu.Content
             _mqttServerService.BrokerStatusChanged += (sender, e) => UpdateMainWindowUI();
             _mqttClientService = new MqttClientService();
             _mqttServerService.DeviceCountChanged += OnDeviceCountChanged;
+            _configService = new ConfigService();
             broker = new BrokerWindow();
             customerListWindow = new CustomerListWindow();
             boardListWindow = new BoardListWindow();
@@ -58,6 +60,7 @@ namespace WPF_NhaMayCaoSu.Content
             ValidCheck();
             MainContentControl.Content = broker.Content;
             UpdateMainWindowUI();
+            UpdateTimeUIAsync();
         }
         private void keyCheck()
         {
@@ -286,6 +289,21 @@ namespace WPF_NhaMayCaoSu.Content
             }
         }
 
+        private async void UpdateTimeUIAsync()
+        {
+            Config config = await _configService.GetNewestCameraAsync();
+            int currentTime = config.Time;
+
+            if (currentTime != null)
+            {
+                rfidTimeLabel.Content = $"{currentTime}s";
+            }
+            else
+            {
+                rfidTimeLabel.Content = $"N/A";
+            }
+        }
+
         private void OnDeviceCountChanged(object sender, int deviceCount)
         {
             Dispatcher.Invoke(() =>
@@ -334,31 +352,37 @@ namespace WPF_NhaMayCaoSu.Content
 
         }
 
-        // Sự kiện để mở popup
         private void OpenPopup(object sender, RoutedEventArgs e)
         {
             TimePopup.IsOpen = true;
         }
 
-        // Sự kiện để lưu thời gian vào cơ sở dữ liệu
-        private void SaveTime(object sender, RoutedEventArgs e)
+        private async void SaveTime(object sender, RoutedEventArgs e)
         {
-            // Lấy giá trị từ TextBox
             string selectedTime = TimeTextBox.Text;
 
-            // Kiểm tra xem thời gian có hợp lệ không
-            if (DateTime.TryParse(selectedTime, out DateTime result))
+            if (string.IsNullOrEmpty(selectedTime))
             {
-                // Lưu vào cơ sở dữ liệu
-                //SaveToDatabase(result);
-                MessageBox.Show("Thời gian đã được lưu.");
-                TimePopup.IsOpen = false; // Đóng popup
+                MessageBox.Show("Vui lòng nhập một giá trị.");
+                return;
+            }
+
+            if (int.TryParse(selectedTime, out int result))
+            {
+
+                Config config = await _configService.GetNewestCameraAsync();
+                config.Time = result;
+                await _configService.UpdateCameraAsync(config);
+                MessageBox.Show("Giá trị đã được lưu.");
+                TimePopup.IsOpen = false;
+                UpdateTimeUIAsync();
             }
             else
             {
-                MessageBox.Show("Vui lòng nhập thời gian hợp lệ.");
+                MessageBox.Show("Vui lòng nhập một số nguyên hợp lệ.");
             }
         }
+
 
 
     }

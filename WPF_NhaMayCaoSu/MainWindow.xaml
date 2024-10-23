@@ -38,7 +38,7 @@
 
         <!-- Button to expand that stays at the bottom -->
         <Button Content="⛶" Name="ExpandButton" Grid.Row="1" Click="ExpandButton_Click"
-                HorizontalAlignment="Center" Height="60" VerticalAlignment="Center" Width="72"/>
+                HorizontalAlignment="Center" Height="60" VerticalAlignment="Bottom" Width="72" Margin="0,0,0,10"/>
 
         <!-- Close button that stays on top-right -->
         <Button Content="✖" HorizontalAlignment="Right" VerticalAlignment="Top" Width="30" Height="30" 

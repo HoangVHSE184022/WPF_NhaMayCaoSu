@@ -31,8 +31,8 @@
         <Button x:Name="QuitButton" Content="Thoát" HorizontalAlignment="Left" Margin="31,0,0,26" Width="68" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="16" Click="QuitButton_Click" Height="33" VerticalAlignment="Bottom"/>
         <Label x:Name="IPconnecttionSmallLabel" Content="Không có kết nối" Margin="0,0,0,10" FontFamily="Montserrat" FontSize="12" Foreground="#FF002366" HorizontalAlignment="Right" Width="173" Height="24" VerticalAlignment="Bottom"/>
         <Label  Content="Thời gian quét thẻ:" Margin="0,0,910,26" FontFamily="Montserrat" FontSize="18" Foreground="#FF002366" HorizontalAlignment="Right" Width="168" Height="33" VerticalAlignment="Bottom"/>
-        <Label  Content="60s" x:Name="rfidTimeLabel" Margin="279,0,859,28" FontSize="22" FontFamily="Montserrat" VerticalAlignment="Bottom" Height="35"/>
-        <Button Content="✎" Width="35" Height="35" VerticalAlignment="Bottom" Background="#FFFFFF" BorderThickness="0" HorizontalAlignment="Left"  Click="OpenPopup" Margin="325,0,0,28" FontSize="30"/>
+        <Label  Content="30s" x:Name="rfidTimeLabel" Margin="280,0,838,28" FontSize="22" FontFamily="Montserrat" VerticalAlignment="Bottom" Height="35"/>
+        <Button Content="✎" Width="35" Height="35" VerticalAlignment="Bottom" Background="#FFFFFF" BorderThickness="0" HorizontalAlignment="Left"  Click="OpenPopup" Margin="362,0,0,28" FontSize="30"/>
         <Popup x:Name="TimePopup" Placement="MousePoint" StaysOpen="False">
             <Border BorderBrush="Black" BorderThickness="1" Background="LightGray" Padding="10">
                 <StackPanel>

@@ -12,7 +12,7 @@ using WPF_NhaMayCaoSu.Repository.Context;
 namespace WPF_NhaMayCaoSu.Repository.Migrations
 {
     [DbContext(typeof(CaoSuWpfDbContext))]
-    [Migration("20241022041558_InitialCreate")]
+    [Migration("20241023005622_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -64,21 +64,21 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            AccountId = new Guid("58de2995-3f93-47ed-8fb5-70e9c7ab1d4c"),
+                            AccountId = new Guid("aaa5c7e6-0074-4d05-8e6f-52ef2d93c200"),
                             AccountName = "Administrator",
-                            CreatedDate = new DateTime(2024, 10, 22, 4, 15, 58, 59, DateTimeKind.Utc).AddTicks(9042),
-                            Password = "$2a$11$98a24ioRl.BPhPGJym/XLumWLxWPuevs03mXed3gdkW9aMHLM9Eie",
-                            RoleId = new Guid("d4e32771-178f-4344-8252-72c5483c2014"),
+                            CreatedDate = new DateTime(2024, 10, 23, 0, 56, 22, 385, DateTimeKind.Utc).AddTicks(1119),
+                            Password = "$2a$11$bi.xfeaWcnIbT62DyFetn.QkSmYfFaAYJtQeVA1Y792c3mZHgb8ha",
+                            RoleId = new Guid("cdcc9d1e-4b31-44f4-a0b2-3b8329af7977"),
                             Status = 1L,
                             Username = "admin"
                         },
                         new
                         {
-                            AccountId = new Guid("3d276f66-3d60-44d8-b052-2b2ca7ce4451"),
+                            AccountId = new Guid("ddd7d01b-b102-4132-93c4-7eb5e2fde828"),
                             AccountName = "Standard User",
-                            CreatedDate = new DateTime(2024, 10, 22, 4, 15, 58, 285, DateTimeKind.Utc).AddTicks(569),
-                            Password = "$2a$11$yytt8ZRg7JF60PAvDUz11.jF.zeGsE0xucAtLlf4l4qAmWrqUvoVW",
-                            RoleId = new Guid("b159b13c-b886-4dc2-957d-0f307625dff2"),
+                            CreatedDate = new DateTime(2024, 10, 23, 0, 56, 22, 509, DateTimeKind.Utc).AddTicks(940),
+                            Password = "$2a$11$0/hvzBSenw7eoS6IMStiqu/QMftWtwVybG1LOkvETyCk59d1Gh0d6",
+                            RoleId = new Guid("8567fec4-1f7f-4b7b-b430-88538acc7c82"),
                             Status = 1L,
                             Username = "user"
                         });
@@ -125,6 +125,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.Property<string>("Camera2")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<float>("GeneralPrice")
+                        .HasColumnType("real");
+
                     b.Property<short>("Status")
                         .HasColumnType("smallint");
 
@@ -138,9 +141,10 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            CameraId = new Guid("d70aff7e-46a3-429f-b9c1-3a69b88472cd"),
+                            CameraId = new Guid("7870cb74-1db3-4900-9aab-2f7f3f112be8"),
                             Camera1 = "N/A",
                             Camera2 = "N/A",
+                            GeneralPrice = 20000f,
                             Status = (short)1,
                             Time = 30
                         });
@@ -208,7 +212,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
 
                     b.HasKey("PricingId");
 
-                    b.ToTable("Pricing");
+                    b.ToTable("Pricings");
                 });
 
             modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.RFID", b =>
@@ -260,12 +264,12 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("d4e32771-178f-4344-8252-72c5483c2014"),
+                            RoleId = new Guid("cdcc9d1e-4b31-44f4-a0b2-3b8329af7977"),
                             RoleName = "Admin"
                         },
                         new
                         {
-                            RoleId = new Guid("b159b13c-b886-4dc2-957d-0f307625dff2"),
+                            RoleId = new Guid("8567fec4-1f7f-4b7b-b430-88538acc7c82"),
                             RoleName = "User"
                         });
                 });
