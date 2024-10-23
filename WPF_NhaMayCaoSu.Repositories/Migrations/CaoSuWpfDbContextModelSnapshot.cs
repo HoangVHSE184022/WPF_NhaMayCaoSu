@@ -110,7 +110,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.ToTable("Boards");
                 });
 
-            modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.Camera", b =>
+            modelBuilder.Entity("WPF_NhaMayCaoSu.Repository.Models.Config", b =>
                 {
                     b.Property<Guid>("CameraId")
                         .ValueGeneratedOnAdd()

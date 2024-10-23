@@ -14,7 +14,7 @@ namespace WPF_NhaMayCaoSu
 {
     public partial class ConfigCamera : Window
     {
-        private readonly ICameraService _cameraService = new CameraService();
+        private readonly IConfigService _cameraService = new ConfigService();
 
         public Account CurrentAccount { get; set; }
 
@@ -102,7 +102,7 @@ namespace WPF_NhaMayCaoSu
             var camera = await _cameraService.GetNewestCameraAsync();
             if (camera == null)
             {
-                camera = new Camera
+                camera = new Config
                 {
                     CameraId = Guid.NewGuid(),
                     Camera1 = txtUrl1.Text,
@@ -117,7 +117,7 @@ namespace WPF_NhaMayCaoSu
                 await _cameraService.UpdateCameraAsync(camera);
             }
 
-            MessageBox.Show("URL Camera 1 đã được lưu.");
+            MessageBox.Show("URL Config 1 đã được lưu.");
         }
 
         private async void SaveUrlCamera2_Click(object sender, RoutedEventArgs e)
@@ -125,7 +125,7 @@ namespace WPF_NhaMayCaoSu
             var camera = await _cameraService.GetNewestCameraAsync();
             if (camera == null)
             {
-                camera = new Camera
+                camera = new Config
                 {
                     CameraId = Guid.NewGuid(),
                     Camera1 = "Chưa có URL",
@@ -140,7 +140,7 @@ namespace WPF_NhaMayCaoSu
                 await _cameraService.UpdateCameraAsync(camera);
             }
 
-            MessageBox.Show("URL Camera 2 đã được lưu.");
+            MessageBox.Show("URL Config 2 đã được lưu.");
         }
 
         private void btnQuit_Click(object sender, RoutedEventArgs e)
