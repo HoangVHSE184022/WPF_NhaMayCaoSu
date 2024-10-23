@@ -8,7 +8,7 @@ namespace WPF_NhaMayCaoSu.Repository.Context
     public class CaoSuWpfDbContext : DbContext
     {
         public DbSet<Sale> Sales { get; set; }
-        public DbSet<Camera> Cameras { get; set; }
+        public DbSet<Config> Cameras { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<RFID> RFIDs { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -87,7 +87,7 @@ namespace WPF_NhaMayCaoSu.Repository.Context
                 .HasIndex(r => r.RoleName)
                 .IsUnique();
 
-            modelBuilder.Entity<Camera>()
+            modelBuilder.Entity<Config>()
                 .HasKey(c => c.CameraId);
 
             modelBuilder.Entity<RFID>()
@@ -140,13 +140,14 @@ namespace WPF_NhaMayCaoSu.Repository.Context
                 }
             );
 
-            modelBuilder.Entity<Camera>().HasData(
-                new Camera
+            modelBuilder.Entity<Config>().HasData(
+                new Config
                 {
                     CameraId = Guid.NewGuid(),
                     Camera1 = "N/A",
                     Camera2 = "N/A",
                     Time = 30,
+                    GeneralPrice = 20000,
                     Status = 1
                 }
             );

@@ -36,7 +36,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     Camera1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Camera2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<short>(type: "smallint", nullable: false),
-                    Time = table.Column<int>(type: "int", nullable: false)
+                    Time = table.Column<int>(type: "int", nullable: false),
+                    GeneralPrice = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,7 +60,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Pricing",
+                name: "Pricings",
                 columns: table => new
                 {
                     PricingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -67,7 +68,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Pricing", x => x.PricingId);
+                    table.PrimaryKey("PK_Pricings", x => x.PricingId);
                 });
 
             migrationBuilder.CreateTable(
@@ -179,16 +180,16 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
 
             migrationBuilder.InsertData(
                 table: "Cameras",
-                columns: new[] { "CameraId", "Camera1", "Camera2", "Status", "Time" },
-                values: new object[] { new Guid("d70aff7e-46a3-429f-b9c1-3a69b88472cd"), "N/A", "N/A", (short)1, 30 });
+                columns: new[] { "CameraId", "Camera1", "Camera2", "GeneralPrice", "Status", "Time" },
+                values: new object[] { new Guid("7870cb74-1db3-4900-9aab-2f7f3f112be8"), "N/A", "N/A", 20000f, (short)1, 30 });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "RoleId", "RoleName" },
                 values: new object[,]
                 {
-                    { new Guid("b159b13c-b886-4dc2-957d-0f307625dff2"), "User" },
-                    { new Guid("d4e32771-178f-4344-8252-72c5483c2014"), "Admin" }
+                    { new Guid("8567fec4-1f7f-4b7b-b430-88538acc7c82"), "User" },
+                    { new Guid("cdcc9d1e-4b31-44f4-a0b2-3b8329af7977"), "Admin" }
                 });
 
             migrationBuilder.InsertData(
@@ -196,8 +197,8 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 columns: new[] { "AccountId", "AccountName", "CreatedDate", "Password", "RoleId", "Status", "Username" },
                 values: new object[,]
                 {
-                    { new Guid("3d276f66-3d60-44d8-b052-2b2ca7ce4451"), "Standard User", new DateTime(2024, 10, 22, 4, 15, 58, 285, DateTimeKind.Utc).AddTicks(569), "$2a$11$yytt8ZRg7JF60PAvDUz11.jF.zeGsE0xucAtLlf4l4qAmWrqUvoVW", new Guid("b159b13c-b886-4dc2-957d-0f307625dff2"), 1L, "user" },
-                    { new Guid("58de2995-3f93-47ed-8fb5-70e9c7ab1d4c"), "Administrator", new DateTime(2024, 10, 22, 4, 15, 58, 59, DateTimeKind.Utc).AddTicks(9042), "$2a$11$98a24ioRl.BPhPGJym/XLumWLxWPuevs03mXed3gdkW9aMHLM9Eie", new Guid("d4e32771-178f-4344-8252-72c5483c2014"), 1L, "admin" }
+                    { new Guid("aaa5c7e6-0074-4d05-8e6f-52ef2d93c200"), "Administrator", new DateTime(2024, 10, 23, 0, 56, 22, 385, DateTimeKind.Utc).AddTicks(1119), "$2a$11$bi.xfeaWcnIbT62DyFetn.QkSmYfFaAYJtQeVA1Y792c3mZHgb8ha", new Guid("cdcc9d1e-4b31-44f4-a0b2-3b8329af7977"), 1L, "admin" },
+                    { new Guid("ddd7d01b-b102-4132-93c4-7eb5e2fde828"), "Standard User", new DateTime(2024, 10, 23, 0, 56, 22, 509, DateTimeKind.Utc).AddTicks(940), "$2a$11$0/hvzBSenw7eoS6IMStiqu/QMftWtwVybG1LOkvETyCk59d1Gh0d6", new Guid("8567fec4-1f7f-4b7b-b430-88538acc7c82"), 1L, "user" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -249,7 +250,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                 name: "Images");
 
             migrationBuilder.DropTable(
-                name: "Pricing");
+                name: "Pricings");
 
             migrationBuilder.DropTable(
                 name: "Roles");

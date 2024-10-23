@@ -4,11 +4,11 @@ using WPF_NhaMayCaoSu.Service.Interfaces;
 
 namespace WPF_NhaMayCaoSu.Service.Services
 {
-    public class CameraService : ICameraService
+    public class ConfigService : IConfigService
     {
-        private readonly CameraRepository _cameraRepository = new();
+        private readonly ConfigRepository _cameraRepository = new();
 
-        public async Task CreateCameraAsync(Camera camera)
+        public async Task CreateCameraAsync(Config camera)
         {
             await _cameraRepository.AddCameraAsync(camera);
         }
@@ -18,22 +18,22 @@ namespace WPF_NhaMayCaoSu.Service.Services
             await _cameraRepository.DeleteCameraAsync(id);
         }
 
-        public async Task<Camera> GetCameraAsync()
+        public async Task<Config> GetCameraAsync()
         {
             return await _cameraRepository.GetCameraAsync();
         }
 
-        public async Task UpdateCameraAsync(Camera camera)
+        public async Task UpdateCameraAsync(Config camera)
         {
             await _cameraRepository.UpdateCameraAsync(camera);
         }
 
-        public async Task<Camera> GetCameraByIdAsync(Guid cameraId)
+        public async Task<Config> GetCameraByIdAsync(Guid cameraId)
         {
             return await _cameraRepository.GetCameraByIdAsync(cameraId);
         }
 
-        public async Task<Camera> GetNewestCameraAsync()
+        public async Task<Config> GetNewestCameraAsync()
         {
             return await _cameraRepository.GetNewestCameraAsync();
         }

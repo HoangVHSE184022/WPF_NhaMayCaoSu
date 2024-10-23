@@ -25,10 +25,10 @@ namespace WPF_NhaMayCaoSu
         private readonly MqttServerService _mqttServerService;
         private readonly MqttClientService _mqttClientService;
         private readonly ISaleService _saleService = new SaleService();
-        private readonly ICameraService _cameraService = new CameraService();
+        private readonly IConfigService _cameraService = new ConfigService();
         private readonly IImageService _imageService = new ImageService();
         private readonly CustomerService _customerService = new CustomerService();
-        private readonly CameraService _localCameraService = new CameraService();
+        private readonly ConfigService _localCameraService = new ConfigService();
         private readonly IBoardService _boardService = new BoardService();
         private readonly IRFIDService _rfidService = new RFIDService();
 
@@ -67,10 +67,10 @@ namespace WPF_NhaMayCaoSu
             string payload = JsonConvert.SerializeObject(payloadObject);
             try
             {
-                Camera newestCamera = await _cameraService.GetNewestCameraAsync();
+                Config newestCamera = await _cameraService.GetNewestCameraAsync();
                 if (newestCamera == null)
                 {
-                    ShowError("Không thể lấy thông tin từ Camera.");
+                    ShowError("Không thể lấy thông tin từ Config.");
                     return;
                 }
 
@@ -118,7 +118,7 @@ namespace WPF_NhaMayCaoSu
         }
 
         // Processes the MQTT message and updates the sale
-        private async void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, Camera newestCamera, short cameraIndex)
+        private async void ProcessMqttMessage(string messageContent, string firstKey, string secondKey, Config newestCamera, short cameraIndex)
         {
             try
             {
@@ -272,7 +272,7 @@ namespace WPF_NhaMayCaoSu
 
 
         // Capture image from the camera and return the file path
-        private string CaptureImageFromCamera(Camera camera, int cameraIndex)
+        private string CaptureImageFromCamera(Config camera, int cameraIndex)
         {
             string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CaoSuPictures");
             Directory.CreateDirectory(folderPath);
@@ -287,15 +287,15 @@ namespace WPF_NhaMayCaoSu
             try
             {
                 string cameraUrl = cameraIndex == 1 ? camera.Camera1 : camera.Camera2;
-                if (string.IsNullOrEmpty(cameraUrl)) throw new Exception($"URL của Camera {cameraIndex} không hợp lệ.");
+                if (string.IsNullOrEmpty(cameraUrl)) throw new Exception($"URL của Config {cameraIndex} không hợp lệ.");
 
                 using (var capture = new VideoCapture(cameraUrl))
                 {
-                    if (!capture.IsOpened) throw new Exception($"Không thể mở Camera {cameraIndex}.");
+                    if (!capture.IsOpened) throw new Exception($"Không thể mở Config {cameraIndex}.");
                     using (var frame = new Mat())
                     {
                         capture.Read(frame);
-                        if (frame.IsEmpty) throw new Exception($"Không thể chụp ảnh từ Camera {cameraIndex}.");
+                        if (frame.IsEmpty) throw new Exception($"Không thể chụp ảnh từ Config {cameraIndex}.");
 
                         Image<Bgr, byte> image = frame.ToImage<Bgr, byte>();
                         Bitmap bitmap = image.ToBitmap();
@@ -305,8 +305,8 @@ namespace WPF_NhaMayCaoSu
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi chụp ảnh từ Camera {cameraIndex}: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-                Log.Error(ex, $"Lỗi khi chụp ảnh từ Camera {cameraIndex}");
+                MessageBox.Show($"Lỗi khi chụp ảnh từ Config {cameraIndex}: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                Log.Error(ex, $"Lỗi khi chụp ảnh từ Config {cameraIndex}");
                 return string.Empty;
             }
 
