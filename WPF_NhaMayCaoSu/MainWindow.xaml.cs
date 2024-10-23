@@ -162,8 +162,9 @@ namespace WPF_NhaMayCaoSu
                 DateTime currentTime = DateTime.Now;
                 var latestSale = await _saleService.GetLatestSaleWithinTimeRangeAsync(currentTime.AddMinutes(-5), currentTime);
                 bool otherRfidSaleExists = latestSale != null && !string.Equals(latestSale.RFIDCode, rfid, StringComparison.OrdinalIgnoreCase);
+                bool isSaleCompleted = sale != null && sale.ProductWeight.HasValue && sale.ProductDensity.HasValue;
 
-                if (sale == null || otherRfidSaleExists)
+                if (sale == null || isSaleCompleted || otherRfidSaleExists)
                 {
                     Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(rfid);
 
@@ -568,6 +569,7 @@ namespace WPF_NhaMayCaoSu
                             break;
                         case "Số bì":
                             editedSale.TareWeight = float.Parse(editedValue);
+                             CalculateTotalPrice(editedSale);
                             break;
                         default:
                             return;
@@ -589,6 +591,48 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
+        private async void CalculateTotalPrice_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var sale in _sessionSaleList)
+            {
+                if (sale.ProductWeight.HasValue &&
+                    sale.TareWeight.HasValue &&
+                    sale.ProductDensity.HasValue &&
+                    sale.SalePrice.HasValue &&
+                    sale.BonusPrice.HasValue)
+                {
+                    if (!sale.TotalPrice.HasValue || sale.TotalPrice == 0)
+                    {
+                        CalculateTotalPrice(sale);
+
+                        try
+                        {
+                            await _saleService.UpdateSaleAsync(sale); 
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Failed to update sale: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+            }
+
+            LoadDataGrid();
+        }
+
+        private void CalculateTotalPrice(Sale sale)
+        {
+            if (sale != null)
+            {
+                float productWeight = sale.ProductWeight ?? 0;
+                float tareWeight = sale.TareWeight ?? 0;
+                float productDensity = sale.ProductDensity ?? 0;
+                float salePrice = sale.SalePrice ?? 0;
+                float bonusPrice = sale.BonusPrice ?? 0;
+
+                sale.TotalPrice = (productWeight - tareWeight) * productDensity * (salePrice + bonusPrice);
+            }
+        }
 
     }
 }
