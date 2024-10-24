@@ -693,6 +693,16 @@ namespace WPF_NhaMayCaoSu
                     // Update the sale in the database
                     await _saleService.UpdateSaleAsync(editedSale);
 
+                    var saleInSession = _mainWindow._sessionSaleList.FirstOrDefault(s => s.SaleId == editedSale.SaleId);
+                    if (saleInSession != null)
+                    {
+                        saleInSession.ProductWeight = editedSale.ProductWeight;
+                        saleInSession.ProductDensity = editedSale.ProductDensity;
+                        saleInSession.TareWeight = editedSale.TareWeight;
+                        saleInSession.LastEditedTime = editedSale.LastEditedTime;
+                        _mainWindow.LoadDataGrid();
+                    }
+
                     LoadDataGrid();
                 }
                 catch (Exception ex)

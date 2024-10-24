@@ -55,5 +55,10 @@ namespace WPF_NhaMayCaoSu.Service.Services
             return await _repo.GetLatestSaleWithinTimeRangeAsync(startTime, endTime);
         }
 
+        public async Task<IEnumerable<Sale>> GetSalesWithoutTotalPriceAsync()
+        {
+            return await _repo.GetSalesWithoutTotalPriceAsync();
+        }
+
     }
 }
