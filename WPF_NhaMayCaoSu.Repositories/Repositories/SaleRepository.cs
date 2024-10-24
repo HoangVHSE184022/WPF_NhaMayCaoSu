@@ -94,5 +94,17 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
                                  .FirstOrDefaultAsync();
         }
 
+        public async Task<IEnumerable<Sale>> GetSalesWithoutTotalPriceAsync()
+        {
+            return await _context.Sales
+                .Where(s => s.ProductDensity != null
+                         && s.ProductWeight != null
+                         && s.TareWeight != null
+                         && s.SalePrice != null
+                         && s.BonusPrice != null
+                         && s.TotalPrice == null)
+                .ToListAsync();
+        }
+
     }
 }

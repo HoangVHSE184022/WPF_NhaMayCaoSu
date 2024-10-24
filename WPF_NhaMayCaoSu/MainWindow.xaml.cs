@@ -594,24 +594,27 @@ namespace WPF_NhaMayCaoSu
         private async void CalculateTotalPrice_Click(object sender, RoutedEventArgs e)
         {
             foreach (var sale in _sessionSaleList)
-            {
-                if (sale.ProductWeight.HasValue &&
-                    sale.TareWeight.HasValue &&
-                    sale.ProductDensity.HasValue &&
-                    sale.SalePrice.HasValue &&
-                    sale.BonusPrice.HasValue)
-                {
-                    if (!sale.TotalPrice.HasValue || sale.TotalPrice == 0)
+            { 
+                Sale existSale = await _saleService.GetSaleByIdAsync(sale.SaleId);
+                if(existSale != null && (existSale.TotalPrice.HasValue || existSale.TotalPrice == 0)) {
+                    if (sale.ProductWeight.HasValue &&
+                        sale.TareWeight.HasValue &&
+                        sale.ProductDensity.HasValue &&
+                        sale.SalePrice.HasValue &&
+                        sale.BonusPrice.HasValue)
                     {
-                        CalculateTotalPrice(sale);
+                        if (!sale.TotalPrice.HasValue || sale.TotalPrice == 0)
+                        {
+                            CalculateTotalPrice(sale);
 
-                        try
-                        {
-                            await _saleService.UpdateSaleAsync(sale); 
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Failed to update sale: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            try
+                            {
+                                await _saleService.UpdateSaleAsync(sale);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Failed to update sale: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
                         }
                     }
                 }
