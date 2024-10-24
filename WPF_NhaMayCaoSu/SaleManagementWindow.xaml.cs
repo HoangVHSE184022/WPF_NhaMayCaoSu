@@ -20,7 +20,7 @@ namespace WPF_NhaMayCaoSu
     {
         private readonly ISaleService _service = new SaleService();
         private readonly IRFIDService _rfidService = new RFIDService();
-        private readonly ConfigService _cameraService = new ConfigService();
+        private readonly ConfigService _configService = new ConfigService();
         public readonly MqttClientService _mqttClientService;
         private readonly CustomerService _customerService = new CustomerService();
         private readonly SaleService _saleService = new SaleService();
@@ -73,6 +73,7 @@ namespace WPF_NhaMayCaoSu
         // Save Button Click Handler
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            Config config = await _configService.GetNewestCameraAsync();
             if (ValidateFormInput())
             {
                 RFID rfid = await _rfidService.GetRFIDByRFIDCodeAsync(RFIDCodeTextBox.Text);
@@ -99,6 +100,8 @@ namespace WPF_NhaMayCaoSu
                         Status = 1,
                         RFIDCode = RFIDCodeTextBox.Text,
                         RFID_Id = rfid.RFID_Id,
+                        BonusPrice = customer.bonusPrice,
+                        SalePrice = config.GeneralPrice,
                     };
 
                     if (SelectedSale == null)
@@ -214,7 +217,7 @@ namespace WPF_NhaMayCaoSu
             string payload = JsonConvert.SerializeObject(payloadObject);
             try
             {
-                Config newestCamera = await _cameraService.GetNewestCameraAsync();
+                Config newestCamera = await _configService.GetNewestCameraAsync();
 
                 if (newestCamera == null)
                 {
