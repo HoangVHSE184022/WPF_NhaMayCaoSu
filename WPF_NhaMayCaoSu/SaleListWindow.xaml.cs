@@ -716,34 +716,36 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
-        //private async void CalculateTotalPrice_Click(object sender, RoutedEventArgs e)
-        //{
-        //    foreach (var sale in _sessionSaleList)
-        //    {
-        //        if (sale.ProductWeight.HasValue &&
-        //            sale.TareWeight.HasValue &&
-        //            sale.ProductDensity.HasValue &&
-        //            sale.SalePrice.HasValue &&
-        //            sale.BonusPrice.HasValue)
-        //        {
-        //            if (!sale.TotalPrice.HasValue || sale.TotalPrice == 0)
-        //            {
-        //                CalculateTotalPrice(sale);
+        private async void CalculateTotalPrice_Click(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<Sale> saleList = await _saleService.GetSalesWithoutTotalPriceAsync();
+            foreach (var sale in saleList)
+            {
+                if (sale.ProductWeight.HasValue &&
+                    sale.TareWeight.HasValue &&
+                    sale.ProductDensity.HasValue &&
+                    sale.SalePrice.HasValue &&
+                    sale.BonusPrice.HasValue)
+                {
+                    if (!sale.TotalPrice.HasValue || sale.TotalPrice == 0)
+                    {
+                        CalculateTotalPrice(sale);
 
-        //                try
-        //                {
-        //                    await _saleService.UpdateSaleAsync(sale);
-        //                }
-        //                catch (Exception ex)
-        //                {
-        //                    MessageBox.Show($"Failed to update sale: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        //                }
-        //            }
-        //        }
-        //    }
+                        try
+                        {
+                            await _saleService.UpdateSaleAsync(sale);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Failed to update sale: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+            }
 
-        //    LoadDataGrid();
-        //}
+            LoadDataGrid();
+            _mainWindow.LoadDataGrid();
+        }
 
         private void CalculateTotalPrice(Sale sale)
         {
