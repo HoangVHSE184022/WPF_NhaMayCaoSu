@@ -91,6 +91,8 @@ namespace WPF_NhaMayCaoSu
             services.AddScoped<MainWindow>();
             services.AddScoped<LoginWindow>();
             services.AddScoped<BrokerWindow>();
+            // Register the DashboardWindow
+            services.AddSingleton<DashboardWindow>();
         }
         private void InitializeDatabase()
         {

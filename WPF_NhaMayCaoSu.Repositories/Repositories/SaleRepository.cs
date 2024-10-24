@@ -106,5 +106,29 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
                 .ToListAsync();
         }
 
+        public async Task<int> GetSalesCountByDateAsync(DateTime date)
+        {
+            _context = new();
+            return await _context.Sales
+                                 .Where(s => s.LastEditedTime.Value.Date == date.Date && s.Status == 1)
+                                 .CountAsync();
+        }
+
+        public async Task<int> GetSalesCountByMonthAsync(int year, int month)
+        {
+            _context = new();
+            return await _context.Sales
+                                 .Where(s => s.LastEditedTime.Value.Year == year && s.LastEditedTime.Value.Month == month && s.Status == 1)
+                                 .CountAsync();
+        }
+
+        public async Task<int> GetSalesCountByYearAsync(int year)
+        {
+            _context = new();
+            return await _context.Sales
+                                 .Where(s => s.LastEditedTime.Value.Year == year && s.Status == 1)
+                                 .CountAsync();
+        }
+
     }
 }

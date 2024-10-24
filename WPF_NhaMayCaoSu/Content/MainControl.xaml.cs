@@ -28,6 +28,7 @@ namespace WPF_NhaMayCaoSu.Content
         private RoleListWindow roleListWindow;
         private MainWindow mainWindow;
         private ConfigCamera configCamera;
+        private DashboardWindow dashboardWindow;
 
         public MainControl()
         {
@@ -47,6 +48,7 @@ namespace WPF_NhaMayCaoSu.Content
             mainWindow = new();
             saleListWindow = new SaleListWindow(mainWindow);
             configCamera = new();
+            dashboardWindow = new DashboardWindow();
 
             mainWindow.CurrentAccount = CurrentAccount;
             broker.CurrentAccount = CurrentAccount;
@@ -218,6 +220,18 @@ namespace WPF_NhaMayCaoSu.Content
 
             MainContentControl.Content = configCamera.Content;
             configCamera.OnWindowLoaded();
+            Title = configCamera.Title;
+        }
+
+        private void DashboardButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ValidCheck())
+            {
+                return;
+            }
+
+            MainContentControl.Content = dashboardWindow.Content;
+            dashboardWindow.OnWindowLoaded();
             Title = configCamera.Title;
         }
 

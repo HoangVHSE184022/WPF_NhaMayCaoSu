@@ -16,5 +16,8 @@ namespace WPF_NhaMayCaoSu.Service.Interfaces
 
         Task<Sale> GetLatestSaleWithinTimeRangeAsync(DateTime startTime, DateTime endTime);
         Task<IEnumerable<Sale>> GetSalesWithoutTotalPriceAsync();
+        Task<int> GetSalesCountByDateAsync(DateTime date);
+        Task<int> GetSalesCountByMonthAsync(int year, int month);
+        Task<int> GetSalesCountByYearAsync(int year);
     }
 }

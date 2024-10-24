@@ -60,5 +60,19 @@ namespace WPF_NhaMayCaoSu.Service.Services
             return await _repo.GetSalesWithoutTotalPriceAsync();
         }
 
+        public async Task<int> GetSalesCountByDateAsync(DateTime date)
+        {
+            return await _repo.GetSalesCountByDateAsync(date);
+        }
+
+        public async Task<int> GetSalesCountByMonthAsync(int year, int month)
+        {
+            return await _repo.GetSalesCountByMonthAsync(year, month);
+        }
+
+        public async Task<int> GetSalesCountByYearAsync(int year)
+        {
+            return await _repo.GetSalesCountByYearAsync(year);
+        }
     }
 }
