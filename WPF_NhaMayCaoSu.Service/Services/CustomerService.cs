@@ -1,5 +1,4 @@
-﻿using WPF_NhaMayCaoSu.Repository.IRepositories;
-using WPF_NhaMayCaoSu.Repository.Models;
+﻿using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 

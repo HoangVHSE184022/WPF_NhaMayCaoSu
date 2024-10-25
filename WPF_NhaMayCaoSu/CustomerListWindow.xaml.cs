@@ -190,6 +190,28 @@ namespace WPF_NhaMayCaoSu
             LoadDataGrid();
         }
 
+        private void ViewSale_Click(object sender, RoutedEventArgs e)
+        {
+            if (CurrentAccount?.Role?.RoleName == "User")
+            {
+                MessageBox.Show(Constants.UnauthorizedMessage, Constants.UnauthorizedTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            Customer selectedCustomer = CustomerDataGrid.SelectedItem as Customer;
+
+            if (selectedCustomer != null)
+            {
+                CustomerSaleWindow customerSaleWindow = new CustomerSaleWindow(selectedCustomer);
+                customerSaleWindow.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Xin hãy chọn khách hàng trước.", "Lưu ý", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+            LoadDataGrid();
+        }
+
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             string searchTerm = SearchTextBox.Text.Trim().ToLower();

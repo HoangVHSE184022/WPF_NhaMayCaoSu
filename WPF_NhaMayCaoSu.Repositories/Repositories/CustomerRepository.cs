@@ -66,7 +66,7 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         {
             _context = new();
             return await _context.Customers
-                .Include(c => c.RFIDs) 
+                .Include(c => c.RFIDs)
                 .FirstOrDefaultAsync(c => c.Phone == phone);
         }
 

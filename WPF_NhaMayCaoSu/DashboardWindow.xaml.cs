@@ -1,18 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
@@ -45,15 +32,15 @@ namespace WPF_NhaMayCaoSu
 
                 var allCustomersOption = new Customer
                 {
-                    CustomerId = Guid.Empty,  
+                    CustomerId = Guid.Empty,
                     CustomerName = "Tất cả"
                 };
 
                 var customerList = new[] { allCustomersOption }.Concat(customers);
 
                 CustomerComboBox.ItemsSource = customerList;
-                CustomerComboBox.DisplayMemberPath = "CustomerName"; 
-                CustomerComboBox.SelectedValuePath = "CustomerId";   
+                CustomerComboBox.DisplayMemberPath = "CustomerName";
+                CustomerComboBox.SelectedValuePath = "CustomerId";
 
                 CustomerComboBox.SelectedIndex = 0;
             }
@@ -85,13 +72,13 @@ namespace WPF_NhaMayCaoSu
         private void FromDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             FilterSalesData();
-            
+
         }
 
         private void ToDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             FilterSalesData();
-       
+
         }
 
         private void CustomerComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -51,8 +51,19 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
         {
             _context = new();
             return await _context.Sales
+                                 .Where(c => c.Status == 1)
                                  .Include(s => s.RFID)
                                  .FirstOrDefaultAsync(x => x.RFIDCode == RFIDCode);
+        }
+
+        public async Task<IEnumerable<Sale>> GetSalesByCustomerIdAsync(Guid customerId)
+        {
+            _context = new();
+
+            return await _context.Sales
+                                 .Include(s => s.RFID)
+                                 .Where(s => s.RFID.CustomerId == customerId && s.Status == 1)
+                                 .ToListAsync();
         }
 
         public async Task<Sale> GetSaleByRFIDCodeWithoutDensity(string RFIDCode)

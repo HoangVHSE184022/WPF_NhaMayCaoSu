@@ -511,7 +511,7 @@ namespace WPF_NhaMayCaoSu
             vpage.imageUrl = string.IsNullOrWhiteSpace(URLWeightTextBox.Text)
                              ? "pack://application:,,,/assets/images/blank.jpg"
                              : URLWeightTextBox.Text;
-            vpage.LoadImage(); 
+            vpage.LoadImage();
             vpage.ShowDialog();
         }
 
@@ -521,7 +521,7 @@ namespace WPF_NhaMayCaoSu
             vpage.imageUrl = string.IsNullOrWhiteSpace(URLDensityTextBox.Text)
                              ? "pack://application:,,,/assets/images/blank.jpg"
                              : URLDensityTextBox.Text;
-            vpage.LoadImage(); 
+            vpage.LoadImage();
             vpage.ShowDialog();
         }
 
