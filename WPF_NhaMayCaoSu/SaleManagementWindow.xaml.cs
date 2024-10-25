@@ -507,25 +507,21 @@ namespace WPF_NhaMayCaoSu
 
         private void View1_Click(object sender, RoutedEventArgs e)
         {
-            if (URLWeightTextBox.Text is null)
-            {
-                MessageBox.Show("Chưa có hình ảnh để kiểm tra", "Lỗi", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-                return;
-            }
             ViewImagePage vpage = new();
-            vpage.imageUrl = URLWeightTextBox.Text;
+            vpage.imageUrl = string.IsNullOrWhiteSpace(URLWeightTextBox.Text)
+                             ? "pack://application:,,,/assets/images/blank.jpg"
+                             : URLWeightTextBox.Text;
+            vpage.LoadImage(); 
             vpage.ShowDialog();
         }
 
         private void View2_Click(object sender, RoutedEventArgs e)
         {
-            if (URLDensityTextBox.Text is null)
-            {
-                MessageBox.Show("Chưa có hình ảnh để kiểm tra", "Lỗi", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-                return;
-            }
             ViewImagePage vpage = new();
-            vpage.imageUrl = URLDensityTextBox.Text;
+            vpage.imageUrl = string.IsNullOrWhiteSpace(URLDensityTextBox.Text)
+                             ? "pack://application:,,,/assets/images/blank.jpg"
+                             : URLDensityTextBox.Text;
+            vpage.LoadImage(); 
             vpage.ShowDialog();
         }
 

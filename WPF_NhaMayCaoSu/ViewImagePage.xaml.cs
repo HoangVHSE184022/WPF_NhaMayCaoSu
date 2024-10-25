@@ -9,17 +9,46 @@ namespace WPF_NhaMayCaoSu
     public partial class ViewImagePage : Window
     {
         public string imageUrl;
+
         public ViewImagePage()
         {
             InitializeComponent();
-            LoadImage();
         }
+
         public void LoadImage()
         {
-            if (System.IO.File.Exists(imageUrl))
+            try
             {
-                ViewImage.Source = new BitmapImage(new Uri(imageUrl, UriKind.RelativeOrAbsolute));
+                Uri uri;
+
+                if (imageUrl.StartsWith("pack://application:"))
+                {
+                    uri = new Uri(imageUrl, UriKind.Absolute);
+                }
+                else if (System.IO.File.Exists(imageUrl))
+                {
+                    uri = new Uri(imageUrl, UriKind.Absolute);
+                }
+                else
+                {
+                    MessageBox.Show("Image not found at " + imageUrl, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = uri;
+                bitmap.EndInit();
+
+                ViewImage.Source = bitmap;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to load image: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+
     }
+
 }
