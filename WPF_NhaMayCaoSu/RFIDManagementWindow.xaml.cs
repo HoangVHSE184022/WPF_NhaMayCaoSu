@@ -65,7 +65,7 @@ namespace WPF_NhaMayCaoSu
             }
 
             CustomerComboBox.ItemsSource = null;
-            CustomerComboBox.ItemsSource = await _customerService.GetAllCustomers(1, 100);
+            CustomerComboBox.ItemsSource = await _customerService.GetAllCustomersNoPagination();
 
             CustomerComboBox.DisplayMemberPath = "CustomerName";
             CustomerComboBox.SelectedValuePath = "CustomerId";

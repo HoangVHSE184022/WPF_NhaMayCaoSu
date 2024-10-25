@@ -6,39 +6,73 @@
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
         Title="Dashboard" Height="800" Width="1200" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow" Loaded="Window_Loaded">
-    <Grid>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
-            <!-- Title -->
-            <TextBlock Text="Sales Dashboard" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <!-- Date Filter -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 0, 0, 10">
-                <TextBlock Text="Chọn mốc thời gian: " VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <DatePicker x:Name="DatePicker" SelectedDateChanged="DatePicker_SelectedDateChanged" />
+        <!-- Dashboard Title -->
+        <TextBlock Grid.Row="0" Text="Sales Dashboard" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,20,0,20"/>
+
+        <!-- Filters and Statistics Layout -->
+        <Grid Grid.Row="1" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Date Filters Section -->
+            <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Từ ngày: " VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <DatePicker x:Name="FromDatePicker" SelectedDateChanged="FromDatePicker_SelectedDateChanged"/>
+                
+                <TextBlock Text="Đến ngày: " VerticalAlignment="Center" Margin="20,0,10,0"/>
+                <DatePicker x:Name="ToDatePicker" SelectedDateChanged="ToDatePicker_SelectedDateChanged"/>
+                
+                <ComboBox x:Name="CustomerComboBox" HorizontalAlignment="Left" Margin="40,0,10,0" VerticalAlignment="Top" Width="150" Height="30" FontFamily="Montserrat" SelectionChanged="CustomerComboBox_SelectionChanged" />
             </StackPanel>
 
-            <!-- Sales Count by Day -->
-            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                <TextBlock x:Name="SalesCountByDayLabel" Text="Số lượng Sale trong ngày dd/MM/yyyy: " FontWeight="Bold" Width="230"/>
-                <TextBlock x:Name="SalesCountByDay" FontSize="16" Text="0" HorizontalAlignment="Center"/>
-            </StackPanel>
-            
+        </Grid>
 
-            <!-- Sales Count by Month -->
-            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                <TextBlock x:Name="SalesCountByMonthLabel" Text="Số lượng Sale trong tháng MM/yyyy: " FontWeight="Bold" Width="230"/>
-                <TextBlock x:Name="SalesCountByMonth" FontSize="16" Text="0" HorizontalAlignment="Center"/>
-            </StackPanel>
-            
+        <Grid Grid.Row="2" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
 
-            <!-- Sales Count by Year -->
-            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                <TextBlock x:Name="SalesCountByYearLabel" Text="Số lượng Sale trong năm: " FontWeight="Bold" Width="230"/>
-                <TextBlock x:Name="SalesCountByYear" FontSize="16" Text="0" HorizontalAlignment="Center"/>
-            </StackPanel>
+            <!-- Sales Statistics Section -->
+            <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <TextBlock Text="Tổng số ký: " FontWeight="Bold" Width="130"/>
+                    <TextBlock x:Name="TotalWeight" FontSize="16" Text="0" HorizontalAlignment="Right" Margin="0,0,30,0"/>
 
-            <!-- Refresh Button -->
-            <Button Content="Làm mới" Width="100" Height="30" Click="RefreshButton_Click" Margin="20,20,0,0"/>
-        </StackPanel>
+                    <TextBlock Text="Tổng số lần cân: " FontWeight="Bold" Width="130"/>
+                    <TextBlock x:Name="TotalAmount" FontSize="16" Text="0" HorizontalAlignment="Right" Margin="0,0,30,0"/>
+
+                    <TextBlock Text="Tổng tiền: " FontWeight="Bold" Width="130"/>
+                    <TextBlock x:Name="TotalTotalPrice" FontSize="16" Text="0" HorizontalAlignment="Right" Margin="0,0,30,0"/>
+                </StackPanel>
+ 
+            </StackPanel>
+        </Grid>
+
+
+        <!-- DataGrid for Sales -->
+        <DataGrid Grid.Row="3" x:Name="SalesDataGrid" AutoGenerateColumns="False" VerticalAlignment="Top" Height="400" Margin="0,0,0,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Tên khách hàng" Width="1.5*" Binding="{Binding CustomerName}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Số ký" Width="0.7*" Binding="{Binding ProductWeight}"/>
+                <DataGridTextColumn Header="Tỉ trọng" Width="0.7*" Binding="{Binding ProductDensity}"/>
+                <DataGridTextColumn Header="Số bì" Width="0.7*" Binding="{Binding TareWeight}"/>
+                <DataGridTextColumn Header="Chỉnh sửa cuối" Width="1.4*" Binding="{Binding LastEditedTime}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="RFID" Width="1.2*" Binding="{Binding RFIDCode}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Đơn giá" Width="1.2*" Binding="{Binding SalePrice}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Giá thêm" Width="1.2*" Binding="{Binding BonusPrice}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Tổng tiền" Width="1.2*" Binding="{Binding TotalPrice}" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

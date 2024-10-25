@@ -75,5 +75,15 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
             _context = new();
             return await _context.Customers.CountAsync();
         }
+
+        public async Task<IEnumerable<Customer>> GetAllAsyncNoPagination()
+        {
+            _context = new();
+
+            return await _context.Customers
+                                 .Include(c => c.RFIDs)
+                                 .Where(c => c.Status == 1)
+                                 .ToListAsync();
+        }
     }
 }

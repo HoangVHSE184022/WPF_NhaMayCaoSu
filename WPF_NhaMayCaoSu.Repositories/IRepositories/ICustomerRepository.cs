@@ -11,6 +11,7 @@ namespace WPF_NhaMayCaoSu.Repository.IRepositories
         Task<Customer> GetCustomerById(Guid id);
         Task<Customer?> GetCustomerByRFIDCodeAsync(string rfidCode);
         Task<int> GetTotalCustomersCountAsync();
+        Task<IEnumerable<Customer>> GetAllAsyncNoPagination();
         Task<Customer> GetCustomerByPhoneAsync(string phone);
     }
 }

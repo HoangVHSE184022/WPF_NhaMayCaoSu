@@ -51,9 +51,15 @@ namespace WPF_NhaMayCaoSu.Service.Services
             return await _repository.GetTotalCustomersCountAsync();
         }
 
+        public async Task<IEnumerable<Customer>> GetAllCustomersNoPagination()
+        {
+            return await _repository.GetAllAsyncNoPagination();
+        }
+
         public async Task<Customer> GetCustomerByPhoneAsync(string phone)
         {
             return await _repository.GetCustomerByPhoneAsync(phone);
+
         }
     }
 }
