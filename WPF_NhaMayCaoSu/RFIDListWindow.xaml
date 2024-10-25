@@ -8,42 +8,42 @@
         Title="RFID List" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" WindowStyle="SingleBorderWindow">
     <Grid>
         <Label Content="Quản lý RFID" HorizontalAlignment="Left" Height="57" Margin="32,40,0,0" VerticalAlignment="Top" Width="343" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366" FontWeight="Bold"/>
-        <Button x:Name="AddRFIDButton" HorizontalAlignment="Right" Height="40" Margin="0,146,32,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="AddRFIDButton_Click" >
+        <Button x:Name="AddRFIDButton" HorizontalAlignment="Right" Height="30" Margin="0,146,32,0" VerticalAlignment="Top" Width="114" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="18" Click="AddRFIDButton_Click" >
             <TextBlock Text="Thêm mới" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="EditRFIDButton" Height="40" Margin="0,228,32,0" VerticalAlignment="Top" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="EditRFIDButton_Click" HorizontalAlignment="Right" Width="121"  >
+        <Button x:Name="EditRFIDButton" Height="30" Margin="0,200,32,0" VerticalAlignment="Top" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="18" Background="#FFCACACA" Click="EditRFIDButton_Click" HorizontalAlignment="Right" Width="114"  >
             <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <DataGrid x:Name="RFIDDataGrid" Margin="32,129,159,90" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
+        <DataGrid x:Name="RFIDDataGrid" Margin="32,129,159,90" FontFamily="Montserrat" FontSize="18" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Mã RFID" Width="250" Binding="{Binding RFIDCode}"/>
-                <DataGridTextColumn Header="Ngày tạo" Width="190" Binding="{Binding CreatedDate}" />
-                <DataGridTextColumn Header="Ngày hết hạn" Width="200" Binding="{Binding ExpirationDate}"/>
-                <DataGridTextColumn Header="Trạng thái" Width="160" Binding="{Binding Status}"/>
-                <DataGridTextColumn Header="Chủ sở hữu" Width="190" Binding="{Binding Customer.CustomerName}"/>
+                <DataGridTextColumn Header="Mã RFID" Width="*" Binding="{Binding RFIDCode}"/>
+                <DataGridTextColumn Header="Ngày tạo" Width="*" Binding="{Binding CreatedDate}" />
+                <DataGridTextColumn Header="Ngày hết hạn" Width="*" Binding="{Binding ExpirationDate}"/>
+                <DataGridTextColumn Header="Trạng thái" Width="0.4*" Binding="{Binding Status}"/>
+                <DataGridTextColumn Header="Chủ sở hữu" Width="0.8*" Binding="{Binding Customer.CustomerName}"/>
 
             </DataGrid.Columns>
 
         </DataGrid>
         <Label x:Name="SearchLabel" Content="Nhập tên khách hàng:" Height="30" VerticalAlignment="Top" Margin="0,93,468,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="187" />
         <TextBox x:Name="SearchTextBox" Height="30" VerticalAlignment="Top" Margin="0,94,159,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="309"/>
-        <Button x:Name="SearchButton" Content="Tìm kiếm" Height="30" VerticalAlignment="Top" Margin="0,94,32,0" FontFamily="Montserrat" FontSize="18" Click="SearchButton_Click" HorizontalAlignment="Right" Width="121"/>
+        <Button x:Name="SearchButton" Content="Tìm kiếm" Height="30" VerticalAlignment="Top" Margin="0,94,32,0" FontFamily="Montserrat" FontSize="18" Click="SearchButton_Click" HorizontalAlignment="Right" Width="114"/>
 
         <Button x:Name="PreviousPageButton" Content="Trước" Margin="474,0,0,50" Click="PreviousPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
         <TextBlock x:Name="PageNumberTextBlock" Margin="519,0,0,50" TextAlignment="Center" FontFamily="Montserrat" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="94" />
         <Button x:Name="NextPageButton" Content="Sau" Margin="618,0,0,50" Click="NextPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
-        <Button x:Name="DeleteRFIDButton" HorizontalAlignment="Right" Height="40" Margin="0,308,32,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="DeleteRFIDButton_Click" >
+        <Button x:Name="DeleteRFIDButton" HorizontalAlignment="Right" Height="30" Margin="0,253,32,0" VerticalAlignment="Top" Width="114" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="18" Click="DeleteRFIDButton_Click" >
             <TextBlock Text="Xóa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Label x:Name="CantaMode" Content="Mode Cân &#xD;&#xA;Tạ:" Height="55" VerticalAlignment="Top" Margin="0,371,32,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="121" />
-        <Label x:Name="CantieulyMode" Content="Mode Cân &#xD;&#xA;tiểu ly:" Height="55" VerticalAlignment="Top" Margin="0,472,32,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="121" />
-        <Button x:Name="ChangeCanTaMode" HorizontalAlignment="Right" Height="40" Margin="0,426,32,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="18" Click="ChangeCanTaMode_Click" >
+        <Label x:Name="CantaMode" Content="Mode Cân &#xD;&#xA;Tạ:" Height="55" VerticalAlignment="Top" Margin="0,371,32,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="114" />
+        <Label x:Name="CantieulyMode" Content="Mode Cân &#xD;&#xA;tiểu ly:" Height="55" VerticalAlignment="Top" Margin="0,472,32,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="114" />
+        <Button x:Name="ChangeCanTaMode" HorizontalAlignment="Right" Height="30" Margin="0,426,32,0" VerticalAlignment="Top" Width="114" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="18" Click="ChangeCanTaMode_Click" >
             <TextBlock Text="Chuyển Mode" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="ChangeCanTieuLyMode" HorizontalAlignment="Right" Height="40" Margin="0,527,32,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="18" Click="ChangeCanTieuLyMode_Click" >
+        <Button x:Name="ChangeCanTieuLyMode" HorizontalAlignment="Right" Height="30" Margin="0,527,32,0" VerticalAlignment="Top" Width="114" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="18" Click="ChangeCanTieuLyMode_Click" >
             <TextBlock Text="Chuyển Mode" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <Button x:Name="Export" HorizontalAlignment="Right" Height="40" Margin="0,590,32,0" VerticalAlignment="Top" Width="121" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="Export_Click" >
+        <Button x:Name="Export" HorizontalAlignment="Right" Height="30" Margin="0,590,32,0" VerticalAlignment="Top" Width="114" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="18" Click="Export_Click" >
             <TextBlock Text="Xuất file" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
     </Grid>

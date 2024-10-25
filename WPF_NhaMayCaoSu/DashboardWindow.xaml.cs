@@ -41,25 +41,20 @@ namespace WPF_NhaMayCaoSu
         {
             try
             {
-                // Lấy danh sách khách hàng từ service
                 var customers = await _customerService.GetAllCustomersNoPagination();
 
-                // Thêm tùy chọn "Tất cả"
                 var allCustomersOption = new Customer
                 {
-                    CustomerId = Guid.Empty,  // Sử dụng GUID rỗng để đại diện cho "Tất cả"
+                    CustomerId = Guid.Empty,  
                     CustomerName = "Tất cả"
                 };
 
-                // Nối "Tất cả" với danh sách khách hàng
                 var customerList = new[] { allCustomersOption }.Concat(customers);
 
-                // Gán danh sách khách hàng vào ComboBox
                 CustomerComboBox.ItemsSource = customerList;
-                CustomerComboBox.DisplayMemberPath = "CustomerName"; // Hiển thị tên khách hàng
-                CustomerComboBox.SelectedValuePath = "CustomerId";   // Lấy giá trị là CustomerId
+                CustomerComboBox.DisplayMemberPath = "CustomerName"; 
+                CustomerComboBox.SelectedValuePath = "CustomerId";   
 
-                // Đặt giá trị mặc định cho ComboBox
                 CustomerComboBox.SelectedIndex = 0;
             }
             catch (Exception ex)
@@ -74,10 +69,8 @@ namespace WPF_NhaMayCaoSu
             {
                 IEnumerable<Sale> allSales = await _saleService.GetAllSaleAsync();
 
-                // Lấy dữ liệu bán hàng từ service
                 _salesData = allSales.ToList();
 
-                // Gán dữ liệu cho DataGrid
                 SalesDataGrid.ItemsSource = _salesData;
 
                 // Cập nhật thống kê tổng quan
@@ -134,18 +127,14 @@ namespace WPF_NhaMayCaoSu
                 // Lọc dữ liệu bán hàng theo ngày và khách hàng
                 filteredSales = _salesData;
 
-                // Lọc theo ngày bắt đầu
                 if (fromDate.HasValue)
                 {
-                    // Thiết lập giờ cho ngày bắt đầu
-                    DateTime startDate = fromDate.Value.Date; // Ngày bắt đầu sẽ là 00:00:00
+                    DateTime startDate = fromDate.Value.Date;
                     filteredSales = filteredSales.Where(s => s.LastEditedTime >= startDate).ToList();
                 }
 
-                // Lọc theo ngày kết thúc
                 if (toDate.HasValue)
                 {
-                    // Thiết lập giờ cho ngày kết thúc
                     DateTime endDate = toDate.Value.Date.AddDays(1).AddTicks(-1); // Đến 23:59:59.9999999
                     filteredSales = filteredSales.Where(s => s.LastEditedTime <= endDate).ToList();
                 }

@@ -35,7 +35,7 @@ namespace WPF_NhaMayCaoSu
 
         // Pagination variables
         private int _currentPage = 1;
-        private int _pageSize = 12;
+        private int _pageSize = 15;
         private int _totalPages;
 
         // State variables
