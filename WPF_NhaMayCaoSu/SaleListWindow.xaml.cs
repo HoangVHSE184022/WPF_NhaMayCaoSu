@@ -369,7 +369,8 @@ namespace WPF_NhaMayCaoSu
                 BonusPrice = customer.bonusPrice,
                 SalePrice = generalSalePrice,
                 LastEditedTime = DateTime.Now,
-                Status = 1
+                Status = 1,
+                TotalPrice = 0
             };
 
             if (valueType == "Weight")
