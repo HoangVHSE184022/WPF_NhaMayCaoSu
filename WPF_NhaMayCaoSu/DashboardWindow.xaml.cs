@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace WPF_NhaMayCaoSu
 
         private readonly ISaleService _saleService = new SaleService();
         private readonly ICustomerService _customerService = new CustomerService();
-        private IEnumerable<Sale> _salesData;
+        private List<Sale> _salesData;
 
         public DashboardWindow()
         {
@@ -67,14 +68,14 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
-
-
         private async void LoadSalesData()
         {
             try
             {
+                IEnumerable<Sale> allSales = await _saleService.GetAllSaleAsync();
+
                 // Lấy dữ liệu bán hàng từ service
-                _salesData = await _saleService.GetAllSaleAsync();
+                _salesData = allSales.ToList();
 
                 // Gán dữ liệu cho DataGrid
                 SalesDataGrid.ItemsSource = _salesData;
@@ -91,11 +92,13 @@ namespace WPF_NhaMayCaoSu
         private void FromDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             FilterSalesData();
+            
         }
 
         private void ToDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             FilterSalesData();
+       
         }
 
         private void CustomerComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -114,40 +117,47 @@ namespace WPF_NhaMayCaoSu
             {
                 return;
             }
-
-            IEnumerable<Sale> filteredSales;
+            IEnumerable<Sale> fetchSalesData = await _saleService.GetAllSaleAsync();
+            if (fetchSalesData == null || !fetchSalesData.Any())
+            {
+                return;
+            }
+            List<Sale> filteredSales = fetchSalesData.ToList();
 
             // Nếu chọn "Tất cả", lấy toàn bộ dữ liệu bán hàng
             if (selectedCustomer != null && selectedCustomer.CustomerId == Guid.Empty)
             {
-                filteredSales = await _saleService.GetAllSaleAsync();
+                filteredSales.ToList();
             }
             else
             {
                 // Lọc dữ liệu bán hàng theo ngày và khách hàng
                 filteredSales = _salesData;
 
+                // Lọc theo ngày bắt đầu
                 if (fromDate.HasValue)
                 {
-                    filteredSales = filteredSales.Where(s => s.LastEditedTime >= fromDate.Value);
+                    // Thiết lập giờ cho ngày bắt đầu
+                    DateTime startDate = fromDate.Value.Date; // Ngày bắt đầu sẽ là 00:00:00
+                    filteredSales = filteredSales.Where(s => s.LastEditedTime >= startDate).ToList();
                 }
 
+                // Lọc theo ngày kết thúc
                 if (toDate.HasValue)
                 {
-                    filteredSales = filteredSales.Where(s => s.LastEditedTime <= toDate.Value);
+                    // Thiết lập giờ cho ngày kết thúc
+                    DateTime endDate = toDate.Value.Date.AddDays(1).AddTicks(-1); // Đến 23:59:59.9999999
+                    filteredSales = filteredSales.Where(s => s.LastEditedTime <= endDate).ToList();
                 }
 
                 if (selectedCustomer != null)
                 {
-                    var rfidCodes = selectedCustomer.RFIDs?.Select(r => r.RFIDCode).ToList();
-                    if (rfidCodes != null && rfidCodes.Any())
-                    {
-                        filteredSales = filteredSales.Where(s => rfidCodes.Contains(s.RFIDCode));
-                    }
+                    filteredSales = filteredSales.Where(s => s.CustomerName.ToLower() == selectedCustomer.CustomerName.ToLower()).ToList();
                 }
             }
 
             // Cập nhật DataGrid và thống kê
+            SalesDataGrid.ItemsSource = null;
             SalesDataGrid.ItemsSource = filteredSales.ToList();
             UpdateStatistics(filteredSales.ToList());
         }
@@ -169,6 +179,7 @@ namespace WPF_NhaMayCaoSu
         {
             LoadCustomers();
 
+            LoadSalesData();
         }
         public void OnWindowLoaded()
         {

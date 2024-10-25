@@ -32,8 +32,8 @@
         <Button x:Name="QuitButton" Content="Thoát" HorizontalAlignment="Left" Margin="31,0,0,26" Width="68" Background="#FF254098" FontFamily="Montserrat" Foreground="#FFFFFF" BorderThickness="0" FontSize="16" Click="QuitButton_Click" Height="33" VerticalAlignment="Bottom"/>
         <Label x:Name="IPconnecttionSmallLabel" Content="Không có kết nối" Margin="0,0,0,10" FontFamily="Montserrat" FontSize="12" Foreground="#FF002366" HorizontalAlignment="Right" Width="173" Height="24" VerticalAlignment="Bottom"/>
         <Label  Content="Thời gian quét thẻ:" Margin="0,0,910,26" FontFamily="Montserrat" FontSize="18" Foreground="#FF002366" HorizontalAlignment="Right" Width="168" Height="33" VerticalAlignment="Bottom"/>
-        <Label  Content="30s" x:Name="rfidTimeLabel" Margin="280,0,838,28" FontSize="22" FontFamily="Montserrat" VerticalAlignment="Bottom" Height="35"/>
-        <Button Content="✎" Width="35" Height="35" VerticalAlignment="Bottom" Background="#FFFFFF" BorderThickness="0" HorizontalAlignment="Left"  Click="OpenPopup" Margin="362,0,0,34" FontSize="30"/>
+        <Label  Content="30s" x:Name="rfidTimeLabel" Margin="279,0,838,29" FontSize="18" FontFamily="Montserrat" VerticalAlignment="Bottom" Height="29"/>
+        <Button Content="✎" Width="35" Height="31" VerticalAlignment="Bottom" Background="#FFFFFF" BorderThickness="0" HorizontalAlignment="Left"  Click="OpenPopup" Margin="335,0,0,31" FontSize="30"/>
         <Popup x:Name="TimePopup" Placement="MousePoint" StaysOpen="False">
             <Border BorderBrush="Black" BorderThickness="1" Background="LightGray" Padding="10">
                 <StackPanel>
@@ -46,8 +46,8 @@
             </Border>
         </Popup>
         <Label  Content="Giá chung:" Margin="0,0,910,-2" FontFamily="Montserrat" FontSize="18" Foreground="#FF002366" HorizontalAlignment="Right" Width="168" Height="33" VerticalAlignment="Bottom"/>
-        <Label  Content="30000 VND" x:Name="GeneralPriceLabel" Margin="216,0,853,-2" FontSize="22" FontFamily="Montserrat" VerticalAlignment="Bottom" Height="35"/>
-        <Button Content="✎" Width="35" Height="35" VerticalAlignment="Bottom" Background="#FFFFFF" BorderThickness="0" HorizontalAlignment="Left"  Click="OpenGeneralPricePopup" Margin="362,0,0,1" FontSize="30"/>
+        <Label  Content="30000 VND" x:Name="GeneralPriceLabel" Margin="212,0,838,0" FontSize="18" FontFamily="Montserrat" VerticalAlignment="Bottom" Height="29"/>
+        <Button Content="✎" Width="35" Height="30" VerticalAlignment="Bottom" Background="#FFFFFF" BorderThickness="0" HorizontalAlignment="Left"  Click="OpenGeneralPricePopup" Margin="335,0,0,1" FontSize="30"/>
         <Popup x:Name="GeneralPricePopup" Placement="MousePoint" StaysOpen="False">
             <Border BorderBrush="Black" BorderThickness="1" Background="LightGray" Padding="10">
                 <StackPanel>

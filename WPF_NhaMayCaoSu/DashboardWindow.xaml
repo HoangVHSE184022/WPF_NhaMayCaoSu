@@ -32,7 +32,7 @@
                 <TextBlock Text="Đến ngày: " VerticalAlignment="Center" Margin="20,0,10,0"/>
                 <DatePicker x:Name="ToDatePicker" SelectedDateChanged="ToDatePicker_SelectedDateChanged"/>
                 
-                <ComboBox x:Name="CustomerComboBox" HorizontalAlignment="Left" Margin="40,0,10,0" VerticalAlignment="Top" Width="150" Height="30" FontFamily="Montserrat" />
+                <ComboBox x:Name="CustomerComboBox" HorizontalAlignment="Left" Margin="40,0,10,0" VerticalAlignment="Top" Width="150" Height="30" FontFamily="Montserrat" SelectionChanged="CustomerComboBox_SelectionChanged" />
             </StackPanel>
 
         </Grid>
