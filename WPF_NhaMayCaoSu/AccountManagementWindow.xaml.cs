@@ -129,8 +129,9 @@ namespace WPF_NhaMayCaoSu
                 }
 
                 // Redirect to login window
-                LoginWindow login = new();
-                login.Show();
+                //LoginWindow login = new();
+                //login.Show();
+                Close();
             }
 
 

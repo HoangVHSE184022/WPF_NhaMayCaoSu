@@ -13,11 +13,11 @@
         <TextBox x:Name="CustomerNameTextBox" Height="46" Margin="780,130,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA"  FontSize="26" BorderThickness="0"/>
         <Label Content="Số ký" HorizontalAlignment="Left" Height="46" Margin="32,200,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366"/>
         <TextBox x:Name="WeightTextBox" Height="46" Margin="276,200,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="26" Background="#FFCACACA" BorderThickness="0"/>
-        <Label Content="URL số ký" HorizontalAlignment="Left" Height="46" Margin="32,270,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366"/>
+        <Label Content="Ảnh cân tạ" HorizontalAlignment="Left" Height="46" Margin="32,270,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366"/>
         <TextBox x:Name="URLWeightTextBox" Height="46" Margin="276,270,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="20" Background="#FFCACACA" BorderThickness="0" IsEnabled="False" />
         <Label Content="Tỉ trọng" HorizontalAlignment="Left" Height="46" Margin="35,340,0,0" VerticalAlignment="Top" Width="236" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366" />
         <TextBox x:Name="DensityTextBox" Height="46" Margin="276,340,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA" FontSize="26" BorderThickness="0"/>
-        <Label Content="URL tỉ trọng" HorizontalAlignment="Left" Height="46" Margin="32,410,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366" />
+        <Label Content="Ảnh cân tiểu ly" HorizontalAlignment="Left" Height="46" Margin="32,410,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366" />
         <TextBox x:Name="URLDensityTextBox" Height="46" Margin="276,410,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="20" Background="#FFCACACA" BorderThickness="0" IsEnabled="False"/>
 
         <Label Content="Mã RFID" HorizontalAlignment="Left" Height="46" Margin="36,563,0,0" VerticalAlignment="Top" Width="238" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366"/>
