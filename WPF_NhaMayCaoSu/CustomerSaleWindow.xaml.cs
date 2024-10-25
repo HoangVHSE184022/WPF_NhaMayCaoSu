@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
@@ -15,6 +16,10 @@ namespace WPF_NhaMayCaoSu
         private readonly IImageService _imageService = new ImageService();
         private readonly ISaleService _saleService = new SaleService();
         private List<Sale> _customerSales;
+
+        private int _currentPage = 1;
+        private int _pageSize = 20;
+        private int _totalPages;
         public CustomerSaleWindow(Customer selectedCustomer)
         {
             InitializeComponent();
@@ -33,13 +38,19 @@ namespace WPF_NhaMayCaoSu
             {
                 Title.Content = $"Thống kê Sale của khách hàng {_selectedCustomer.CustomerName}";
 
-                IEnumerable<Sale> customerSales = await _saleService.GetSalesByCustomerIdAsync(_selectedCustomer.CustomerId);
+                IEnumerable<Sale> customerSales = await _saleService.GetSalesByCustomerIdAsync(_selectedCustomer.CustomerId, _currentPage, _pageSize);
+                IEnumerable<Sale> customerSalesTotal = await _saleService.GetSalesByCustomerIdAsync(_selectedCustomer.CustomerId);
                 foreach (Sale sale in customerSales)
                 {
                     CalculateTotalPrice(sale);
                 }
                 SaleDataGrid.ItemsSource = customerSales;
-                UpdateTotalLabel(customerSales);
+                int totalSalesCount = customerSalesTotal.Count();
+                _totalPages = (int)Math.Ceiling((double)totalSalesCount / _pageSize);
+                PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
+                PreviousPageButton.IsEnabled = _currentPage > 1;
+                NextPageButton.IsEnabled = _currentPage < _totalPages;
+                UpdateTotalLabel(customerSalesTotal);
             }
             catch (Exception ex)
             {
@@ -47,6 +58,23 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
+        private void PreviousPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPage > 1)
+            {
+                _currentPage--;
+                LoadDataGrid();
+            }
+        }
+
+        private void NextPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPage < _totalPages)
+            {
+                _currentPage++;
+                LoadDataGrid();
+            }
+        }
         private void CalculateTotalPrice(Sale sale)
         {
             if (sale != null)
@@ -97,11 +125,17 @@ namespace WPF_NhaMayCaoSu
                 }
                 IEnumerable<Sale> filteredSales = customerSales.Where(sale =>
                     sale.LastEditedTime >= normalizedFromDate && sale.LastEditedTime <= normalizedToDate).ToList();
+
                 foreach (Sale sale in filteredSales)
                 {
                     CalculateTotalPrice(sale);
                 }
                 SaleDataGrid.ItemsSource = filteredSales;
+                int totalSalesCount = filteredSales.Count();
+                _totalPages = (int)Math.Ceiling((double)totalSalesCount / _pageSize);
+                PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
+                PreviousPageButton.IsEnabled = _currentPage > 1;
+                NextPageButton.IsEnabled = _currentPage < _totalPages;
                 UpdateTotalLabel(filteredSales);
             }
             else

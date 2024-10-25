@@ -101,11 +101,14 @@ namespace WPF_NhaMayCaoSu
             try
             {
                 IEnumerable<Sale> allSales = await _saleService.GetAllSaleAsync(_currentPage, _pageSize);
+                IEnumerable<Sale> allSalesCount = await _saleService.GetAllSaleAsync();
 
                 List<Sale> salesList = allSales.ToList();
 
-                int totalSalesCount = salesList.Count;
+                int totalSalesCount = allSalesCount.Count();
+                Debug.WriteLine($"Count {totalSalesCount}");
                 _totalPages = (int)Math.Ceiling((double)totalSalesCount / _pageSize);
+                Debug.WriteLine($"TotalPages {_totalPages}");
                 SaleDataGrid.ItemsSource = salesList;
                 PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
                 PreviousPageButton.IsEnabled = _currentPage > 1;
