@@ -74,7 +74,7 @@ namespace WPF_NhaMayCaoSu
             MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn xóa tài khoản không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
             {
-                if (selected == CurrentAccount)
+                if (selected.AccountId == CurrentAccount.AccountId)
                 {
                     MessageBox.Show("Không thể xóa tài khoản đang dùng!", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
