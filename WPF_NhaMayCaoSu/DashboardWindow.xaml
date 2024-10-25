@@ -63,12 +63,15 @@
         <!-- DataGrid for Sales -->
         <DataGrid Grid.Row="3" x:Name="SalesDataGrid" AutoGenerateColumns="False" VerticalAlignment="Top" Height="400" Margin="0,0,0,0">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Sale ID" Binding="{Binding SaleId}" Width="100"/>
-                <DataGridTextColumn Header="Customer Name" Binding="{Binding CustomerName}" Width="200"/>
-                <DataGridTextColumn Header="Product Density" Binding="{Binding ProductDensity}" Width="150"/>
-                <DataGridTextColumn Header="Product Weight" Binding="{Binding ProductWeight}" Width="150"/>
-                <DataGridTextColumn Header="Tổng tiền" Binding="{Binding TotalPrice}" Width="100"/>
-                <DataGridTextColumn Header="RFID" Binding="{Binding RFID}" Width="200"/>
+                <DataGridTextColumn Header="Tên khách hàng" Width="1.5*" Binding="{Binding CustomerName}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Số ký" Width="0.7*" Binding="{Binding ProductWeight}"/>
+                <DataGridTextColumn Header="Tỉ trọng" Width="0.7*" Binding="{Binding ProductDensity}"/>
+                <DataGridTextColumn Header="Số bì" Width="0.7*" Binding="{Binding TareWeight}"/>
+                <DataGridTextColumn Header="Chỉnh sửa cuối" Width="1.4*" Binding="{Binding LastEditedTime}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="RFID" Width="1.2*" Binding="{Binding RFIDCode}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Đơn giá" Width="1.2*" Binding="{Binding SalePrice}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Giá thêm" Width="1.2*" Binding="{Binding BonusPrice}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Tổng tiền" Width="1.2*" Binding="{Binding TotalPrice}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
