@@ -1,4 +1,5 @@
-﻿using WPF_NhaMayCaoSu.Repository.Models;
+﻿using WPF_NhaMayCaoSu.Repository.IRepositories;
+using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
@@ -53,6 +54,12 @@ namespace WPF_NhaMayCaoSu.Service.Services
         public async Task<IEnumerable<Customer>> GetAllCustomersNoPagination()
         {
             return await _repository.GetAllAsyncNoPagination();
+        }
+
+        public async Task<Customer> GetCustomerByPhoneAsync(string phone)
+        {
+            return await _repository.GetCustomerByPhoneAsync(phone);
+
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
@@ -527,5 +528,27 @@ namespace WPF_NhaMayCaoSu
             vpage.imageUrl = URLDensityTextBox.Text;
             vpage.ShowDialog();
         }
+
+        private async void PhoneNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string phoneNumber = PhoneNumberTextBox.Text;
+
+            Customer customer = await _customerService.GetCustomerByPhoneAsync(phoneNumber);
+
+            if (customer != null)
+            {
+                CustomerNameTextBox.Text = customer.CustomerName;
+                RFIDCodeTextBox.Text = customer.RFIDs.FirstOrDefault()?.RFIDCode ?? string.Empty;
+            }
+            else
+            {
+                CustomerNameTextBox.Clear();
+                RFIDCodeTextBox.Clear();
+                WeightTextBox.Clear();
+                DensityTextBox.Clear();
+                MessageBox.Show("Không tìm thấy khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
     }
 }

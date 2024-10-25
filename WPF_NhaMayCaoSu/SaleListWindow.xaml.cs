@@ -326,6 +326,7 @@ namespace WPF_NhaMayCaoSu
                                 catch (Exception ex)
                                 {
                                     MessageBox.Show($"Failed to update sale: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    Log.Error(ex, $"Error update sale: {messageContent}");
                                 }
                             }
                         }
@@ -368,7 +369,8 @@ namespace WPF_NhaMayCaoSu
                 BonusPrice = customer.bonusPrice,
                 SalePrice = generalSalePrice,
                 LastEditedTime = DateTime.Now,
-                Status = 1
+                Status = 1,
+                TotalPrice = 0
             };
 
             if (valueType == "Weight")
