@@ -33,7 +33,6 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
 
             return await _context.Sales
                                  .OrderByDescending(s => s.LastEditedTime)
-                                 .ThenBy(s => s.CustomerName)
                                  .Skip((pageNumber - 1) * pageSize)
                                  .Take(pageSize)
                                  .Where(c => c.Status == 1)
@@ -54,6 +53,18 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
                                  .Where(c => c.Status == 1)
                                  .Include(s => s.RFID)
                                  .FirstOrDefaultAsync(x => x.RFIDCode == RFIDCode);
+        }
+
+        public async Task<IEnumerable<Sale>> GetSalesByCustomerIdAsync(Guid customerId, int pageNumber, int pageSize)
+        {
+            _context = new();
+
+            return await _context.Sales
+                                 .Include(s => s.RFID)
+                                 .Where(s => s.RFID.CustomerId == customerId && s.Status == 1)
+                                 .Skip((pageNumber - 1) * pageSize)
+                                 .Take(pageSize)
+                                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Sale>> GetSalesByCustomerIdAsync(Guid customerId)

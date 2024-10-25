@@ -44,6 +44,9 @@
         </StackPanel>
         <Label x:Name="Title" Content="Thống kê Sale của khách hàng" HorizontalAlignment="Left" Height="57" Margin="45,9,0,0" VerticalAlignment="Top" Width="848" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366" FontWeight="Bold"/>
         <Label x:Name="Total" Content="Tổng thành tiền:" HorizontalAlignment="Left" Height="46" Margin="600,85,0,0" VerticalAlignment="Top" Width="555" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366"/>
+        <Button x:Name="PreviousPageButton" Content="Trước" Margin="502,0,0,10" Click="PreviousPageButton_Click" FontSize="14" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40" RenderTransformOrigin="0.525,1.688"/>
+        <TextBlock x:Name="PageNumberTextBlock" Margin="0,0,0,10" TextAlignment="Center" FontFamily="Montserrat" FontSize="16" HorizontalAlignment="Center" Width="106" Height="20" VerticalAlignment="Bottom" />
+        <Button x:Name="NextPageButton" Content="Sau" Margin="658,0,0,10" Click="NextPageButton_Click" FontSize="14" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40" RenderTransformOrigin="0.5,2"/>
 
     </Grid>
 </Window>

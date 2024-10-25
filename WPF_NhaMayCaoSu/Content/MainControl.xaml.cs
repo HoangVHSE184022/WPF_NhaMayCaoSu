@@ -397,7 +397,7 @@ namespace WPF_NhaMayCaoSu.Content
                 return;
             }
 
-            if (int.TryParse(selectedTime, out int result))
+            if (int.TryParse(selectedTime, out int result) && int.Parse(selectedTime) > 0)
             {
 
                 Config config = await _configService.GetNewestCameraAsync();
@@ -409,7 +409,7 @@ namespace WPF_NhaMayCaoSu.Content
             }
             else
             {
-                MessageBox.Show("Vui lòng nhập một số nguyên hợp lệ.");
+                MessageBox.Show("Vui lòng nhập một số nguyên dương hợp lệ.");
             }
         }
 
