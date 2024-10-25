@@ -326,6 +326,7 @@ namespace WPF_NhaMayCaoSu
                                 catch (Exception ex)
                                 {
                                     MessageBox.Show($"Failed to update sale: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    Log.Error(ex, $"Error update sale: {messageContent}");
                                 }
                             }
                         }

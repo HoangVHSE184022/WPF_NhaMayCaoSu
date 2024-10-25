@@ -33,7 +33,7 @@
         <Label x:Name="IPconnecttionSmallLabel" Content="Không có kết nối" Margin="0,0,0,10" FontFamily="Montserrat" FontSize="12" Foreground="#FF002366" HorizontalAlignment="Right" Width="173" Height="24" VerticalAlignment="Bottom"/>
         <Label  Content="Thời gian quét thẻ:" Margin="0,0,910,26" FontFamily="Montserrat" FontSize="18" Foreground="#FF002366" HorizontalAlignment="Right" Width="168" Height="33" VerticalAlignment="Bottom"/>
         <Label  Content="30s" x:Name="rfidTimeLabel" Margin="280,0,838,28" FontSize="22" FontFamily="Montserrat" VerticalAlignment="Bottom" Height="35"/>
-        <Button Content="✎" Width="35" Height="35" VerticalAlignment="Bottom" Background="#FFFFFF" BorderThickness="0" HorizontalAlignment="Left"  Click="OpenPopup" Margin="362,0,0,28" FontSize="30"/>
+        <Button Content="✎" Width="35" Height="35" VerticalAlignment="Bottom" Background="#FFFFFF" BorderThickness="0" HorizontalAlignment="Left"  Click="OpenPopup" Margin="362,0,0,34" FontSize="30"/>
         <Popup x:Name="TimePopup" Placement="MousePoint" StaysOpen="False">
             <Border BorderBrush="Black" BorderThickness="1" Background="LightGray" Padding="10">
                 <StackPanel>
@@ -42,6 +42,20 @@
                              Text="{Binding SelectedTime}" Margin="0,0,0,10"/>
                     <Button Content="Lưu" Width="100" Height="30" 
                             Click="SaveTime"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+        <Label  Content="Giá chung:" Margin="0,0,910,-2" FontFamily="Montserrat" FontSize="18" Foreground="#FF002366" HorizontalAlignment="Right" Width="168" Height="33" VerticalAlignment="Bottom"/>
+        <Label  Content="30000 VND" x:Name="GeneralPriceLabel" Margin="216,0,853,-2" FontSize="22" FontFamily="Montserrat" VerticalAlignment="Bottom" Height="35"/>
+        <Button Content="✎" Width="35" Height="35" VerticalAlignment="Bottom" Background="#FFFFFF" BorderThickness="0" HorizontalAlignment="Left"  Click="OpenGeneralPricePopup" Margin="362,0,0,1" FontSize="30"/>
+        <Popup x:Name="GeneralPricePopup" Placement="MousePoint" StaysOpen="False">
+            <Border BorderBrush="Black" BorderThickness="1" Background="LightGray" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Chỉnh sửa giá chung (đơn vị : VND)" Margin="0,0,0,10"/>
+                    <TextBox x:Name="GeneralPriceTextBox" Width="200" Height="30" 
+                      Text="{Binding selectedGeneralPrice}" Margin="0,0,0,10"/>
+                    <Button Content="Lưu" Width="100" Height="30" 
+                     Click="SaveGeneralPrice"/>
                 </StackPanel>
             </Border>
         </Popup>

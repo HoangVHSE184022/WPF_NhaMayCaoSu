@@ -63,6 +63,7 @@ namespace WPF_NhaMayCaoSu.Content
             MainContentControl.Content = broker.Content;
             UpdateMainWindowUI();
             UpdateTimeUIAsync();
+            UpdateGeneralPriceUIAsync();
         }
         private void keyCheck()
         {
@@ -318,6 +319,21 @@ namespace WPF_NhaMayCaoSu.Content
             }
         }
 
+        private async void UpdateGeneralPriceUIAsync()
+        {
+            Config config = await _configService.GetNewestCameraAsync();
+            float currentGeneralPrice = config.GeneralPrice;
+
+            if (currentGeneralPrice != null)
+            {
+                GeneralPriceLabel.Content = $"{currentGeneralPrice} VND";
+            }
+            else
+            {
+                GeneralPriceLabel.Content = $"N/A";
+            }
+        }
+
         private void OnDeviceCountChanged(object sender, int deviceCount)
         {
             Dispatcher.Invoke(() =>
@@ -397,6 +413,36 @@ namespace WPF_NhaMayCaoSu.Content
             }
         }
 
+        private void OpenGeneralPricePopup(object sender, RoutedEventArgs e)
+        {
+            GeneralPricePopup.IsOpen = true;
+        }
+
+        private async void SaveGeneralPrice(object sender, RoutedEventArgs e)
+        {
+            string selectedGeneralPrice = GeneralPriceTextBox.Text;
+
+            if (string.IsNullOrEmpty(selectedGeneralPrice))
+            {
+                MessageBox.Show("Vui lòng nhập một giá trị.");
+                return;
+            }
+
+            if (float.TryParse(selectedGeneralPrice, out float result))
+            {
+
+                Config config = await _configService.GetNewestCameraAsync();
+                config.GeneralPrice = result;
+                await _configService.UpdateCameraAsync(config);
+                MessageBox.Show("Giá trị đã được lưu.");
+                GeneralPricePopup.IsOpen = false;
+                UpdateGeneralPriceUIAsync();
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng nhập một số hợp lệ.");
+            }
+        }
 
 
     }
