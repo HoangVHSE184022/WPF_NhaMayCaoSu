@@ -162,7 +162,7 @@ namespace WPF_NhaMayCaoSu
                 DateTime currentTime = DateTime.Now;
                 var latestSale = await _saleService.GetLatestSaleWithinTimeRangeAsync(currentTime.AddMinutes(-5), currentTime);
                 bool otherRfidSaleExists = latestSale != null && !string.Equals(latestSale.RFIDCode, rfid, StringComparison.OrdinalIgnoreCase);
-                bool isSaleCompleted = sale != null && sale.ProductWeight.HasValue && sale.ProductDensity.HasValue && sale.TareWeight.HasValue;
+                bool isSaleCompleted = sale != null && sale.ProductWeight.HasValue && sale.ProductDensity != 0 && sale.TareWeight.HasValue;
 
                 if (sale == null || isSaleCompleted || otherRfidSaleExists)
                 {
@@ -214,6 +214,27 @@ namespace WPF_NhaMayCaoSu
                         {
                             sale.LastEditedTime = DateTime.Now;
                             sale.ProductDensity = newValue;
+                        }
+
+                        if (sale.ProductWeight.HasValue &&
+                       sale.TareWeight.HasValue &&
+                       sale.ProductDensity.HasValue &&
+                       sale.SalePrice.HasValue &&
+                       sale.BonusPrice.HasValue)
+                        {
+                            if (!sale.TotalPrice.HasValue || sale.TotalPrice == 0)
+                            {
+                                CalculateTotalPrice(sale);
+
+                                try
+                                {
+                                    await _saleService.UpdateSaleAsync(sale);
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show($"Failed to update sale: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                }
+                            }
                         }
                     }
 
@@ -589,38 +610,6 @@ namespace WPF_NhaMayCaoSu
             {
                 e.Cancel = true;
             }
-        }
-
-        private async void CalculateTotalPrice_Click(object sender, RoutedEventArgs e)
-        {
-            foreach (var sale in _sessionSaleList)
-            { 
-                Sale existSale = await _saleService.GetSaleByIdAsync(sale.SaleId);
-                if(existSale != null && (existSale.TotalPrice.HasValue || existSale.TotalPrice == 0)) {
-                    if (sale.ProductWeight.HasValue &&
-                        sale.TareWeight.HasValue &&
-                        sale.ProductDensity.HasValue &&
-                        sale.SalePrice.HasValue &&
-                        sale.BonusPrice.HasValue)
-                    {
-                        if (!sale.TotalPrice.HasValue || sale.TotalPrice == 0)
-                        {
-                            CalculateTotalPrice(sale);
-
-                            try
-                            {
-                                await _saleService.UpdateSaleAsync(sale);
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show($"Failed to update sale: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                            }
-                        }
-                    }
-                }
-            }
-
-            LoadDataGrid();
         }
 
         private void CalculateTotalPrice(Sale sale)

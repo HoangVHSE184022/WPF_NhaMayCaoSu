@@ -254,7 +254,7 @@ namespace WPF_NhaMayCaoSu
 
                 Sale latestSale = await _saleService.GetLatestSaleWithinTimeRangeAsync(currentTime.AddMinutes(-5), currentTime);
                 bool otherRfidSaleExists = latestSale != null && !string.Equals(latestSale.RFIDCode, rfid, StringComparison.OrdinalIgnoreCase);
-                bool isSaleCompleted = sale != null && sale.ProductWeight.HasValue && sale.ProductDensity.HasValue && sale.TareWeight.HasValue;
+                bool isSaleCompleted = sale != null && sale.ProductWeight.HasValue && sale.ProductDensity != 0 && sale.TareWeight.HasValue;
 
                 if (sale == null || isSaleCompleted || otherRfidSaleExists)
                 {
@@ -308,6 +308,26 @@ namespace WPF_NhaMayCaoSu
                         {
                             sale.LastEditedTime = DateTime.Now;
                             sale.ProductDensity = newValue;
+                        }
+                        if (sale.ProductWeight.HasValue &&
+                    sale.TareWeight.HasValue &&
+                    sale.ProductDensity.HasValue &&
+                    sale.SalePrice.HasValue &&
+                    sale.BonusPrice.HasValue)
+                        {
+                            if (!sale.TotalPrice.HasValue || sale.TotalPrice == 0)
+                            {
+                                CalculateTotalPrice(sale);
+
+                                try
+                                {
+                                    await _saleService.UpdateSaleAsync(sale);
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show($"Failed to update sale: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                }
+                            }
                         }
                     }
 
