@@ -97,8 +97,12 @@ namespace WPF_NhaMayCaoSu
                 }
                 IEnumerable<Sale> filteredSales = customerSales.Where(sale =>
                     sale.LastEditedTime >= normalizedFromDate && sale.LastEditedTime <= normalizedToDate).ToList();
-
+                foreach (Sale sale in filteredSales)
+                {
+                    CalculateTotalPrice(sale);
+                }
                 SaleDataGrid.ItemsSource = filteredSales;
+                UpdateTotalLabel(filteredSales);
             }
             else
             {
