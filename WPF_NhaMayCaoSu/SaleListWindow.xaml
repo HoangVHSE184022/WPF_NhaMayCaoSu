@@ -30,7 +30,7 @@
                 <DataGridTextColumn Header="Số bì" Width="0.7*" Binding="{Binding TareWeight}"/>
                 <DataGridTextColumn Header="Chỉnh sửa cuối" Width="1.4*" Binding="{Binding LastEditedTime}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="RFID" Width="1.2*" Binding="{Binding RFIDCode}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Giá chung" Width="1.2*" Binding="{Binding SalePrice}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Đơn giá" Width="1.2*" Binding="{Binding SalePrice}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Giá thêm" Width="1.2*" Binding="{Binding BonusPrice}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Tổng tiền" Width="1.2*" Binding="{Binding TotalPrice}" IsReadOnly="True"/>
                 <DataGridTemplateColumn Header="Hiển thị">
