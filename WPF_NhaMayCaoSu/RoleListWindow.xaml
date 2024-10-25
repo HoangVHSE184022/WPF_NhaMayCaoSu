@@ -15,7 +15,7 @@
         <Button x:Name="EditRoleButton1" HorizontalAlignment="Right" Height="40" Margin="0,228,32,0" VerticalAlignment="Top" Width="121" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="EditRoleButton_Click" >
             <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <DataGrid x:Name="RoleDataGrid" Margin="32,129,159,90" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
+        <DataGrid x:Name="RoleDataGrid" Margin="32,129,159,90" FontFamily="Montserrat" FontSize="20" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Vai trò" Width="*" Binding="{Binding RoleName}"/>
 

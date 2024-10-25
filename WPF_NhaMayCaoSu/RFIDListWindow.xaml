@@ -14,13 +14,13 @@
         <Button x:Name="EditRFIDButton" Height="40" Margin="0,228,32,0" VerticalAlignment="Top" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Background="#FFCACACA" Click="EditRFIDButton_Click" HorizontalAlignment="Right" Width="121"  >
             <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <DataGrid x:Name="RFIDDataGrid" Margin="32,129,159,90" FontFamily="Montserrat" FontSize="24" Background="#FFCACACA" AutoGenerateColumns="False">
+        <DataGrid x:Name="RFIDDataGrid" Margin="32,129,159,90" FontFamily="Montserrat" FontSize="18" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Mã RFID" Width="250" Binding="{Binding RFIDCode}"/>
-                <DataGridTextColumn Header="Ngày tạo" Width="190" Binding="{Binding CreatedDate}" />
-                <DataGridTextColumn Header="Ngày hết hạn" Width="200" Binding="{Binding ExpirationDate}"/>
-                <DataGridTextColumn Header="Trạng thái" Width="160" Binding="{Binding Status}"/>
-                <DataGridTextColumn Header="Chủ sở hữu" Width="190" Binding="{Binding Customer.CustomerName}"/>
+                <DataGridTextColumn Header="Mã RFID" Width="*" Binding="{Binding RFIDCode}"/>
+                <DataGridTextColumn Header="Ngày tạo" Width="*" Binding="{Binding CreatedDate}" />
+                <DataGridTextColumn Header="Ngày hết hạn" Width="*" Binding="{Binding ExpirationDate}"/>
+                <DataGridTextColumn Header="Trạng thái" Width="0.4*" Binding="{Binding Status}"/>
+                <DataGridTextColumn Header="Chủ sở hữu" Width="0.8*" Binding="{Binding Customer.CustomerName}"/>
 
             </DataGrid.Columns>
 

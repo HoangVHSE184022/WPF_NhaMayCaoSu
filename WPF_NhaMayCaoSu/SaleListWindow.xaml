@@ -48,7 +48,6 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Trạng thái" Width="0*" Binding="{Binding Status}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
         <Label x:Name="SearchLabel" Content="Nhập tên khách hàng:" Height="30" VerticalAlignment="Top" Margin="0,69,506,0" FontFamily="Montserrat" FontSize="18" Grid.RowSpan="2" HorizontalAlignment="Right" Width="188" />
