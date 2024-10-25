@@ -44,6 +44,5 @@
         <Button Content="✖" HorizontalAlignment="Right" VerticalAlignment="Top" Width="30" Height="30" 
                 Name="CloseButton" Click="CloseButton_Click" Visibility="Hidden" Margin="0,10,10,0"/>
         <Label x:Name="AbleScanLabel" Content="Có thể quét." HorizontalAlignment="Right" Height="25" Margin="0,7,10,0" VerticalAlignment="Top" Width="325" FontFamily="Montserrat" FontSize="14" Foreground="#FF002366" />
-        <Button x:Name="CalculateTotalPriceButton" Content="Thành tiền" HorizontalAlignment="Left" Height="40" Margin="405,0,0,0" VerticalAlignment="Center" Width="121" Background="#FFFFFF" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="26" Click="CalculateTotalPrice_Click" Grid.Row="1"/>
     </Grid>
 </Window>
