@@ -11,9 +11,9 @@ namespace WPF_NhaMayCaoSu.Service.Interfaces
         Task DeleteSaleAsync(Guid saleId);
         Task<Sale> GetSaleByRfidAsync(string rfid);
         Task<Sale> GetSaleByRFIDCodeWithoutDensity(string rfid);
+        Task<IEnumerable<Sale>> GetSalesByCustomerIdAsync(Guid customerId);
         Task<int> GetTotalSalesCountAsync();
         Task<IEnumerable<Sale>> GetAllSaleAsync();
-
         Task<Sale> GetLatestSaleWithinTimeRangeAsync(DateTime startTime, DateTime endTime);
         Task<IEnumerable<Sale>> GetSalesWithoutTotalPriceAsync();
         Task<int> GetSalesCountByDateAsync(DateTime date);

@@ -1,0 +1,49 @@
+﻿<Window x:Class="WPF_NhaMayCaoSu.CustomerSaleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
+        mc:Ignorable="d"
+        Title="CustomerSaleWindow" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" WindowStyle="SingleBorderWindow">
+    <Grid>
+
+        <DataGrid x:Name="SaleDataGrid" Margin="45,135,45,41" FontFamily="Montserrat" FontSize="20"
+  Background="#FFCACACA" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Tên khách hàng" Width="1.5*" Binding="{Binding CustomerName}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="RFID" Width="1.2*" Binding="{Binding RFIDCode}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Chỉnh sửa cuối" Width="1.2*" Binding="{Binding LastEditedTime}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Số ký" Width="0.6*" Binding="{Binding ProductWeight}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Tỉ trọng" Width="0.6*" Binding="{Binding ProductDensity}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Số bì" Width="0.6*" Binding="{Binding TareWeight}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Tổng tiền" Width="0.8*" Binding="{Binding TotalPrice}"  IsReadOnly="True"/>
+                <DataGridTemplateColumn Header="Hiển thị">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Width="25" Height="25" x:Name="ControlButton" Click="ControlButton_Click" Tag="{Binding}" Content="Action">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Grid>
+                                            <TextBlock Text="👁" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="45,93,0,0" Height="30" VerticalAlignment="Top">
+            <TextBlock Text="Từ ngày: " VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <DatePicker x:Name="FromDatePicker" SelectedDateChanged="FromDatePicker_SelectedDateChanged"/>
+
+            <TextBlock Text="Đến ngày: " VerticalAlignment="Center" Margin="20,0,10,0"/>
+            <DatePicker x:Name="ToDatePicker" SelectedDateChanged="ToDatePicker_SelectedDateChanged"/>
+        </StackPanel>
+        <Label x:Name="Title" Content="Thống kê Sale của khách hàng" HorizontalAlignment="Left" Height="57" Margin="45,9,0,0" VerticalAlignment="Top" Width="848" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366" FontWeight="Bold"/>
+        <Label x:Name="Total" Content="Tổng thành tiền:" HorizontalAlignment="Left" Height="46" Margin="600,85,0,0" VerticalAlignment="Top" Width="555" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366"/>
+
+    </Grid>
+</Window>

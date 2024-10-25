@@ -52,8 +52,8 @@
         <Button x:Name="SearchButton" Content="Tìm kiếm" Height="40" VerticalAlignment="Top" Margin="0,70,35,0" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" FontSize="24" Click="SearchButton_Click" Grid.RowSpan="2" HorizontalAlignment="Right" Width="121"/>
 
         <Button x:Name="PreviousPageButton" Content="Trước" Margin="394,0,0,30" Click="PreviousPageButton_Click" FontSize="14" Grid.Row="1" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40" RenderTransformOrigin="0.525,1.688"/>
-        <TextBlock x:Name="PageNumberTextBlock" Margin="439,0,0,30" TextAlignment="Center" FontFamily="Montserrat" FontSize="16" Grid.Row="1" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="94" />
-        <Button x:Name="NextPageButton" Content="Sau" Margin="538,0,0,30" Click="NextPageButton_Click" FontSize="14" Grid.Row="1" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40" RenderTransformOrigin="0.5,2"/>
+        <TextBlock x:Name="PageNumberTextBlock" Margin="439,0,0,30" TextAlignment="Center" FontFamily="Montserrat" FontSize="16" Grid.Row="1" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="106" />
+        <Button x:Name="NextPageButton" Content="Sau" Margin="550,0,0,30" Click="NextPageButton_Click" FontSize="14" Grid.Row="1" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40" RenderTransformOrigin="0.5,2"/>
         <Button x:Name="DeleteBtn" Height="40" Margin="0,179,35,0" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="DeleteBtn_Click" Grid.Row="1" HorizontalAlignment="Right" Width="121" >
             <TextBlock  Text="Xóa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>

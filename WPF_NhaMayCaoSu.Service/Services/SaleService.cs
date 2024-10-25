@@ -31,6 +31,12 @@ namespace WPF_NhaMayCaoSu.Service.Services
         {
             return await _repo.GetSaleByRFIDCode(rfid);
         }
+
+        public async Task<IEnumerable<Sale>> GetSalesByCustomerIdAsync(Guid customerId)
+        {
+            return await _repo.GetSalesByCustomerIdAsync(customerId);
+        }
+
         public async Task<Sale> GetSaleByRFIDCodeWithoutDensity(string rfid)
         {
             return await _repo.GetSaleByRFIDCodeWithoutDensity(rfid);

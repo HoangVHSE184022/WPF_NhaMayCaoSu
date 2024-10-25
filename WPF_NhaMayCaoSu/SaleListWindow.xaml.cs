@@ -177,6 +177,7 @@ namespace WPF_NhaMayCaoSu
                 }
                 if (SharedTimerService.Instance.IsCountingDown)
                 {
+                    await _mqttClientService.PublishAsync(topic, payload);
                     MessageBox.Show("Đang trong thời gian không thể nhận tin nhắn từ MQTT. Vui lòng thử lại sau.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }

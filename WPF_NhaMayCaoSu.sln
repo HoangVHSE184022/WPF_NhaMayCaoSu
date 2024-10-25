@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPF_NhaMayCaoSu.Service", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPF_NhaMayCaoSu.Repository", "WPF_NhaMayCaoSu.Repositories\WPF_NhaMayCaoSu.Repository.csproj", "{17817188-7209-49A8-8D6F-705AD4D0A77F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF_NhaMayCaoSu.Core", "WPF_NhaMayCaoSu.Core\WPF_NhaMayCaoSu.Core.csproj", "{A2C9D5BD-E4EF-4016-9429-6CDDDFF80625}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPF_NhaMayCaoSu.Core", "WPF_NhaMayCaoSu.Core\WPF_NhaMayCaoSu.Core.csproj", "{A2C9D5BD-E4EF-4016-9429-6CDDDFF80625}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AC4C100B-471E-4656-8B2C-6E035BFAB632}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
