@@ -9,8 +9,8 @@
         Title="Sale Management" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" WindowStyle="SingleBorderWindow">
     <Grid>
         <Label x:Name="ModeLabel" Content="Thêm/Chỉnh sửa Sale" HorizontalAlignment="Left" Height="48" Margin="32,40,0,0" VerticalAlignment="Top" Width="374" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366" FontWeight="Bold"/>
-        <Label Content="Tên khách hàng" HorizontalAlignment="Left" Height="46" Margin="32,130,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366"/>
-        <TextBox x:Name="CustomerNameTextBox" Height="46" Margin="276,130,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA"  FontSize="26" BorderThickness="0"/>
+        <Label Content="Tên khách hàng" HorizontalAlignment="Left" Height="46" Margin="563,130,0,0" VerticalAlignment="Top" Width="190" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366" RenderTransformOrigin="2.535,0.837"/>
+        <TextBox x:Name="CustomerNameTextBox" Height="46" Margin="780,130,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA"  FontSize="26" BorderThickness="0"/>
         <Label Content="Số ký" HorizontalAlignment="Left" Height="46" Margin="32,200,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366"/>
         <TextBox x:Name="WeightTextBox" Height="46" Margin="276,200,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="26" Background="#FFCACACA" BorderThickness="0"/>
         <Label Content="URL số ký" HorizontalAlignment="Left" Height="46" Margin="32,270,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366"/>
@@ -28,6 +28,8 @@
         <Button x:Name="View2" Content="Xem" Height="18" Margin="0,428,23,0" VerticalAlignment="Top"  FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="14" Background="#FFCACACA" Click="View2_Click" HorizontalAlignment="Right" Width="46"/>
         <Label Content="Số Bì" HorizontalAlignment="Left" Height="46" Margin="32,489,0,0" VerticalAlignment="Top" Width="238" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366"/>
         <TextBox x:Name="TareWeightTextBox" Height="46" Margin="279,489,71,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="20" Background="#FFCACACA" BorderThickness="0" IsEnabled="False"/>
+        <Label Content="Số điện thoại" HorizontalAlignment="Left" Height="46" Margin="32,125,0,0" VerticalAlignment="Top" Width="190" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366" RenderTransformOrigin="2.535,0.837"/>
+        <TextBox x:Name="PhoneNumberTextBox" Height="46" Margin="276,125,642,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA"  FontSize="26" BorderThickness="0" TextChanged="PhoneNumberTextBox_TextChanged"/>
 
 
     </Grid>
