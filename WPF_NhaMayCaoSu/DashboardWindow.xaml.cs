@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using OfficeOpenXml.Style;
+using OfficeOpenXml;
+using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
@@ -14,6 +17,7 @@ namespace WPF_NhaMayCaoSu
 
         private readonly ISaleService _saleService = new SaleService();
         private readonly ICustomerService _customerService = new CustomerService();
+        private readonly IImageService _imageService = new ImageService();
         private List<Sale> _salesData;
 
         public DashboardWindow()
@@ -160,6 +164,86 @@ namespace WPF_NhaMayCaoSu
         public void OnWindowLoaded()
         {
             Window_Loaded(this, null);
+        }
+
+        private async void ExportDataGridToExcel(DataGrid dataGrid)
+        {
+            try
+            {
+                var filteredSales = dataGrid.ItemsSource.Cast<Sale>().ToList();
+
+                if (filteredSales.Count == 0)
+                {
+                    MessageBox.Show("Không có dữ liệu để xuất.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (var package = new ExcelPackage())
+                {
+                    var worksheet = package.Workbook.Worksheets.Add("Sales Data");
+
+                    var header = new List<string> { "Số thứ tự", "SaleId", "Tên khách hàng", "Số ký", "Tỉ trọng", "Số bì", "Lần chỉnh sửa cuối", "Mã RFID", "Đơn giá", "Giá thêm", "Tổng tiền", "Hình ảnh (Tỉ trọng)", "Hình ảnh (Cân nặng)" };
+
+                    for (int i = 0; i < header.Count; i++)
+                    {
+                        worksheet.Cells[1, i + 1].Value = header[i];
+                        worksheet.Cells[1, i + 1].Style.Font.Bold = true;
+                        worksheet.Cells[1, i + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        worksheet.Cells[1, i + 1].AutoFitColumns();
+                    }
+
+                    for (int i = 0; i < filteredSales.Count; i++)
+                    {
+                        var sale = filteredSales[i];
+
+                        var images = await _imageService.GetImagesBySaleIdAsync(sale.SaleId);
+                        string densityImageUrl = images.FirstOrDefault(img => img.ImageType == 2)?.ImagePath ?? "N/A";
+                        string weightImageUrl = images.FirstOrDefault(img => img.ImageType == 1)?.ImagePath ?? "N/A";
+
+                        worksheet.Cells[i + 2, 1].Value = i + 1;
+                        worksheet.Cells[i + 2, 2].Value = sale.SaleId;
+                        worksheet.Cells[i + 2, 3].Value = sale.CustomerName;
+                        worksheet.Cells[i + 2, 4].Value = sale.ProductWeight;
+                        worksheet.Cells[i + 2, 5].Value = sale.ProductDensity;
+                        worksheet.Cells[i + 2, 6].Value = sale.TareWeight;
+                        worksheet.Cells[i + 2, 7].Value = sale.LastEditedTime.HasValue ? sale.LastEditedTime.Value.ToString("g") : "N/A";
+                        worksheet.Cells[i + 2, 8].Value = sale.RFIDCode;
+                        worksheet.Cells[i + 2, 9].Value = sale.SalePrice;
+                        worksheet.Cells[i + 2, 10].Value = sale.BonusPrice;
+                        worksheet.Cells[i + 2, 11].Value = sale.TotalPrice;
+                        worksheet.Cells[i + 2, 12].Value = densityImageUrl;
+                        worksheet.Cells[i + 2, 13].Value = weightImageUrl;
+                    }
+
+                    for (int col = 1; col <= 14; col++)
+                    {
+                        worksheet.Column(col).AutoFit();
+                    }
+
+                    string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CaoSuData");
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+
+                    string filePath = Path.Combine(folderPath, $"SalesData_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx");
+
+                    File.WriteAllBytes(filePath, package.GetAsByteArray());
+
+                    MessageBox.Show($"Xuất file Excel thành công tại: {filePath}", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi trong quá trình xuất file Excel: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+        private void ExportButton_Click(object sender, RoutedEventArgs e)
+        {
+            ExportDataGridToExcel(SalesDataGrid);
         }
     }
 }
