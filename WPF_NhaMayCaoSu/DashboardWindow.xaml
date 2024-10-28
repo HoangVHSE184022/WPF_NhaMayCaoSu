@@ -28,10 +28,10 @@
             <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="Từ ngày: " VerticalAlignment="Center" Margin="0,0,10,0"/>
                 <DatePicker x:Name="FromDatePicker" SelectedDateChanged="FromDatePicker_SelectedDateChanged"/>
-                
+
                 <TextBlock Text="Đến ngày: " VerticalAlignment="Center" Margin="20,0,10,0"/>
                 <DatePicker x:Name="ToDatePicker" SelectedDateChanged="ToDatePicker_SelectedDateChanged"/>
-                
+
                 <ComboBox x:Name="CustomerComboBox" HorizontalAlignment="Left" Margin="40,0,10,0" VerticalAlignment="Top" Width="150" Height="30" FontFamily="Montserrat" SelectionChanged="CustomerComboBox_SelectionChanged" />
             </StackPanel>
 
@@ -54,16 +54,16 @@
 
                     <TextBlock Text="Tổng tiền: " FontWeight="Bold" Width="130"/>
                     <TextBlock x:Name="TotalTotalPrice" FontSize="16" Text="0" HorizontalAlignment="Right" Margin="0,0,30,0"/>
-                    
+
                     <Button x:Name="ExportButton" Content="Xuất file" Margin="0,0,0,0" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="80" RenderTransformOrigin="0.5,2" Click="ExportButton_Click"/>
                 </StackPanel>
- 
+
             </StackPanel>
         </Grid>
 
 
         <!-- DataGrid for Sales -->
-        <DataGrid Grid.Row="3" x:Name="SalesDataGrid" AutoGenerateColumns="False" VerticalAlignment="Top" Height="400" Margin="0,0,0,0">
+        <DataGrid Grid.Row="3" x:Name="SalesDataGrid" AutoGenerateColumns="False" VerticalAlignment="Top" Height="426">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Tên khách hàng" Width="1.5*" Binding="{Binding CustomerName}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Số ký" Width="0.7*" Binding="{Binding ProductWeight}"/>
@@ -76,5 +76,9 @@
                 <DataGridTextColumn Header="Tổng tiền" Width="1.2*" Binding="{Binding TotalPrice}" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
+        <Button x:Name="PreviousPageButton" Content="Trước" Margin="474,0,0,90" Click="PreviousPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40" Grid.Row="3"/>
+        <TextBlock x:Name="PageNumberTextBlock" Margin="519,0,0,90" TextAlignment="Center" FontFamily="Montserrat" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="94" Grid.Row="3" />
+        <Button x:Name="NextPageButton" Content="Sau" Margin="618,0,0,90" Click="NextPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40" Grid.Row="3"/>
+
     </Grid>
 </Window>
