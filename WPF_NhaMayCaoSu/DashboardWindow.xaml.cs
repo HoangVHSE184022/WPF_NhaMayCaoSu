@@ -114,6 +114,8 @@ namespace WPF_NhaMayCaoSu
             if (selectedCustomer != null && selectedCustomer.CustomerId != Guid.Empty)
                 filteredSales = filteredSales.Where(s => s.CustomerName.ToLower() == selectedCustomer.CustomerName.ToLower());
 
+            _filteredSalesData = filteredSales.ToList();
+
             // Paginate filtered data
             var paginatedSales = filteredSales.Skip((_currentPage - 1) * _pageSize).Take(_pageSize).ToList();
 
@@ -156,12 +158,11 @@ namespace WPF_NhaMayCaoSu
             Window_Loaded(this, null);
         }
 
-        private async void ExportDataGridToExcel(DataGrid dataGrid)
+        private async void ExportDataGridToExcel()
         {
             try
             {
-                var filteredSales = dataGrid.ItemsSource.Cast<Sale>().ToList();
-                if (filteredSales.Count == 0)
+                if (_filteredSalesData == null || _filteredSalesData.Count == 0)
                 {
                     MessageBox.Show("Không có dữ liệu để xuất.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
@@ -181,9 +182,9 @@ namespace WPF_NhaMayCaoSu
                         worksheet.Cells[1, i + 1].AutoFitColumns();
                     }
 
-                    for (int i = 0; i < filteredSales.Count; i++)
+                    for (int i = 0; i < _filteredSalesData.Count; i++)
                     {
-                        var sale = filteredSales[i];
+                        var sale = _filteredSalesData[i];
                         var images = await _imageService.GetImagesBySaleIdAsync(sale.SaleId);
                         string densityImageUrl = images.FirstOrDefault(img => img.ImageType == 2)?.ImagePath ?? "N/A";
                         string weightImageUrl = images.FirstOrDefault(img => img.ImageType == 1)?.ImagePath ?? "N/A";
@@ -210,7 +211,7 @@ namespace WPF_NhaMayCaoSu
                     if (!Directory.Exists(folderPath))
                         Directory.CreateDirectory(folderPath);
 
-                    string filePath = Path.Combine(folderPath, $"SalesData_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx");
+                    string filePath = Path.Combine(folderPath, $"SalesDataFromDashboard_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx");
                     File.WriteAllBytes(filePath, package.GetAsByteArray());
 
                     MessageBox.Show($"Xuất file Excel thành công tại: {filePath}", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -223,9 +224,10 @@ namespace WPF_NhaMayCaoSu
         }
 
 
+
         private void ExportButton_Click(object sender, RoutedEventArgs e)
         {
-            ExportDataGridToExcel(SalesDataGrid);
+            ExportDataGridToExcel();
         }
 
         private void PreviousPageButton_Click(object sender, RoutedEventArgs e)
