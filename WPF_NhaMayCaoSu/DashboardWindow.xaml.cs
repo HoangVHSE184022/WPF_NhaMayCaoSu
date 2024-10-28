@@ -19,12 +19,16 @@ namespace WPF_NhaMayCaoSu
         private readonly ICustomerService _customerService = new CustomerService();
         private readonly IImageService _imageService = new ImageService();
         private List<Sale> _salesData;
+        private int _currentPage = 1;
+        private int _pageSize = 20;
+        private int _totalPages;
+        private List<Sale> _filteredSalesData;
 
         public DashboardWindow()
         {
             InitializeComponent();
-            FromDatePicker.SelectedDate = DateTime.Now;
-            ToDatePicker.SelectedDate = DateTime.Now;
+            //FromDatePicker.SelectedDate = DateTime.Now;
+            //ToDatePicker.SelectedDate = DateTime.Now;
 
         }
 
@@ -59,13 +63,11 @@ namespace WPF_NhaMayCaoSu
             try
             {
                 IEnumerable<Sale> allSales = await _saleService.GetAllSaleAsync();
-
                 _salesData = allSales.ToList();
+                FilterSalesData(); // Apply filtering and pagination on load
 
-                SalesDataGrid.ItemsSource = _salesData;
-
-                // Cập nhật thống kê tổng quan
-                UpdateStatistics();
+                // Update pagination controls
+                UpdatePaginationControls();
             }
             catch (Exception ex)
             {
@@ -96,52 +98,40 @@ namespace WPF_NhaMayCaoSu
             DateTime? toDate = ToDatePicker.SelectedDate;
             Customer selectedCustomer = CustomerComboBox.SelectedItem as Customer;
 
-            // Nếu không có dữ liệu, thoát
+            // If no data available, exit
             if (_salesData == null || !_salesData.Any())
-            {
                 return;
-            }
-            IEnumerable<Sale> fetchSalesData = await _saleService.GetAllSaleAsync();
-            if (fetchSalesData == null || !fetchSalesData.Any())
-            {
-                return;
-            }
-            List<Sale> filteredSales = fetchSalesData.ToList();
 
-            // Nếu chọn "Tất cả", lấy toàn bộ dữ liệu bán hàng
-            if (selectedCustomer != null && selectedCustomer.CustomerId == Guid.Empty)
-            {
-                filteredSales.ToList();
-            }
-            else
-            {
-                // Lọc dữ liệu bán hàng theo ngày và khách hàng
-                filteredSales = _salesData;
+            // Filter based on date and customer selection
+            var filteredSales = _salesData.AsEnumerable();
 
-                if (fromDate.HasValue)
-                {
-                    DateTime startDate = fromDate.Value.Date;
-                    filteredSales = filteredSales.Where(s => s.LastEditedTime >= startDate).ToList();
-                }
+            if (fromDate.HasValue)
+                filteredSales = filteredSales.Where(s => s.LastEditedTime >= fromDate.Value.Date);
 
-                if (toDate.HasValue)
-                {
-                    DateTime endDate = toDate.Value.Date.AddDays(1).AddTicks(-1); // Đến 23:59:59.9999999
-                    filteredSales = filteredSales.Where(s => s.LastEditedTime <= endDate).ToList();
-                }
+            if (toDate.HasValue)
+                filteredSales = filteredSales.Where(s => s.LastEditedTime <= toDate.Value.Date.AddDays(1).AddTicks(-1));
 
-                if (selectedCustomer != null)
-                {
-                    filteredSales = filteredSales.Where(s => s.CustomerName.ToLower() == selectedCustomer.CustomerName.ToLower()).ToList();
-                }
-            }
+            if (selectedCustomer != null && selectedCustomer.CustomerId != Guid.Empty)
+                filteredSales = filteredSales.Where(s => s.CustomerName.ToLower() == selectedCustomer.CustomerName.ToLower());
 
-            // Cập nhật DataGrid và thống kê
-            SalesDataGrid.ItemsSource = null;
-            SalesDataGrid.ItemsSource = filteredSales.ToList();
+            // Paginate filtered data
+            var paginatedSales = filteredSales.Skip((_currentPage - 1) * _pageSize).Take(_pageSize).ToList();
+
+            // Update DataGrid
+            SalesDataGrid.ItemsSource = paginatedSales;
             UpdateStatistics(filteredSales.ToList());
+
+            // Update pagination control based on filtered data
+            _totalPages = (int)Math.Ceiling((double)filteredSales.Count() / _pageSize);
+            UpdatePaginationControls();
         }
 
+        private void UpdatePaginationControls()
+        {
+            PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
+            PreviousPageButton.IsEnabled = _currentPage > 1;
+            NextPageButton.IsEnabled = _currentPage < _totalPages;
+        }
 
 
         private void UpdateStatistics(List<Sale> salesData = null)
@@ -171,7 +161,6 @@ namespace WPF_NhaMayCaoSu
             try
             {
                 var filteredSales = dataGrid.ItemsSource.Cast<Sale>().ToList();
-
                 if (filteredSales.Count == 0)
                 {
                     MessageBox.Show("Không có dữ liệu để xuất.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -182,7 +171,6 @@ namespace WPF_NhaMayCaoSu
                 using (var package = new ExcelPackage())
                 {
                     var worksheet = package.Workbook.Worksheets.Add("Sales Data");
-
                     var header = new List<string> { "Số thứ tự", "SaleId", "Tên khách hàng", "Số ký", "Tỉ trọng", "Số bì", "Lần chỉnh sửa cuối", "Mã RFID", "Đơn giá", "Giá thêm", "Tổng tiền", "Hình ảnh (Tỉ trọng)", "Hình ảnh (Cân nặng)" };
 
                     for (int i = 0; i < header.Count; i++)
@@ -196,7 +184,6 @@ namespace WPF_NhaMayCaoSu
                     for (int i = 0; i < filteredSales.Count; i++)
                     {
                         var sale = filteredSales[i];
-
                         var images = await _imageService.GetImagesBySaleIdAsync(sale.SaleId);
                         string densityImageUrl = images.FirstOrDefault(img => img.ImageType == 2)?.ImagePath ?? "N/A";
                         string weightImageUrl = images.FirstOrDefault(img => img.ImageType == 1)?.ImagePath ?? "N/A";
@@ -217,18 +204,13 @@ namespace WPF_NhaMayCaoSu
                     }
 
                     for (int col = 1; col <= 14; col++)
-                    {
                         worksheet.Column(col).AutoFit();
-                    }
 
                     string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CaoSuData");
                     if (!Directory.Exists(folderPath))
-                    {
                         Directory.CreateDirectory(folderPath);
-                    }
 
                     string filePath = Path.Combine(folderPath, $"SalesData_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx");
-
                     File.WriteAllBytes(filePath, package.GetAsByteArray());
 
                     MessageBox.Show($"Xuất file Excel thành công tại: {filePath}", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -244,6 +226,24 @@ namespace WPF_NhaMayCaoSu
         private void ExportButton_Click(object sender, RoutedEventArgs e)
         {
             ExportDataGridToExcel(SalesDataGrid);
+        }
+
+        private void PreviousPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPage > 1)
+            {
+                _currentPage--;
+                LoadSalesData();
+            }
+        }
+
+        private void NextPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentPage < _totalPages)
+            {
+                _currentPage++;
+                LoadSalesData();
+            }
         }
     }
 }
