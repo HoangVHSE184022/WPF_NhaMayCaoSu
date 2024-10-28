@@ -15,7 +15,7 @@
             <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
         
-        <DataGrid x:Name="CustomerDataGrid" Margin="32,129,159,88" FontFamily="Montserrat" FontSize="20" Background="#FFCACACA" AutoGenerateColumns="False">
+        <DataGrid x:Name="CustomerDataGrid" Margin="32,129,159,88" FontFamily="Montserrat" FontSize="18" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Tên" Width="0.8*" Binding="{Binding CustomerName}"/>
                 <DataGridTextColumn Header="Số điện thoại" Width="0.6*" Binding="{Binding Phone}"/>
