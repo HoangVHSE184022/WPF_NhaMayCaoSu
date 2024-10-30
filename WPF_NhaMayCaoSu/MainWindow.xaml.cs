@@ -626,7 +626,7 @@ namespace WPF_NhaMayCaoSu
                 float salePrice = sale.SalePrice ?? 0;
                 float bonusPrice = sale.BonusPrice ?? 0;
 
-                sale.TotalPrice = (productWeight - tareWeight) * (productDensity/100) * (salePrice + bonusPrice);
+                sale.TotalPrice = (productWeight - tareWeight) * productDensity * (salePrice + bonusPrice);
             }
         }
 
