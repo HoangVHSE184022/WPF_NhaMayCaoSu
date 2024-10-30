@@ -7,6 +7,8 @@ using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
 using System.Windows.Input;
+using WPF_NhaMayCaoSu.Core.Utils;
+
 
 
 namespace WPF_NhaMayCaoSu
@@ -27,12 +29,15 @@ namespace WPF_NhaMayCaoSu
         private List<Sale> _filteredSalesData;
         private List<Customer> allCustomers;
         private Customer _currentCustomer;
+        private readonly MqttClientService _mqttClientService = new MqttClientService();
+        private MainWindow _mainWindow;
+        public Account CurrentAccount { get; set; } = null;
 
         public DashboardWindow()
         {
             InitializeComponent();
-            //FromDatePicker.SelectedDate = DateTime.Now;
-            //ToDatePicker.SelectedDate = DateTime.Now;
+            FromDatePicker.SelectedDate = DateTime.Now.AddMonths(-1);
+            ToDatePicker.SelectedDate = DateTime.Now;
 
         }
 
@@ -112,13 +117,11 @@ namespace WPF_NhaMayCaoSu
         {
             DateTime? fromDate = FromDatePicker.SelectedDate;
             DateTime? toDate = ToDatePicker.SelectedDate;
-            Customer selectedCustomer = _currentCustomer;
+            string customerSearchText = CustomerTextBox.Text.ToLower();
 
-            // If no data available, exit
             if (_salesData == null || !_salesData.Any())
                 return;
 
-            // Filter based on date and customer selection
             var filteredSales = _salesData.AsEnumerable();
 
             if (fromDate.HasValue)
@@ -127,22 +130,36 @@ namespace WPF_NhaMayCaoSu
             if (toDate.HasValue)
                 filteredSales = filteredSales.Where(s => s.LastEditedTime <= toDate.Value.Date.AddDays(1).AddTicks(-1));
 
-            if (selectedCustomer != null && selectedCustomer.CustomerId != Guid.Empty)
-                filteredSales = filteredSales.Where(s => s.CustomerName.ToLower() == selectedCustomer.CustomerName.ToLower());
+            if (!string.IsNullOrEmpty(customerSearchText))
+                filteredSales = filteredSales.Where(s => s.CustomerName.ToLower().Contains(customerSearchText));
+
+            // Apply filter for selected ComboBox value
+            if (FilterByZeroComboBox.SelectedItem is ComboBoxItem selectedItem)
+            {
+                string selectedProperty = selectedItem.Tag.ToString();
+
+                if (!string.IsNullOrEmpty(selectedProperty))
+                {
+                    filteredSales = filteredSales.Where(s =>
+                    {
+                        var propertyValue = typeof(Sale).GetProperty(selectedProperty)?.GetValue(s);
+                        return propertyValue == null || propertyValue.ToString() == "0";
+                    });
+                }
+            }
 
             _filteredSalesData = filteredSales.ToList();
 
-            // Paginate filtered data
-            var paginatedSales = filteredSales.Skip((_currentPage - 1) * _pageSize).Take(_pageSize).ToList();
-
-            // Update DataGrid
+            var paginatedSales = _filteredSalesData.Skip((_currentPage - 1) * _pageSize).Take(_pageSize).ToList();
             SalesDataGrid.ItemsSource = paginatedSales;
-            UpdateStatistics(filteredSales.ToList());
 
-            // Update pagination control based on filtered data
-            _totalPages = (int)Math.Ceiling((double)filteredSales.Count() / _pageSize);
+            UpdateStatistics(_filteredSalesData);
+            _totalPages = (int)Math.Ceiling((double)_filteredSalesData.Count() / _pageSize);
             UpdatePaginationControls();
         }
+
+
+
 
 
         private void UpdatePaginationControls()
@@ -295,11 +312,11 @@ namespace WPF_NhaMayCaoSu
         {
             if (e.Key == Key.Enter)
             {
+                _currentCustomer = allCustomers.FirstOrDefault(c => c.CustomerName.ToLower().Contains( CustomerTextBox.Text.ToLower()));
                 SuggestionPopup.IsOpen = false;
+                FilterSalesData();
             }
         }
-<<<<<<< Updated upstream
-=======
 
         private void FilterByZeroComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -308,26 +325,24 @@ namespace WPF_NhaMayCaoSu
 
 
         private void OpenEditSaleWindow(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && button.Tag is Sale selectedSale)
-            {
-                SalesDataGrid.SelectedItem = selectedSale;
+  {
+      if (sender is Button button && button.Tag is Sale selectedSale)
+      {
+          SalesDataGrid.SelectedItem = selectedSale;
 
-                var saleManagementWindow = new SaleManagementWindow(_mqttClientService, _mainWindow)
-                {
-                    SelectedSale = selectedSale,
-                    CurrentAccount = CurrentAccount
-                };
-                saleManagementWindow.ShowDialog();
-            }
-            else
-            {
-                MessageBox.Show(Constants.ErrorMessageSelectSale, Constants.ErrorTitleSelectSale, MessageBoxButton.OK, MessageBoxImage.Stop);
-            }
-        }
+          var saleManagementWindow = new SaleManagementWindow(_mqttClientService, _mainWindow)
+          {
+              SelectedSale = selectedSale,
+              CurrentAccount = CurrentAccount
+          };
+          saleManagementWindow.ShowDialog();
+      }
+      else
+      {
+          MessageBox.Show(Constants.ErrorMessageSelectSale, Constants.ErrorTitleSelectSale, MessageBoxButton.OK, MessageBoxImage.Stop);
+      }
+  }
 
-
->>>>>>> Stashed changes
     }
 }
 

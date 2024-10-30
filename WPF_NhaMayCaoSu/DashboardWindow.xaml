@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="Dashboard" Height="800" Width="1200" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow" Loaded="Window_Loaded">
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -20,8 +21,7 @@
         <!-- Filters and Statistics Layout -->
         <Grid Grid.Row="1" Margin="0,0,0,20">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Date Filters Section -->
@@ -31,18 +31,11 @@
 
                 <TextBlock Text="Đến ngày: " VerticalAlignment="Center" Margin="20,0,10,0"/>
                 <DatePicker x:Name="ToDatePicker" SelectedDateChanged="ToDatePicker_SelectedDateChanged"/>
-                <TextBox x:Name="CustomerTextBox" Width="278" Height="30" 
-             FontFamily="Montserrat"
-             TextChanged="CustomerTextBox_TextChanged"
-             KeyDown="CustomerTextBox_KeyDown"
-             VerticalContentAlignment="Center"
-             Padding="5" />
 
-                <Popup x:Name="SuggestionPopup" 
-           PlacementTarget="{Binding ElementName=CustomerTextBox}" 
-           Placement="Bottom" 
-           StaysOpen="False" 
-           Width="{Binding ElementName=CustomerTextBox, Path=ActualWidth}">
+                <TextBlock Text="Tên khách hàng: " VerticalAlignment="Center" Margin="20,0,0,0"/>
+                <xctk:WatermarkTextBox x:Name="CustomerTextBox" Width="200" Height="30" FontFamily="Montserrat" TextChanged="CustomerTextBox_TextChanged" KeyDown="CustomerTextBox_KeyDown" VerticalContentAlignment="Center" Padding="5" Watermark="Nhập tên khách hàng" />
+
+                <Popup x:Name="SuggestionPopup" PlacementTarget="{Binding ElementName=CustomerTextBox}" Placement="Bottom" StaysOpen="False" Width="{Binding ElementName=CustomerTextBox, Path=ActualWidth}">
                     <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="4">
                         <ListBox x:Name="SuggestionListBox" 
                      DisplayMemberPath="CustomerName"
@@ -64,24 +57,21 @@
 
         <Grid Grid.Row="2" Margin="0,0,0,20">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Sales Statistics Section -->
             <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <TextBlock Text="Tổng số ký: " FontWeight="Bold" Width="130"/>
-                    <TextBlock x:Name="TotalWeight" FontSize="16" Text="0" HorizontalAlignment="Right" Margin="0,0,30,0"/>
+                    <TextBlock Text="Tổng số ký: " FontWeight="Bold" Width="100"/>
+                    <TextBlock x:Name="TotalWeight" FontSize="16" Text="0" Width="50" HorizontalAlignment="Right" Margin="0,0,10,0"/>
 
-                    <TextBlock Text="Tổng số lần cân: " FontWeight="Bold" Width="130"/>
-                    <TextBlock x:Name="TotalAmount" FontSize="16" Text="0" HorizontalAlignment="Right" Margin="0,0,30,0"/>
+                    <TextBlock Text="Tổng số lần cân: " FontWeight="Bold" Width="100"/>
+                    <TextBlock x:Name="TotalAmount" FontSize="16" Text="0" Width="50" HorizontalAlignment="Right" Margin="0,0,10,0"/>
 
-                    <TextBlock Text="Tổng tiền: " FontWeight="Bold" Width="130"/>
-                    <TextBlock x:Name="TotalTotalPrice" FontSize="16" Text="0" HorizontalAlignment="Right" Margin="0,0,30,0"/>
+                    <TextBlock Text="Tổng tiền: " FontWeight="Bold" Width="100"/>
+                    <TextBlock x:Name="TotalTotalPrice" FontSize="16" Text="0" Width="50" HorizontalAlignment="Right" Margin="0,0,10,0"/>
 
-<<<<<<< Updated upstream
-=======
                     <TextBlock Text="Lọc sale thiếu thông tin: " FontWeight="Bold" Width="140"/>
                     <ComboBox x:Name="FilterByZeroComboBox" Width="120" SelectionChanged="FilterByZeroComboBox_SelectionChanged" Margin="0,0,30,0">
                         <ComboBoxItem Tag="" Content="Hiện tất cả" IsSelected="True"/>
@@ -89,12 +79,20 @@
                         <ComboBoxItem Content="Tỉ trọng" Tag="ProductDensity"/>
                         <ComboBoxItem Content="Số bì" Tag="TareWeight"/>
                     </ComboBox>
-
->>>>>>> Stashed changes
+                    <TextBlock Text="Lọc sale thiếu thông tin: " FontWeight="Bold" Width="140"/>
+                    <ComboBox x:Name="FilterByZeroComboBox" Width="120" SelectionChanged="FilterByZeroComboBox_SelectionChanged" Margin="0,0,30,0">
+                        <ComboBoxItem Tag="" Content="Hiện tất cả" IsSelected="True"/>
+                        <ComboBoxItem Content="Số ký" Tag="ProductWeight"/>
+                        <ComboBoxItem Content="Tỉ trọng" Tag="ProductDensity"/>
+                        <ComboBoxItem Content="Số bì" Tag="TareWeight"/>
+                    </ComboBox>
                     <Button x:Name="ExportButton" Content="Xuất file" Margin="0,0,0,0" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="80" RenderTransformOrigin="0.5,2" Click="ExportButton_Click"/>
-                </StackPanel>
 
+                    
+
+                </StackPanel>
             </StackPanel>
+            
         </Grid>
 
 

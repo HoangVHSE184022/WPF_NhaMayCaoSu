@@ -12,7 +12,7 @@ using WPF_NhaMayCaoSu.Repository.Context;
 namespace WPF_NhaMayCaoSu.Repository.Migrations
 {
     [DbContext(typeof(CaoSuWpfDbContext))]
-    [Migration("20241023005622_InitialCreate")]
+    [Migration("20241030045031_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -64,21 +64,21 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            AccountId = new Guid("aaa5c7e6-0074-4d05-8e6f-52ef2d93c200"),
+                            AccountId = new Guid("923d55ef-771b-4ec5-a3f6-412f86c4539e"),
                             AccountName = "Administrator",
-                            CreatedDate = new DateTime(2024, 10, 23, 0, 56, 22, 385, DateTimeKind.Utc).AddTicks(1119),
-                            Password = "$2a$11$bi.xfeaWcnIbT62DyFetn.QkSmYfFaAYJtQeVA1Y792c3mZHgb8ha",
-                            RoleId = new Guid("cdcc9d1e-4b31-44f4-a0b2-3b8329af7977"),
+                            CreatedDate = new DateTime(2024, 10, 30, 4, 50, 31, 38, DateTimeKind.Utc).AddTicks(3854),
+                            Password = "$2a$11$2FVgXxRJ87rxK0S2tMDjoeQ84nUSz59Y5Dukn3QbowlMQTGHaq/w.",
+                            RoleId = new Guid("9cc6ba19-dc33-4ed9-8cf7-6c49b16b278a"),
                             Status = 1L,
                             Username = "admin"
                         },
                         new
                         {
-                            AccountId = new Guid("ddd7d01b-b102-4132-93c4-7eb5e2fde828"),
+                            AccountId = new Guid("3d83bb1e-7a34-4202-bee3-7edb3662f246"),
                             AccountName = "Standard User",
-                            CreatedDate = new DateTime(2024, 10, 23, 0, 56, 22, 509, DateTimeKind.Utc).AddTicks(940),
-                            Password = "$2a$11$0/hvzBSenw7eoS6IMStiqu/QMftWtwVybG1LOkvETyCk59d1Gh0d6",
-                            RoleId = new Guid("8567fec4-1f7f-4b7b-b430-88538acc7c82"),
+                            CreatedDate = new DateTime(2024, 10, 30, 4, 50, 31, 152, DateTimeKind.Utc).AddTicks(203),
+                            Password = "$2a$11$Tabyld/QsrjddILbnYgSruNuqpL/k0UaEDQY.X8LxZGBHte0jIO9u",
+                            RoleId = new Guid("d932fcdd-16e3-403a-b8ee-cdba0a04cb57"),
                             Status = 1L,
                             Username = "user"
                         });
@@ -141,7 +141,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            CameraId = new Guid("7870cb74-1db3-4900-9aab-2f7f3f112be8"),
+                            CameraId = new Guid("282c4ded-e8e5-468f-9d07-546cafb63542"),
                             Camera1 = "N/A",
                             Camera2 = "N/A",
                             GeneralPrice = 20000f,
@@ -264,12 +264,12 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("cdcc9d1e-4b31-44f4-a0b2-3b8329af7977"),
+                            RoleId = new Guid("9cc6ba19-dc33-4ed9-8cf7-6c49b16b278a"),
                             RoleName = "Admin"
                         },
                         new
                         {
-                            RoleId = new Guid("8567fec4-1f7f-4b7b-b430-88538acc7c82"),
+                            RoleId = new Guid("d932fcdd-16e3-403a-b8ee-cdba0a04cb57"),
                             RoleName = "User"
                         });
                 });
@@ -282,6 +282,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
 
                     b.Property<float?>("BonusPrice")
                         .HasColumnType("real");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()

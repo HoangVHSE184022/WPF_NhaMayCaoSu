@@ -162,6 +162,7 @@ namespace WPF_NhaMayCaoSu
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModeLabel.Content = SelectedSale == null ? Constants.ModeLabelAddSale : Constants.ModeLabelEditSale;
+            Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(SelectedSale.RFIDCode);
             try
             {
                 if (!_mqttClientService.IsConnected)
@@ -184,18 +185,20 @@ namespace WPF_NhaMayCaoSu
 
             if (SelectedSale != null)
             {
-                PopulateSaleDetails(SelectedSale);
+                PopulateSaleDetails(SelectedSale, customer);
                 await LoadImagePaths(SelectedSale.SaleId);
             }
         }
 
         // Populate Sale details if editing an existing sale
-        private void PopulateSaleDetails(Sale sale)
+        private void PopulateSaleDetails(Sale sale, Customer customer)
         {
             CustomerNameTextBox.Text = sale.CustomerName;
+            PhoneNumberTextBox.Text = customer.Phone;
             RFIDCodeTextBox.Text = sale.RFIDCode;
             WeightTextBox.Text = sale.ProductWeight?.ToString();
             DensityTextBox.Text = sale.ProductDensity?.ToString();
+            TareWeightTextBox.Text = sale.TareWeight?.ToString();
         }
 
         // Load Image Paths for the Sale
