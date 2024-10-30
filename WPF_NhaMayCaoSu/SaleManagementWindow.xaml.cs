@@ -97,6 +97,8 @@ namespace WPF_NhaMayCaoSu
                         CustomerName = CustomerNameTextBox.Text,
                         ProductWeight = float.Parse(WeightTextBox.Text),
                         ProductDensity = string.IsNullOrWhiteSpace(DensityTextBox.Text) ? 0 : float.Parse(DensityTextBox.Text),
+                        CreatedDate = DateTime.Now,
+                        LastEditedTime = DateTime.Now,
                         TareWeight = float.Parse(WeightTextBox.Text),
                         Status = 1,
                         RFIDCode = RFIDCodeTextBox.Text,

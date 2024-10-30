@@ -372,6 +372,7 @@ namespace WPF_NhaMayCaoSu
                 CustomerName = customer.CustomerName,
                 BonusPrice = customer.bonusPrice,
                 SalePrice = generalSalePrice,
+                CreatedDate = DateTime.Now,
                 LastEditedTime = DateTime.Now,
                 Status = 1,
                 TotalPrice = 0
