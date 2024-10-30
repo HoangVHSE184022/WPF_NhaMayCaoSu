@@ -33,11 +33,12 @@ namespace WPF_NhaMayCaoSu
         private MainWindow _mainWindow;
         public Account CurrentAccount { get; set; } = null;
 
-        public DashboardWindow()
+        public DashboardWindow(MainWindow mainWindow)
         {
             InitializeComponent();
             FromDatePicker.SelectedDate = DateTime.Now.AddMonths(-1);
             ToDatePicker.SelectedDate = DateTime.Now;
+            _mainWindow = mainWindow;
 
         }
 
@@ -323,17 +324,17 @@ namespace WPF_NhaMayCaoSu
             FilterSalesData();
         }
 
-        private void EditButton_Click(object sender, RoutedEventArgs e)
-        {
-            OpenEditSaleWindow();
-        }
+        //private void EditButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    OpenEditSaleWindow();
+        //}
 
-        private void OpenEditSaleWindow()
+        private void OpenEditSaleWindow(object sender, RoutedEventArgs e)
         {
-            Sale selectedSale = SalesDataGrid.SelectedItem as Sale;
+            Sale selectedSale = ((Button)sender).Tag as Sale;
             if (selectedSale == null)
             {
-                MessageBox.Show(Constants.ErrorMessageSelectSale, Constants.ErrorTitleSelectSale, MessageBoxButton.OK, MessageBoxImage.Stop);
+                MessageBox.Show("Vui lòng chọn một giao dịch để chỉnh sửa.", "Không có giao dịch được chọn", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -342,8 +343,12 @@ namespace WPF_NhaMayCaoSu
                 SelectedSale = selectedSale,
                 CurrentAccount = CurrentAccount
             };
+
+
             saleManagementWindow.ShowDialog();
         }
+
+
 
     }
 }

@@ -555,6 +555,36 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
+        private async void TakePic2_Click(object sender, RoutedEventArgs e)
+        {
+            Config newestCamera = await _configService.GetNewestCameraAsync();
 
+            if (newestCamera == null)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    MessageBox.Show("Không thể lấy thông tin từ camera.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                });
+                return;
+            }
+            string filePathUrl = CaptureImageFromCamera(newestCamera, 2);
+            ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLWeightTextBox);
+        }
+
+        private async void TakePic1_Click(object sender, RoutedEventArgs e)
+        {
+            Config newestCamera = await _configService.GetNewestCameraAsync();
+
+            if (newestCamera == null)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    MessageBox.Show("Không thể lấy thông tin từ camera.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                });
+                return;
+            }
+            string filePathUrl = CaptureImageFromCamera(newestCamera, 1);
+            ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLWeightTextBox);
+        }
     }
 }
