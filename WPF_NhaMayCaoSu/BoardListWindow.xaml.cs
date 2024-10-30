@@ -337,18 +337,15 @@ namespace WPF_NhaMayCaoSu
 
             if (selectedBoard != null)
             {
-                // Check if the board already exists in the system
                 Board existingBoard = await _boardService.GetBoardByMacAddressAsync(selectedBoard.BoardMacAddress);
                 if (existingBoard == null)
                 {
-                    // Open the SaveBoardWindow to ask the user for the board name
                     SaveBoardWindow saveBoardWindow = new SaveBoardWindow();
                     bool? result = saveBoardWindow.ShowDialog();
 
                     if (result == true && !string.IsNullOrEmpty(saveBoardWindow.SelectedBoardName))
                     {
 
-                        //Check dublicate boardname
                         Board board = await _boardService.GetBoardByNameAsync(saveBoardWindow.SelectedBoardName);
                         if (board != null)
                         {
@@ -358,17 +355,16 @@ namespace WPF_NhaMayCaoSu
                                 board.BoardMacAddress = selectedBoard.BoardMacAddress;
                                 await _boardService.UpdateBoardAsync(board);
                                 await LoadDataGridFromDatabase();
-
+                                _mqttBoards.Clear();
+                                ConnectedBoardDataGrid.Items.Refresh();
                             }
                             return;
                         }
 
-
-                        // Create a new board and save the selected name
                         Board newBoard = new Board
                         {
                             BoardId = selectedBoard.BoardId,
-                            BoardName = saveBoardWindow.SelectedBoardName, // Use the name selected by the user
+                            BoardName = saveBoardWindow.SelectedBoardName,
                             BoardIp = selectedBoard.BoardIp,
                             BoardMacAddress = selectedBoard.BoardMacAddress,
                             BoardMode = selectedBoard.BoardMode
@@ -377,7 +373,6 @@ namespace WPF_NhaMayCaoSu
                         await _boardService.CreateBoardAsync(newBoard);
                         MessageBox.Show("Board đã được thêm thành công.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                        // Reload the data grid
                         await LoadDataGridFromDatabase();
                         _mqttBoards.Clear();
                         ConnectedBoardDataGrid.Items.Refresh();
