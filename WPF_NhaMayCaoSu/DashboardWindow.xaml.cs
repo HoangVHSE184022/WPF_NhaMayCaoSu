@@ -112,13 +112,13 @@ namespace WPF_NhaMayCaoSu
         {
             DateTime? fromDate = FromDatePicker.SelectedDate;
             DateTime? toDate = ToDatePicker.SelectedDate;
-            Customer selectedCustomer = _currentCustomer;
+            string customerSearchText = CustomerTextBox.Text.ToLower(); // Use the text directly
 
             // If no data available, exit
             if (_salesData == null || !_salesData.Any())
                 return;
 
-            // Filter based on date and customer selection
+            // Filter based on date and customer input in CustomerTextBox
             var filteredSales = _salesData.AsEnumerable();
 
             if (fromDate.HasValue)
@@ -127,8 +127,9 @@ namespace WPF_NhaMayCaoSu
             if (toDate.HasValue)
                 filteredSales = filteredSales.Where(s => s.LastEditedTime <= toDate.Value.Date.AddDays(1).AddTicks(-1));
 
-            if (selectedCustomer != null && selectedCustomer.CustomerId != Guid.Empty)
-                filteredSales = filteredSales.Where(s => s.CustomerName.ToLower() == selectedCustomer.CustomerName.ToLower());
+            // Check if customer search text has a value, and apply contains filter
+            if (!string.IsNullOrEmpty(customerSearchText))
+                filteredSales = filteredSales.Where(s => s.CustomerName.ToLower().Contains(customerSearchText));
 
             _filteredSalesData = filteredSales.ToList();
 
@@ -143,6 +144,8 @@ namespace WPF_NhaMayCaoSu
             _totalPages = (int)Math.Ceiling((double)filteredSales.Count() / _pageSize);
             UpdatePaginationControls();
         }
+
+
 
 
         private void UpdatePaginationControls()
@@ -295,7 +298,9 @@ namespace WPF_NhaMayCaoSu
         {
             if (e.Key == Key.Enter)
             {
+                _currentCustomer = allCustomers.FirstOrDefault(c => c.CustomerName.ToLower().Contains( CustomerTextBox.Text.ToLower()));
                 SuggestionPopup.IsOpen = false;
+                FilterSalesData();
             }
         }
     }

@@ -31,18 +31,11 @@
 
                 <TextBlock Text="Đến ngày: " VerticalAlignment="Center" Margin="20,0,10,0"/>
                 <DatePicker x:Name="ToDatePicker" SelectedDateChanged="ToDatePicker_SelectedDateChanged"/>
-                <TextBox x:Name="CustomerTextBox" Width="278" Height="30" 
-             FontFamily="Montserrat"
-             TextChanged="CustomerTextBox_TextChanged"
-             KeyDown="CustomerTextBox_KeyDown"
-             VerticalContentAlignment="Center"
-             Padding="5" />
 
-                <Popup x:Name="SuggestionPopup" 
-           PlacementTarget="{Binding ElementName=CustomerTextBox}" 
-           Placement="Bottom" 
-           StaysOpen="False" 
-           Width="{Binding ElementName=CustomerTextBox, Path=ActualWidth}">
+                <TextBlock Text="Tên khách hàng: " VerticalAlignment="Center" Margin="20,0,0,0"/>
+                <TextBox x:Name="CustomerTextBox" Width="200" Height="30" FontFamily="Montserrat" TextChanged="CustomerTextBox_TextChanged" KeyDown="CustomerTextBox_KeyDown" VerticalContentAlignment="Center" Padding="5" />
+
+                <Popup x:Name="SuggestionPopup" PlacementTarget="{Binding ElementName=CustomerTextBox}" Placement="Bottom" StaysOpen="False" Width="{Binding ElementName=CustomerTextBox, Path=ActualWidth}">
                     <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="4">
                         <ListBox x:Name="SuggestionListBox" 
                      DisplayMemberPath="CustomerName"
