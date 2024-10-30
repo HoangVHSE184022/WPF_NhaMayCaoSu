@@ -74,6 +74,11 @@ namespace WPF_NhaMayCaoSu
         // Save Button Click Handler
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn lưu sale này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
             Config config = await _configService.GetNewestCameraAsync();
             if (ValidateFormInput())
             {

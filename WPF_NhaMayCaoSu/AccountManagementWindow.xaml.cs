@@ -41,8 +41,13 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
-            // Validate password confirmation
-            if (PasswordTextBox.Password != ConfirmPasswordTextBox.Password)
+            MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn tạo tài khoản này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
+
+                if (PasswordTextBox.Password != ConfirmPasswordTextBox.Password)
             {
                 MessageBox.Show("Sai mật khẩu xác nhận", "Xác nhận mật khẩu thất bại", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;

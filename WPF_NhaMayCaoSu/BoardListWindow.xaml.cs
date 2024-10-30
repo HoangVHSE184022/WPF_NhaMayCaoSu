@@ -156,6 +156,11 @@ namespace WPF_NhaMayCaoSu
 
         private void EditBoardButton_Click(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn chỉnh sửa board này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
             BoardManagementWindow boardManagementWindow = new BoardManagementWindow();
             boardManagementWindow.CurrentAccount = CurrentAccount;
             boardManagementWindow.SelectedBoard = boardDataGrid.SelectedItem as Board;

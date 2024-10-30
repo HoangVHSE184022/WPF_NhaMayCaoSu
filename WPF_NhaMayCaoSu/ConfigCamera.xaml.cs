@@ -99,6 +99,11 @@ namespace WPF_NhaMayCaoSu
 
         private async void SaveUrlCamera1_Click(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn lưu url này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
             var camera = await _cameraService.GetNewestCameraAsync();
             if (camera == null)
             {
@@ -122,6 +127,11 @@ namespace WPF_NhaMayCaoSu
 
         private async void SaveUrlCamera2_Click(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn lưu url này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
             var camera = await _cameraService.GetNewestCameraAsync();
             if (camera == null)
             {

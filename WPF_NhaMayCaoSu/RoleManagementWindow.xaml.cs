@@ -46,6 +46,12 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
+            MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn tạo role này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
+
             Role role = new()
             {
                 RoleName = RoleTextBox.Text,

@@ -29,7 +29,7 @@ namespace WPF_NhaMayCaoSu
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            // Validate required fields
+            
             if (string.IsNullOrWhiteSpace(AccountNameTextBox.Text) ||
                 string.IsNullOrWhiteSpace(PhoneTextBox.Text) ||
                 string.IsNullOrWhiteSpace(BonusPriceTextBox.Text))
@@ -37,7 +37,11 @@ namespace WPF_NhaMayCaoSu
                 MessageBox.Show(Constants.ErrorMessageMissingFields, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-
+            MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn lưu khách hàng này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
 
 
             // Proceed to create or update the customer

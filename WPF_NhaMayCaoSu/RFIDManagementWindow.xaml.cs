@@ -155,6 +155,11 @@ namespace WPF_NhaMayCaoSu
                 MessageBox.Show(Constants.ErrorMessageMissingFields, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn lưu RFID này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
             if (SelectedRFID == null)
             {
                 RFID thisRFID = await _service.GetRFIDByRFIDCodeAsync(RFIDCodeTextBox.Text);

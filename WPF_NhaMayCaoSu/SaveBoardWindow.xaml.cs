@@ -17,6 +17,11 @@ namespace WPF_NhaMayCaoSu
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn thêm board này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
             if (BoardNameComboBox.SelectedItem is ComboBoxItem selectedItem)
             {
                 SelectedBoardName = selectedItem.Content.ToString();
