@@ -1,4 +1,5 @@
-﻿using WPF_NhaMayCaoSu.Repository.Models;
+﻿using WPF_NhaMayCaoSu.Repository.IRepositories;
+using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Repository.Repositories;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 
@@ -59,6 +60,11 @@ namespace WPF_NhaMayCaoSu.Service.Services
         {
             return await _repository.GetCustomerByPhoneAsync(phone);
 
+        }
+
+        public async Task<IEnumerable<string>> GetAllCustomerNamesAsync()
+        {
+            return await _repository.GetAllCustomerNamesAsync();
         }
     }
 }

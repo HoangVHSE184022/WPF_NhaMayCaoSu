@@ -73,6 +73,7 @@ namespace WPF_NhaMayCaoSu
                 AccountNameTextBox.Text = SelectedCustomer.CustomerName;
                 PhoneTextBox.Text = SelectedCustomer.Phone.ToString();
                 ModeLabel.Content = Constants.ModeLabelEditCustomer;
+                BonusPriceTextBox.Text = SelectedCustomer.bonusPrice.ToString();
             }
         }
 

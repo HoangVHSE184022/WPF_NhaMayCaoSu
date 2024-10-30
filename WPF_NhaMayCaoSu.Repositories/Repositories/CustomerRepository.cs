@@ -85,5 +85,15 @@ namespace WPF_NhaMayCaoSu.Repository.Repositories
                                  .Where(c => c.Status == 1)
                                  .ToListAsync();
         }
+
+        public async Task<IEnumerable<string>> GetAllCustomerNamesAsync()
+        {
+            _context = new();
+            return await _context.Customers
+                                 .Where(c => c.Status == 1)
+                                 .Select(c => c.CustomerName)
+                                 .ToListAsync();
+        }
+
     }
 }

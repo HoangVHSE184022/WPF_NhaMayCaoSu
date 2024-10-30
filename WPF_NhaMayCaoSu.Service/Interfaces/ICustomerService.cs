@@ -14,5 +14,6 @@ namespace WPF_NhaMayCaoSu.Service.Interfaces
         Task<int> GetTotalCustomersCountAsync();
         Task<IEnumerable<Customer>> GetAllCustomersNoPagination();
         Task<Customer> GetCustomerByPhoneAsync(string phone);
+        Task<IEnumerable<string>> GetAllCustomerNamesAsync();
     }
 }

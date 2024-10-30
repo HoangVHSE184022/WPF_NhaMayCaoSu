@@ -6,6 +6,8 @@ using System.Windows.Controls;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
+using System.Windows.Input;
+
 
 namespace WPF_NhaMayCaoSu
 {
@@ -23,6 +25,8 @@ namespace WPF_NhaMayCaoSu
         private int _pageSize = 20;
         private int _totalPages;
         private List<Sale> _filteredSalesData;
+        private List<Customer> allCustomers;
+        private Customer _currentCustomer;
 
         public DashboardWindow()
         {
@@ -32,25 +36,37 @@ namespace WPF_NhaMayCaoSu
 
         }
 
-        private async void LoadCustomers()
+        //private async void LoadCustomers()
+        //{
+        //    try
+        //    {
+        //        var customers = await _customerService.GetAllCustomersNoPagination();
+
+        //        var allCustomersOption = new Customer
+        //        {
+        //            CustomerId = Guid.Empty,
+        //            CustomerName = "Tất cả"
+        //        };
+
+        //        var customerList = new[] { allCustomersOption }.Concat(customers);
+
+        //        CustomerComboBox.ItemsSource = customerList;
+        //        CustomerComboBox.DisplayMemberPath = "CustomerName";
+        //        CustomerComboBox.SelectedValuePath = "CustomerId";
+
+        //        CustomerComboBox.SelectedIndex = 0;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("Có lỗi xảy ra khi tải danh sách khách hàng: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+        //}
+
+        private async void LoadCustomersName()
         {
             try
             {
-                var customers = await _customerService.GetAllCustomersNoPagination();
-
-                var allCustomersOption = new Customer
-                {
-                    CustomerId = Guid.Empty,
-                    CustomerName = "Tất cả"
-                };
-
-                var customerList = new[] { allCustomersOption }.Concat(customers);
-
-                CustomerComboBox.ItemsSource = customerList;
-                CustomerComboBox.DisplayMemberPath = "CustomerName";
-                CustomerComboBox.SelectedValuePath = "CustomerId";
-
-                CustomerComboBox.SelectedIndex = 0;
+                allCustomers = (await _customerService.GetAllCustomersNoPagination()).ToList();
             }
             catch (Exception ex)
             {
@@ -96,7 +112,7 @@ namespace WPF_NhaMayCaoSu
         {
             DateTime? fromDate = FromDatePicker.SelectedDate;
             DateTime? toDate = ToDatePicker.SelectedDate;
-            Customer selectedCustomer = CustomerComboBox.SelectedItem as Customer;
+            Customer selectedCustomer = _currentCustomer;
 
             // If no data available, exit
             if (_salesData == null || !_salesData.Any())
@@ -128,6 +144,7 @@ namespace WPF_NhaMayCaoSu
             UpdatePaginationControls();
         }
 
+
         private void UpdatePaginationControls()
         {
             PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
@@ -149,9 +166,11 @@ namespace WPF_NhaMayCaoSu
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadCustomers();
+            //LoadCustomers();
 
             LoadSalesData();
+            
+            LoadCustomersName();
         }
         public void OnWindowLoaded()
         {
@@ -247,5 +266,38 @@ namespace WPF_NhaMayCaoSu
                 LoadSalesData();
             }
         }
+
+        private void CustomerTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string query = CustomerTextBox.Text.ToLower();
+
+            var filteredSuggestions = allCustomers
+                .Where(c => c.CustomerName.ToLower().Contains(query))
+                .ToList();
+
+            SuggestionListBox.ItemsSource = filteredSuggestions;
+
+            SuggestionPopup.IsOpen = filteredSuggestions.Any();
+        }
+
+        private void SuggestionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SuggestionListBox.SelectedItem is Customer selectedCustomer)
+            {
+                _currentCustomer = selectedCustomer;
+                CustomerTextBox.Text = selectedCustomer.CustomerName;
+                SuggestionPopup.IsOpen = false;
+                FilterSalesData();
+            }
+        }
+
+        private void CustomerTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                SuggestionPopup.IsOpen = false;
+            }
+        }
     }
 }
+
