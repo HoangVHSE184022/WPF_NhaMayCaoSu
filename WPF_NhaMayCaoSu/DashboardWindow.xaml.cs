@@ -323,27 +323,25 @@ namespace WPF_NhaMayCaoSu
             FilterSalesData();
         }
 
-        private void EditButton_Click(object sender, RoutedEventArgs e)
-        {
-           OpenEditSaleWindow();
-        }
 
-        private void OpenEditSaleWindow()
-        {
-            Sale selectedSale = SalesDataGrid.SelectedItem as Sale;
-            if (selectedSale == null)
-            {
-                MessageBox.Show(Constants.ErrorMessageSelectSale, Constants.ErrorTitleSelectSale, MessageBoxButton.OK, MessageBoxImage.Stop);
-                return;
-            }
+        private void OpenEditSaleWindow(object sender, RoutedEventArgs e)
+  {
+      if (sender is Button button && button.Tag is Sale selectedSale)
+      {
+          SalesDataGrid.SelectedItem = selectedSale;
 
-            var saleManagementWindow = new SaleManagementWindow(_mqttClientService, _mainWindow)
-            {
-                SelectedSale = selectedSale,
-                CurrentAccount = CurrentAccount
-            };
-            saleManagementWindow.ShowDialog();
-        }
+          var saleManagementWindow = new SaleManagementWindow(_mqttClientService, _mainWindow)
+          {
+              SelectedSale = selectedSale,
+              CurrentAccount = CurrentAccount
+          };
+          saleManagementWindow.ShowDialog();
+      }
+      else
+      {
+          MessageBox.Show(Constants.ErrorMessageSelectSale, Constants.ErrorTitleSelectSale, MessageBoxButton.OK, MessageBoxImage.Stop);
+      }
+  }
 
     }
 }
