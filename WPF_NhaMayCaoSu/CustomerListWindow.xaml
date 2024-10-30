@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
         Title="Customer List" Height="800" Width="1200" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" WindowStyle="SingleBorderWindow">
@@ -15,7 +16,7 @@
             <TextBlock Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
         
-        <DataGrid x:Name="CustomerDataGrid" Margin="32,129,159,88" FontFamily="Montserrat" FontSize="18" Background="#FFCACACA" AutoGenerateColumns="False">
+        <DataGrid x:Name="CustomerDataGrid" Margin="32,129,159,88" FontFamily="Montserrat" Background="#FFCACACA" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Tên" Width="0.8*" Binding="{Binding CustomerName}"/>
                 <DataGridTextColumn Header="Số điện thoại" Width="0.6*" Binding="{Binding Phone}"/>
@@ -24,14 +25,14 @@
                 <DataGridTemplateColumn Header="Thêm RFID" Width="0.5*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Thêm" Width="100" Height="31" Background="#FFFFFF" BorderThickness="0" Click="AddRFIDButton_Click"/>
+                            <Button Content="+" Width="100" Height="20" Background="#FFFFFF" BorderThickness="0" Click="AddRFIDButton_Click"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="Xem Sale" Width="0.5*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Xem" Width="100" Height="31" Background="#FFFFFF" BorderThickness="0" Click="ViewSale_Click"/>
+                            <Button Content="👁" Width="100" Height="20" Background="#FFFFFF" BorderThickness="0" Click="ViewSale_Click"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -39,9 +40,9 @@
             </DataGrid.Columns>
 
         </DataGrid>
-        <Label x:Name="SearchLabel" Content="Nhập tên khách hàng:" Height="30" VerticalAlignment="Top" Margin="0,93,468,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="187" />
-        <TextBox x:Name="SearchTextBox" Height="30" VerticalAlignment="Top" Margin="0,94,159,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="309"/>
-        <Button x:Name="SearchButton" Content="Tìm kiếm" VerticalAlignment="Top" Margin="0,94,32,0" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" FontSize="20" Click="SearchButton_Click" HorizontalAlignment="Right" Width="121" Height="40"/>
+
+        <xctk:WatermarkTextBox x:Name="SearchTextBox" Height="35" VerticalAlignment="Top" Margin="0,86,159,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="309" KeyDown="SearchTextBox_KeyDown" Watermark="Tìm kiếm theo tên/sđt ..." />
+        <Button x:Name="SearchButton" Content="Tìm kiếm" VerticalAlignment="Top" Margin="0,84,32,0" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" FontSize="20" Click="SearchButton_Click" HorizontalAlignment="Right" Width="121" Height="40"/>
 
         <Button x:Name="PreviousPageButton" Content="Trước" Margin="474,0,0,50" Click="PreviousPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40"/>
         <TextBlock x:Name="PageNumberTextBlock" Margin="519,0,0,50" TextAlignment="Center" FontFamily="Montserrat" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="94" />

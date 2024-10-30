@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="Dashboard" Height="800" Width="1200" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow" Loaded="Window_Loaded">
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -33,7 +34,7 @@
                 <DatePicker x:Name="ToDatePicker" SelectedDateChanged="ToDatePicker_SelectedDateChanged"/>
 
                 <TextBlock Text="Tên khách hàng: " VerticalAlignment="Center" Margin="20,0,0,0"/>
-                <TextBox x:Name="CustomerTextBox" Width="200" Height="30" FontFamily="Montserrat" TextChanged="CustomerTextBox_TextChanged" KeyDown="CustomerTextBox_KeyDown" VerticalContentAlignment="Center" Padding="5" />
+                <xctk:WatermarkTextBox x:Name="CustomerTextBox" Width="200" Height="30" FontFamily="Montserrat" TextChanged="CustomerTextBox_TextChanged" KeyDown="CustomerTextBox_KeyDown" VerticalContentAlignment="Center" Padding="5" Watermark="Nhập tên khách hàng" />
 
                 <Popup x:Name="SuggestionPopup" PlacementTarget="{Binding ElementName=CustomerTextBox}" Placement="Bottom" StaysOpen="False" Width="{Binding ElementName=CustomerTextBox, Path=ActualWidth}">
                     <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="4">
