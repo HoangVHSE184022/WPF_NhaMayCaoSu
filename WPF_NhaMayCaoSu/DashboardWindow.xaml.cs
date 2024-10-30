@@ -112,13 +112,11 @@ namespace WPF_NhaMayCaoSu
         {
             DateTime? fromDate = FromDatePicker.SelectedDate;
             DateTime? toDate = ToDatePicker.SelectedDate;
-            string customerSearchText = CustomerTextBox.Text.ToLower(); // Use the text directly
+            string customerSearchText = CustomerTextBox.Text.ToLower();
 
-            // If no data available, exit
             if (_salesData == null || !_salesData.Any())
                 return;
 
-            // Filter based on date and customer input in CustomerTextBox
             var filteredSales = _salesData.AsEnumerable();
 
             if (fromDate.HasValue)
@@ -127,23 +125,34 @@ namespace WPF_NhaMayCaoSu
             if (toDate.HasValue)
                 filteredSales = filteredSales.Where(s => s.LastEditedTime <= toDate.Value.Date.AddDays(1).AddTicks(-1));
 
-            // Check if customer search text has a value, and apply contains filter
             if (!string.IsNullOrEmpty(customerSearchText))
                 filteredSales = filteredSales.Where(s => s.CustomerName.ToLower().Contains(customerSearchText));
 
+            // Apply filter for selected ComboBox value
+            if (FilterByZeroComboBox.SelectedItem is ComboBoxItem selectedItem)
+            {
+                string selectedProperty = selectedItem.Tag.ToString();
+
+                if (!string.IsNullOrEmpty(selectedProperty))
+                {
+                    filteredSales = filteredSales.Where(s =>
+                    {
+                        var propertyValue = typeof(Sale).GetProperty(selectedProperty)?.GetValue(s);
+                        return propertyValue == null || propertyValue.ToString() == "0";
+                    });
+                }
+            }
+
             _filteredSalesData = filteredSales.ToList();
 
-            // Paginate filtered data
-            var paginatedSales = filteredSales.Skip((_currentPage - 1) * _pageSize).Take(_pageSize).ToList();
-
-            // Update DataGrid
+            var paginatedSales = _filteredSalesData.Skip((_currentPage - 1) * _pageSize).Take(_pageSize).ToList();
             SalesDataGrid.ItemsSource = paginatedSales;
-            UpdateStatistics(filteredSales.ToList());
 
-            // Update pagination control based on filtered data
-            _totalPages = (int)Math.Ceiling((double)filteredSales.Count() / _pageSize);
+            UpdateStatistics(_filteredSalesData);
+            _totalPages = (int)Math.Ceiling((double)_filteredSalesData.Count() / _pageSize);
             UpdatePaginationControls();
         }
+
 
 
 
@@ -303,6 +312,12 @@ namespace WPF_NhaMayCaoSu
                 FilterSalesData();
             }
         }
+
+        private void FilterByZeroComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FilterSalesData();
+        }
+
     }
 }
 
