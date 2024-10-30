@@ -13,5 +13,6 @@ namespace WPF_NhaMayCaoSu.Repository.IRepositories
         Task<int> GetTotalCustomersCountAsync();
         Task<IEnumerable<Customer>> GetAllAsyncNoPagination();
         Task<Customer> GetCustomerByPhoneAsync(string phone);
+        Task<IEnumerable<string>> GetAllCustomerNamesAsync();
     }
 }

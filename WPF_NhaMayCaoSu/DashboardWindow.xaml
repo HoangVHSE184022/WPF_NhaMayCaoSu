@@ -31,8 +31,33 @@
 
                 <TextBlock Text="Đến ngày: " VerticalAlignment="Center" Margin="20,0,10,0"/>
                 <DatePicker x:Name="ToDatePicker" SelectedDateChanged="ToDatePicker_SelectedDateChanged"/>
+                <TextBox x:Name="CustomerTextBox" Width="278" Height="30" 
+             FontFamily="Montserrat"
+             TextChanged="CustomerTextBox_TextChanged"
+             KeyDown="CustomerTextBox_KeyDown"
+             VerticalContentAlignment="Center"
+             Padding="5" />
 
-                <ComboBox x:Name="CustomerComboBox" HorizontalAlignment="Left" Margin="40,0,10,0" VerticalAlignment="Top" Width="150" Height="30" FontFamily="Montserrat" SelectionChanged="CustomerComboBox_SelectionChanged" />
+                <Popup x:Name="SuggestionPopup" 
+           PlacementTarget="{Binding ElementName=CustomerTextBox}" 
+           Placement="Bottom" 
+           StaysOpen="False" 
+           Width="{Binding ElementName=CustomerTextBox, Path=ActualWidth}">
+                    <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="4">
+                        <ListBox x:Name="SuggestionListBox" 
+                     DisplayMemberPath="CustomerName"
+                            SelectionChanged="SuggestionListBox_SelectionChanged"
+                     FontFamily="Montserrat"
+                     BorderThickness="0">
+                            <ListBox.Style>
+                                <Style TargetType="ListBox">
+                                    <Setter Property="MaxHeight" Value="150"/>
+                                    <Setter Property="Padding" Value="5"/>
+                                </Style>
+                            </ListBox.Style>
+                        </ListBox>
+                    </Border>
+                </Popup>
             </StackPanel>
 
         </Grid>
