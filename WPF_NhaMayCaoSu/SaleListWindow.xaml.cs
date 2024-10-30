@@ -337,7 +337,7 @@ namespace WPF_NhaMayCaoSu
                     }
                     //CalculateTotalPrice(sale);
                     await _saleService.UpdateSaleAsync(sale);
-                    
+
                     _mainWindow._sessionSaleList.Add(sale);
                     _mainWindow.LoadDataGrid();
                 }
@@ -722,7 +722,7 @@ namespace WPF_NhaMayCaoSu
 
                     // Update the sale in the database
                     await _saleService.UpdateSaleAsync(editedSale);
-                    
+
 
 
                     var saleInSession = _mainWindow._sessionSaleList.FirstOrDefault(s => s.SaleId == editedSale.SaleId);

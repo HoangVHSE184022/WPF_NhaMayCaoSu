@@ -1,13 +1,13 @@
-﻿using OfficeOpenXml.Style;
-using OfficeOpenXml;
+﻿using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
-using System.Windows.Input;
-using WPF_NhaMayCaoSu.Core.Utils;
 
 
 
@@ -186,7 +186,7 @@ namespace WPF_NhaMayCaoSu
             //LoadCustomers();
 
             LoadSalesData();
-            
+
             LoadCustomersName();
         }
         public void OnWindowLoaded()
@@ -312,7 +312,7 @@ namespace WPF_NhaMayCaoSu
         {
             if (e.Key == Key.Enter)
             {
-                _currentCustomer = allCustomers.FirstOrDefault(c => c.CustomerName.ToLower().Contains( CustomerTextBox.Text.ToLower()));
+                _currentCustomer = allCustomers.FirstOrDefault(c => c.CustomerName.ToLower().Contains(CustomerTextBox.Text.ToLower()));
                 SuggestionPopup.IsOpen = false;
                 FilterSalesData();
             }
@@ -323,25 +323,27 @@ namespace WPF_NhaMayCaoSu
             FilterSalesData();
         }
 
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenEditSaleWindow();
+        }
 
-        private void OpenEditSaleWindow(object sender, RoutedEventArgs e)
-  {
-      if (sender is Button button && button.Tag is Sale selectedSale)
-      {
-          SalesDataGrid.SelectedItem = selectedSale;
+        private void OpenEditSaleWindow()
+        {
+            Sale selectedSale = SalesDataGrid.SelectedItem as Sale;
+            if (selectedSale == null)
+            {
+                MessageBox.Show(Constants.ErrorMessageSelectSale, Constants.ErrorTitleSelectSale, MessageBoxButton.OK, MessageBoxImage.Stop);
+                return;
+            }
 
-          var saleManagementWindow = new SaleManagementWindow(_mqttClientService, _mainWindow)
-          {
-              SelectedSale = selectedSale,
-              CurrentAccount = CurrentAccount
-          };
-          saleManagementWindow.ShowDialog();
-      }
-      else
-      {
-          MessageBox.Show(Constants.ErrorMessageSelectSale, Constants.ErrorTitleSelectSale, MessageBoxButton.OK, MessageBoxImage.Stop);
-      }
-  }
+            var saleManagementWindow = new SaleManagementWindow(_mqttClientService, _mainWindow)
+            {
+                SelectedSale = selectedSale,
+                CurrentAccount = CurrentAccount
+            };
+            saleManagementWindow.ShowDialog();
+        }
 
     }
 }
