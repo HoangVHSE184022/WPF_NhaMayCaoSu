@@ -48,7 +48,7 @@ namespace WPF_NhaMayCaoSu.Content
             mainWindow = new();
             saleListWindow = new SaleListWindow(mainWindow);
             configCamera = new();
-            dashboardWindow = new DashboardWindow();
+            dashboardWindow = new DashboardWindow(mainWindow);
 
             mainWindow.CurrentAccount = CurrentAccount;
             broker.CurrentAccount = CurrentAccount;
