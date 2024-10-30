@@ -79,13 +79,6 @@
                         <ComboBoxItem Content="Tỉ trọng" Tag="ProductDensity"/>
                         <ComboBoxItem Content="Số bì" Tag="TareWeight"/>
                     </ComboBox>
-                    <TextBlock Text="Lọc sale thiếu thông tin: " FontWeight="Bold" Width="140"/>
-                    <ComboBox x:Name="FilterByZeroComboBox" Width="120" SelectionChanged="FilterByZeroComboBox_SelectionChanged" Margin="0,0,30,0">
-                        <ComboBoxItem Tag="" Content="Hiện tất cả" IsSelected="True"/>
-                        <ComboBoxItem Content="Số ký" Tag="ProductWeight"/>
-                        <ComboBoxItem Content="Tỉ trọng" Tag="ProductDensity"/>
-                        <ComboBoxItem Content="Số bì" Tag="TareWeight"/>
-                    </ComboBox>
                     <Button x:Name="ExportButton" Content="Xuất file" Margin="0,0,0,0" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="80" RenderTransformOrigin="0.5,2" Click="ExportButton_Click"/>
 
                     
