@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:WPF_NhaMayCaoSu"
         mc:Ignorable="d"
         Icon="assets/images/rubber.ico"
@@ -13,14 +14,14 @@
             <RowDefinition Height="321*"/>
             <RowDefinition Height="27*"/>
         </Grid.RowDefinitions>
-        <Label Content="Quản lý Sale" HorizontalAlignment="Left" Height="52" Margin="27,40,0,0" VerticalAlignment="Top" Width="224" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366" FontWeight="Bold"/>
+        <Label Content="Quản lý Sale" HorizontalAlignment="Left" Height="38" Margin="27,40,0,0" VerticalAlignment="Top" Width="183" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366" FontWeight="Bold"/>
         <Button x:Name="AddSaleButton" Height="40" Margin="0,43,35,0" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="AddSaleButton_Click" Grid.Row="1" HorizontalAlignment="Right" Width="121" >
             <TextBlock TextWrapping="Wrap" TextAlignment="Center" Text="Thêm mới"/>
         </Button>
         <Button x:Name="EditSaleButton" Height="40" Margin="0,111,35,0" VerticalAlignment="Top" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="24" Click="EditSaleButton_Click" Grid.Row="1" HorizontalAlignment="Right" Width="121" >
             <TextBlock  Text="Chỉnh sửa" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
-        <DataGrid x:Name="SaleDataGrid" Margin="27,17,161,66" FontFamily="Montserrat" 
+        <DataGrid x:Name="SaleDataGrid" Margin="27,40,161,66" FontFamily="Montserrat" 
           Background="#FFCACACA" AutoGenerateColumns="False" Grid.Row="1"
           IsReadOnly="False" CellEditEnding="SaleDataGrid_CellEditEnding">
             <DataGrid.Columns>
@@ -51,8 +52,8 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Label x:Name="SearchLabel" Content="Nhập tên khách hàng:" Height="30" VerticalAlignment="Top" Margin="0,69,506,0" FontFamily="Montserrat" FontSize="18" Grid.RowSpan="2" HorizontalAlignment="Right" Width="188" />
-        <TextBox x:Name="SearchTextBox" Height="30" VerticalAlignment="Top" Margin="0,70,161,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="348" Grid.RowSpan="2"/>
+        <Label x:Name="SearchLabel" Content="Nhập tên khách hàng:" Height="30" VerticalAlignment="Top" Margin="0,80,400,0" FontFamily="Montserrat" FontSize="18" Grid.RowSpan="2" HorizontalAlignment="Right" Width="188" />
+        <xctk:WatermarkTextBox x:Name="SearchTextBox" Height="30" VerticalAlignment="Top" Margin="0,80,161,0" FontFamily="Montserrat" FontSize="18" HorizontalAlignment="Right" Width="239" Grid.RowSpan="2" Watermark="Tên khách hàng..." KeyDown="SearchTextBox_KeyDown"/>
         <Button x:Name="SearchButton" Content="Tìm kiếm" Height="40" VerticalAlignment="Top" Margin="0,70,35,0" Background="#FFCACACA" FontFamily="Montserrat" Foreground="#FF002366" FontSize="24" Click="SearchButton_Click" Grid.RowSpan="2" HorizontalAlignment="Right" Width="121"/>
 
         <Button x:Name="PreviousPageButton" Content="Trước" Margin="394,0,0,30" Click="PreviousPageButton_Click" FontSize="14" Grid.Row="1" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40" RenderTransformOrigin="0.525,1.688"/>
@@ -65,5 +66,12 @@
             <TextBlock  Text="Xuất file" TextWrapping="Wrap" TextAlignment="Center"/>
         </Button>
         <Label x:Name="AbleScanLabel" Content="Có thể quét." HorizontalAlignment="Right" Height="25" Margin="0,40,35,0" VerticalAlignment="Top" Width="325" FontFamily="Montserrat" FontSize="14" Foreground="#FF002366" />
+
+        <TextBlock Text="Từ ngày:" VerticalAlignment="Top" Margin="27,80,1082,0" FontFamily="Montserrat" FontSize="18" Grid.RowSpan="2"/>
+        <DatePicker x:Name="FromDatePicker" VerticalAlignment="Top" Margin="118,80,931,0" FontSize="18" SelectedDateChanged="FromDatePicker_SelectedDateChanged" Grid.RowSpan="2"/>
+
+        <TextBlock Text="Đến ngày:" VerticalAlignment="Top" Margin="287,80,811,0" FontFamily="Montserrat" FontSize="18" Grid.RowSpan="2"/>
+        <DatePicker x:Name="ToDatePicker" VerticalAlignment="Top" Margin="389,80,655,0" FontSize="18" SelectedDateChanged="ToDatePicker_SelectedDateChanged" RenderTransformOrigin="0.245,1.068" Grid.RowSpan="2"/>
+
     </Grid>
 </Window>
