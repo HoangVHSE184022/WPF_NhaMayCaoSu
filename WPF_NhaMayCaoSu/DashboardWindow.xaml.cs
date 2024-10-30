@@ -298,6 +298,36 @@ namespace WPF_NhaMayCaoSu
                 SuggestionPopup.IsOpen = false;
             }
         }
+<<<<<<< Updated upstream
+=======
+
+        private void FilterByZeroComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FilterSalesData();
+        }
+
+
+        private void OpenEditSaleWindow(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is Sale selectedSale)
+            {
+                SalesDataGrid.SelectedItem = selectedSale;
+
+                var saleManagementWindow = new SaleManagementWindow(_mqttClientService, _mainWindow)
+                {
+                    SelectedSale = selectedSale,
+                    CurrentAccount = CurrentAccount
+                };
+                saleManagementWindow.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show(Constants.ErrorMessageSelectSale, Constants.ErrorTitleSelectSale, MessageBoxButton.OK, MessageBoxImage.Stop);
+            }
+        }
+
+
+>>>>>>> Stashed changes
     }
 }
 
