@@ -61,21 +61,21 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            AccountId = new Guid("aaa5c7e6-0074-4d05-8e6f-52ef2d93c200"),
+                            AccountId = new Guid("307278fb-c2ee-4bcd-8ffc-7a2d8c9ac304"),
                             AccountName = "Administrator",
-                            CreatedDate = new DateTime(2024, 10, 23, 0, 56, 22, 385, DateTimeKind.Utc).AddTicks(1119),
-                            Password = "$2a$11$bi.xfeaWcnIbT62DyFetn.QkSmYfFaAYJtQeVA1Y792c3mZHgb8ha",
-                            RoleId = new Guid("cdcc9d1e-4b31-44f4-a0b2-3b8329af7977"),
+                            CreatedDate = new DateTime(2024, 10, 30, 3, 50, 28, 651, DateTimeKind.Utc).AddTicks(2500),
+                            Password = "$2a$11$jk5ETRxA2NSV8HHzpiDkXu9.lfpLdc6zd0/6S7SfCgq6RSkcPxoj6",
+                            RoleId = new Guid("a1690ad5-1e27-4ba6-8d4a-5d673be3dfa8"),
                             Status = 1L,
                             Username = "admin"
                         },
                         new
                         {
-                            AccountId = new Guid("ddd7d01b-b102-4132-93c4-7eb5e2fde828"),
+                            AccountId = new Guid("37761cd1-9684-4e79-8c8e-4bbdae81bfb8"),
                             AccountName = "Standard User",
-                            CreatedDate = new DateTime(2024, 10, 23, 0, 56, 22, 509, DateTimeKind.Utc).AddTicks(940),
-                            Password = "$2a$11$0/hvzBSenw7eoS6IMStiqu/QMftWtwVybG1LOkvETyCk59d1Gh0d6",
-                            RoleId = new Guid("8567fec4-1f7f-4b7b-b430-88538acc7c82"),
+                            CreatedDate = new DateTime(2024, 10, 30, 3, 50, 28, 766, DateTimeKind.Utc).AddTicks(5359),
+                            Password = "$2a$11$B0SXcHPq5TuiTueZw/uL.uszisfGy2O9XNpIl7PL6jStq7SzAtFFa",
+                            RoleId = new Guid("cdd9bba9-aab0-4e69-b4fa-faf92e8938bb"),
                             Status = 1L,
                             Username = "user"
                         });
@@ -138,7 +138,7 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            CameraId = new Guid("7870cb74-1db3-4900-9aab-2f7f3f112be8"),
+                            CameraId = new Guid("de719c0e-33cd-452d-8ee7-80b369362606"),
                             Camera1 = "N/A",
                             Camera2 = "N/A",
                             GeneralPrice = 20000f,
@@ -261,12 +261,12 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("cdcc9d1e-4b31-44f4-a0b2-3b8329af7977"),
+                            RoleId = new Guid("a1690ad5-1e27-4ba6-8d4a-5d673be3dfa8"),
                             RoleName = "Admin"
                         },
                         new
                         {
-                            RoleId = new Guid("8567fec4-1f7f-4b7b-b430-88538acc7c82"),
+                            RoleId = new Guid("cdd9bba9-aab0-4e69-b4fa-faf92e8938bb"),
                             RoleName = "User"
                         });
                 });
@@ -279,6 +279,9 @@ namespace WPF_NhaMayCaoSu.Repository.Migrations
 
                     b.Property<float?>("BonusPrice")
                         .HasColumnType("real");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()

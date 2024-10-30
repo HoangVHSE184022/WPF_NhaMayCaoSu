@@ -224,8 +224,8 @@ namespace WPF_NhaMayCaoSu
             {
                 CustomerDataGrid.ItemsSource = null;
                 CustomerDataGrid.Items.Clear();
-                var sales = await _service.GetAllCustomers(1, 10);
-                CustomerDataGrid.ItemsSource = sales.Where(s => s.CustomerName.ToLower().Contains(searchTerm));
+                var customers = await _service.GetAllCustomers(1, 10);
+                CustomerDataGrid.ItemsSource = customers.Where(s => s.CustomerName.ToLower().Contains(searchTerm) || s.Phone.ToLower().Contains(searchTerm));
             }
         }
 
@@ -329,5 +329,9 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
+        private void SearchTextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+
+        }
     }
 }
