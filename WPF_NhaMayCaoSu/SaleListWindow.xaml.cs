@@ -786,6 +786,5 @@ namespace WPF_NhaMayCaoSu
                 sale.TotalPrice = (productWeight - tareWeight) * productDensity * (salePrice + bonusPrice);
             }
         }
-
     }
 }

@@ -31,7 +31,6 @@
                 <DataGridTextColumn Header="Số kí" Binding="{Binding ProductWeight}" Width="0.5*" />
                 <DataGridTextColumn Header="Tỉ Trọng" Binding="{Binding ProductDensity}" Width="0.6*" />
                 <DataGridTextColumn Header="Số bì" Binding="{Binding TareWeight}" Width="0.6*" />
-                <DataGridTextColumn Header="Tổng tiền" Binding="{Binding TotalPrice}" Width="0.6*" />
                 <DataGridTextColumn Header="Tên khách hàng" Binding="{Binding CustomerName}" Width="*" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
