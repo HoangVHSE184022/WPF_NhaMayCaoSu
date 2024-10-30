@@ -99,12 +99,13 @@ namespace WPF_NhaMayCaoSu
                         ProductDensity = string.IsNullOrWhiteSpace(DensityTextBox.Text) ? 0 : float.Parse(DensityTextBox.Text),
                         CreatedDate = DateTime.Now,
                         LastEditedTime = DateTime.Now,
-                        TareWeight = float.Parse(WeightTextBox.Text),
+                        TareWeight = float.Parse(TareWeightTextBox.Text),
                         Status = 1,
                         RFIDCode = RFIDCodeTextBox.Text,
                         RFID_Id = rfid.RFID_Id,
                         BonusPrice = customer.bonusPrice,
                         SalePrice = config.GeneralPrice,
+                        TotalPrice = (float.Parse(WeightTextBox.Text) - float.Parse(TareWeightTextBox.Text)) * float.Parse(DensityTextBox.Text) * (config.GeneralPrice + customer.bonusPrice),
                     };
 
                     if (SelectedSale == null)
