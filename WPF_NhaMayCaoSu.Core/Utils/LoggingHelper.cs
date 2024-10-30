@@ -15,10 +15,13 @@ namespace WPF_NhaMayCaoSu.Core.Utils
             }
 
             Log.Logger = new LoggerConfiguration()
-                  .WriteTo.File("Logs/serialLog.txt",
-                  outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}",
-                  rollingInterval: RollingInterval.Day)
-                  .CreateLogger();
+               .WriteTo.File(
+                   Path.Combine(logDirectory, "serialLog.txt"),
+                   outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}",
+                   rollingInterval: RollingInterval.Hour,
+                   retainedFileCountLimit: 24 
+               )
+               .CreateLogger();
 
 
             Log.Information("Logger is configured.");
