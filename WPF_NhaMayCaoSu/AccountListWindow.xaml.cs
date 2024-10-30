@@ -54,6 +54,11 @@ namespace WPF_NhaMayCaoSu
 
         private void EditAccountButton_Click(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn chỉnh sửa tài khoản này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
             Account selected = AccountDataGrid.SelectedItem as Account;
 
             if (selected == null)
