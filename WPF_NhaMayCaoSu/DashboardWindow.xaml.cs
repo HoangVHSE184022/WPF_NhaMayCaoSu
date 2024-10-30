@@ -7,6 +7,8 @@ using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
 using System.Windows.Input;
+using WPF_NhaMayCaoSu.Core.Utils;
+
 
 
 namespace WPF_NhaMayCaoSu
@@ -27,6 +29,9 @@ namespace WPF_NhaMayCaoSu
         private List<Sale> _filteredSalesData;
         private List<Customer> allCustomers;
         private Customer _currentCustomer;
+        private readonly MqttClientService _mqttClientService = new MqttClientService();
+        private MainWindow _mainWindow;
+        public Account CurrentAccount { get; set; } = null;
 
         public DashboardWindow()
         {
@@ -302,6 +307,28 @@ namespace WPF_NhaMayCaoSu
                 SuggestionPopup.IsOpen = false;
                 FilterSalesData();
             }
+        }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+           OpenEditSaleWindow();
+        }
+
+        private void OpenEditSaleWindow()
+        {
+            Sale selectedSale = SalesDataGrid.SelectedItem as Sale;
+            if (selectedSale == null)
+            {
+                MessageBox.Show(Constants.ErrorMessageSelectSale, Constants.ErrorTitleSelectSale, MessageBoxButton.OK, MessageBoxImage.Stop);
+                return;
+            }
+
+            var saleManagementWindow = new SaleManagementWindow(_mqttClientService, _mainWindow)
+            {
+                SelectedSale = selectedSale,
+                CurrentAccount = CurrentAccount
+            };
+            saleManagementWindow.ShowDialog();
         }
     }
 }

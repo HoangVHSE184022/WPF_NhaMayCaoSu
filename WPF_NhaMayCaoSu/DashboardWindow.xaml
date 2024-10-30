@@ -75,9 +75,11 @@
                     <TextBlock x:Name="TotalTotalPrice" FontSize="16" Text="0" HorizontalAlignment="Right" Margin="0,0,30,0"/>
 
                     <Button x:Name="ExportButton" Content="Xuất file" Margin="0,0,0,0" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="80" RenderTransformOrigin="0.5,2" Click="ExportButton_Click"/>
+
                 </StackPanel>
 
             </StackPanel>
+            <Button x:Name="EditButton" Content="Chỉnh sửa" Height="20" Width="94" RenderTransformOrigin="0.5,2" Click="EditButton_Click" Margin="755,10,21,0"/>
         </Grid>
 
 
