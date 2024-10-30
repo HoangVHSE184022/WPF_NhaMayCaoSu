@@ -335,7 +335,7 @@ namespace WPF_NhaMayCaoSu
                             }
                         }
                     }
-                    CalculateTotalPrice(sale);
+                    //CalculateTotalPrice(sale);
                     await _saleService.UpdateSaleAsync(sale);
                     
                     _mainWindow._sessionSaleList.Add(sale);
@@ -698,11 +698,11 @@ namespace WPF_NhaMayCaoSu
                     {
                         case "Số ký":
                             editedSale.ProductWeight = float.Parse(editedValue);
-                            CalculateTotalPrice(editedSale);
+                            //CalculateTotalPrice(editedSale);
                             break;
                         case "Tỉ trọng":
                             editedSale.ProductDensity = float.Parse(editedValue);
-                            CalculateTotalPrice(editedSale);
+                            //CalculateTotalPrice(editedSale);
                             if (editedSale.ProductDensity > 100)
                             {
                                 MessageBox.Show("Tỉ trọng không thể vượt quá 100%", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
