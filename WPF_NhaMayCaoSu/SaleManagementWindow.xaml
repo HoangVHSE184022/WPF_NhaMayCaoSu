@@ -27,7 +27,7 @@
         <Button x:Name="View1" Content="Xem" Height="18" Margin="0,284,23,0" VerticalAlignment="Top"  FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="14" Background="#FFCACACA" Click="View1_Click" HorizontalAlignment="Right" Width="46"/>
         <Button x:Name="View2" Content="Xem" Height="18" Margin="0,428,23,0" VerticalAlignment="Top"  FontFamily="Montserrat" Foreground="#FF002366" BorderThickness="0" FontSize="14" Background="#FFCACACA" Click="View2_Click" HorizontalAlignment="Right" Width="46"/>
         <Label Content="Số Bì" HorizontalAlignment="Left" Height="46" Margin="32,489,0,0" VerticalAlignment="Top" Width="238" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366"/>
-        <TextBox x:Name="TareWeightTextBox" Height="46" Margin="279,489,71,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="20" Background="#FFCACACA" BorderThickness="0" IsEnabled="False"/>
+        <TextBox x:Name="TareWeightTextBox" Height="46" Margin="279,489,71,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="20" Background="#FFCACACA" BorderThickness="0"/>
         <Label Content="Số điện thoại" HorizontalAlignment="Left" Height="46" Margin="32,125,0,0" VerticalAlignment="Top" Width="190" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366" RenderTransformOrigin="2.535,0.837"/>
         <TextBox x:Name="PhoneNumberTextBox" Height="46" Margin="276,125,642,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" Background="#FFCACACA"  FontSize="26" BorderThickness="0" TextChanged="PhoneNumberTextBox_TextChanged"/>
 
