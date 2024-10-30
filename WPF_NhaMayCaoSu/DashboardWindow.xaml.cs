@@ -27,8 +27,8 @@ namespace WPF_NhaMayCaoSu
         public DashboardWindow()
         {
             InitializeComponent();
-            //FromDatePicker.SelectedDate = DateTime.Now;
-            //ToDatePicker.SelectedDate = DateTime.Now;
+            FromDatePicker.SelectedDate = DateTime.Now.AddMonths(-1);
+            ToDatePicker.SelectedDate = DateTime.Now;
 
         }
 
