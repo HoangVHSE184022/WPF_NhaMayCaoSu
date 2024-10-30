@@ -272,6 +272,8 @@ namespace WPF_NhaMayCaoSu
                     else
                     {
                         sale = await CreateNewSale(customer, rfid, newValue, secondKey, rfidEntity, generalSalePrice);
+                        _mainWindow._sessionSaleList.Add(sale);
+                        _mainWindow.LoadDataGrid();
                     }
                 }
                 else
@@ -722,6 +724,8 @@ namespace WPF_NhaMayCaoSu
 
                     // Update the sale in the database
                     await _saleService.UpdateSaleAsync(editedSale);
+                    _mainWindow._sessionSaleList.Add(editedSale);
+                    _mainWindow.LoadDataGrid();
 
 
 
