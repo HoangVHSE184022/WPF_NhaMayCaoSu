@@ -79,9 +79,6 @@
                         <ComboBoxItem Content="Tỉ trọng" Tag="ProductDensity"/>
                         <ComboBoxItem Content="Số bì" Tag="TareWeight"/>
                     </ComboBox>
-
-                    <Button x:Name="EditButton" Content="Chỉnh sửa" Height="20" Width="94" RenderTransformOrigin="0.5,2" Click="EditButton_Click" Margin="0,0,10,0"/>
-                    
                     <Button x:Name="ExportButton" Content="Xuất file" Margin="0,0,0,0" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="80" RenderTransformOrigin="0.5,2" Click="ExportButton_Click"/>
 
                     
@@ -105,6 +102,17 @@
                 <DataGridTextColumn Header="Đơn giá" Width="1.2*" Binding="{Binding SalePrice,  StringFormat=N0}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Giá thêm" Width="1.2*" Binding="{Binding BonusPrice,  StringFormat=N0}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Tổng tiền" Width="1.2*" Binding="{Binding TotalPrice,  StringFormat=N0}" IsReadOnly="True"/>
+                <DataGridTemplateColumn Header="Chỉnh sửa" Width="1*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Width="25" Height="25" Click="OpenEditSaleWindow" Tag="{Binding}" Background="Transparent" BorderBrush="Transparent">
+                                <Grid>
+                                    <TextBlock Text="✎" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+                                </Grid>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
         <Button x:Name="PreviousPageButton" Content="Trước" Margin="474,0,0,90" Click="PreviousPageButton_Click" FontSize="12" Height="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="40" Grid.Row="3"/>
