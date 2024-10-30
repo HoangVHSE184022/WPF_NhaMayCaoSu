@@ -70,17 +70,30 @@ namespace WPF_NhaMayCaoSu.Content
             try
             {
                 RegistryHelper _registryHelper = new();
+                DateTime? demoStartDate = _registryHelper.GetDemoStartDate();
 
                 if (!_registryHelper.IsUnlocked())
                 {
-                    DateTime? demoStartDate = _registryHelper.GetDemoStartDate();
                     if (demoStartDate == null)
                     {
                         _registryHelper.SetDemoStartDate(DateTime.Now);
+                        AccessKeyWindow accessKeyWindow = new AccessKeyWindow();
+                        accessKeyWindow.ShowDialog();
+                    }
+                    else
+                    {
+                        TimeSpan timeElapsed = DateTime.Now - demoStartDate.Value;
+                        int daysElapsed = (int)timeElapsed.TotalDays;
+                        int demoDuration = 30;
+                        int daysRemaining = demoDuration - daysElapsed;
+
+                        if (daysRemaining <= 3)
+                        {
+                            AccessKeyWindow accessKeyWindow = new AccessKeyWindow();
+                            accessKeyWindow.ShowDialog();
+                        }
                     }
 
-                    AccessKeyWindow accessKeyWindow = new AccessKeyWindow();
-                    accessKeyWindow.ShowDialog();
                 }
             }
             catch (Exception ex)
