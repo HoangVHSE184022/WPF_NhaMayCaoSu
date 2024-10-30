@@ -17,7 +17,7 @@
                 <DataGridTextColumn Header="Số ký" Width="0.6*" Binding="{Binding ProductWeight}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Tỉ trọng" Width="0.6*" Binding="{Binding ProductDensity}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Số bì" Width="0.6*" Binding="{Binding TareWeight}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Tổng tiền" Width="0.8*" Binding="{Binding TotalPrice}"  IsReadOnly="True"/>
+                <DataGridTextColumn Header="Tổng tiền" Width="0.8*" Binding="{Binding TotalPrice,  StringFormat=N0}"  IsReadOnly="True"/>
                 <DataGridTemplateColumn Header="Hiển thị">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

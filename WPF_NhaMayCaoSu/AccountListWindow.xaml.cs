@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using WPF_NhaMayCaoSu.OTPService;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
@@ -23,6 +24,13 @@ namespace WPF_NhaMayCaoSu
 
         private async void LoadDataGrid()
         {
+            RegistryHelper _registryHelper = new();
+            DateTime? demoStartDate = _registryHelper.GetDemoStartDate();
+
+            if (_registryHelper.IsUnlocked())
+            {
+                AcceskeyWindowButton.Visibility = Visibility.Collapsed;
+            }
             int totalAccountCount = await _accountService.GetTotalAccountsCountAsync();
             _totalPages = (int)Math.Ceiling((double)totalAccountCount / _pageSize);
 
@@ -126,6 +134,12 @@ namespace WPF_NhaMayCaoSu
         public void OnWindowLoaded()
         {
             Window_Loaded(this, null);
+        }
+
+        private void AcceskeyWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            AccessKeyWindow accessKeyWindow = new AccessKeyWindow();
+            accessKeyWindow.ShowDialog();
         }
     }
 }

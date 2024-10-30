@@ -335,8 +335,9 @@ namespace WPF_NhaMayCaoSu
                             }
                         }
                     }
-
+                    CalculateTotalPrice(sale);
                     await _saleService.UpdateSaleAsync(sale);
+                    
                     _mainWindow._sessionSaleList.Add(sale);
                     _mainWindow.LoadDataGrid();
                 }
@@ -697,9 +698,11 @@ namespace WPF_NhaMayCaoSu
                     {
                         case "Số ký":
                             editedSale.ProductWeight = float.Parse(editedValue);
+                            CalculateTotalPrice(editedSale);
                             break;
                         case "Tỉ trọng":
                             editedSale.ProductDensity = float.Parse(editedValue);
+                            CalculateTotalPrice(editedSale);
                             if (editedSale.ProductDensity > 100)
                             {
                                 MessageBox.Show("Tỉ trọng không thể vượt quá 100%", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -719,6 +722,8 @@ namespace WPF_NhaMayCaoSu
 
                     // Update the sale in the database
                     await _saleService.UpdateSaleAsync(editedSale);
+                    
+
 
                     var saleInSession = _mainWindow._sessionSaleList.FirstOrDefault(s => s.SaleId == editedSale.SaleId);
                     if (saleInSession != null)
@@ -729,7 +734,7 @@ namespace WPF_NhaMayCaoSu
                         saleInSession.LastEditedTime = editedSale.LastEditedTime;
                         _mainWindow.LoadDataGrid();
                     }
-
+                    CalculateTotalPrice(editedSale);
                     LoadDataGrid();
                 }
                 catch (Exception ex)
@@ -784,7 +789,7 @@ namespace WPF_NhaMayCaoSu
                 float salePrice = sale.SalePrice ?? 0;
                 float bonusPrice = sale.BonusPrice ?? 0;
 
-                sale.TotalPrice = (productWeight - tareWeight) * productDensity * (salePrice + bonusPrice);
+                sale.TotalPrice = (productWeight - tareWeight) * (productDensity/100) * (salePrice + bonusPrice);
             }
         }
     }

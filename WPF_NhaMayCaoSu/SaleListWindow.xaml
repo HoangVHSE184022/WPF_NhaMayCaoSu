@@ -31,9 +31,9 @@
                 <DataGridTextColumn Header="Ngày tạo" Width="1.3*" Binding="{Binding CreatedDate}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Chỉnh sửa cuối" Width="1.4*" Binding="{Binding LastEditedTime}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="RFID" Width="1*" Binding="{Binding RFIDCode}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Đơn giá" Binding="{Binding SalePrice}" Width="0.8*" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Tiền thêm" Binding="{Binding BonusPrice}" Width="0.8*" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Tổng tiền" Binding="{Binding TotalPrice}" Width="0.8*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Đơn giá" Binding="{Binding SalePrice,  StringFormat=N0}" Width="0.8*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Tiền thêm" Binding="{Binding BonusPrice,  StringFormat=N0}" Width="0.8*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Tổng tiền" Binding="{Binding TotalPrice,  StringFormat=N0}" Width="0.8*" IsReadOnly="True"/>
                 <DataGridTemplateColumn Header="Hiển thị">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
