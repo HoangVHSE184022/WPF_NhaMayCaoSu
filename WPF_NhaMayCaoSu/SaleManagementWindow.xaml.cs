@@ -11,6 +11,7 @@ using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
+using System.Windows.Input;
 
 namespace WPF_NhaMayCaoSu
 {
@@ -528,26 +529,30 @@ namespace WPF_NhaMayCaoSu
             vpage.ShowDialog();
         }
 
-        private async void PhoneNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private async void PhoneNumberTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            string phoneNumber = PhoneNumberTextBox.Text;
-
-            Customer customer = await _customerService.GetCustomerByPhoneAsync(phoneNumber);
-
-            if (customer != null)
+            if (e.Key == Key.Enter)
             {
-                CustomerNameTextBox.Text = customer.CustomerName;
-                RFIDCodeTextBox.Text = customer.RFIDs.FirstOrDefault()?.RFIDCode ?? string.Empty;
-            }
-            else
-            {
-                CustomerNameTextBox.Clear();
-                RFIDCodeTextBox.Clear();
-                WeightTextBox.Clear();
-                DensityTextBox.Clear();
-                MessageBox.Show("Không tìm thấy khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                string phoneNumber = PhoneNumberTextBox.Text;
+
+                Customer customer = await _customerService.GetCustomerByPhoneAsync(phoneNumber);
+
+                if (customer != null)
+                {
+                    CustomerNameTextBox.Text = customer.CustomerName;
+                    RFIDCodeTextBox.Text = customer.RFIDs.FirstOrDefault()?.RFIDCode ?? string.Empty;
+                }
+                else
+                {
+                    CustomerNameTextBox.Clear();
+                    RFIDCodeTextBox.Clear();
+                    WeightTextBox.Clear();
+                    DensityTextBox.Clear();
+                    MessageBox.Show("Không tìm thấy khách hàng!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
         }
+
 
     }
 }
