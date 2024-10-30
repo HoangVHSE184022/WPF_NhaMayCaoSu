@@ -87,7 +87,7 @@ namespace WPF_NhaMayCaoSu
                 Log.Error(ex, "Không thể kết nối đến máy chủ MQTT");
                 OpenBrokerWindow();
             }
-            FromDatePicker.SelectedDate = DateTime.Now.AddDays(-21);
+            FromDatePicker.SelectedDate = DateTime.Now.AddDays(-3);
             ToDatePicker.SelectedDate = DateTime.Now;
             CheckBoardMode();
             LoadDataGrid();
