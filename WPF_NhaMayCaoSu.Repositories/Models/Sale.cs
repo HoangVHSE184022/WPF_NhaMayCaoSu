@@ -7,6 +7,8 @@
         public float? ProductDensity { get; set; }
         public float? ProductWeight { get; set; }
         public float? TareWeight { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
         public DateTime? LastEditedTime { get; set; }
         public short Status { get; set; }
         public string? Note { get; set; }
