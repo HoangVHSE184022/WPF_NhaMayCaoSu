@@ -19,7 +19,33 @@
                 <DataGridTextColumn Header="Mã RFID" Width="*" Binding="{Binding RFIDCode}"/>
                 <DataGridTextColumn Header="Ngày tạo" Width="*" Binding="{Binding CreatedDate}" />
                 <DataGridTextColumn Header="Ngày hết hạn" Width="*" Binding="{Binding ExpirationDate}"/>
-                <DataGridTextColumn Header="Trạng thái" Width="0.4*" Binding="{Binding Status}"/>
+                <DataGridTemplateColumn Header="Trạng thái" Width="0.4*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="Không xác định"/>
+                                        <Setter Property="Foreground" Value="Black"/>
+                                        <Style.Triggers>
+                                            <!-- If Status is 1, show "Khả dụng" in green -->
+                                            <DataTrigger Binding="{Binding Status}" Value="1">
+                                                <Setter Property="Text" Value="Khả dụng"/>
+                                                <Setter Property="Foreground" Value="Green"/>
+                                            </DataTrigger>
+                                            <!-- If Status is 0, show "Không khả dụng" in red -->
+                                            <DataTrigger Binding="{Binding Status}" Value="0">
+                                                <Setter Property="Text" Value="Không khả dụng"/>
+                                                <Setter Property="Foreground" Value="Red"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
                 <DataGridTextColumn Header="Chủ sở hữu" Width="0.8*" Binding="{Binding Customer.CustomerName}"/>
 
             </DataGrid.Columns>
