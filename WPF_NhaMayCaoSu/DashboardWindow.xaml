@@ -88,6 +88,7 @@
                 <DataGridTextColumn Header="Số ký" Width="0.7*" Binding="{Binding ProductWeight}"/>
                 <DataGridTextColumn Header="Tỉ trọng" Width="0.7*" Binding="{Binding ProductDensity}"/>
                 <DataGridTextColumn Header="Số bì" Width="0.7*" Binding="{Binding TareWeight}"/>
+                <DataGridTextColumn Header="Ngày tạo" Width="1.4*" Binding="{Binding CreatedDate}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Chỉnh sửa cuối" Width="1.4*" Binding="{Binding LastEditedTime}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="RFID" Width="1.2*" Binding="{Binding RFIDCode}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Đơn giá" Width="1.2*" Binding="{Binding SalePrice}" IsReadOnly="True"/>
