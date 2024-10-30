@@ -69,6 +69,7 @@ namespace WPF_NhaMayCaoSu
             {
                 SharedTimerService.Instance.TimerTicked += OnTimerTicked;
                 SharedTimerService.Instance.TimerEnded += OnTimerEnded;
+                
                 if (!_mqttClientService.IsConnected)
                 {
                     await _mqttClientService.ConnectAsync();
@@ -86,6 +87,8 @@ namespace WPF_NhaMayCaoSu
                 Log.Error(ex, "Không thể kết nối đến máy chủ MQTT");
                 OpenBrokerWindow();
             }
+            FromDatePicker.SelectedDate = DateTime.Now.AddDays(-21);
+            ToDatePicker.SelectedDate = DateTime.Now;
             CheckBoardMode();
             LoadDataGrid();
 
@@ -98,12 +101,23 @@ namespace WPF_NhaMayCaoSu
 
         private async void LoadDataGrid()
         {
+            DateTime? fromDate = FromDatePicker.SelectedDate;
+            DateTime? toDate = ToDatePicker.SelectedDate;
+            string? customer = SearchTextBox.Text.Trim().ToLower();
             try
             {
                 IEnumerable<Sale> allSales = await _saleService.GetAllSaleAsync(_currentPage, _pageSize);
                 IEnumerable<Sale> allSalesCount = await _saleService.GetAllSaleAsync();
 
                 List<Sale> salesList = allSales.ToList();
+                if (fromDate != null && toDate != null)
+                {
+                    salesList = salesList.Where(s => s.CreatedDate >= fromDate && s.CreatedDate <= toDate).ToList();
+                }
+                if (customer != null)
+                {
+                    salesList = salesList.Where(s => s.CustomerName.ToLower().Contains(customer)).ToList();
+                }
 
                 int totalSalesCount = allSalesCount.Count();
                 Debug.WriteLine($"Count {totalSalesCount}");
@@ -497,18 +511,8 @@ namespace WPF_NhaMayCaoSu
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            string searchTerm = SearchTextBox.Text.Trim().ToLower();
-            SaleDataGrid.ItemsSource = null;
-
-            if (string.IsNullOrEmpty(searchTerm))
-            {
-                LoadDataGrid();
-            }
-            else
-            {
-                IEnumerable<Sale> sales = await _saleService.GetAllSaleAsync(1, 10);
-                SaleDataGrid.ItemsSource = sales.Where(s => s.CustomerName.ToLower().Contains(searchTerm));
-            }
+            LoadDataGrid();
+            
         }
 
         private async void ControlButton_Click(object sender, RoutedEventArgs e)
@@ -785,6 +789,24 @@ namespace WPF_NhaMayCaoSu
                 float bonusPrice = sale.BonusPrice ?? 0;
 
                 sale.TotalPrice = (productWeight - tareWeight) * productDensity * (salePrice + bonusPrice);
+            }
+        }
+
+        private void FromDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadDataGrid();
+        }
+
+        private void ToDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadDataGrid();
+        }
+
+        private void SearchTextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                LoadDataGrid();
             }
         }
     }
