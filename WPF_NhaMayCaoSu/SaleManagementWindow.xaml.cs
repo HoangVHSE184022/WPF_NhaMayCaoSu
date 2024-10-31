@@ -188,8 +188,18 @@ namespace WPF_NhaMayCaoSu
 
             if (SelectedSale != null)
             {
-                PopulateSaleDetails(SelectedSale);
-                await LoadImagePaths(SelectedSale.SaleId);
+                Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(SelectedSale.RFIDCode);
+                if(customer == null)
+                {
+                    PopulateSaleDetails(SelectedSale);
+                    await LoadImagePaths(SelectedSale.SaleId);
+                }
+                else
+                {
+                    PopulateSaleDetails(SelectedSale, customer);
+                    await LoadImagePaths(SelectedSale.SaleId);
+                }
+
             }
         }
 
@@ -197,6 +207,16 @@ namespace WPF_NhaMayCaoSu
         private void PopulateSaleDetails(Sale sale)
         {
             CustomerNameTextBox.Text = sale.CustomerName;
+            RFIDCodeTextBox.Text = sale.RFIDCode;
+            WeightTextBox.Text = sale.ProductWeight?.ToString();
+            DensityTextBox.Text = sale.ProductDensity?.ToString();
+            TareWeightTextBox.Text = sale.TareWeight?.ToString();
+        }
+
+        private void PopulateSaleDetails(Sale sale, Customer customer)
+        {
+            CustomerNameTextBox.Text = sale.CustomerName;
+            PhoneNumberTextBox.Text = customer.Phone;
             RFIDCodeTextBox.Text = sale.RFIDCode;
             WeightTextBox.Text = sale.ProductWeight?.ToString();
             DensityTextBox.Text = sale.ProductDensity?.ToString();
