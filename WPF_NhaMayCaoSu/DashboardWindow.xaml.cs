@@ -109,16 +109,27 @@ namespace WPF_NhaMayCaoSu
             if (toDate.HasValue)
                 filteredSales = filteredSales.Where(s => s.LastEditedTime <= toDate.Value.Date.AddDays(1).AddTicks(-1));
 
-            string tag = TypeComboBox.SelectedValue.ToString();
+            //string tag = TypeComboBox.SelectedValue.ToString();
+            string tag = "";
             if (!string.IsNullOrEmpty(customerSearchText))
             {
+                if (TypeComboBox.SelectedItem is ComboBoxItem selectedType)
+                {
+                    tag = selectedType.Tag.ToString();
+                }
                 switch (tag)
                 {
                     case "Name":
                         filteredSales = filteredSales.Where(s => s.CustomerName.ToLower().Contains(customerSearchText));
                         break;
                     case "Phone":
-                        filteredSales = filteredSales.Where(s => s.RFID.Customer.Phone.ToLower().Contains(customerSearchText));
+                        Customer phoneCus = await _customerService.GetCustomerByPhoneAsync(customerSearchText);
+                        if (phoneCus == null)
+                        {
+                            MessageBox.Show("Không tìm được khách hàng với Số điện thoại trên.", "Không tìm thấy", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+                        filteredSales = filteredSales.Where(s => s.CustomerName.ToLower().Equals(phoneCus.CustomerName.ToLower()));
                         break;
                     case "RFID":
                         filteredSales = filteredSales.Where(s => s.RFIDCode.ToLower().Contains(customerSearchText));
@@ -321,18 +332,18 @@ namespace WPF_NhaMayCaoSu
         {
             if (e.Key == Key.Enter)
             {
-                string query = CustomerTextBox.Text.ToLower();
-                string tag = ((ComboBoxItem)TypeComboBox.SelectedItem).Tag.ToString();
+                //string query = CustomerTextBox.Text.ToLower();
+                //string tag = ((ComboBoxItem)TypeComboBox.SelectedItem).Tag.ToString();
 
-                if (tag == "Name")
-                {
-                    _currentCustomer = allCustomers.FirstOrDefault(c => c.CustomerName.ToLower().Contains(query));
-                    Debug.WriteLine(_currentCustomer);
-                }
-                else if (tag == "Phone")
-                {
-                    _currentCustomer = allCustomers.FirstOrDefault(c => c.Phone.ToLower().Equals(query));
-                }
+                //if (tag == "Name")
+                //{
+                //    _currentCustomer = allCustomers.FirstOrDefault(c => c.CustomerName.ToLower().Contains(query));
+                //    Debug.WriteLine(_currentCustomer);
+                //}
+                //else if (tag == "Phone")
+                //{
+                //    _currentCustomer = allCustomers.FirstOrDefault(c => c.Phone.ToLower().Contains(query));
+                //}
 
                 SuggestionPopup.IsOpen = false;
                 FilterSalesData();
