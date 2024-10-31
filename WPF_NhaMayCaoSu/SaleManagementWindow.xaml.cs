@@ -26,6 +26,8 @@ namespace WPF_NhaMayCaoSu
         private readonly CustomerService _customerService = new CustomerService();
         private readonly SaleService _saleService = new SaleService();
         private readonly ImageService _imageService = new ImageService();
+        private readonly MainWindow _mainWindow;
+        private readonly SaleListWindow _saleListWindow;
 
         // State variables
         private float? _oldWeightValue = null;
@@ -35,7 +37,7 @@ namespace WPF_NhaMayCaoSu
         private string _oldUrlWeight = string.Empty;
         private string _oldUrlDensity = string.Empty;
         private bool isLoaded = false;
-        private MainWindow _mainWindow;
+        
 
         public Sale SelectedSale { get; set; } = null;
         public Account CurrentAccount { get; set; } = null;
@@ -46,6 +48,7 @@ namespace WPF_NhaMayCaoSu
             InitializeComponent();
             LoggingHelper.ConfigureLogger();
             _mainWindow = mainWindow;
+            _saleListWindow = new SaleListWindow(mainWindow);
         }
 
         private async void QuitButton_Click(object sender, RoutedEventArgs e)
@@ -136,6 +139,7 @@ namespace WPF_NhaMayCaoSu
                         MessageBox.Show(Constants.SuccessMessageSaleUpdated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
+                _saleListWindow.LoadDataGrid();
                 Close();
             }
         }

@@ -99,7 +99,7 @@ namespace WPF_NhaMayCaoSu
             Window_Loaded(this, null);
         }
 
-        private async void LoadDataGrid()
+        public async void LoadDataGrid()
         {
             DateTime? fromDate = FromDatePicker.SelectedDate;
             DateTime? toDate = ToDatePicker.SelectedDate;
@@ -189,7 +189,7 @@ namespace WPF_NhaMayCaoSu
                 Config newestCamera = await _cameraService.GetNewestCameraAsync();
                 if (newestCamera == null)
                 {
-                    ShowError("Không thể lấy thông tin từ Config.");
+                    ShowError("Không thể lấy thông tin từ Camera.");
                     return;
                 }
                 if (SharedTimerService.Instance.IsCountingDown)
