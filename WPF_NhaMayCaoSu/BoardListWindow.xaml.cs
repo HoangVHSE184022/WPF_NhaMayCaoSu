@@ -329,7 +329,6 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
-        // Add selected board from the right DataGrid (MQTT-received) to the database
         private async void AddBoardButton_Click(object sender, RoutedEventArgs e)
         {
             if (ConnectedBoardDataGrid.SelectedItem == null)

@@ -32,8 +32,8 @@
                 <TextBlock Text="Đến ngày: " VerticalAlignment="Center" Margin="20,0,10,0"/>
                 <DatePicker x:Name="ToDatePicker" SelectedDateChanged="ToDatePicker_SelectedDateChanged"/>
 
-                <TextBlock Text="Tên khách hàng: " VerticalAlignment="Center" Margin="20,0,0,0"/>
-                <xctk:WatermarkTextBox x:Name="CustomerTextBox" Width="200" Height="30" FontFamily="Montserrat" TextChanged="CustomerTextBox_TextChanged" KeyDown="CustomerTextBox_KeyDown" VerticalContentAlignment="Center" Padding="5" Watermark="Nhập tên khách hàng" />
+                <TextBlock Text="Tìm kiếm: " VerticalAlignment="Center" Margin="20,0,0,0"/>
+                <xctk:WatermarkTextBox x:Name="CustomerTextBox" Width="200" Height="30" FontFamily="Montserrat" TextChanged="CustomerTextBox_TextChanged" KeyDown="CustomerTextBox_KeyDown" VerticalContentAlignment="Center" Padding="5" Watermark="Nhập thông tin tìm kiếm" />
 
                 <Popup x:Name="SuggestionPopup" PlacementTarget="{Binding ElementName=CustomerTextBox}" Placement="Bottom" StaysOpen="False" Width="{Binding ElementName=CustomerTextBox, Path=ActualWidth}">
                     <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="4">
@@ -52,6 +52,12 @@
                     </Border>
                 </Popup>
             </StackPanel>
+            <ComboBox Name="TypeComboBox" HorizontalAlignment="Left" Height="20" Margin="913,0,0,0" VerticalAlignment="Center" Width="116" SelectionChanged="TypeComboBox_SelectionChanged">
+                <ComboBoxItem Tag="Default" Content="Loại thông tin" IsSelected="True"/>
+                <ComboBoxItem Content="Tên khách hàng" Tag="Name"/>
+                <ComboBoxItem Content="Số điện thoại" Tag="Phone"/>
+                <ComboBoxItem Content="RFID" Tag="RFID"/>
+            </ComboBox>
 
         </Grid>
 
@@ -81,11 +87,11 @@
                     </ComboBox>
                     <Button x:Name="ExportButton" Content="Xuất file" Margin="0,0,0,0" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="80" RenderTransformOrigin="0.5,2" Click="ExportButton_Click"/>
 
-                    
+
 
                 </StackPanel>
             </StackPanel>
-            
+
         </Grid>
 
 

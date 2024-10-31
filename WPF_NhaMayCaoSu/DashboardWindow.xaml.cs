@@ -1,4 +1,5 @@
-﻿using OfficeOpenXml;
+﻿using Microsoft.IdentityModel.Tokens;
+using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.IO;
 using System.Windows;
@@ -8,6 +9,7 @@ using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
+using Xceed.Wpf.Toolkit.Converters;
 
 
 
@@ -131,10 +133,26 @@ namespace WPF_NhaMayCaoSu
             if (toDate.HasValue)
                 filteredSales = filteredSales.Where(s => s.LastEditedTime <= toDate.Value.Date.AddDays(1).AddTicks(-1));
 
+            string tag = TypeComboBox.SelectedValue.ToString();
             if (!string.IsNullOrEmpty(customerSearchText))
-                filteredSales = filteredSales.Where(s => s.CustomerName.ToLower().Contains(customerSearchText));
+            {
+                switch (tag)
+                {
+                    case "Name":
+                        filteredSales = filteredSales.Where(s => s.CustomerName.ToLower().Contains(customerSearchText));
+                        break;
+                    case "Phone":
+                        filteredSales = filteredSales.Where(s => s.RFID.Customer.Phone.ToLower().Contains(customerSearchText));
+                        break;
+                    case "RFID":
+                        filteredSales = filteredSales.Where(s => s.RFIDCode.ToLower().Contains(customerSearchText));
+                        break;
+                    default:
+                        filteredSales = filteredSales.Where(s => s.CustomerName.ToLower().Contains(customerSearchText));
+                        break;
+                }
+            }
 
-            // Apply filter for selected ComboBox value
             if (FilterByZeroComboBox.SelectedItem is ComboBoxItem selectedItem)
             {
                 string selectedProperty = selectedItem.Tag.ToString();
@@ -158,6 +176,7 @@ namespace WPF_NhaMayCaoSu
             _totalPages = (int)Math.Ceiling((double)_filteredSalesData.Count() / _pageSize);
             UpdatePaginationControls();
         }
+
 
 
 
@@ -348,8 +367,10 @@ namespace WPF_NhaMayCaoSu
             saleManagementWindow.ShowDialog();
         }
 
-
-
+        private void TypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FilterSalesData();
+        }
     }
 }
 
