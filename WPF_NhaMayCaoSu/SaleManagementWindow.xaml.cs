@@ -116,13 +116,21 @@ namespace WPF_NhaMayCaoSu
                     if (SelectedSale == null)
                     {
                         await _service.CreateSaleAsync(sale);
+                        _mainWindow._sessionSaleList.Add(sale);
+                        _mainWindow.LoadDataGrid();
                         MessageBox.Show(Constants.SuccessMessageSaleCreated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     else
                     {
                         sale.SaleId = SelectedSale.SaleId;
                         sale.LastEditedTime = DateTime.UtcNow;
+                        sale.TotalPrice = (float.Parse(WeightTextBox.Text) - float.Parse(TareWeightTextBox.Text)) * float.Parse(DensityTextBox.Text) * (config.GeneralPrice + customer.bonusPrice);
                         await _service.UpdateSaleAsync(sale);
+                        var existingSale = _mainWindow._sessionSaleList.FirstOrDefault(s => s.SaleId == SelectedSale.SaleId);
+                        if (existingSale != null)
+                        {
+                            _mainWindow._sessionSaleList.Remove(existingSale);
+                        }
                         _mainWindow._sessionSaleList.Add(sale);
                         _mainWindow.LoadDataGrid();
                         MessageBox.Show(Constants.SuccessMessageSaleUpdated, Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);

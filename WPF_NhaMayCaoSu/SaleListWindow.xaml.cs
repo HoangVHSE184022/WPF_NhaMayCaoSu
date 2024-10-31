@@ -703,22 +703,39 @@ namespace WPF_NhaMayCaoSu
                     switch (editedColumn)
                     {
                         case "Số ký":
-                            editedSale.ProductWeight = float.Parse(editedValue);
-                            //CalculateTotalPrice(editedSale);
+                            if (string.IsNullOrWhiteSpace(editedValue) || !float.TryParse(editedValue, out float productWeight))
+                            {
+                                MessageBox.Show("Vui lòng nhập một số hợp lệ cho Số ký.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                return;
+                            }
+                            editedSale.ProductWeight = productWeight;
+                            CalculateTotalPrice(editedSale);
                             break;
+
                         case "Tỉ trọng":
-                            editedSale.ProductDensity = float.Parse(editedValue);
-                            //CalculateTotalPrice(editedSale);
-                            if (editedSale.ProductDensity > 100)
+                            if (string.IsNullOrWhiteSpace(editedValue) || !float.TryParse(editedValue, out float productDensity))
+                            {
+                                MessageBox.Show("Vui lòng nhập một số hợp lệ cho Tỉ trọng.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                return;
+                            }
+                            if (productDensity > 1)
                             {
                                 MessageBox.Show("Tỉ trọng không thể vượt quá 100%", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
                                 return;
                             }
-                            break;
-                        case "Số bì":
-                            editedSale.TareWeight = float.Parse(editedValue);
+                            editedSale.ProductDensity = productDensity;
                             CalculateTotalPrice(editedSale);
                             break;
+                        case "Số bì":
+                            if (string.IsNullOrWhiteSpace(editedValue) || !float.TryParse(editedValue, out float tareWeight))
+                            {
+                                MessageBox.Show("Vui lòng nhập một số hợp lệ cho Số bì.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                return;
+                            }
+                            editedSale.TareWeight = tareWeight;
+                            CalculateTotalPrice(editedSale);
+                            break;
+
                         default:
                             return;
                     }
@@ -754,37 +771,6 @@ namespace WPF_NhaMayCaoSu
             {
                 e.Cancel = true;
             }
-        }
-
-        private async void CalculateTotalPrice_Click(object sender, RoutedEventArgs e)
-        {
-            IEnumerable<Sale> saleList = await _saleService.GetSalesWithoutTotalPriceAsync();
-            foreach (var sale in saleList)
-            {
-                if (sale.ProductWeight.HasValue &&
-                    sale.TareWeight.HasValue &&
-                    sale.ProductDensity.HasValue &&
-                    sale.SalePrice.HasValue &&
-                    sale.BonusPrice.HasValue)
-                {
-                    if (!sale.TotalPrice.HasValue || sale.TotalPrice == 0)
-                    {
-                        CalculateTotalPrice(sale);
-
-                        try
-                        {
-                            await _saleService.UpdateSaleAsync(sale);
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Failed to update sale: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
-                    }
-                }
-            }
-
-            LoadDataGrid();
-            _mainWindow.LoadDataGrid();
         }
 
         private void CalculateTotalPrice(Sale sale)

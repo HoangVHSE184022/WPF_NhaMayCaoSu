@@ -582,20 +582,38 @@ namespace WPF_NhaMayCaoSu
                     switch (editedColumn)
                     {
                         case "Số kí":
-                            editedSale.ProductWeight = float.Parse(editedValue);
+                            if (string.IsNullOrWhiteSpace(editedValue) || !float.TryParse(editedValue, out float productWeight))
+                            {
+                                MessageBox.Show("Vui lòng nhập một số hợp lệ cho Số ký.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                return;
+                            }
+                            editedSale.ProductWeight = productWeight;
                             break;
+
                         case "Tỉ Trọng":
-                            editedSale.ProductDensity = float.Parse(editedValue);
-                            if (editedSale.ProductDensity > 100)
+                            if (string.IsNullOrWhiteSpace(editedValue) || !float.TryParse(editedValue, out float productDensity))
+                            {
+                                MessageBox.Show("Vui lòng nhập một số hợp lệ cho Tỉ trọng.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                return;
+                            }
+                            if (productDensity > 1)
                             {
                                 MessageBox.Show("Tỉ trọng không thể vượt quá 100%", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
                                 return;
                             }
+                            editedSale.ProductDensity = productDensity;
                             break;
+
                         case "Số bì":
-                            editedSale.TareWeight = float.Parse(editedValue);
+                            if (string.IsNullOrWhiteSpace(editedValue) || !float.TryParse(editedValue, out float tareWeight))
+                            {
+                                MessageBox.Show("Vui lòng nhập một số hợp lệ cho Số bì.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                return;
+                            }
+                            editedSale.TareWeight = tareWeight;
                             CalculateTotalPrice(editedSale);
                             break;
+
                         default:
                             return;
                     }
