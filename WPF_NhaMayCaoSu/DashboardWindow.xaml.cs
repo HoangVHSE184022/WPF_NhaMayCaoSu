@@ -319,10 +319,19 @@ namespace WPF_NhaMayCaoSu
 
         private void SuggestionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            string tag = ((ComboBoxItem)TypeComboBox.SelectedItem).Tag.ToString();
             if (SuggestionListBox.SelectedItem is Customer selectedCustomer)
             {
                 _currentCustomer = selectedCustomer;
-                CustomerTextBox.Text = selectedCustomer.CustomerName;
+                if (tag == "Name")
+                {
+                    CustomerTextBox.Text = selectedCustomer.CustomerName;
+                }
+                else if (tag == "Phone")
+                {
+                        CustomerTextBox.Text = selectedCustomer.Phone;
+                }
+
                 SuggestionPopup.IsOpen = false;
                 FilterSalesData();
             }
