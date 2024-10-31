@@ -1,6 +1,8 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,32 +45,6 @@ namespace WPF_NhaMayCaoSu
             _mainWindow = mainWindow;
 
         }
-
-        //private async void LoadCustomers()
-        //{
-        //    try
-        //    {
-        //        var customers = await _customerService.GetAllCustomersNoPagination();
-
-        //        var allCustomersOption = new Customer
-        //        {
-        //            CustomerId = Guid.Empty,
-        //            CustomerName = "Tất cả"
-        //        };
-
-        //        var customerList = new[] { allCustomersOption }.Concat(customers);
-
-        //        CustomerComboBox.ItemsSource = customerList;
-        //        CustomerComboBox.DisplayMemberPath = "CustomerName";
-        //        CustomerComboBox.SelectedValuePath = "CustomerId";
-
-        //        CustomerComboBox.SelectedIndex = 0;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Có lỗi xảy ra khi tải danh sách khách hàng: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-        //    }
-        //}
 
         private async void LoadCustomersName()
         {
@@ -307,15 +283,28 @@ namespace WPF_NhaMayCaoSu
         private void CustomerTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             string query = CustomerTextBox.Text.ToLower();
+            string tag = ((ComboBoxItem)TypeComboBox.SelectedItem).Tag.ToString();
+            var filteredSuggestions = allCustomers;
 
-            var filteredSuggestions = allCustomers
-                .Where(c => c.CustomerName.ToLower().Contains(query))
-                .ToList();
+            if (tag == "Name")
+            {
+                filteredSuggestions = allCustomers
+                    .Where(c => c.CustomerName.ToLower().Contains(query))
+                    .ToList();
+                SuggestionListBox.DisplayMemberPath = "CustomerName";
+            }
+            else if (tag == "Phone")
+            {
+                filteredSuggestions = allCustomers
+                    .Where(c => c.Phone.ToLower().Contains(query))
+                    .ToList();
+                SuggestionListBox.DisplayMemberPath = "Phone";
+            }
 
             SuggestionListBox.ItemsSource = filteredSuggestions;
-
             SuggestionPopup.IsOpen = filteredSuggestions.Any();
         }
+
 
         private void SuggestionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -332,7 +321,19 @@ namespace WPF_NhaMayCaoSu
         {
             if (e.Key == Key.Enter)
             {
-                _currentCustomer = allCustomers.FirstOrDefault(c => c.CustomerName.ToLower().Contains(CustomerTextBox.Text.ToLower()));
+                string query = CustomerTextBox.Text.ToLower();
+                string tag = ((ComboBoxItem)TypeComboBox.SelectedItem).Tag.ToString();
+
+                if (tag == "Name")
+                {
+                    _currentCustomer = allCustomers.FirstOrDefault(c => c.CustomerName.ToLower().Contains(query));
+                    Debug.WriteLine(_currentCustomer);
+                }
+                else if (tag == "Phone")
+                {
+                    _currentCustomer = allCustomers.FirstOrDefault(c => c.Phone.ToLower().Equals(query));
+                }
+
                 SuggestionPopup.IsOpen = false;
                 FilterSalesData();
             }
@@ -342,11 +343,6 @@ namespace WPF_NhaMayCaoSu
         {
             FilterSalesData();
         }
-
-        //private void EditButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    OpenEditSaleWindow();
-        //}
 
         private void OpenEditSaleWindow(object sender, RoutedEventArgs e)
         {
