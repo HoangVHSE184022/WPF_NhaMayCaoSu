@@ -104,10 +104,10 @@ namespace WPF_NhaMayCaoSu
             var filteredSales = _salesData.AsEnumerable();
 
             if (fromDate.HasValue)
-                filteredSales = filteredSales.Where(s => s.LastEditedTime >= fromDate.Value.Date);
+                filteredSales = filteredSales.Where(s => s.CreatedDate >= fromDate.Value.Date);
 
             if (toDate.HasValue)
-                filteredSales = filteredSales.Where(s => s.LastEditedTime <= toDate.Value.Date.AddDays(1).AddTicks(-1));
+                filteredSales = filteredSales.Where(s => s.CreatedDate <= toDate.Value.Date.AddDays(1).AddTicks(-1));
 
             //string tag = TypeComboBox.SelectedValue.ToString();
             string tag = "";
@@ -215,7 +215,7 @@ namespace WPF_NhaMayCaoSu
                 using (var package = new ExcelPackage())
                 {
                     var worksheet = package.Workbook.Worksheets.Add("Sales Data");
-                    var header = new List<string> { "Số thứ tự", "SaleId", "Tên khách hàng", "Số ký", "Tỉ trọng", "Số bì", "Lần chỉnh sửa cuối", "Mã RFID", "Đơn giá", "Giá thêm", "Tổng tiền", "Hình ảnh (Tỉ trọng)", "Hình ảnh (Cân nặng)" };
+                    var header = new List<string> { "Số thứ tự", "SaleId", "Tên khách hàng", "Số ký", "Tỉ trọng", "Số bì", "Ngày tạo", "Lần chỉnh sửa cuối", "Mã RFID", "Đơn giá", "Giá thêm", "Tổng tiền", "Hình ảnh (Tỉ trọng)", "Hình ảnh (Cân nặng)" };
 
                     for (int i = 0; i < header.Count; i++)
                     {
@@ -238,16 +238,17 @@ namespace WPF_NhaMayCaoSu
                         worksheet.Cells[i + 2, 4].Value = sale.ProductWeight;
                         worksheet.Cells[i + 2, 5].Value = sale.ProductDensity;
                         worksheet.Cells[i + 2, 6].Value = sale.TareWeight;
-                        worksheet.Cells[i + 2, 7].Value = sale.LastEditedTime.HasValue ? sale.LastEditedTime.Value.ToString("g") : "N/A";
-                        worksheet.Cells[i + 2, 8].Value = sale.RFIDCode;
-                        worksheet.Cells[i + 2, 9].Value = sale.SalePrice;
-                        worksheet.Cells[i + 2, 10].Value = sale.BonusPrice;
-                        worksheet.Cells[i + 2, 11].Value = sale.TotalPrice;
-                        worksheet.Cells[i + 2, 12].Value = densityImageUrl;
-                        worksheet.Cells[i + 2, 13].Value = weightImageUrl;
+                        worksheet.Cells[i + 2, 7].Value = sale.CreatedDate.HasValue ? sale.CreatedDate.Value.ToString("g") : "N/A";
+                        worksheet.Cells[i + 2, 8].Value = sale.LastEditedTime.HasValue ? sale.LastEditedTime.Value.ToString("g") : "N/A";
+                        worksheet.Cells[i + 2, 9].Value = sale.RFIDCode;
+                        worksheet.Cells[i + 2, 10].Value = sale.SalePrice;
+                        worksheet.Cells[i + 2, 11].Value = sale.BonusPrice;
+                        worksheet.Cells[i + 2, 12].Value = sale.TotalPrice;
+                        worksheet.Cells[i + 2, 13].Value = densityImageUrl;
+                        worksheet.Cells[i + 2, 14].Value = weightImageUrl;
                     }
 
-                    for (int col = 1; col <= 14; col++)
+                    for (int col = 1; col <= 15; col++)
                         worksheet.Column(col).AutoFit();
 
                     string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CaoSuData");
