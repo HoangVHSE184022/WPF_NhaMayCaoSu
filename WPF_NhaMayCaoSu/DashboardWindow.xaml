@@ -53,8 +53,7 @@
                 </Popup>
             </StackPanel>
             <ComboBox Name="TypeComboBox" HorizontalAlignment="Left" Height="20" Margin="913,0,0,0" VerticalAlignment="Center" Width="116" SelectionChanged="TypeComboBox_SelectionChanged">
-                <ComboBoxItem Tag="Default" Content="Loại thông tin" IsSelected="True"/>
-                <ComboBoxItem Content="Tên khách hàng" Tag="Name"/>
+                <ComboBoxItem Content="Tên khách hàng" Tag="Name" IsSelected="True"/>
                 <ComboBoxItem Content="Số điện thoại" Tag="Phone"/>
                 <ComboBoxItem Content="RFID" Tag="RFID"/>
             </ComboBox>
