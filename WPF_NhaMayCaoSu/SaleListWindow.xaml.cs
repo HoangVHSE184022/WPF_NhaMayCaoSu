@@ -102,7 +102,8 @@ namespace WPF_NhaMayCaoSu
         public async void LoadDataGrid()
         {
             DateTime? fromDate = FromDatePicker.SelectedDate;
-            DateTime? toDate = ToDatePicker.SelectedDate;
+            DateTime? toDate1 = ToDatePicker.SelectedDate;
+            DateTime? toDate = toDate1?.Date.AddDays(1).AddSeconds(-1);
             string? customer = SearchTextBox.Text.Trim().ToLower();
             try
             {
