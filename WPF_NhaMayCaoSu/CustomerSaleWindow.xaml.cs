@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
@@ -26,7 +27,7 @@ namespace WPF_NhaMayCaoSu
             LoadDataGrid();
         }
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             LoadDataGrid();
         }
@@ -39,7 +40,7 @@ namespace WPF_NhaMayCaoSu
 
                 IEnumerable<Sale> customerSales = await _saleService.GetSalesByCustomerIdAsync(_selectedCustomer.CustomerId, _currentPage, _pageSize);
                 IEnumerable<Sale> customerSalesTotal = await _saleService.GetSalesByCustomerIdAsync(_selectedCustomer.CustomerId);
-                foreach (Sale sale in customerSales)
+                foreach (Sale sale in customerSalesTotal)
                 {
                     CalculateTotalPrice(sale);
                 }
@@ -50,6 +51,7 @@ namespace WPF_NhaMayCaoSu
                 PreviousPageButton.IsEnabled = _currentPage > 1;
                 NextPageButton.IsEnabled = _currentPage < _totalPages;
                 UpdateTotalLabel(customerSalesTotal);
+                Debug.WriteLine($"Sale :{totalSalesCount}");
             }
             catch (Exception ex)
             {
@@ -92,6 +94,7 @@ namespace WPF_NhaMayCaoSu
         {
             float totalSum = sales.Sum(s => s.TotalPrice ?? 0);
             Total.Content = $"Tổng thành tiền: {totalSum:N0} VNĐ";
+            Debug.WriteLine($"Money :{totalSum}");
         }
 
         private void FromDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
