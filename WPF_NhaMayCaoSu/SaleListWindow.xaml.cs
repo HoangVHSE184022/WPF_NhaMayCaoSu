@@ -745,10 +745,6 @@ namespace WPF_NhaMayCaoSu
 
                     // Update the sale in the database
                     await _saleService.UpdateSaleAsync(editedSale);
-                    _mainWindow._sessionSaleList.Add(editedSale);
-                    _mainWindow.LoadDataGrid();
-
-
 
                     var saleInSession = _mainWindow._sessionSaleList.FirstOrDefault(s => s.SaleId == editedSale.SaleId);
                     if (saleInSession != null)
