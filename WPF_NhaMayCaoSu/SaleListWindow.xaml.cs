@@ -706,7 +706,7 @@ namespace WPF_NhaMayCaoSu
                             if (string.IsNullOrWhiteSpace(editedValue) || !float.TryParse(editedValue, out float productWeight))
                             {
                                 MessageBox.Show("Vui lòng nhập một số hợp lệ cho Số ký.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                                return;
+                                break;
                             }
                             editedSale.ProductWeight = productWeight;
                             CalculateTotalPrice(editedSale);
@@ -716,12 +716,12 @@ namespace WPF_NhaMayCaoSu
                             if (string.IsNullOrWhiteSpace(editedValue) || !float.TryParse(editedValue, out float productDensity))
                             {
                                 MessageBox.Show("Vui lòng nhập một số hợp lệ cho Tỉ trọng.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                                return;
+                                break;
                             }
                             if (productDensity > 1)
                             {
                                 MessageBox.Show("Tỉ trọng không thể vượt quá 100%", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                                return;
+                                break;
                             }
                             editedSale.ProductDensity = productDensity;
                             CalculateTotalPrice(editedSale);
@@ -730,7 +730,7 @@ namespace WPF_NhaMayCaoSu
                             if (string.IsNullOrWhiteSpace(editedValue) || !float.TryParse(editedValue, out float tareWeight))
                             {
                                 MessageBox.Show("Vui lòng nhập một số hợp lệ cho Số bì.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                                return;
+                                break;
                             }
                             editedSale.TareWeight = tareWeight;
                             CalculateTotalPrice(editedSale);
