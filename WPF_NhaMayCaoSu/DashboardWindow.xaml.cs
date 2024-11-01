@@ -1,17 +1,12 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using OfficeOpenXml;
+﻿using OfficeOpenXml;
 using OfficeOpenXml.Style;
-using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using WPF_NhaMayCaoSu.Core.Utils;
 using WPF_NhaMayCaoSu.Repository.Models;
 using WPF_NhaMayCaoSu.Service.Interfaces;
 using WPF_NhaMayCaoSu.Service.Services;
-using Xceed.Wpf.Toolkit.Converters;
 
 
 
@@ -330,7 +325,7 @@ namespace WPF_NhaMayCaoSu
                 }
                 else if (tag == "Phone")
                 {
-                        CustomerTextBox.Text = selectedCustomer.Phone;
+                    CustomerTextBox.Text = selectedCustomer.Phone;
                 }
 
                 SuggestionPopup.IsOpen = false;

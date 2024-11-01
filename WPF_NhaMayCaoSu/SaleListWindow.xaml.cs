@@ -69,7 +69,7 @@ namespace WPF_NhaMayCaoSu
             {
                 SharedTimerService.Instance.TimerTicked += OnTimerTicked;
                 SharedTimerService.Instance.TimerEnded += OnTimerEnded;
-                
+
                 if (!_mqttClientService.IsConnected)
                 {
                     await _mqttClientService.ConnectAsync();
@@ -515,7 +515,7 @@ namespace WPF_NhaMayCaoSu
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             LoadDataGrid();
-            
+
         }
 
         private async void ControlButton_Click(object sender, RoutedEventArgs e)

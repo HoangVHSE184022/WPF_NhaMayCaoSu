@@ -47,7 +47,7 @@ namespace WPF_NhaMayCaoSu
                 return;
             }
 
-                if (PasswordTextBox.Password != ConfirmPasswordTextBox.Password)
+            if (PasswordTextBox.Password != ConfirmPasswordTextBox.Password)
             {
                 MessageBox.Show("Sai mật khẩu xác nhận", "Xác nhận mật khẩu thất bại", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
