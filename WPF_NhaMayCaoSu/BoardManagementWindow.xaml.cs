@@ -42,6 +42,7 @@ namespace WPF_NhaMayCaoSu
                 BoardName = BoardNameTextBox.Text,
                 BoardIp = IpTextBox.Text,
                 BoardMacAddress = MacAddressTextBox.Text,
+                BoardStatus = 1,
                 BoardMode = int.Parse(ModeTextBox.Text),
             };
 
@@ -53,6 +54,7 @@ namespace WPF_NhaMayCaoSu
             }
             else
             {
+                //x.BoardStatus = 1;
                 x.BoardId = SelectedBoard.BoardId;
                 await _service.UpdateBoardAsync(x);
                 MessageBox.Show("Chỉnh sửa Board thành công", Constants.SuccessTitle, MessageBoxButton.OK, MessageBoxImage.Information);
