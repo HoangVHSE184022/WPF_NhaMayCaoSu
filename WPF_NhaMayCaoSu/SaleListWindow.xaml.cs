@@ -759,7 +759,6 @@ namespace WPF_NhaMayCaoSu
                         saleInSession.LastEditedTime = editedSale.LastEditedTime;
                         _mainWindow.LoadDataGrid();
                     }
-                    CalculateTotalPrice(editedSale);
                     LoadDataGrid();
                 }
                 catch (Exception ex)
