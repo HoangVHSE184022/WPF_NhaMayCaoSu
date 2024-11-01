@@ -68,14 +68,14 @@
             <!-- Sales Statistics Section -->
             <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <TextBlock Text="Tổng số ký: " FontWeight="Bold" Width="100"/>
-                    <TextBlock x:Name="TotalWeight" FontSize="16" Text="0" Width="50" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                    <TextBlock Text="Tổng số ký: " FontWeight="Bold" Width="80"/>
+                    <TextBlock x:Name="TotalWeight" FontSize="16" Text="0" Width="100" Margin="0,0,10,0"/>
 
                     <TextBlock Text="Tổng số lần cân: " FontWeight="Bold" Width="100"/>
-                    <TextBlock x:Name="TotalAmount" FontSize="16" Text="0" Width="50" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                    <TextBlock x:Name="TotalAmount" FontSize="16" Text="0" Width="100" HorizontalAlignment="Right" Margin="0,0,10,0"/>
 
-                    <TextBlock Text="Tổng tiền: " FontWeight="Bold" Width="100"/>
-                    <TextBlock x:Name="TotalTotalPrice" FontSize="16" Text="0" Width="50" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                    <TextBlock Text="Tổng tiền: " FontWeight="Bold" Width="80"/>
+                    <TextBlock x:Name="TotalTotalPrice" FontSize="16" Text="0" Width="100" HorizontalAlignment="Right" Margin="0,0,10,0"/>
 
                     <TextBlock Text="Lọc sale thiếu thông tin: " FontWeight="Bold" Width="140"/>
                     <ComboBox x:Name="FilterByZeroComboBox" Width="120" SelectionChanged="FilterByZeroComboBox_SelectionChanged" Margin="0,0,30,0">
