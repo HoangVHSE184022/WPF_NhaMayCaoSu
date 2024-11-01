@@ -40,17 +40,17 @@ namespace WPF_NhaMayCaoSu
 
                 IEnumerable<Sale> customerSales = await _saleService.GetSalesByCustomerIdAsync(_selectedCustomer.CustomerId, _currentPage, _pageSize);
                 IEnumerable<Sale> customerSalesTotal = await _saleService.GetSalesByCustomerIdAsync(_selectedCustomer.CustomerId);
-                foreach (Sale sale in customerSalesTotal)
+                foreach (Sale sale in customerSales)
                 {
                     CalculateTotalPrice(sale);
                 }
                 SaleDataGrid.ItemsSource = customerSales;
-                int totalSalesCount = customerSalesTotal.Count();
+                int totalSalesCount = customerSales.Count();
                 _totalPages = (int)Math.Ceiling((double)totalSalesCount / _pageSize);
                 PageNumberTextBlock.Text = $"Trang {_currentPage} trên {_totalPages}";
                 PreviousPageButton.IsEnabled = _currentPage > 1;
                 NextPageButton.IsEnabled = _currentPage < _totalPages;
-                UpdateTotalLabel(customerSalesTotal);
+                UpdateTotalLabel(customerSales);
                 Debug.WriteLine($"Sale :{totalSalesCount}");
             }
             catch (Exception ex)
@@ -76,7 +76,7 @@ namespace WPF_NhaMayCaoSu
                 LoadDataGrid();
             }
         }
-        private void CalculateTotalPrice(Sale sale)
+        private async void CalculateTotalPrice(Sale sale)
         {
             if (sale != null)
             {
@@ -87,6 +87,7 @@ namespace WPF_NhaMayCaoSu
                 float bonusPrice = sale.BonusPrice ?? 0;
 
                 sale.TotalPrice = (productWeight - tareWeight) * productDensity * (salePrice + bonusPrice);
+                await _saleService.UpdateSaleAsync(sale);
             }
         }
 
