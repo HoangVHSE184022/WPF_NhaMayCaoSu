@@ -588,6 +588,7 @@ namespace WPF_NhaMayCaoSu
                                 return;
                             }
                             editedSale.ProductWeight = productWeight;
+                            CalculateTotalPrice(editedSale);
                             break;
 
                         case "Tỉ Trọng":
@@ -602,6 +603,7 @@ namespace WPF_NhaMayCaoSu
                                 return;
                             }
                             editedSale.ProductDensity = productDensity;
+                            CalculateTotalPrice(editedSale);
                             break;
 
                         case "Số bì":
