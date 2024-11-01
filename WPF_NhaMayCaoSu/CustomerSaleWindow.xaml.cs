@@ -123,7 +123,7 @@ namespace WPF_NhaMayCaoSu
                     return;
                 }
                 IEnumerable<Sale> filteredSales = customerSales.Where(sale =>
-                    sale.LastEditedTime >= normalizedFromDate && sale.LastEditedTime <= normalizedToDate).ToList();
+                    sale.CreatedDate >= normalizedFromDate && sale.CreatedDate <= normalizedToDate).ToList();
 
                 foreach (Sale sale in filteredSales)
                 {
