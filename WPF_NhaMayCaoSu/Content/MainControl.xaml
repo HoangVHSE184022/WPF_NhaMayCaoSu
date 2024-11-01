@@ -17,7 +17,7 @@
             <MenuItem x:Name="RFIDManagementButton" Header="RFID" Click="RFIDManagementButton_Click"/>
             <MenuItem x:Name="SaleManagementButton" Header="Sale" Click="SaleManagementButton_Click"/>
             <MenuItem x:Name="AccountManagementButton" Header="Tài khoản" Click="AccountManagementButton_Click"/>
-            <MenuItem x:Name="RoleManagementButton" Header="Vai trò" Click="RoleManagementButton_Click"/>
+            <!--<MenuItem x:Name="RoleManagementButton" Header="Vai trò" Click="RoleManagementButton_Click"/>-->
             <MenuItem x:Name="ConfigButton" Header="Camera" Click="ConfigButton_Click"/>
             <MenuItem x:Name="DashboardButton" Header="Dashboard" Click="DashboardButton_Click"/>
         </Menu>
