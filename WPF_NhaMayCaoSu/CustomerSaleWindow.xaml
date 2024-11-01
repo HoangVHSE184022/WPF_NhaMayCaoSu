@@ -13,6 +13,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Tên khách hàng" Width="1.5*" Binding="{Binding CustomerName}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="RFID" Width="1.2*" Binding="{Binding RFIDCode}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Ngày tạo" Width="1.2*" Binding="{Binding CreatedDate}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Chỉnh sửa cuối" Width="1.2*" Binding="{Binding LastEditedTime}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Số ký" Width="0.6*" Binding="{Binding ProductWeight,  StringFormat=N2}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Tỉ trọng" Width="0.6*" Binding="{Binding ProductDensity,  StringFormat=N2}" IsReadOnly="True"/>
