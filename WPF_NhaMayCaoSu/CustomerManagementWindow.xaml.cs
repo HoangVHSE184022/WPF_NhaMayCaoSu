@@ -37,6 +37,14 @@ namespace WPF_NhaMayCaoSu
                 MessageBox.Show(Constants.ErrorMessageMissingFields, Constants.ErrorTitleValidation, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+
+            string phone = PhoneTextBox.Text.Trim();
+            if (!System.Text.RegularExpressions.Regex.IsMatch(phone, @"^0\d{9,10}$"))
+            {
+                MessageBox.Show("Số điện thoại phải là một chuỗi từ 10-11 chữ số và bắt đầu bằng số 0.", "Lỗi định dạng số điện thoại", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             MessageBoxResult result = MessageBox.Show("Bạn có chắc chắn muốn lưu khách hàng này không", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Information);
             if (result == MessageBoxResult.No)
             {
