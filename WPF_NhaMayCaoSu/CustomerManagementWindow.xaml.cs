@@ -29,7 +29,7 @@ namespace WPF_NhaMayCaoSu
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            
+
             if (string.IsNullOrWhiteSpace(AccountNameTextBox.Text) ||
                 string.IsNullOrWhiteSpace(PhoneTextBox.Text) ||
                 string.IsNullOrWhiteSpace(BonusPriceTextBox.Text))

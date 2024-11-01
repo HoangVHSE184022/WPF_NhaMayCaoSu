@@ -37,7 +37,7 @@ namespace WPF_NhaMayCaoSu
         private string _oldUrlWeight = string.Empty;
         private string _oldUrlDensity = string.Empty;
         private bool isLoaded = false;
-        
+
 
         public Sale SelectedSale { get; set; } = null;
         public Account CurrentAccount { get; set; } = null;
@@ -201,7 +201,7 @@ namespace WPF_NhaMayCaoSu
             if (SelectedSale != null)
             {
                 Customer customer = await _customerService.GetCustomerByRFIDCodeAsync(SelectedSale.RFIDCode);
-                if(customer == null)
+                if (customer == null)
                 {
                     PopulateSaleDetails(SelectedSale);
                     await LoadImagePaths(SelectedSale.SaleId);
