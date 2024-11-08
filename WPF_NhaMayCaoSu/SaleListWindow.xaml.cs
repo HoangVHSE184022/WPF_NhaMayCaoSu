@@ -719,11 +719,6 @@ namespace WPF_NhaMayCaoSu
                                 MessageBox.Show("Vui lòng nhập một số hợp lệ cho Tỉ trọng.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
                                 break;
                             }
-                            if (productDensity > 1)
-                            {
-                                MessageBox.Show("Tỉ trọng không thể vượt quá 100%", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                                break;
-                            }
                             editedSale.ProductDensity = productDensity;
                             CalculateTotalPrice(editedSale);
                             break;
