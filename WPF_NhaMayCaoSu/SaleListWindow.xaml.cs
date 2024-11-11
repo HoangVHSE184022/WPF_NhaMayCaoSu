@@ -355,7 +355,10 @@ namespace WPF_NhaMayCaoSu
                     }
                     //CalculateTotalPrice(sale);
                     await _saleService.UpdateSaleAsync(sale);
-
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        LoadDataGrid();
+                    });
                     _mainWindow._sessionSaleList.Add(sale);
                     _mainWindow.LoadDataGrid();
                 }
@@ -406,6 +409,10 @@ namespace WPF_NhaMayCaoSu
                 sale.ProductDensity = value;
 
             await _saleService.CreateSaleAsync(sale);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                LoadDataGrid();
+            });
             return sale;
         }
 
