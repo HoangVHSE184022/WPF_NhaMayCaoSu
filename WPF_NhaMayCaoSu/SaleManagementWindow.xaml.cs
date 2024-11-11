@@ -165,12 +165,6 @@ namespace WPF_NhaMayCaoSu
                 return false;
             }
 
-            if (float.TryParse(DensityTextBox.Text, out float densityValue) && densityValue > 100)
-            {
-                MessageBox.Show("Tỉ trọng không thể vượt quá 100 %", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
-
             return true;
         }
 
