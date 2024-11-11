@@ -71,6 +71,7 @@ namespace WPF_NhaMayCaoSu
                 Config newestCamera = await _cameraService.GetNewestCameraAsync();
                 if (newestCamera == null)
                 {
+                    await _mqttClientService.PublishAsync(topic, payload);
                     ShowError("Không thể lấy thông tin từ Config.");
                     return;
                 }
@@ -248,6 +249,10 @@ namespace WPF_NhaMayCaoSu
                         _sessionSaleList.Remove(saleInSession);
                     }
                     _sessionSaleList.Add(sale);
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        LoadDataGrid();
+                    });
                 }
 
                 string imagePath = await CaptureImageFromCameraAsync(newestCamera, cameraIndex);
@@ -297,6 +302,10 @@ namespace WPF_NhaMayCaoSu
 
             await _saleService.CreateSaleAsync(sale);
             _sessionSaleList.Add(sale);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                LoadDataGrid();
+            });
             return sale;
         }
 

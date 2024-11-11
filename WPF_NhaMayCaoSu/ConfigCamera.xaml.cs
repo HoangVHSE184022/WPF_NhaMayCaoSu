@@ -48,8 +48,9 @@ namespace WPF_NhaMayCaoSu
         private async Task CaptureAndDisplayImageAsync(string rtspUrl, System.Windows.Controls.Image imageControl)
         {
             string imagePath = string.Empty;
+            string errorMessage = null; // Variable to store error messages within the task
             var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10)); // 10-second timeout
-            var token = cts.Token; // Capture the token to avoid accessing cts after disposal
+            var token = cts.Token;
 
             btnCapture1.IsEnabled = false;
             btnCapture2.IsEnabled = false;
@@ -58,77 +59,90 @@ namespace WPF_NhaMayCaoSu
             {
                 var captureTask = Task.Run(() =>
                 {
-                    if (token.IsCancellationRequested) return; // Check cancellation before starting
-
-                    using (var capture = new VideoCapture(rtspUrl))
+                    try
                     {
                         if (token.IsCancellationRequested) return;
 
-                        if (!capture.IsOpened)
+                        using (var capture = new VideoCapture(rtspUrl))
                         {
                             if (token.IsCancellationRequested) return;
-                            throw new Exception("Cannot connect to the camera. Check RTSP URL.");
-                        }
 
-                        using (var frame = new Mat())
-                        {
-                            capture.Read(frame);
-
-                            if (token.IsCancellationRequested) return;
-
-                            if (!frame.IsEmpty)
+                            if (!capture.IsOpened)
                             {
-                                var image = frame.ToImage<Bgr, byte>();
-                                var bitmap = image.ToBitmap();
+                                errorMessage = "Không thể kết nối tới Camera. Vui lòng kiểm tra lại URL hoặc Link.";
+                                return;
+                            }
 
-                                Application.Current.Dispatcher.Invoke(() =>
+                            using (var frame = new Mat())
+                            {
+                                capture.Read(frame);
+
+                                if (token.IsCancellationRequested) return;
+
+                                if (!frame.IsEmpty)
                                 {
+                                    var image = frame.ToImage<Bgr, byte>();
+                                    var bitmap = image.ToBitmap();
+
+                                    Application.Current.Dispatcher.Invoke(() =>
+                                    {
+                                        if (!token.IsCancellationRequested)
+                                        {
+                                            imageControl.Source = ConvertBitmapToBitmapImage(bitmap);
+                                        }
+                                    });
+
                                     if (!token.IsCancellationRequested)
                                     {
-                                        imageControl.Source = ConvertBitmapToBitmapImage(bitmap);
+                                        imagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), $"capture_{DateTime.UtcNow:yyyyMMdd_HHmmss}.png");
+                                        bitmap.Save(imagePath, System.Drawing.Imaging.ImageFormat.Png);
                                     }
-                                });
-
-                                if (!token.IsCancellationRequested)
+                                }
+                                else
                                 {
-                                    imagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), $"capture_{DateTime.UtcNow:yyyyMMdd_HHmmss}.png");
-                                    bitmap.Save(imagePath, System.Drawing.Imaging.ImageFormat.Png);
+                                    errorMessage = "Không thể chụp ảnh từ luồng RTSP. Khung ảnh trống.";
                                 }
                             }
-                            else
-                            {
-                                throw new Exception("Cannot capture image from RTSP stream. Frame is empty.");
-                            }
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        errorMessage = $"Lỗi: {ex.Message}";
                     }
                 }, token);
 
                 if (await Task.WhenAny(captureTask, Task.Delay(10000)) == captureTask)
                 {
-                    await captureTask; // Await completion or propagate exception if needed
-                    if (!string.IsNullOrEmpty(imagePath))
+                    await captureTask; // Await to propagate errors, if any
+
+                    if (!string.IsNullOrEmpty(errorMessage))
                     {
-                        MessageBox.Show($"Image saved at: {imagePath}");
+                        MessageBox.Show(errorMessage, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else if (!string.IsNullOrEmpty(imagePath))
+                    {
+                        MessageBox.Show($"Ảnh được lưu tại: {imagePath}");
                     }
                 }
                 else
                 {
                     // Timeout exceeded
-                    MessageBox.Show("Image capture timed out.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Ảnh không thể chụp do quá thời gian.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
-                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 Debug.WriteLine($"Error capturing image: {ex}");
             }
             finally
             {
                 btnCapture1.IsEnabled = true;
                 btnCapture2.IsEnabled = true;
-                cts.Dispose(); // Ensure cts is disposed only at the end of all operations
+                cts.Dispose(); // Dispose the token source after operations complete
             }
         }
+
 
 
 
