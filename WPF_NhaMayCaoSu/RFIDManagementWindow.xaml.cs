@@ -44,6 +44,57 @@ namespace WPF_NhaMayCaoSu
             RFIDCodeTextBox.Text = rfidCode;
         }
 
+        private async void CheckBoardMode()
+        {
+            Board boardTa = await _boardService.GetBoardByNameAsync("Cân Tạ");
+
+            Board boardTieuLy = await _boardService.GetBoardByNameAsync("Cân Tiểu Ly");
+
+            if (boardTa != null)
+            {
+                if (boardTa.BoardMode == 1)
+                {
+                    MessageBox.Show("Board Cân tạ đang ở Mode 1 sẽ được chuyển sang Mode 2", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    boardTa.BoardMode = 2;
+                    await _boardService.UpdateBoardAsync(boardTa);
+
+                    string topic = $"{boardTa.BoardMacAddress}/mode";
+
+
+                    var payloadObject = new { Mode = boardTa.BoardMode };
+                    string payload = JsonConvert.SerializeObject(payloadObject);
+
+                    if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+                    {
+                        await _mqttClientService.PublishAsync(topic, payload);
+                        await _boardService.UpdateBoardAsync(boardTa);
+                    }
+                }
+            }
+            if (boardTieuLy != null)
+            {
+                if (boardTieuLy.BoardMode == 1)
+                {
+                    MessageBox.Show("Board Cân tiểu ly đang ở Mode 1 sẽ được chuyển sang Mode 2", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    boardTieuLy.BoardMode = 2;
+                    await _boardService.UpdateBoardAsync(boardTieuLy);
+
+                    string topic = $"{boardTieuLy.BoardMacAddress}/mode";
+
+
+                    var payloadObject = new { Mode = boardTieuLy.BoardMode };
+                    string payload = JsonConvert.SerializeObject(payloadObject);
+
+                    if (!string.IsNullOrEmpty(topic) && !string.IsNullOrEmpty(payload))
+                    {
+                        await _mqttClientService.PublishAsync(topic, payload);
+                        await _boardService.UpdateBoardAsync(boardTieuLy);
+                    }
+                }
+            }
+
+        }
+
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ModeLabel.Content = "Thêm RFID mới";
@@ -52,6 +103,7 @@ namespace WPF_NhaMayCaoSu
             {
                 await _mqttClientService.ConnectAsync();
                 await _mqttClientService.SubscribeAsync("+/sendRFID");
+                 CheckBoardMode();
             }
             catch (Exception ex)
             {
