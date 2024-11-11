@@ -64,7 +64,7 @@ namespace WPF_NhaMayCaoSu
             var payloadObject = value;
             string[] messages = data["info-".Length..].Split('-');
             string macAddress = messages[3];
-            string topic = $"{macAddress}/  ";
+            string topic = $"{macAddress}/Save";
             string payload = JsonConvert.SerializeObject(payloadObject);
             try
             {
