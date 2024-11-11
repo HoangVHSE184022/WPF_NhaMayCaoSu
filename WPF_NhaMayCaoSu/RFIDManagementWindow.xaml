@@ -11,7 +11,7 @@
 
         <Label x:Name="ModeLabel" Content="Thêm/Chỉnh sửa RFID" HorizontalAlignment="Left" Height="60" Margin="32,40,0,0" VerticalAlignment="Top" Width="497" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366" FontWeight="Bold"/>
         <Label Content="Mã RFID" HorizontalAlignment="Left" Height="46" Margin="32,130,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366"/>
-        <TextBox x:Name="RFIDCodeTextBox" Text="000000000" Height="46" Margin="276,130,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="26" Background="#FFCACACA" BorderThickness="0"/>
+        <TextBox x:Name="RFIDCodeTextBox" Text="000000000" Height="46" Margin="276,130,74,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Montserrat" FontSize="26" Background="#FFCACACA" BorderThickness="0" IsEnabled="False"/>
         <Label Content="Ngày hết hạn" HorizontalAlignment="Left" Height="46" Margin="32,230,0,0" VerticalAlignment="Top" Width="239" FontFamily="Montserrat" FontSize="26" Foreground="#FF002366"/>
         <DatePicker x:Name="ExpDateDatePicker" HorizontalAlignment="Left" Height="45" Margin="276,230,0,0" VerticalAlignment="Top" Width="365" FontSize="26" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontFamily="Montserrat" TabIndex="3"/>
         <Button x:Name="UnlimitedButton" Content="Vô thời hạn" HorizontalAlignment="Left" Height="45" Margin="656,230,0,0" VerticalAlignment="Top" Width="150" Background="#FF254098" FontFamily="Montserrat" Foreground="White" FontSize="20" Click="UnlimitedButton_Click"/>
