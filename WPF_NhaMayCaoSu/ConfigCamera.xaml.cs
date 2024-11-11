@@ -1,6 +1,7 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
 using Serilog;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows;
@@ -34,50 +35,107 @@ namespace WPF_NhaMayCaoSu
             }
         }
 
-        private void btnCapture1_Click(object sender, RoutedEventArgs e)
+        private async void btnCapture1_Click(object sender, RoutedEventArgs e)
         {
-            CaptureAndDisplayImage(txtUrl1.Text, imgCamera1);
+            await CaptureAndDisplayImageAsync(txtUrl1.Text, imgCamera1);
         }
 
-        private void btnCapture2_Click(object sender, RoutedEventArgs e)
+        private async void btnCapture2_Click(object sender, RoutedEventArgs e)
         {
-            CaptureAndDisplayImage(txtUrl2.Text, imgCamera2);
+            await CaptureAndDisplayImageAsync(txtUrl2.Text, imgCamera1);
         }
 
-        private void CaptureAndDisplayImage(string rtspUrl, System.Windows.Controls.Image imageControl)
+        private async Task CaptureAndDisplayImageAsync(string rtspUrl, System.Windows.Controls.Image imageControl)
         {
+            string imagePath = string.Empty;
+            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10)); // 10-second timeout
+            var token = cts.Token; // Capture the token to avoid accessing cts after disposal
+
+            btnCapture1.IsEnabled = false;
+            btnCapture2.IsEnabled = false;
+
             try
             {
-                using (VideoCapture capture = new VideoCapture(rtspUrl))
+                var captureTask = Task.Run(() =>
                 {
-                    using (Mat frame = new Mat())
+                    if (token.IsCancellationRequested) return; // Check cancellation before starting
+
+                    using (var capture = new VideoCapture(rtspUrl))
                     {
-                        capture.Read(frame);
+                        if (token.IsCancellationRequested) return;
 
-                        if (!frame.IsEmpty)
+                        if (!capture.IsOpened)
                         {
-                            Image<Bgr, byte> image = frame.ToImage<Bgr, byte>();
-                            Bitmap bitmap = image.ToBitmap();
-                            imageControl.Source = ConvertBitmapToBitmapImage(bitmap);
-
-                            string imagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), $"capture_{DateTime.UtcNow:yyyyMMdd_HHmmss}.png");
-                            bitmap.Save(imagePath, System.Drawing.Imaging.ImageFormat.Png);
-
-                            MessageBox.Show($"Hình ảnh đã được lưu tại: {imagePath}");
+                            if (token.IsCancellationRequested) return;
+                            throw new Exception("Cannot connect to the camera. Check RTSP URL.");
                         }
-                        else
+
+                        using (var frame = new Mat())
                         {
-                            MessageBox.Show("Không thể chụp ảnh từ luồng RTSP.");
+                            capture.Read(frame);
+
+                            if (token.IsCancellationRequested) return;
+
+                            if (!frame.IsEmpty)
+                            {
+                                var image = frame.ToImage<Bgr, byte>();
+                                var bitmap = image.ToBitmap();
+
+                                Application.Current.Dispatcher.Invoke(() =>
+                                {
+                                    if (!token.IsCancellationRequested)
+                                    {
+                                        imageControl.Source = ConvertBitmapToBitmapImage(bitmap);
+                                    }
+                                });
+
+                                if (!token.IsCancellationRequested)
+                                {
+                                    imagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), $"capture_{DateTime.UtcNow:yyyyMMdd_HHmmss}.png");
+                                    bitmap.Save(imagePath, System.Drawing.Imaging.ImageFormat.Png);
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Cannot capture image from RTSP stream. Frame is empty.");
+                            }
                         }
                     }
+                }, token);
+
+                if (await Task.WhenAny(captureTask, Task.Delay(10000)) == captureTask)
+                {
+                    await captureTask; // Await completion or propagate exception if needed
+                    if (!string.IsNullOrEmpty(imagePath))
+                    {
+                        MessageBox.Show($"Image saved at: {imagePath}");
+                    }
+                }
+                else
+                {
+                    // Timeout exceeded
+                    MessageBox.Show("Image capture timed out.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is not OperationCanceledException)
             {
-                MessageBox.Show($"Đã xảy ra lỗi: {ex.Message}");
-                Log.Error(ex, "Đã xảy ra lỗi");
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Debug.WriteLine($"Error capturing image: {ex}");
+            }
+            finally
+            {
+                btnCapture1.IsEnabled = true;
+                btnCapture2.IsEnabled = true;
+                cts.Dispose(); // Ensure cts is disposed only at the end of all operations
             }
         }
+
+
+
+
+
+
+
 
         private BitmapImage ConvertBitmapToBitmapImage(Bitmap bitmap)
         {

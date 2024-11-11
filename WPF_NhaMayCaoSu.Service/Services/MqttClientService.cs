@@ -148,6 +148,12 @@ namespace WPF_NhaMayCaoSu.Service.Services
             {
                 string macAddress = topicParts[0];
                 Board _board = await _service.GetBoardByMacAddressAsync(macAddress);
+
+                if (_board == null)
+                {
+                    Debug.WriteLine($"Cannot found board {_board}");
+                    return;
+                }
                 if (_board.BoardName == "Cân Tạ")
                 {
                     MessageReceived?.Invoke(this, $"info-{rfid}-{data}-Weight-{macAddress}");
