@@ -267,7 +267,7 @@ namespace WPF_NhaMayCaoSu
                 if (data.Contains("Weight"))
                 {
                     string messageContent = data["info-".Length..];
-                    string filePathUrl = CaptureImageFromCamera(newestCamera, 1);
+                    string filePathUrl = await CaptureImageFromCameraAsync(newestCamera, 1);
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
@@ -278,7 +278,7 @@ namespace WPF_NhaMayCaoSu
                 else if (data.Contains("Density"))
                 {
                     string messageContent = data["info-".Length..];
-                    string filePathUrl = CaptureImageFromCamera(newestCamera, 2);
+                    string filePathUrl =await CaptureImageFromCameraAsync(newestCamera, 2);
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
@@ -448,7 +448,7 @@ namespace WPF_NhaMayCaoSu
         }
 
         // Capture image from the camera
-        private string CaptureImageFromCamera(Config camera, int cameraIndex)
+        private async Task<string> CaptureImageFromCameraAsync(Config camera, int cameraIndex)
         {
             string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CaoSuPictures");
 
@@ -462,18 +462,23 @@ namespace WPF_NhaMayCaoSu
             try
             {
                 string cameraUrl = cameraIndex == 1 ? camera.Camera1 : camera.Camera2;
-                if (string.IsNullOrEmpty(cameraUrl)) throw new Exception($"URL của Config {cameraIndex} không hợp lệ.");
+                if (string.IsNullOrEmpty(cameraUrl))
+                    throw new Exception($"URL của Config {cameraIndex} không hợp lệ.");
 
                 using var capture = new VideoCapture(cameraUrl);
-                if (!capture.IsOpened) throw new Exception($"Không thể mở Config {cameraIndex}.");
+                if (!capture.IsOpened)
+                    throw new Exception($"Không thể mở Config {cameraIndex}.");
 
                 using var frame = new Mat();
-                capture.Read(frame);
-                if (frame.IsEmpty) throw new Exception($"Không thể chụp ảnh từ Config {cameraIndex}.");
+
+                await Task.Run(() => capture.Read(frame));
+                if (frame.IsEmpty)
+                    throw new Exception($"Không thể chụp ảnh từ Config {cameraIndex}.");
 
                 var image = frame.ToImage<Bgr, byte>();
                 Bitmap bitmap = image.ToBitmap();
-                bitmap.Save(localFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                await Task.Run(() => bitmap.Save(localFilePath, System.Drawing.Imaging.ImageFormat.Jpeg));
             }
             catch (Exception ex)
             {
@@ -484,6 +489,7 @@ namespace WPF_NhaMayCaoSu
 
             return localFilePath;
         }
+
 
         private void CustomerManagementButton_Click(object sender, RoutedEventArgs e)
         {
@@ -596,7 +602,7 @@ namespace WPF_NhaMayCaoSu
                 });
                 return;
             }
-            string filePathUrl = CaptureImageFromCamera(newestCamera, 2);
+            string filePathUrl = await CaptureImageFromCameraAsync(newestCamera, 2);
             ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLWeightTextBox);
         }
 
@@ -612,7 +618,7 @@ namespace WPF_NhaMayCaoSu
                 });
                 return;
             }
-            string filePathUrl = CaptureImageFromCamera(newestCamera, 1);
+            string filePathUrl = await CaptureImageFromCameraAsync(newestCamera, 1);
             ProcessCameraUrlMessage(filePathUrl, RFIDCodeTextBox.Text, URLWeightTextBox);
         }
     }

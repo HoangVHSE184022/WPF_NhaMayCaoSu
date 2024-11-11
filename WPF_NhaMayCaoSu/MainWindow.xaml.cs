@@ -64,13 +64,14 @@ namespace WPF_NhaMayCaoSu
             var payloadObject = value;
             string[] messages = data["info-".Length..].Split('-');
             string macAddress = messages[3];
-            string topic = $"{macAddress}/  ";
+            string topic = $"{macAddress}/Save";
             string payload = JsonConvert.SerializeObject(payloadObject);
             try
             {
                 Config newestCamera = await _cameraService.GetNewestCameraAsync();
                 if (newestCamera == null)
                 {
+                    await _mqttClientService.PublishAsync(topic, payload);
                     ShowError("Không thể lấy thông tin từ Config.");
                     return;
                 }
@@ -248,9 +249,13 @@ namespace WPF_NhaMayCaoSu
                         _sessionSaleList.Remove(saleInSession);
                     }
                     _sessionSaleList.Add(sale);
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        LoadDataGrid();
+                    });
                 }
 
-                string imagePath = CaptureImageFromCamera(newestCamera, cameraIndex);
+                string imagePath = await CaptureImageFromCameraAsync(newestCamera, cameraIndex);
                 if (!string.IsNullOrEmpty(imagePath))
                 {
                     await SaveImageToDb(imagePath, sale.SaleId, cameraIndex);
@@ -297,39 +302,44 @@ namespace WPF_NhaMayCaoSu
 
             await _saleService.CreateSaleAsync(sale);
             _sessionSaleList.Add(sale);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                LoadDataGrid();
+            });
             return sale;
         }
 
 
         // Capture image from the camera and return the file path
-        private string CaptureImageFromCamera(Config camera, int cameraIndex)
+        private static async Task<string> CaptureImageFromCameraAsync(Config camera, int cameraIndex)
         {
             string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CaoSuPictures");
             Directory.CreateDirectory(folderPath);
-
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
 
             string localFilePath = Path.Combine(folderPath, $"{Guid.NewGuid()}_Camera{cameraIndex}.jpg");
 
             try
             {
                 string cameraUrl = cameraIndex == 1 ? camera.Camera1 : camera.Camera2;
-                if (string.IsNullOrEmpty(cameraUrl)) throw new Exception($"URL của Config {cameraIndex} không hợp lệ.");
+                if (string.IsNullOrEmpty(cameraUrl))
+                    throw new Exception($"URL của Config {cameraIndex} không hợp lệ.");
 
                 using (var capture = new VideoCapture(cameraUrl))
                 {
-                    if (!capture.IsOpened) throw new Exception($"Không thể mở Config {cameraIndex}.");
+                    if (!capture.IsOpened)
+                        throw new Exception($"Không thể mở Config {cameraIndex}.");
+
                     using (var frame = new Mat())
                     {
-                        capture.Read(frame);
-                        if (frame.IsEmpty) throw new Exception($"Không thể chụp ảnh từ Config {cameraIndex}.");
+                        await Task.Run(() => capture.Read(frame));
+                        if (frame.IsEmpty)
+                            throw new Exception($"Không thể chụp ảnh từ Config {cameraIndex}.");
 
                         Image<Bgr, byte> image = frame.ToImage<Bgr, byte>();
                         Bitmap bitmap = image.ToBitmap();
-                        bitmap.Save(localFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                        // Lưu hình ảnh theo cách bất đồng bộ
+                        await Task.Run(() => bitmap.Save(localFilePath, System.Drawing.Imaging.ImageFormat.Jpeg));
                     }
                 }
             }
@@ -342,6 +352,7 @@ namespace WPF_NhaMayCaoSu
 
             return localFilePath;
         }
+
 
         // Save captured image to the database
         private async Task SaveImageToDb(string imagePath, Guid saleId, short imageType)
