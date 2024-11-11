@@ -207,11 +207,6 @@ namespace WPF_NhaMayCaoSu
                     }
                     else if (secondKey == "Density")
                     {
-                        if (newValue > 100)
-                        {
-                            MessageBox.Show("Tỉ trọng không thể vượt quá 100 %", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            return;
-                        }
                         if (sale.ProductDensity == 0)
                         {
                             sale.LastEditedTime = DateTime.Now;
