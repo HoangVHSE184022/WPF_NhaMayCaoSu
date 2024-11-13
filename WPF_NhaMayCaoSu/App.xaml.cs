@@ -101,37 +101,17 @@ namespace WPF_NhaMayCaoSu
                 var dbContext = scope.ServiceProvider.GetRequiredService<CaoSuWpfDbContext>();
                 try
                 {
+                    // Apply any pending migrations or create the database if it doesn't exist
                     dbContext.Database.Migrate();
                     Log.Information("Database initialized successfully.");
                 }
                 catch (Exception ex)
                 {
                     Log.Error(ex, "An error occurred while initializing the database.");
-
-                    if (ex.Message.Contains("Cannot create file") && ex.Message.Contains(".mdf because it already exists"))
-                    {
-                        try
-                        {
-                            Log.Information("Attempting to drop the existing database due to a conflict.");
-                            dbContext.Database.ExecuteSqlRaw("IF DB_ID('CaoSuWpfProject') IS NOT NULL DROP DATABASE CaoSuWpfProject");
-
-                            Log.Information("Re-initializing the database after dropping the existing one.");
-                            dbContext.Database.Migrate();
-                            Log.Information("Database re-initialized successfully.");
-                        }
-                        catch (Exception dropEx)
-                        {
-                            Log.Error(dropEx, "An error occurred while dropping and re-initializing the database.");
-                            MessageBox.Show($"An error occurred while reinitializing the database: {dropEx.Message}");
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show($"Database initialization failed: {ex.Message}");
-                    }
+                    MessageBox.Show($"Database initialization failed: {ex.Message}");
+                    //Shutdown();
                 }
             }
         }
-
     }
 }
