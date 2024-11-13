@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>assets\images\rubber.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +14,10 @@
     <None Remove="assets\images\rubber.ico" />
     <None Remove="assets\Montserrat\Montserrat-Italic-VariableFont_wght.ttf" />
     <None Remove="assets\Montserrat\Montserrat-VariableFont_wght.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="assets\images\rubber.ico" />
   </ItemGroup>
 
   <ItemGroup>
