@@ -42,7 +42,7 @@ namespace WPF_NhaMayCaoSu
 
         private async void btnCapture2_Click(object sender, RoutedEventArgs e)
         {
-            await CaptureAndDisplayImageAsync(txtUrl2.Text, imgCamera1);
+            await CaptureAndDisplayImageAsync(txtUrl2.Text, imgCamera2);
         }
 
         private async Task CaptureAndDisplayImageAsync(string rtspUrl, System.Windows.Controls.Image imageControl)
