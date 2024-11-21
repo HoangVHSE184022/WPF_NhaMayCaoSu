@@ -1,6 +1,5 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
-using Serilog;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;

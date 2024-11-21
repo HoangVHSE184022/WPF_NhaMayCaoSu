@@ -278,7 +278,7 @@ namespace WPF_NhaMayCaoSu
                 else if (data.Contains("Density"))
                 {
                     string messageContent = data["info-".Length..];
-                    string filePathUrl =await CaptureImageFromCameraAsync(newestCamera, 2);
+                    string filePathUrl = await CaptureImageFromCameraAsync(newestCamera, 2);
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {

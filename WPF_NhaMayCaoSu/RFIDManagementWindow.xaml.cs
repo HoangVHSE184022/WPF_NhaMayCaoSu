@@ -103,7 +103,7 @@ namespace WPF_NhaMayCaoSu
             {
                 await _mqttClientService.ConnectAsync();
                 await _mqttClientService.SubscribeAsync("+/sendRFID");
-                 CheckBoardMode();
+                CheckBoardMode();
             }
             catch (Exception ex)
             {

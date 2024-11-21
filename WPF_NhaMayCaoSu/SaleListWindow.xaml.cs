@@ -319,7 +319,7 @@ namespace WPF_NhaMayCaoSu
                         }
                     }
                     else if (secondKey == "Density")
-                    {                 
+                    {
                         if (sale.ProductDensity == 0)
                         {
                             sale.LastEditedTime = DateTime.Now;
