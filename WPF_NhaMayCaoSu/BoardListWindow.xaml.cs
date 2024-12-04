@@ -357,6 +357,7 @@ namespace WPF_NhaMayCaoSu
                             if (re == MessageBoxResult.Yes)
                             {
                                 board.BoardMacAddress = selectedBoard.BoardMacAddress;
+                                board.BoardStatus = 1;
                                 await _boardService.UpdateBoardAsync(board);
                                 await LoadDataGridFromDatabase();
                                 _mqttBoards.Clear();
@@ -370,6 +371,7 @@ namespace WPF_NhaMayCaoSu
                             BoardId = selectedBoard.BoardId,
                             BoardName = saveBoardWindow.SelectedBoardName,
                             BoardIp = selectedBoard.BoardIp,
+                            BoardStatus = 1,
                             BoardMacAddress = selectedBoard.BoardMacAddress,
                             BoardMode = selectedBoard.BoardMode
                         };
