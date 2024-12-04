@@ -9,7 +9,7 @@
         Closing="Window_Closing"
         Title="Access Key" Height="400" Width="600" WindowStartupLocation="CenterScreen" WindowStyle="None">
     <Grid>
-        <Label Name="StatusLabel" Content="Trạng thái:" Width="103" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="18" Margin="10,67,0,0"/>
+        <Label Name="StatusLabel" Content="Trạng thái:" Width="129" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="18" Margin="10,67,0,0"/>
 
         <Button Name="ContinueButton" Content="Tiếp tục dùng thử" Width="162" Height="30" VerticalAlignment="Top" Margin="419,345,0,0" HorizontalAlignment="Left" FontSize="18" Click="ContinueButton_Click" />
         <Button x:Name="ExitButton" Content="Thoát" Width="68" Height="30" VerticalAlignment="Top" Margin="10,345,0,0" HorizontalAlignment="Left" FontSize="18" Click="ExitButton_Click" />
@@ -18,7 +18,7 @@
         <Label Content="License key: " Width="103" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="18" Margin="10,142,0,0"/>
         <Label x:Name="ExpLabel" Content="Thời hạn dùng thử: " Width="571" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="18" Margin="10,219,0,0"/>
         <Image Name="QR" HorizontalAlignment="Left" Height="100" Margin="234,292,0,0" VerticalAlignment="Top" Width="100" Visibility="Hidden" />
-        <Label x:Name="StatusLabel_Copy" Content="Chưa kích hoạt" Width="128" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="Red" FontSize="18" Margin="98,67,0,0"/>
+        <Label x:Name="StatusLabel_Copy" Content="Chưa kích hoạt" Width="128" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="Red" FontSize="18" Margin="139,67,0,0"/>
 
     </Grid>
 </Window>
